@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Register - MediMate AI</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(135deg, #eafff0, #ffffff);
+      padding: 20px;
+    }
+
+    .register-container {
+      width: 420px;
+      background: white;
+      padding: 32px;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0, 128, 70, 0.15);
+    }
+
+    .logo {
+      width: 70px;
+      height: 70px;
+      margin: auto;
+      border-radius: 50%;
+      background: #0b8f55;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 32px;
+      margin-bottom: 15px;
+    }
+
+    h2 {
+      text-align: center;
+      color: #087443;
+      margin-bottom: 8px;
+    }
+
+    .subtitle {
+      text-align: center;
+      color: #777;
+      font-size: 14px;
+      margin-bottom: 25px;
+    }
+
+    .input-group {
+      margin-bottom: 16px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 7px;
+      font-size: 14px;
+      font-weight: bold;
+      color: #333;
+    }
+
+    input,
+    select {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #cce8d8;
+      border-radius: 10px;
+      outline: none;
+      font-size: 14px;
+    }
+
+    input:focus,
+    select:focus {
+      border-color: #0b8f55;
+      box-shadow: 0 0 7px rgba(11, 143, 85, 0.2);
+    }
+
+    button {
+      width: 100%;
+      padding: 13px;
+      border: none;
+      border-radius: 10px;
+      background: #0b8f55;
+      color: white;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      background: #076b40;
+      transform: translateY(-2px);
+    }
+
+    .message {
+      text-align: center;
+      margin-top: 15px;
+      font-size: 14px;
+    }
+
+    .login-link {
+      display: block;
+      text-align: center;
+      margin-top: 20px;
+      color: #0b8f55;
+      text-decoration: none;
+      font-size: 14px;
+    }
+
+    .login-link:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="register-container">
+
+    <div class="logo">🏥</div>
+
+    <h2>Create Account</h2>
+
+    <p class="subtitle">
+      Register your MediMate AI account
+    </p>
+
+    <form id="registerForm">
+
+      <div class="input-group">
+        <label for="fullname">Full Name</label>
+        <input
+          type="text"
+          id="fullname"
+          placeholder="Enter your full name"
+          required
+        />
+      </div>
+
+      <div class="input-group">
+        <label for="email">Email Address</label>
+        <input
+          type="email"
+          id="email"
+          placeholder="Enter your email"
+          required
+        />
+      </div>
+
+      <div class="input-group">
+        <label for="role">Select Role</label>
+
+        <select id="role" required>
+          <option value="">Choose your role</option>
+          <option value="admin">Admin</option>
+          <option value="doctor">Doctor</option>
+          <option value="patient">Patient</option>
+          <option value="laboratory">Laboratory</option>
+          <option value="pharmacy">Pharmacy</option>
+        </select>
+      </div>
+
+      <div class="input-group">
+        <label for="password">Create Password</label>
+        <input
+          type="password"
+          id="password"
+          placeholder="Create a password"
+          required
+        />
+      </div>
+
+      <div class="input-group">
+        <label for="confirmPassword">Confirm Password</label>
+        <input
+          type="password"
+          id="confirmPassword"
+          placeholder="Confirm your password"
+          required
+        />
+      </div>
+
+      <button type="submit">Register</button>
+
+      <p class="message" id="message"></p>
+
+    </form>
+
+    <a href="index.html" class="login-link">
+      ← Back to Home
+    </a>
+
+  </div>
+
+  <script>
+    document
+      .getElementById("registerForm")
+      .addEventListener("submit", function (event) {
+
+        event.preventDefault();
+
+        const fullname =
+          document.getElementById("fullname").value.trim();
+
+        const email =
+          document.getElementById("email").value.trim().toLowerCase();
+
+        const role =
+          document.getElementById("role").value;
+
+        const password =
+          document.getElementById("password").value;
+
+        const confirmPassword =
+          document.getElementById("confirmPassword").value;
+
+        const message =
+          document.getElementById("message");
+
+        if (password !== confirmPassword) {
+          message.style.color = "red";
+          message.textContent = "Passwords do not match.";
+          return;
+        }
+
+        if (password.length < 6) {
+          message.style.color = "red";
+          message.textContent =
+            "Password must contain at least 6 characters.";
+          return;
+        }
+
+        let users =
+          JSON.parse(localStorage.getItem("medimateUsers")) || [];
+
+        const existingUser = users.find(function (user) {
+          return user.email === email;
+        });
+
+        if (existingUser) {
+          message.style.color = "red";
+          message.textContent =
+            "This email is already registered.";
+          return;
+        }
+
+        const newUser = {
+          fullname: fullname,
+          email: email,
+          role: role,
+          password: password
+        };
+
+        users.push(newUser);
+
+        localStorage.setItem(
+          "medimateUsers",
+          JSON.stringify(users)
+        );
+
+        message.style.color = "green";
+        message.textContent =
+          "Registration successful! Redirecting...";
+
+        setTimeout(function () {
+
+          const loginPages = {
+            admin: "admin/admin-login.html",
+            doctor: "doctor/doctor-login.html",
+            patient: "patient/patient-login.html",
+            laboratory: "laboratory/lab-login.html",
+            pharmacy: "pharmacy/pharmacy-login.html"
+          };
+
+          window.location.href = loginPages[role];
+
+        }, 1200);
+
+      });
+  </script>
+
+</body>
+</html>

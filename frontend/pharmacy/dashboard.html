@@ -1,0 +1,1398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Pharmacy Dashboard | MediMate AI</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Segoe UI", sans-serif;
+        }
+
+        body {
+            background: #f3faf6;
+            color: #26372f;
+        }
+
+        .dashboard {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* ================= SIDEBAR ================= */
+
+        .sidebar {
+            width: 260px;
+            height: 100vh;
+            position: fixed;
+            left: 0;
+            top: 0;
+
+            padding: 25px 18px;
+            background: linear-gradient(180deg, #087f5b, #064c39);
+            color: white;
+
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            z-index: 1000;
+        }
+
+        .logo {
+            text-align: center;
+            margin-bottom: 25px;
+            flex-shrink: 0;
+        }
+
+        .logo h2 {
+            font-size: 25px;
+            color: white;
+        }
+
+        .logo span {
+            color: #b7f7d5;
+        }
+
+        .logo p {
+            color: #d8f7e8;
+            font-size: 13px;
+            margin-top: 5px;
+        }
+
+        .menu {
+            list-style: none;
+            flex: 1;
+            overflow-y: auto;
+            padding-right: 5px;
+            margin-bottom: 18px;
+        }
+
+        .menu::-webkit-scrollbar {
+            width: 5px;
+        }
+
+        .menu::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.35);
+            border-radius: 10px;
+        }
+
+        .menu li {
+            margin: 9px 0;
+        }
+
+        .menu a {
+            display: block;
+            padding: 13px 15px;
+
+            color: #eafff4;
+            text-decoration: none;
+            border-radius: 10px;
+
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .menu a:hover,
+        .menu a.active {
+            background: white;
+            color: #087f5b;
+            transform: translateX(4px);
+        }
+
+        /* ================= SEPARATE LOGOUT ================= */
+
+        .logout-container {
+            flex-shrink: 0;
+            padding-top: 15px;
+            border-top: 1px solid rgba(255, 255, 255, 0.35);
+        }
+
+        .logout-btn {
+            width: 100%;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+
+            padding: 14px 18px;
+
+            background: white;
+            color: #087f5b;
+
+            border: none;
+            border-radius: 12px;
+
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+
+            transition: all 0.3s ease;
+        }
+
+        .logout-icon {
+            font-size: 20px;
+        }
+
+        .logout-btn:hover {
+            background: #e8fff2;
+            color: #064c39;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.18);
+        }
+
+        .logout-btn:active {
+            transform: scale(0.97);
+        }
+
+        /* ================= MAIN CONTENT ================= */
+
+        .main {
+            width: calc(100% - 260px);
+            margin-left: 260px;
+            padding: 25px;
+        }
+
+        .topbar {
+            background: white;
+            padding: 18px 22px;
+            border-radius: 15px;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            box-shadow: 0 5px 20px rgba(0, 100, 70, 0.06);
+            margin-bottom: 25px;
+        }
+
+        .topbar h1 {
+            color: #087f5b;
+            font-size: 25px;
+        }
+
+        .profile {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .profile-info strong {
+            color: #087f5b;
+        }
+
+        .profile-info small {
+            color: #75847b;
+        }
+
+        .profile-icon {
+            width: 45px;
+            height: 45px;
+
+            border-radius: 50%;
+            background: #d9f8e8;
+            color: #087f5b;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            font-weight: bold;
+            font-size: 20px;
+        }
+
+        /* ================= SECTIONS ================= */
+
+        .section {
+            display: none;
+            animation: fadeIn 0.4s ease;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ================= WELCOME ================= */
+
+        .welcome {
+            background: linear-gradient(135deg, #087f5b, #12a879);
+            color: white;
+
+            padding: 28px;
+            border-radius: 18px;
+            margin-bottom: 25px;
+        }
+
+        .welcome h2 {
+            margin-bottom: 8px;
+        }
+
+        .welcome p {
+            color: #e0fff0;
+        }
+
+        /* ================= STATISTICS ================= */
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 18px;
+            margin-bottom: 25px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 22px;
+            border-radius: 15px;
+
+            border-left: 5px solid #0b9b6e;
+            box-shadow: 0 5px 20px rgba(0, 100, 70, 0.06);
+        }
+
+        .stat-card p {
+            color: #718078;
+            font-size: 14px;
+        }
+
+        .stat-card h3 {
+            font-size: 30px;
+            color: #087f5b;
+            margin: 8px 0;
+        }
+
+        /* ================= CONTENT GRID ================= */
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 22px;
+        }
+
+        .card {
+            background: white;
+            padding: 22px;
+            border-radius: 15px;
+
+            box-shadow: 0 5px 20px rgba(0, 100, 70, 0.06);
+            margin-bottom: 22px;
+        }
+
+        .card h3 {
+            color: #087f5b;
+            margin-bottom: 18px;
+        }
+
+        /* ================= TABLE ================= */
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            padding: 13px 10px;
+            border-bottom: 1px solid #edf2ef;
+            text-align: left;
+            font-size: 14px;
+        }
+
+        th {
+            color: #087f5b;
+            background: #f1fbf6;
+        }
+
+        td {
+            color: #56665d;
+        }
+
+        /* ================= STATUS ================= */
+
+        .status {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+        }
+
+        .success {
+            background: #d9f8e8;
+            color: #087f5b;
+        }
+
+        .warning {
+            background: #fff1cc;
+            color: #9b6b00;
+        }
+
+        .danger {
+            background: #ffe0e0;
+            color: #b42323;
+        }
+
+        /* ================= QUICK ACTIONS ================= */
+
+        .quick-actions {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+
+        .quick-actions button {
+            padding: 15px;
+
+            border: 1px solid #d7eee2;
+            background: #f4fcf7;
+            color: #087f5b;
+
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .quick-actions button:hover {
+            background: #087f5b;
+            color: white;
+        }
+
+        /* ================= BUTTONS ================= */
+
+        .btn {
+            border: none;
+            background: #087f5b;
+            color: white;
+
+            padding: 11px 17px;
+            border-radius: 8px;
+
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+
+        .btn:hover {
+            background: #075b43;
+            transform: translateY(-2px);
+        }
+
+        .btn.secondary {
+            background: #d9f8e8;
+            color: #087f5b;
+        }
+
+        .btn.danger-btn {
+            background: #e63946;
+        }
+
+        /* ================= FORMS ================= */
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 7px;
+
+            color: #087f5b;
+            font-weight: 600;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+
+            border: 1px solid #cfe7da;
+            border-radius: 8px;
+            outline: none;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            border-color: #087f5b;
+        }
+
+        /* ================= RESPONSIVE ================= */
+
+        @media (max-width: 1100px) {
+            .stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 220px;
+            }
+
+            .main {
+                width: calc(100% - 220px);
+                margin-left: 220px;
+                padding: 15px;
+            }
+
+            .topbar h1 {
+                font-size: 20px;
+            }
+
+            .profile-info {
+                display: none;
+            }
+        }
+
+        @media (max-width: 550px) {
+            .dashboard {
+                display: block;
+            }
+
+            .sidebar {
+                position: relative;
+                width: 100%;
+                height: auto;
+                min-height: auto;
+            }
+
+            .menu {
+                overflow-y: visible;
+            }
+
+            .main {
+                width: 100%;
+                margin-left: 0;
+            }
+
+            .stats {
+                grid-template-columns: 1fr;
+            }
+
+            .quick-actions {
+                grid-template-columns: 1fr;
+            }
+
+            .topbar {
+                gap: 10px;
+            }
+
+            table {
+                display: block;
+                overflow-x: auto;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="dashboard">
+
+        <!-- ================= SIDEBAR ================= -->
+
+        <aside class="sidebar">
+
+            <div class="logo">
+                <h2>MediMate <span>AI</span></h2>
+                <p>Pharmacy Portal</p>
+            </div>
+
+            <ul class="menu">
+
+                <li>
+                    <a class="active"
+                       onclick="showSection('dashboard', this)">
+                        🏠 Dashboard
+                    </a>
+                </li>
+
+                <li>
+                    <a onclick="showSection('prescriptions', this)">
+                        📋 Prescriptions
+                    </a>
+                </li>
+
+                <li>
+                    <a onclick="showSection('inventory', this)">
+                        💊 Medicine Inventory
+                    </a>
+                </li>
+
+                <li>
+                    <a onclick="showSection('dispensing', this)">
+                        🧾 Dispensing
+                    </a>
+                </li>
+
+                <li>
+                    <a onclick="showSection('orders', this)">
+                        📦 Orders
+                    </a>
+                </li>
+
+                <li>
+                    <a onclick="showSection('patients', this)">
+                        👥 Patients
+                    </a>
+                </li>
+
+                <li>
+                    <a onclick="showSection('profile', this)">
+                        👤 Pharmacy Profile
+                    </a>
+                </li>
+
+                <li>
+                    <a onclick="showSection('settings', this)">
+                        ⚙️ Settings
+                    </a>
+                </li>
+
+            </ul>
+
+            <!-- Separate Logout Button -->
+            <div class="logout-container">
+                <button class="logout-btn" onclick="logout()">
+                    <span class="logout-icon">🚪</span>
+                    <span>Logout</span>
+                </button>
+            </div>
+
+        </aside>
+
+        <!-- ================= MAIN CONTENT ================= -->
+
+        <main class="main">
+
+            <!-- Topbar -->
+            <div class="topbar">
+
+                <h1 id="pageTitle">Pharmacy Dashboard</h1>
+
+                <div class="profile">
+
+                    <div class="profile-info">
+                        <strong id="pharmacyName">
+                            Pharmacy Staff
+                        </strong>
+
+                        <br>
+
+                        <small>Pharmacy Account</small>
+                    </div>
+
+                    <div class="profile-icon">
+                        PH
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- ================= DASHBOARD SECTION ================= -->
+
+            <section id="dashboard" class="section active">
+
+                <div class="welcome">
+
+                    <h2>
+                        Welcome,
+                        <span id="welcomeName">Pharmacy Staff</span>! 💊
+                    </h2>
+
+                    <p>
+                        Manage prescriptions, medicine stock, dispensing
+                        and pharmacy orders from one place.
+                    </p>
+
+                </div>
+
+                <div class="stats">
+
+                    <div class="stat-card">
+                        <p>Total Medicines</p>
+                        <h3>248</h3>
+                        <span class="status success">
+                            In Inventory
+                        </span>
+                    </div>
+
+                    <div class="stat-card">
+                        <p>Pending Prescriptions</p>
+                        <h3>18</h3>
+                        <span class="status warning">
+                            Pending
+                        </span>
+                    </div>
+
+                    <div class="stat-card">
+                        <p>Low Stock Medicines</p>
+                        <h3>12</h3>
+                        <span class="status danger">
+                            Check Stock
+                        </span>
+                    </div>
+
+                    <div class="stat-card">
+                        <p>Today's Orders</p>
+                        <h3>36</h3>
+                        <span class="status success">
+                            Processed
+                        </span>
+                    </div>
+
+                </div>
+
+                <div class="content-grid">
+
+                    <div>
+
+                        <div class="card">
+
+                            <h3>Recent Prescriptions</h3>
+
+                            <table>
+
+                                <thead>
+                                    <tr>
+                                        <th>Patient</th>
+                                        <th>Doctor</th>
+                                        <th>Medicine</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+
+                                    <tr>
+                                        <td>Arun Kumar</td>
+                                        <td>Dr. Priya</td>
+                                        <td>Paracetamol</td>
+                                        <td>
+                                            <span class="status warning">
+                                                Pending
+                                            </span>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>Meena</td>
+                                        <td>Dr. Arun</td>
+                                        <td>Amoxicillin</td>
+                                        <td>
+                                            <span class="status success">
+                                                Dispensed
+                                            </span>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>Rahul</td>
+                                        <td>Dr. Kumar</td>
+                                        <td>Vitamin D3</td>
+                                        <td>
+                                            <span class="status warning">
+                                                Pending
+                                            </span>
+                                        </td>
+                                    </tr>
+
+                                </tbody>
+
+                            </table>
+
+                        </div>
+
+                        <div class="card">
+
+                            <h3>Low Stock Medicines</h3>
+
+                            <table>
+
+                                <thead>
+                                    <tr>
+                                        <th>Medicine</th>
+                                        <th>Available Stock</th>
+                                        <th>Required Level</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+
+                                    <tr>
+                                        <td>Paracetamol 500mg</td>
+                                        <td>20</td>
+                                        <td>100</td>
+                                        <td>
+                                            <span class="status danger">
+                                                Low Stock
+                                            </span>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>Amoxicillin 250mg</td>
+                                        <td>15</td>
+                                        <td>80</td>
+                                        <td>
+                                            <span class="status danger">
+                                                Low Stock
+                                            </span>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>Vitamin D3</td>
+                                        <td>35</td>
+                                        <td>100</td>
+                                        <td>
+                                            <span class="status warning">
+                                                Warning
+                                            </span>
+                                        </td>
+                                    </tr>
+
+                                </tbody>
+
+                            </table>
+
+                        </div>
+
+                    </div>
+
+                    <div>
+
+                        <div class="card">
+
+                            <h3>Quick Actions</h3>
+
+                            <div class="quick-actions">
+
+                                <button onclick="showSection('prescriptions')">
+                                    View Prescriptions
+                                </button>
+
+                                <button onclick="showSection('inventory')">
+                                    Manage Stock
+                                </button>
+
+                                <button onclick="showSection('dispensing')">
+                                    Dispense Medicine
+                                </button>
+
+                                <button onclick="showSection('orders')">
+                                    View Orders
+                                </button>
+
+                            </div>
+
+                        </div>
+
+                        <div class="card">
+
+                            <h3>Pharmacy Reminder</h3>
+
+                            <p>💊 Check expired medicines regularly.</p>
+                            <br>
+
+                            <p>📦 Update stock after every sale.</p>
+                            <br>
+
+                            <p>🧾 Verify doctor prescriptions.</p>
+                            <br>
+
+                            <p>⚠️ Monitor low-stock alerts.</p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+            <!-- ================= PRESCRIPTIONS ================= -->
+
+            <section id="prescriptions" class="section">
+
+                <div class="card">
+
+                    <h3>Prescription Management</h3>
+
+                    <table>
+
+                        <thead>
+                            <tr>
+                                <th>Prescription ID</th>
+                                <th>Patient</th>
+                                <th>Doctor</th>
+                                <th>Medicine</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+
+                            <tr>
+                                <td>RX1001</td>
+                                <td>Arun Kumar</td>
+                                <td>Dr. Priya</td>
+                                <td>Paracetamol</td>
+                                <td>
+                                    <span class="status warning">
+                                        Pending
+                                    </span>
+                                </td>
+                                <td>
+                                    <button class="btn secondary"
+                                            onclick="approvePrescription('RX1001')">
+                                        Approve
+                                    </button>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>RX1002</td>
+                                <td>Meena</td>
+                                <td>Dr. Arun</td>
+                                <td>Amoxicillin</td>
+                                <td>
+                                    <span class="status success">
+                                        Dispensed
+                                    </span>
+                                </td>
+                                <td>-</td>
+                            </tr>
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </section>
+
+            <!-- ================= INVENTORY ================= -->
+
+            <section id="inventory" class="section">
+
+                <div class="card">
+
+                    <h3>Medicine Inventory</h3>
+
+                    <button class="btn" onclick="addMedicine()">
+                        + Add Medicine
+                    </button>
+
+                    <br><br>
+
+                    <table>
+
+                        <thead>
+                            <tr>
+                                <th>Medicine Name</th>
+                                <th>Category</th>
+                                <th>Stock</th>
+                                <th>Expiry Date</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+
+                            <tr>
+                                <td>Paracetamol 500mg</td>
+                                <td>Pain Relief</td>
+                                <td>20</td>
+                                <td>Dec 2027</td>
+                                <td>
+                                    <span class="status danger">
+                                        Low Stock
+                                    </span>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>Amoxicillin 250mg</td>
+                                <td>Antibiotic</td>
+                                <td>150</td>
+                                <td>Aug 2027</td>
+                                <td>
+                                    <span class="status success">
+                                        Available
+                                    </span>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>Vitamin D3</td>
+                                <td>Supplement</td>
+                                <td>35</td>
+                                <td>Jan 2028</td>
+                                <td>
+                                    <span class="status warning">
+                                        Warning
+                                    </span>
+                                </td>
+                            </tr>
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </section>
+
+            <!-- ================= DISPENSING ================= -->
+
+            <section id="dispensing" class="section">
+
+                <div class="card">
+
+                    <h3>Dispense Medicine</h3>
+
+                    <form onsubmit="dispenseMedicine(event)">
+
+                        <div class="form-group">
+                            <label for="prescriptionId">
+                                Prescription ID
+                            </label>
+
+                            <input type="text"
+                                   id="prescriptionId"
+                                   required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="dispensePatient">
+                                Patient Name
+                            </label>
+
+                            <input type="text"
+                                   id="dispensePatient"
+                                   required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="dispenseMedicine">
+                                Medicine Name
+                            </label>
+
+                            <input type="text"
+                                   id="dispenseMedicine"
+                                   required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="medicineQuantity">
+                                Quantity
+                            </label>
+
+                            <input type="number"
+                                   id="medicineQuantity"
+                                   min="1"
+                                   required>
+                        </div>
+
+                        <button class="btn" type="submit">
+                            Confirm Dispensing
+                        </button>
+
+                    </form>
+
+                </div>
+
+            </section>
+
+            <!-- ================= ORDERS ================= -->
+
+            <section id="orders" class="section">
+
+                <div class="card">
+
+                    <h3>Pharmacy Orders</h3>
+
+                    <table>
+
+                        <thead>
+                            <tr>
+                                <th>Order ID</th>
+                                <th>Medicine</th>
+                                <th>Quantity</th>
+                                <th>Date</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+
+                            <tr>
+                                <td>ORD1001</td>
+                                <td>Paracetamol 500mg</td>
+                                <td>100</td>
+                                <td>16 Sep 2026</td>
+                                <td>
+                                    <span class="status warning">
+                                        Processing
+                                    </span>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>ORD1002</td>
+                                <td>Vitamin D3</td>
+                                <td>75</td>
+                                <td>15 Sep 2026</td>
+                                <td>
+                                    <span class="status success">
+                                        Delivered
+                                    </span>
+                                </td>
+                            </tr>
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </section>
+
+            <!-- ================= PATIENTS ================= -->
+
+            <section id="patients" class="section">
+
+                <div class="card">
+
+                    <h3>Patient Medicine History</h3>
+
+                    <table>
+
+                        <thead>
+                            <tr>
+                                <th>Patient Name</th>
+                                <th>Prescription ID</th>
+                                <th>Medicine</th>
+                                <th>Dispensed Date</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+
+                            <tr>
+                                <td>Arun Kumar</td>
+                                <td>RX1001</td>
+                                <td>Paracetamol</td>
+                                <td>16 Sep 2026</td>
+                            </tr>
+
+                            <tr>
+                                <td>Meena</td>
+                                <td>RX1002</td>
+                                <td>Amoxicillin</td>
+                                <td>15 Sep 2026</td>
+                            </tr>
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </section>
+
+            <!-- ================= PROFILE ================= -->
+
+            <section id="profile" class="section">
+
+                <div class="card">
+
+                    <h3>Pharmacy Profile</h3>
+
+                    <div class="form-group">
+                        <label for="profileName">
+                            Pharmacy Name
+                        </label>
+
+                        <input type="text" id="profileName">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="profileEmail">
+                            Email
+                        </label>
+
+                        <input type="email" id="profileEmail">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="profilePhone">
+                            Phone Number
+                        </label>
+
+                        <input type="tel" id="profilePhone">
+                    </div>
+
+                    <button class="btn" onclick="saveProfile()">
+                        Save Profile
+                    </button>
+
+                </div>
+
+            </section>
+
+            <!-- ================= SETTINGS ================= -->
+
+            <section id="settings" class="section">
+
+                <div class="card">
+
+                    <h3>Settings</h3>
+
+                    <div class="form-group">
+                        <label for="stockAlert">
+                            Stock Alert
+                        </label>
+
+                        <select id="stockAlert">
+                            <option>Enabled</option>
+                            <option>Disabled</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="orderNotifications">
+                            Order Notifications
+                        </label>
+
+                        <select id="orderNotifications">
+                            <option>Enabled</option>
+                            <option>Disabled</option>
+                        </select>
+                    </div>
+
+                    <button class="btn" onclick="saveSettings()">
+                        Save Settings
+                    </button>
+
+                </div>
+
+            </section>
+
+        </main>
+
+    </div>
+
+    <!-- ================= JAVASCRIPT ================= -->
+
+    <script>
+        let currentUser = JSON.parse(
+            localStorage.getItem("currentUser")
+        ) || {
+            name: "Pharmacy Staff",
+            email: "pharmacy@example.com",
+            role: "pharmacy"
+        };
+
+        function updateUserDetails() {
+            const pharmacyName =
+                currentUser.name || "Pharmacy Staff";
+
+            document.getElementById("pharmacyName").textContent =
+                pharmacyName;
+
+            document.getElementById("welcomeName").textContent =
+                pharmacyName;
+
+            document.getElementById("profileName").value =
+                currentUser.name || "";
+
+            document.getElementById("profileEmail").value =
+                currentUser.email || "";
+
+            document.getElementById("profilePhone").value =
+                currentUser.phone || "";
+        }
+
+        updateUserDetails();
+
+        function showSection(sectionId, clickedElement = null) {
+            document.querySelectorAll(".section").forEach(section => {
+                section.classList.remove("active");
+            });
+
+            const selectedSection =
+                document.getElementById(sectionId);
+
+            if (selectedSection) {
+                selectedSection.classList.add("active");
+            }
+
+            document.querySelectorAll(".menu a").forEach(link => {
+                link.classList.remove("active");
+            });
+
+            if (clickedElement) {
+                clickedElement.classList.add("active");
+            }
+
+            const titles = {
+                dashboard: "Pharmacy Dashboard",
+                prescriptions: "Prescription Management",
+                inventory: "Medicine Inventory",
+                dispensing: "Medicine Dispensing",
+                orders: "Pharmacy Orders",
+                patients: "Patient History",
+                profile: "Pharmacy Profile",
+                settings: "Settings"
+            };
+
+            document.getElementById("pageTitle").textContent =
+                titles[sectionId] || "Pharmacy Dashboard";
+        }
+
+        function approvePrescription(prescriptionId) {
+            alert(
+                "Prescription " +
+                prescriptionId +
+                " approved successfully!"
+            );
+        }
+
+        function addMedicine() {
+            const medicineName =
+                prompt("Enter medicine name:");
+
+            if (medicineName && medicineName.trim() !== "") {
+                alert(
+                    medicineName +
+                    " added to inventory successfully!"
+                );
+            }
+        }
+
+        function dispenseMedicine(event) {
+            event.preventDefault();
+
+            const prescriptionId =
+                document.getElementById("prescriptionId").value;
+
+            const patient =
+                document.getElementById("dispensePatient").value;
+
+            const medicine =
+                document.getElementById("dispenseMedicine").value;
+
+            const quantity =
+                document.getElementById("medicineQuantity").value;
+
+            alert(
+                "Medicine dispensed successfully!\n\n" +
+                "Prescription ID: " + prescriptionId +
+                "\nPatient: " + patient +
+                "\nMedicine: " + medicine +
+                "\nQuantity: " + quantity
+            );
+
+            event.target.reset();
+        }
+
+        function saveProfile() {
+            const updatedUser = {
+                ...currentUser,
+
+                name: document
+                    .getElementById("profileName")
+                    .value
+                    .trim(),
+
+                email: document
+                    .getElementById("profileEmail")
+                    .value
+                    .trim(),
+
+                phone: document
+                    .getElementById("profilePhone")
+                    .value
+                    .trim()
+            };
+
+            localStorage.setItem(
+                "currentUser",
+                JSON.stringify(updatedUser)
+            );
+
+            currentUser = updatedUser;
+
+            updateUserDetails();
+
+            alert(
+                "Pharmacy profile updated successfully!"
+            );
+        }
+
+        function saveSettings() {
+            const stockAlert =
+                document.getElementById("stockAlert").value;
+
+            const orderNotifications =
+                document.getElementById("orderNotifications").value;
+
+            localStorage.setItem(
+                "stockAlert",
+                stockAlert
+            );
+
+            localStorage.setItem(
+                "orderNotifications",
+                orderNotifications
+            );
+
+            alert("Settings saved successfully!");
+        }
+
+        function logout() {
+            localStorage.removeItem("currentUser");
+            sessionStorage.clear();
+
+            /*
+                Folder structure:
+
+                frontend/
+                ├── login/
+                │   └── pharmacy-login.html
+                └── pharmacy/
+                    └── dashboard.html
+            */
+
+            window.location.href =
+                "../login/pharmacy-login.html";
+        }
+    </script>
+
+</body>
+</html>

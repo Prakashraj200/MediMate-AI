@@ -1,0 +1,1276 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Doctor Dashboard | MediMate AI</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Segoe UI", Arial, sans-serif;
+        }
+
+        body {
+            background: #f1faf5;
+            color: #183b2b;
+        }
+
+        button {
+            cursor: pointer;
+        }
+
+        .app-container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* SIDEBAR */
+
+        .sidebar {
+            width: 270px;
+            min-height: 100vh;
+            background: linear-gradient(180deg, #056238, #079653);
+            color: white;
+            padding: 28px 20px;
+            position: fixed;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            z-index: 100;
+            transition: 0.3s ease;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 5px 12px 28px;
+            border-bottom: 1px solid rgba(255,255,255,0.25);
+        }
+
+        .brand-icon {
+            width: 55px;
+            height: 55px;
+            background: white;
+            color: #087743;
+            border-radius: 17px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 30px;
+        }
+
+        .brand h2 {
+            font-size: 23px;
+        }
+
+        .brand p {
+            font-size: 13px;
+            color: #d3f5e1;
+            margin-top: 4px;
+        }
+
+        .menu-title {
+            font-size: 12px;
+            letter-spacing: 1px;
+            color: #bcebd0;
+            margin: 30px 15px 14px;
+        }
+
+        .nav-menu {
+            list-style: none;
+        }
+
+        .nav-menu li {
+            margin: 8px 0;
+        }
+
+        .nav-menu button {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            border: none;
+            background: transparent;
+            color: white;
+            padding: 15px;
+            border-radius: 15px;
+            font-size: 16px;
+            text-align: left;
+            transition: 0.3s ease;
+        }
+
+        .nav-menu button:hover,
+        .nav-menu button.active {
+            background: rgba(255,255,255,0.2);
+            transform: translateX(4px);
+        }
+
+        .nav-icon {
+            width: 25px;
+            text-align: center;
+            font-size: 21px;
+        }
+
+        /* MAIN CONTENT */
+
+        .main-content {
+            width: calc(100% - 270px);
+            margin-left: 270px;
+            min-height: 100vh;
+        }
+
+        .topbar {
+            height: 82px;
+            background: white;
+            border-bottom: 1px solid #e1eee6;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 35px;
+            position: sticky;
+            top: 0;
+            z-index: 50;
+        }
+
+        .page-heading h1 {
+            font-size: 25px;
+            color: #075f36;
+        }
+
+        .page-heading p {
+            color: #789082;
+            font-size: 13px;
+            margin-top: 5px;
+        }
+
+        .topbar-actions {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+        }
+
+        .notification-btn {
+            width: 43px;
+            height: 43px;
+            border: none;
+            border-radius: 13px;
+            background: #eaf8f0;
+            font-size: 20px;
+            position: relative;
+        }
+
+        .notification-count {
+            position: absolute;
+            right: -4px;
+            top: -5px;
+            width: 19px;
+            height: 19px;
+            background: #e53935;
+            color: white;
+            border-radius: 50%;
+            font-size: 11px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .doctor-profile {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: #f0faf4;
+            padding: 7px 10px;
+            border-radius: 15px;
+            position: relative;
+        }
+
+        .doctor-avatar {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background: #d8f2e4;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 23px;
+        }
+
+        .doctor-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .doctor-info strong {
+            font-size: 14px;
+            color: #16452f;
+        }
+
+        .doctor-info span {
+            font-size: 12px;
+            color: #779181;
+            margin-top: 3px;
+        }
+
+        .profile-menu-btn {
+            border: none;
+            background: transparent;
+            color: #087743;
+            font-size: 19px;
+            padding: 5px;
+        }
+
+        .profile-dropdown {
+            display: none;
+            position: absolute;
+            right: 0;
+            top: 62px;
+            width: 190px;
+            background: white;
+            border: 1px solid #dceee3;
+            border-radius: 14px;
+            padding: 8px;
+            box-shadow: 0 12px 30px rgba(0, 80, 40, 0.15);
+        }
+
+        .profile-dropdown.show {
+            display: block;
+            animation: dropdownAnimation 0.2s ease;
+        }
+
+        .profile-dropdown button {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            background: transparent;
+            border-radius: 9px;
+            text-align: left;
+            font-size: 14px;
+            color: #234b36;
+        }
+
+        .profile-dropdown button:hover {
+            background: #eaf8f0;
+        }
+
+        .profile-dropdown .logout-btn {
+            color: #d93025;
+            border-top: 1px solid #eeeeee;
+            margin-top: 5px;
+        }
+
+        .profile-dropdown .logout-btn:hover {
+            background: #fff0ef;
+        }
+
+        @keyframes dropdownAnimation {
+            from {
+                opacity: 0;
+                transform: translateY(-8px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* CONTENT */
+
+        .content {
+            padding: 30px 35px;
+        }
+
+        .welcome-box {
+            background: linear-gradient(120deg, #087743, #12a866);
+            color: white;
+            border-radius: 22px;
+            padding: 28px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .welcome-box h2 {
+            font-size: 25px;
+            margin-bottom: 8px;
+        }
+
+        .welcome-box p {
+            color: #d9f8e6;
+            font-size: 14px;
+        }
+
+        .welcome-icon {
+            font-size: 70px;
+        }
+
+        .section-title {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 25px 0 17px;
+        }
+
+        .section-title h2 {
+            color: #075f36;
+            font-size: 21px;
+        }
+
+        .view-all {
+            border: none;
+            background: transparent;
+            color: #07834a;
+            font-weight: bold;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 18px;
+        }
+
+        .stat-card {
+            background: white;
+            border: 1px solid #e0eee5;
+            border-radius: 18px;
+            padding: 22px;
+            transition: 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 90, 45, 0.08);
+        }
+
+        .stat-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .stat-icon {
+            width: 45px;
+            height: 45px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 23px;
+            background: #e3f7eb;
+        }
+
+        .stat-card h3 {
+            font-size: 30px;
+            color: #075f36;
+            margin-top: 17px;
+        }
+
+        .stat-card p {
+            color: #789082;
+            font-size: 13px;
+            margin-top: 5px;
+        }
+
+        .stat-change {
+            font-size: 12px;
+            color: #0b9956;
+            margin-top: 12px;
+        }
+
+        .two-column {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr;
+            gap: 25px;
+        }
+
+        .panel {
+            background: white;
+            border: 1px solid #e0eee5;
+            border-radius: 20px;
+            padding: 25px;
+            margin-top: 25px;
+        }
+
+        .appointment-item {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 17px 0;
+            border-bottom: 1px solid #e4eee8;
+        }
+
+        .appointment-item:last-child {
+            border-bottom: none;
+        }
+
+        .patient-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 15px;
+            background: #e5f7ed;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+
+        .appointment-details {
+            flex: 1;
+        }
+
+        .appointment-details h4 {
+            color: #183b2b;
+            font-size: 15px;
+        }
+
+        .appointment-details p {
+            color: #789082;
+            font-size: 13px;
+            margin-top: 5px;
+        }
+
+        .appointment-time {
+            text-align: right;
+        }
+
+        .appointment-time strong {
+            color: #087743;
+            font-size: 14px;
+        }
+
+        .status {
+            display: inline-block;
+            padding: 6px 11px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: bold;
+            margin-top: 7px;
+        }
+
+        .confirmed {
+            background: #d9f7e6;
+            color: #078044;
+        }
+
+        .pending {
+            background: #fff0cc;
+            color: #a86a00;
+        }
+
+        .alert-box {
+            padding: 18px;
+            border-radius: 16px;
+            margin-bottom: 15px;
+        }
+
+        .alert-box h4 {
+            margin-bottom: 7px;
+            font-size: 15px;
+        }
+
+        .alert-box p {
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .critical-alert {
+            background: #ffe5e5;
+            color: #c62828;
+        }
+
+        .warning-alert {
+            background: #fff2d8;
+            color: #9b6500;
+        }
+
+        .info-alert {
+            background: #e2f0ff;
+            color: #17649b;
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+        }
+
+        .patients-table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 650px;
+        }
+
+        .patients-table th {
+            background: #e5f6ec;
+            color: #087443;
+            padding: 16px;
+            text-align: left;
+            font-size: 13px;
+        }
+
+        .patients-table td {
+            padding: 17px 16px;
+            border-bottom: 1px solid #e4eee8;
+            font-size: 14px;
+        }
+
+        .patient-name {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: bold;
+        }
+
+        .small-avatar {
+            width: 35px;
+            height: 35px;
+            background: #e3f7eb;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .view-btn {
+            border: none;
+            background: #e5f6ec;
+            color: #087443;
+            padding: 9px 15px;
+            border-radius: 10px;
+            font-weight: bold;
+        }
+
+        .view-btn:hover {
+            background: #087443;
+            color: white;
+        }
+
+        .quick-actions {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+        }
+
+        .quick-action {
+            border: 1px solid #dceee3;
+            background: #f8fffb;
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            color: #087443;
+            font-weight: bold;
+            transition: 0.3s ease;
+        }
+
+        .quick-action:hover {
+            background: #087443;
+            color: white;
+            transform: translateY(-4px);
+        }
+
+        .quick-action span {
+            display: block;
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        .ai-box {
+            background: linear-gradient(120deg, #e1f8eb, #f5fff8);
+            border: 1px solid #bdebd0;
+            border-radius: 20px;
+            padding: 25px;
+            margin-top: 25px;
+        }
+
+        .ai-box h2 {
+            color: #087443;
+            margin-bottom: 10px;
+        }
+
+        .ai-box p {
+            color: #607b6b;
+            line-height: 1.7;
+            font-size: 14px;
+        }
+
+        .ai-btn {
+            margin-top: 18px;
+            border: none;
+            background: #087443;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 12px;
+            font-weight: bold;
+        }
+
+        .ai-btn:hover {
+            background: #055b33;
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            border: none;
+            background: #eaf8f0;
+            color: #087443;
+            border-radius: 10px;
+            font-size: 23px;
+            padding: 8px 12px;
+        }
+
+        /* RESPONSIVE */
+
+        @media (max-width: 1100px) {
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .two-column {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 800px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+
+            .sidebar.open {
+                transform: translateX(0);
+            }
+
+            .main-content {
+                width: 100%;
+                margin-left: 0;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .topbar {
+                padding: 0 18px;
+            }
+
+            .content {
+                padding: 22px 18px;
+            }
+
+            .doctor-info {
+                display: none;
+            }
+
+            .welcome-box {
+                padding: 22px;
+            }
+
+            .welcome-box h2 {
+                font-size: 20px;
+            }
+
+            .welcome-icon {
+                font-size: 45px;
+            }
+        }
+
+        @media (max-width: 550px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .quick-actions {
+                grid-template-columns: 1fr;
+            }
+
+            .page-heading h1 {
+                font-size: 19px;
+            }
+
+            .page-heading p {
+                display: none;
+            }
+
+            .notification-btn {
+                width: 38px;
+                height: 38px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="app-container">
+
+    <!-- SIDEBAR -->
+
+    <aside class="sidebar" id="sidebar">
+
+        <div class="brand">
+            <div class="brand-icon">🩺</div>
+
+            <div>
+                <h2>MediMate AI</h2>
+                <p>Doctor Portal</p>
+            </div>
+        </div>
+
+        <p class="menu-title">MAIN MENU</p>
+
+        <ul class="nav-menu">
+
+            <li>
+                <button class="active" data-page="dashboard">
+                    <span class="nav-icon">📊</span>
+                    Dashboard
+                </button>
+            </li>
+
+            <li>
+                <button data-page="appointments">
+                    <span class="nav-icon">🗓️</span>
+                    Appointments
+                </button>
+            </li>
+
+            <li>
+                <button data-page="patients">
+                    <span class="nav-icon">👥</span>
+                    My Patients
+                </button>
+            </li>
+
+            <li>
+                <button data-page="prescriptions">
+                    <span class="nav-icon">💊</span>
+                    Prescriptions
+                </button>
+            </li>
+
+            <li>
+                <button data-page="reports">
+                    <span class="nav-icon">📄</span>
+                    Lab Reports
+                </button>
+            </li>
+
+            <li>
+                <button data-page="vitals">
+                    <span class="nav-icon">❤️</span>
+                    Patient Vitals
+                </button>
+            </li>
+
+            <li>
+                <button data-page="ai">
+                    <span class="nav-icon">🤖</span>
+                    Preethi AI
+                </button>
+            </li>
+
+        </ul>
+
+    </aside>
+
+    <!-- MAIN CONTENT -->
+
+    <main class="main-content">
+
+        <!-- TOPBAR -->
+
+        <header class="topbar">
+
+            <div style="display:flex;align-items:center;gap:15px;">
+
+                <button class="mobile-menu-btn" onclick="toggleSidebar()">
+                    ☰
+                </button>
+
+                <div class="page-heading">
+                    <h1 id="pageTitle">Doctor Dashboard</h1>
+                    <p id="pageSubtitle">Welcome back, Doctor</p>
+                </div>
+
+            </div>
+
+            <div class="topbar-actions">
+
+                <button class="notification-btn" onclick="showNotification()">
+                    🔔
+                    <span class="notification-count">3</span>
+                </button>
+
+                <div class="doctor-profile">
+
+                    <div class="doctor-avatar">👨‍⚕️</div>
+
+                    <div class="doctor-info">
+                        <strong>Dr. Prakash</strong>
+                        <span>Doctor</span>
+                    </div>
+
+                    <button class="profile-menu-btn" onclick="toggleProfileMenu()">
+                        ▾
+                    </button>
+
+                    <!-- LOGOUT NOW AVAILABLE HERE -->
+
+                    <div class="profile-dropdown" id="profileDropdown">
+
+                        <button onclick="openProfile()">
+                            👤 My Profile
+                        </button>
+
+                        <button onclick="openSettings()">
+                            ⚙️ Settings
+                        </button>
+
+                        <button class="logout-btn" onclick="logout()">
+                            🚪 Logout
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </header>
+
+        <!-- PAGE CONTENT -->
+
+        <section class="content">
+
+            <div class="welcome-box">
+
+                <div>
+                    <h2>Good Morning, Dr. Prakash 👋</h2>
+                    <p>Manage your patients and appointments easily with MediMate AI.</p>
+                </div>
+
+                <div class="welcome-icon">🩺</div>
+
+            </div>
+
+            <!-- STATISTICS -->
+
+            <div class="stats-grid">
+
+                <div class="stat-card">
+                    <div class="stat-top">
+                        <span>Today's Appointments</span>
+                        <div class="stat-icon">🗓️</div>
+                    </div>
+                    <h3>12</h3>
+                    <p>Appointments scheduled today</p>
+                    <div class="stat-change">↑ 8% from yesterday</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-top">
+                        <span>Total Patients</span>
+                        <div class="stat-icon">👥</div>
+                    </div>
+                    <h3>248</h3>
+                    <p>Patients under your care</p>
+                    <div class="stat-change">↑ 12 new patients</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-top">
+                        <span>Pending Reports</span>
+                        <div class="stat-icon">📄</div>
+                    </div>
+                    <h3>08</h3>
+                    <p>Lab reports to review</p>
+                    <div class="stat-change">4 reports are urgent</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-top">
+                        <span>AI Suggestions</span>
+                        <div class="stat-icon">🤖</div>
+                    </div>
+                    <h3>16</h3>
+                    <p>AI recommendations available</p>
+                    <div class="stat-change">Updated recently</div>
+                </div>
+
+            </div>
+
+            <!-- APPOINTMENTS AND ALERTS -->
+
+            <div class="two-column">
+
+                <div class="panel">
+
+                    <div class="section-title">
+                        <h2>Today's Appointments</h2>
+                        <button class="view-all" onclick="openPage('appointments')">
+                            View All →
+                        </button>
+                    </div>
+
+                    <div class="appointment-item">
+
+                        <div class="patient-avatar">👩</div>
+
+                        <div class="appointment-details">
+                            <h4>Anitha Kumar</h4>
+                            <p>General Consultation</p>
+                        </div>
+
+                        <div class="appointment-time">
+                            <strong>09:30 AM</strong>
+                            <span class="status confirmed">Confirmed</span>
+                        </div>
+
+                    </div>
+
+                    <div class="appointment-item">
+
+                        <div class="patient-avatar">👨</div>
+
+                        <div class="appointment-details">
+                            <h4>Rahul Sharma</h4>
+                            <p>Follow-up Checkup</p>
+                        </div>
+
+                        <div class="appointment-time">
+                            <strong>10:30 AM</strong>
+                            <span class="status confirmed">Confirmed</span>
+                        </div>
+
+                    </div>
+
+                    <div class="appointment-item">
+
+                        <div class="patient-avatar">👩</div>
+
+                        <div class="appointment-details">
+                            <h4>Priya Raj</h4>
+                            <p>Fever and Cold</p>
+                        </div>
+
+                        <div class="appointment-time">
+                            <strong>11:30 AM</strong>
+                            <span class="status pending">Pending</span>
+                        </div>
+
+                    </div>
+
+                    <div class="appointment-item">
+
+                        <div class="patient-avatar">👨</div>
+
+                        <div class="appointment-details">
+                            <h4>Suresh Babu</h4>
+                            <p>Blood Pressure Review</p>
+                        </div>
+
+                        <div class="appointment-time">
+                            <strong>02:00 PM</strong>
+                            <span class="status confirmed">Confirmed</span>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="panel">
+
+                    <div class="section-title">
+                        <h2>Health Alerts</h2>
+                    </div>
+
+                    <div class="alert-box critical-alert">
+                        <h4>🚨 Critical Blood Pressure</h4>
+                        <p>Rahul Sharma has high BP. Immediate review required.</p>
+                    </div>
+
+                    <div class="alert-box warning-alert">
+                        <h4>⚠️ High Temperature</h4>
+                        <p>Priya Raj recorded a temperature of 102°F.</p>
+                    </div>
+
+                    <div class="alert-box info-alert">
+                        <h4>ℹ️ Lab Report Available</h4>
+                        <p>New blood test report is available for review.</p>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- RECENT PATIENTS -->
+
+            <div class="panel">
+
+                <div class="section-title">
+                    <h2>Recent Patients</h2>
+                    <button class="view-all" onclick="openPage('patients')">
+                        View All →
+                    </button>
+                </div>
+
+                <div class="table-wrapper">
+
+                    <table class="patients-table">
+
+                        <thead>
+                            <tr>
+                                <th>Patient</th>
+                                <th>Age</th>
+                                <th>Last Visit</th>
+                                <th>Health Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+
+                            <tr>
+                                <td>
+                                    <div class="patient-name">
+                                        <span class="small-avatar">👩</span>
+                                        Anitha Kumar
+                                    </div>
+                                </td>
+                                <td>28</td>
+                                <td>Today</td>
+                                <td>
+                                    <span class="status confirmed">Stable</span>
+                                </td>
+                                <td>
+                                    <button class="view-btn" onclick="viewPatient('Anitha Kumar')">
+                                        View
+                                    </button>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>
+                                    <div class="patient-name">
+                                        <span class="small-avatar">👨</span>
+                                        Rahul Sharma
+                                    </div>
+                                </td>
+                                <td>45</td>
+                                <td>Yesterday</td>
+                                <td>
+                                    <span class="status pending">Monitoring</span>
+                                </td>
+                                <td>
+                                    <button class="view-btn" onclick="viewPatient('Rahul Sharma')">
+                                        View
+                                    </button>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>
+                                    <div class="patient-name">
+                                        <span class="small-avatar">👩</span>
+                                        Priya Raj
+                                    </div>
+                                </td>
+                                <td>32</td>
+                                <td>2 days ago</td>
+                                <td>
+                                    <span class="status pending">Attention</span>
+                                </td>
+                                <td>
+                                    <button class="view-btn" onclick="viewPatient('Priya Raj')">
+                                        View
+                                    </button>
+                                </td>
+                            </tr>
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+            <!-- QUICK ACTIONS -->
+
+            <div class="panel">
+
+                <div class="section-title">
+                    <h2>Quick Actions</h2>
+                </div>
+
+                <div class="quick-actions">
+
+                    <button class="quick-action" onclick="openPage('appointments')">
+                        <span>🗓️</span>
+                        Manage Appointments
+                    </button>
+
+                    <button class="quick-action" onclick="openPage('prescriptions')">
+                        <span>💊</span>
+                        Create Prescription
+                    </button>
+
+                    <button class="quick-action" onclick="openPage('reports')">
+                        <span>📄</span>
+                        Review Lab Reports
+                    </button>
+
+                </div>
+
+            </div>
+
+            <!-- AI SECTION -->
+
+            <div class="ai-box">
+
+                <h2>🤖 Preethi AI Assistant</h2>
+
+                <p>
+                    Preethi AI helps doctors review patient information,
+                    identify health risk patterns and provide preliminary
+                    clinical suggestions. All suggestions must be reviewed
+                    by a qualified doctor before making medical decisions.
+                </p>
+
+                <button class="ai-btn" onclick="openPage('ai')">
+                    Open Preethi AI
+                </button>
+
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
+
+<script>
+    function toggleSidebar() {
+        document.getElementById("sidebar").classList.toggle("open");
+    }
+
+    function toggleProfileMenu() {
+        document.getElementById("profileDropdown").classList.toggle("show");
+    }
+
+    function openProfile() {
+        document.getElementById("profileDropdown").classList.remove("show");
+        openPage("profile");
+    }
+
+    function openSettings() {
+        document.getElementById("profileDropdown").classList.remove("show");
+        openPage("settings");
+    }
+
+    function logout() {
+        const confirmLogout = confirm(
+            "Are you sure you want to logout from MediMate AI?"
+        );
+
+        if (confirmLogout) {
+            localStorage.removeItem("currentUser");
+            localStorage.removeItem("doctorLoggedIn");
+
+            // Change this path if your login file has another name
+            window.location.href = "../login/doctor-login.html";
+        }
+    }
+
+    function showNotification() {
+        alert(
+            "Notifications:\n\n" +
+            "1. Rahul Sharma has high blood pressure.\n" +
+            "2. Priya Raj recorded 102°F temperature.\n" +
+            "3. New lab report is available."
+        );
+    }
+
+    function viewPatient(patientName) {
+        alert(
+            "Patient Details\n\n" +
+            "Name: " + patientName + "\n" +
+            "Status: Under Doctor Review\n\n" +
+            "This is a demo patient profile."
+        );
+    }
+
+    function openPage(pageName) {
+        const pageTitles = {
+            dashboard: "Doctor Dashboard",
+            appointments: "Appointments",
+            patients: "My Patients",
+            prescriptions: "Prescriptions",
+            reports: "Lab Reports",
+            vitals: "Patient Vitals",
+            ai: "Preethi AI Assistant",
+            profile: "My Profile",
+            settings: "Settings"
+        };
+
+        const pageSubtitles = {
+            dashboard: "Welcome back, Doctor",
+            appointments: "Manage your daily appointments",
+            patients: "View and manage your patients",
+            prescriptions: "Create and manage prescriptions",
+            reports: "Review patient laboratory reports",
+            vitals: "Monitor patient health vitals",
+            ai: "AI-powered healthcare assistance",
+            profile: "View your doctor profile",
+            settings: "Manage your account settings"
+        };
+
+        document.getElementById("pageTitle").textContent =
+            pageTitles[pageName] || "Doctor Dashboard";
+
+        document.getElementById("pageSubtitle").textContent =
+            pageSubtitles[pageName] || "MediMate AI Doctor Portal";
+
+        if (pageName !== "dashboard") {
+            alert(
+                pageTitles[pageName] +
+                " page selected.\n\nYou can connect this page with your actual HTML file."
+            );
+        }
+
+        document.querySelectorAll(".nav-menu button").forEach(button => {
+            button.classList.remove("active");
+
+            if (button.dataset.page === pageName) {
+                button.classList.add("active");
+            }
+        });
+
+        document.getElementById("sidebar").classList.remove("open");
+    }
+
+    document.querySelectorAll(".nav-menu button").forEach(button => {
+        button.addEventListener("click", function() {
+            openPage(this.dataset.page);
+        });
+    });
+
+    document.addEventListener("click", function(event) {
+        const profile = document.querySelector(".doctor-profile");
+        const dropdown = document.getElementById("profileDropdown");
+
+        if (
+            profile &&
+            dropdown &&
+            !profile.contains(event.target)
+        ) {
+            dropdown.classList.remove("show");
+        }
+    });
+</script>
+
+</body>
+</html>

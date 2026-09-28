@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Laboratory Login | MediMate-AI</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            background: linear-gradient(135deg, #eafff2, #ffffff);
+        }
+
+        .login-container {
+            width: 100%;
+            max-width: 1050px;
+            min-height: 620px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            background: #ffffff;
+            border-radius: 25px;
+            overflow: hidden;
+            box-shadow: 0 15px 45px rgba(0, 100, 50, 0.15);
+        }
+
+        .welcome-section {
+            background: linear-gradient(145deg, #087f45, #16b364);
+            color: white;
+            padding: 55px 45px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .welcome-section::before,
+        .welcome-section::after {
+            content: "";
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.10);
+        }
+
+        .welcome-section::before {
+            width: 280px;
+            height: 280px;
+            top: -100px;
+            right: -100px;
+        }
+
+        .welcome-section::after {
+            width: 220px;
+            height: 220px;
+            bottom: -80px;
+            left: -80px;
+        }
+
+        .logo {
+            width: 78px;
+            height: 78px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: white;
+            color: #087f45;
+            border-radius: 20px;
+            font-size: 36px;
+            font-weight: bold;
+            margin-bottom: 25px;
+            z-index: 1;
+        }
+
+        .welcome-section h1 {
+            font-size: 38px;
+            margin-bottom: 15px;
+            z-index: 1;
+        }
+
+        .welcome-section h3 {
+            font-size: 21px;
+            font-weight: normal;
+            margin-bottom: 18px;
+            z-index: 1;
+        }
+
+        .welcome-section p {
+            max-width: 410px;
+            font-size: 16px;
+            line-height: 1.8;
+            z-index: 1;
+        }
+
+        .features {
+            list-style: none;
+            margin-top: 30px;
+            z-index: 1;
+        }
+
+        .features li {
+            margin: 15px 0;
+            font-size: 15px;
+        }
+
+        .features li::before {
+            content: "✓";
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 24px;
+            height: 24px;
+            margin-right: 10px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .form-section {
+            padding: 55px 45px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .form-section h2 {
+            color: #123d2b;
+            font-size: 30px;
+            margin-bottom: 10px;
+        }
+
+        .description {
+            color: #718078;
+            font-size: 14px;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 22px;
+        }
+
+        .form-group label {
+            display: block;
+            color: #254b39;
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 14px 16px;
+            border: 1px solid #d5e5dc;
+            border-radius: 10px;
+            outline: none;
+            font-size: 14px;
+            transition: 0.3s;
+        }
+
+        .form-group input:focus {
+            border-color: #10a45b;
+            box-shadow: 0 0 0 3px rgba(16, 164, 91, 0.12);
+        }
+
+        .password-wrapper {
+            position: relative;
+        }
+
+        .password-wrapper input {
+            padding-right: 65px;
+        }
+
+        .show-password {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            border: none;
+            background: transparent;
+            color: #087f45;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .form-options {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 25px;
+            font-size: 13px;
+        }
+
+        .remember-me {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            color: #66766d;
+        }
+
+        .remember-me input {
+            width: auto;
+        }
+
+        .forgot-password {
+            color: #087f45;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .forgot-password:hover {
+            text-decoration: underline;
+        }
+
+        .login-button {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #087f45, #16b364);
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .login-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(8, 127, 69, 0.25);
+        }
+
+        .login-button:active {
+            transform: translateY(0);
+        }
+
+        .message {
+            display: none;
+            margin-top: 18px;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 13px;
+            text-align: center;
+        }
+
+        .message.error {
+            display: block;
+            background: #fff0f0;
+            color: #b42318;
+            border: 1px solid #f5c2c2;
+        }
+
+        .message.success {
+            display: block;
+            background: #effff5;
+            color: #087f45;
+            border: 1px solid #bce8ce;
+        }
+
+        .register-link {
+            margin-top: 22px;
+            text-align: center;
+            font-size: 13px;
+            color: #718078;
+        }
+
+        .register-link a {
+            color: #087f45;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .register-link a:hover {
+            text-decoration: underline;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 25px;
+            color: #89958e;
+            font-size: 12px;
+        }
+
+        @media (max-width: 800px) {
+            .login-container {
+                grid-template-columns: 1fr;
+            }
+
+            .welcome-section {
+                min-height: 330px;
+                padding: 35px;
+            }
+
+            .welcome-section h1 {
+                font-size: 30px;
+            }
+
+            .form-section {
+                padding: 35px;
+            }
+        }
+
+        @media (max-width: 420px) {
+            .welcome-section,
+            .form-section {
+                padding: 25px;
+            }
+
+            .form-options {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <main class="login-container">
+
+        <section class="welcome-section">
+            <div class="logo">M+</div>
+
+            <h1>MediMate-AI</h1>
+
+            <h3>Laboratory Portal</h3>
+
+            <p>
+                Manage laboratory test requests, patient samples,
+                test results and medical reports through a secure
+                healthcare monitoring platform.
+            </p>
+
+            <ul class="features">
+                <li>View laboratory test requests</li>
+                <li>Manage patient samples</li>
+                <li>Enter and update test results</li>
+                <li>Generate laboratory reports</li>
+            </ul>
+        </section>
+
+        <section class="form-section">
+
+            <h2>Laboratory Login</h2>
+
+            <p class="description">
+                Sign in to access your laboratory dashboard.
+            </p>
+
+            <form id="laboratoryLoginForm">
+
+                <div class="form-group">
+                    <label for="email">Laboratory Email</label>
+
+                    <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        placeholder="Enter registered laboratory email"
+                        autocomplete="email"
+                        required
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password</label>
+
+                    <div class="password-wrapper">
+                        <input
+                            type="password"
+                            id="password"
+                            name="password"
+                            placeholder="Enter your password"
+                            minlength="6"
+                            autocomplete="current-password"
+                            required
+                        >
+
+                        <button
+                            type="button"
+                            class="show-password"
+                            id="showPassword"
+                        >
+                            Show
+                        </button>
+                    </div>
+                </div>
+
+                <div class="form-options">
+                    <label class="remember-me">
+                        <input type="checkbox" id="rememberMe">
+                        Remember me
+                    </label>
+
+                    <a href="#" class="forgot-password" id="forgotPassword">
+                        Forgot password?
+                    </a>
+                </div>
+
+                <button type="submit" class="login-button">
+                    Login to Laboratory Dashboard
+                </button>
+
+                <div id="message" class="message"></div>
+
+            </form>
+
+            <p class="register-link">
+                Don't have a laboratory account?
+                <a href="../register.html">Register here</a>
+            </p>
+
+            <p class="footer">
+                © 2026 MediMate-AI | Healthcare Monitoring System
+            </p>
+
+        </section>
+
+    </main>
+
+    <script>
+        const loginForm = document.getElementById("laboratoryLoginForm");
+        const emailInput = document.getElementById("email");
+        const passwordInput = document.getElementById("password");
+        const showPasswordButton = document.getElementById("showPassword");
+        const forgotPassword = document.getElementById("forgotPassword");
+        const messageBox = document.getElementById("message");
+        const rememberMe = document.getElementById("rememberMe");
+
+        // Load remembered email
+        const savedEmail = localStorage.getItem(
+            "laboratoryRememberedEmail"
+        );
+
+        if (savedEmail) {
+            emailInput.value = savedEmail;
+            rememberMe.checked = true;
+        }
+
+        // Show or hide password
+        showPasswordButton.addEventListener("click", function () {
+            if (passwordInput.type === "password") {
+                passwordInput.type = "text";
+                showPasswordButton.textContent = "Hide";
+            } else {
+                passwordInput.type = "password";
+                showPasswordButton.textContent = "Show";
+            }
+        });
+
+        // Forgot password
+        forgotPassword.addEventListener("click", function (event) {
+            event.preventDefault();
+
+            messageBox.className = "message error";
+            messageBox.textContent =
+                "Password reset will be connected with Firebase Authentication.";
+        });
+
+        // Laboratory login
+        loginForm.addEventListener("submit", function (event) {
+            event.preventDefault();
+
+            const email = emailInput.value.trim().toLowerCase();
+            const password = passwordInput.value.trim();
+
+            const users = JSON.parse(
+                localStorage.getItem("medimateUsers")
+            ) || [];
+
+            const laboratoryUser = users.find(function (user) {
+                return (
+                    String(user.email || "").trim().toLowerCase() === email &&
+                    String(user.password || "") === password &&
+                    String(user.role || "").trim().toLowerCase() ===
+                        "laboratory"
+                );
+            });
+
+            if (laboratoryUser) {
+
+                if (rememberMe.checked) {
+                    localStorage.setItem(
+                        "laboratoryRememberedEmail",
+                        email
+                    );
+                } else {
+                    localStorage.removeItem(
+                        "laboratoryRememberedEmail"
+                    );
+                }
+
+                localStorage.setItem(
+                    "currentUser",
+                    JSON.stringify(laboratoryUser)
+                );
+
+                sessionStorage.setItem(
+                    "medimateRole",
+                    "laboratory"
+                );
+
+                sessionStorage.setItem(
+                    "medimateUser",
+                    email
+                );
+
+                messageBox.className = "message success";
+                messageBox.textContent =
+                    "Laboratory login successful. Opening dashboard...";
+
+                setTimeout(function () {
+                    window.location.href = "dashboard.html";
+                }, 700);
+
+            } else {
+                messageBox.className = "message error";
+                messageBox.textContent =
+                    "Invalid registered laboratory email or password. Please register first.";
+            }
+        });
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Pharmacy Login - MediMate AI</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(135deg, #eafff0, #ffffff);
+    }
+
+    .login-container {
+      width: 380px;
+      background: white;
+      padding: 35px;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0, 128, 70, 0.15);
+      text-align: center;
+      animation: fadeIn 0.8s ease-in-out;
+    }
+
+    .logo {
+      width: 75px;
+      height: 75px;
+      margin: auto auto 15px;
+      border-radius: 50%;
+      background: #0b8f55;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 38px;
+      font-weight: bold;
+    }
+
+    h2 {
+      color: #087443;
+      margin-bottom: 8px;
+    }
+
+    .subtitle {
+      color: #777;
+      font-size: 14px;
+      margin-bottom: 25px;
+    }
+
+    .input-group {
+      text-align: left;
+      margin-bottom: 18px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 7px;
+      color: #333;
+      font-size: 14px;
+      font-weight: bold;
+    }
+
+    input {
+      width: 100%;
+      padding: 13px;
+      border: 1px solid #cce8d8;
+      border-radius: 10px;
+      outline: none;
+      font-size: 14px;
+      transition: 0.3s;
+    }
+
+    input:focus {
+      border-color: #0b8f55;
+      box-shadow: 0 0 8px rgba(11, 143, 85, 0.2);
+    }
+
+    .remember-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      text-align: left;
+      margin-bottom: 10px;
+      font-size: 13px;
+      color: #555;
+    }
+
+    .remember-row input {
+      width: auto;
+      accent-color: #0b8f55;
+    }
+
+    button {
+      width: 100%;
+      padding: 13px;
+      border: none;
+      border-radius: 10px;
+      background: #0b8f55;
+      color: white;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.3s;
+      margin-top: 8px;
+    }
+
+    button:hover {
+      background: #076b40;
+      transform: translateY(-2px);
+    }
+
+    .message {
+      margin-top: 15px;
+      font-size: 14px;
+      min-height: 18px;
+    }
+
+    .register-text {
+      margin-top: 20px;
+      font-size: 14px;
+      color: #666;
+    }
+
+    .register-text a,
+    .back-link {
+      color: #0b8f55;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .register-text a:hover,
+    .back-link:hover {
+      text-decoration: underline;
+    }
+
+    .back-link {
+      display: inline-block;
+      margin-top: 20px;
+      font-size: 14px;
+      font-weight: normal;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(25px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="login-container">
+    <div class="logo">💊</div>
+
+    <h2>Pharmacy Login</h2>
+
+    <p class="subtitle">
+      Welcome to MediMate AI Pharmacy Portal
+    </p>
+
+    <form id="pharmacyLoginForm">
+      <div class="input-group">
+        <label for="email">Pharmacy Email</label>
+
+        <input
+          type="email"
+          id="email"
+          name="email"
+          placeholder="Enter registered pharmacy email"
+          required
+        />
+      </div>
+
+      <div class="input-group">
+        <label for="password">Password</label>
+
+        <input
+          type="password"
+          id="password"
+          name="password"
+          placeholder="Enter your password"
+          required
+        />
+      </div>
+
+      <div class="remember-row">
+        <input type="checkbox" id="rememberMe" />
+        <label for="rememberMe">Remember my email</label>
+      </div>
+
+      <button type="submit">Login</button>
+
+      <p class="message" id="message"></p>
+    </form>
+
+    <p class="register-text">
+      New pharmacy user?
+      <a href="../register.html">Register here</a>
+    </p>
+
+    <a href="../index.html" class="back-link">
+      ← Back to Home
+    </a>
+  </div>
+
+  <script>
+    const loginForm = document.getElementById("pharmacyLoginForm");
+    const emailInput = document.getElementById("email");
+    const passwordInput = document.getElementById("password");
+    const rememberMe = document.getElementById("rememberMe");
+    const message = document.getElementById("message");
+
+    const rememberedEmail =
+      localStorage.getItem("pharmacyRememberedEmail");
+
+    if (rememberedEmail) {
+      emailInput.value = rememberedEmail;
+      rememberMe.checked = true;
+    }
+
+    loginForm.addEventListener("submit", function (event) {
+      event.preventDefault();
+
+      const email = emailInput.value.trim().toLowerCase();
+      const password = passwordInput.value;
+
+      const users =
+        JSON.parse(localStorage.getItem("medimateUsers")) || [];
+
+      const pharmacyUser = users.find(function (user) {
+        return (
+          String(user.email || "").trim().toLowerCase() === email &&
+          String(user.password || "") === password &&
+          String(user.role || "").trim().toLowerCase() === "pharmacy"
+        );
+      });
+
+      if (pharmacyUser) {
+        if (rememberMe.checked) {
+          localStorage.setItem(
+            "pharmacyRememberedEmail",
+            email
+          );
+        } else {
+          localStorage.removeItem("pharmacyRememberedEmail");
+        }
+
+        localStorage.setItem(
+          "currentUser",
+          JSON.stringify(pharmacyUser)
+        );
+
+        sessionStorage.setItem("userRole", "pharmacy");
+        sessionStorage.setItem(
+          "userName",
+          pharmacyUser.name || "Pharmacy User"
+        );
+
+        message.style.color = "green";
+        message.textContent = "Login successful!";
+
+        setTimeout(function () {
+          window.location.href = "dashboard.html";
+        }, 800);
+      } else {
+        message.style.color = "red";
+        message.textContent =
+          "Invalid registered pharmacy email or password. Please register first.";
+      }
+    });
+  </script>
+</body>
+</html>
