@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hospital System Settings | MediMate-AI Admin</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Arial, sans-serif;
+        }
+
+        body {
+            background: #f2faf6;
+            color: #183b2a;
+            min-height: 100vh;
+        }
+
+        .dashboard-container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: 270px;
+            min-height: 100vh;
+            background: linear-gradient(180deg, #087f5b, #07583f);
+            color: white;
+            padding: 25px 18px;
+            position: fixed;
+            top: 0; left: 0; bottom: 0;
+            z-index: 1000;
+            overflow-y: auto;
+            transition: 0.3s ease;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 8px 10px 28px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.25);
+        }
+
+        .logo-icon {
+            width: 46px;
+            height: 46px;
+            background: white;
+            color: #087f5b;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        .logo h2 { font-size: 20px; }
+        .logo h2 span { color: #b9f5d7; }
+        .logo p { font-size: 11px; color: #c9f3dc; }
+
+        .menu-title {
+            color: #b8e6d1;
+            font-size: 11px;
+            margin: 24px 12px 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .menu { list-style: none; }
+        .menu li { margin: 6px 0; }
+        .menu a {
+            text-decoration: none;
+            color: #e8fff3;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 14px;
+            border-radius: 12px;
+            font-size: 14px;
+            transition: 0.2s ease;
+        }
+
+        .menu a:hover, .menu a.active {
+            background: rgba(255, 255, 255, 0.16);
+            color: #ffffff;
+            font-weight: 600;
+        }
+
+        .menu-icon { font-size: 18px; width: 22px; text-align: center; }
+
+        .main-content {
+            margin-left: 270px;
+            width: calc(100% - 270px);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .topbar {
+            background: #ffffff;
+            padding: 18px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #dceed8;
+            position: sticky;
+            top: 0;
+            z-index: 99;
+        }
+
+        .content {
+            padding: 30px;
+            flex: 1;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border-radius: 10px;
+            font-size: 13.5px;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s ease;
+        }
+
+        .btn-primary { background: #087f5b; color: white; }
+        .btn-primary:hover { background: #076d4e; }
+        .btn-secondary { background: #edf7f2; color: #087f5b; border: 1px solid #c2e5d4; }
+
+        .settings-card {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 26px;
+            border: 1px solid #e1efe7;
+            box-shadow: 0 4px 15px rgba(8, 127, 91, 0.04);
+            margin-bottom: 24px;
+        }
+
+        .settings-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid #edf4ef;
+        }
+
+        .settings-header i {
+            font-size: 20px;
+            color: #087f5b;
+            background: #eaf8f0;
+            padding: 10px;
+            border-radius: 10px;
+        }
+
+        .settings-header h3 {
+            font-size: 16px;
+            color: #123d2b;
+            font-weight: 700;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 18px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .form-group label {
+            font-size: 13px;
+            font-weight: 600;
+            color: #3b5a4b;
+        }
+
+        .form-group input, .form-group select {
+            padding: 10px 14px;
+            border: 1px solid #cce3d6;
+            border-radius: 10px;
+            font-size: 13.5px;
+            outline: none;
+        }
+
+        .form-group input:focus, .form-group select:focus {
+            border-color: #087f5b;
+        }
+
+        .toggle-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 14px 0;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        .toggle-info h4 {
+            font-size: 14px;
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 3px;
+        }
+
+        .toggle-info p {
+            font-size: 12.5px;
+            color: #64748b;
+        }
+
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 48px;
+            height: 26px;
+        }
+
+        .switch input { opacity: 0; width: 0; height: 0; }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-color: #cbd5e1;
+            transition: .3s;
+            border-radius: 34px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 20px;
+            width: 20px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: .3s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background-color: #087f5b;
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(22px);
+        }
+
+        @media (max-width: 800px) {
+            .sidebar { transform: translateX(-100%); }
+            .sidebar.open { transform: translateX(0); }
+            .main-content { margin-left: 0; width: 100%; }
+            .form-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+<div class="dashboard-container">
+    <aside class="sidebar" id="sidebar">
+        <div class="logo">
+            <div class="logo-icon">M</div>
+            <div>
+                <h2>MediMate <span>AI</span></h2>
+                <p>Hospital Administration</p>
+            </div>
+        </div>
+
+        <p class="menu-title">Main Navigation</p>
+        <ul class="menu">
+            <li><a href="dashboard.html"><span class="menu-icon">📊</span><span>Dashboard</span></a></li>
+            <li><a href="doctors.html"><span class="menu-icon">👨‍⚕️</span><span>Doctors</span></a></li>
+            <li><a href="patients.html"><span class="menu-icon">🧑‍🤝‍🧑</span><span>Patients</span></a></li>
+            <li><a href="laboratory.html"><span class="menu-icon">🧪</span><span>Laboratory</span></a></li>
+            <li><a href="pharmacy.html"><span class="menu-icon">💊</span><span>Pharmacy</span></a></li>
+            <li><a href="appointments.html"><span class="menu-icon">📅</span><span>Appointments</span></a></li>
+            <li><a href="departments.html"><span class="menu-icon">🏥</span><span>Departments</span></a></li>
+            <li><a href="medicines.html"><span class="menu-icon">📦</span><span>Medicines Inventory</span></a></li>
+            <li><a href="prescriptions.html"><span class="menu-icon">📋</span><span>Prescriptions</span></a></li>
+            <li><a href="reports.html"><span class="menu-icon">📈</span><span>Reports & Analytics</span></a></li>
+        </ul>
+
+        <p class="menu-title">System & Security</p>
+        <ul class="menu">
+            <li><a href="notifications.html"><span class="menu-icon">🔔</span><span>Notifications</span></a></li>
+            <li><a href="settings.html" class="active"><span class="menu-icon">⚙️</span><span>Settings</span></a></li>
+            <li><a href="profile.html"><span class="menu-icon">👤</span><span>Admin Profile</span></a></li>
+            <li><a href="admin-login.html" onclick="localStorage.clear();"><span class="menu-icon">🚪</span><span>Sign Out</span></a></li>
+        </ul>
+    </aside>
+
+    <div class="main-content">
+        <header class="topbar">
+            <h3 style="font-size: 18px; color: #087f5b; font-weight: 700;">Hospital Infrastructure & System Configuration</h3>
+            <button class="btn btn-primary" onclick="saveSettings()"><i class="fa-solid fa-floppy-disk"></i> Save Configuration</button>
+        </header>
+
+        <main class="content">
+            <!-- Organization Profile -->
+            <div class="settings-card">
+                <div class="settings-header">
+                    <i class="fa-solid fa-hospital"></i>
+                    <div>
+                        <h3>Hospital Profile & Identifiers</h3>
+                        <p style="font-size:12.5px; color:#64748b;">Hospital name, license, emergency contact lines and timezone.</p>
+                    </div>
+                </div>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Hospital / Clinic Name</label>
+                        <input type="text" id="hospitalName" value="MediMate-AI Central Medical University Hospital">
+                    </div>
+                    <div class="form-group">
+                        <label>Accreditation License #</label>
+                        <input type="text" id="licenseNo" value="HOSP-JCI-99420-2026">
+                    </div>
+                    <div class="form-group">
+                        <label>Emergency Dispatch Hotline</label>
+                        <input type="text" id="hotline" value="+1 (800) 555-MED-911">
+                    </div>
+                    <div class="form-group">
+                        <label>Operating Timezone</label>
+                        <select id="timezone">
+                            <option value="UTC+05:30" selected>IST (UTC+05:30) - New Delhi</option>
+                            <option value="UTC-05:00">EST (UTC-05:00) - Eastern Time</option>
+                            <option value="UTC+00:00">GMT (UTC+00:00) - London</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- AI Engine & Telemetry -->
+            <div class="settings-card">
+                <div class="settings-header">
+                    <i class="fa-solid fa-brain"></i>
+                    <div>
+                        <h3>Preethi AI Clinical Engine Parameters</h3>
+                        <p style="font-size:12.5px; color:#64748b;">Configure neural symptom triage, automated routing, and escalation alerts.</p>
+                    </div>
+                </div>
+                <div class="toggle-row">
+                    <div class="toggle-info">
+                        <h4>Enable Autonomous Symptom Triage</h4>
+                        <p>Allow Preethi AI to suggest departments and triage priority for patient intake requests.</p>
+                    </div>
+                    <label class="switch"><input type="checkbox" id="aiTriageToggle" checked><span class="slider"></span></label>
+                </div>
+                <div class="toggle-row">
+                    <div class="toggle-info">
+                        <h4>High-Risk Emergency Auto-Escalation</h4>
+                        <p>Instantly flag and SMS-alert on-call emergency clinicians when critical biometric thresholds are breached.</p>
+                    </div>
+                    <label class="switch"><input type="checkbox" id="emergencyEscalate" checked><span class="slider"></span></label>
+                </div>
+                <div class="toggle-row">
+                    <div class="toggle-info">
+                        <h4>Real-Time Telemetry Stream Sync</h4>
+                        <p>Synchronize Bluetooth and patient vitals telemetry directly to doctor consultation dashboards every 30 seconds.</p>
+                    </div>
+                    <label class="switch"><input type="checkbox" id="telemetrySync" checked><span class="slider"></span></label>
+                </div>
+            </div>
+
+            <!-- Security & Audit -->
+            <div class="settings-card">
+                <div class="settings-header">
+                    <i class="fa-solid fa-shield-halved"></i>
+                    <div>
+                        <h3>Security, HIPAA & Cloud Sync</h3>
+                        <p style="font-size:12.5px; color:#64748b;">Data encryption, session lifetimes, and Firebase Firestore synchronization.</p>
+                    </div>
+                </div>
+                <div class="toggle-row">
+                    <div class="toggle-info">
+                        <h4>Enforce Two-Factor Authentication (2FA)</h4>
+                        <p>Mandatory OTP authentication for all clinician and administrative portal logins.</p>
+                    </div>
+                    <label class="switch"><input type="checkbox" id="mfaToggle" checked><span class="slider"></span></label>
+                </div>
+                <div class="form-grid" style="margin-top: 15px;">
+                    <div class="form-group">
+                        <label>Idle Session Timeout (Minutes)</label>
+                        <input type="number" id="sessionTimeout" value="30">
+                    </div>
+                    <div class="form-group">
+                        <label>Firebase Synchronization Engine</label>
+                        <input type="text" value="Active - Firestore & Cloud Storage Online" disabled style="background:#f1f5f9; color:#059669; font-weight:600;">
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+
+<script>
+    function saveSettings() {
+        alert('Hospital settings and AI engine parameters saved successfully!');
+    }
+</script>
+</body>
+</html>

@@ -809,8 +809,8 @@
                     <div class="doctor-avatar">👨‍⚕️</div>
 
                     <div class="doctor-info">
-                        <strong>Dr. Prakash</strong>
-                        <span>Doctor</span>
+                        <strong id="doctorNavName">Doctor</strong>
+                        <span id="doctorNavRole">Consultant Physician</span>
                     </div>
 
                     <button class="profile-menu-btn" onclick="toggleProfileMenu()">
@@ -848,7 +848,7 @@
             <div class="welcome-box">
 
                 <div>
-                    <h2>Good Morning, Dr. Prakash 👋</h2>
+                    <h2 id="doctorGreeting">Good Morning, Doctor 👋</h2>
                     <p>Manage your patients and appointments easily with MediMate AI.</p>
                 </div>
 
@@ -1157,18 +1157,31 @@
         document.getElementById("sidebar").classList.toggle("open");
     }
 
+    const pageRoutes = {
+        dashboard: "dashboard.html",
+        appointments: "appointments.html",
+        patients: "patients.html",
+        prescriptions: "prescriptions.html",
+        reports: "patient-records.html",
+        vitals: "health-monitoring.html",
+        ai: "../patient/ai-chat.html",
+        profile: "profile.html",
+        settings: "profile.html",
+        notifications: "notifications.html"
+    };
+
     function toggleProfileMenu() {
         document.getElementById("profileDropdown").classList.toggle("show");
     }
 
     function openProfile() {
         document.getElementById("profileDropdown").classList.remove("show");
-        openPage("profile");
+        window.location.href = "profile.html";
     }
 
     function openSettings() {
         document.getElementById("profileDropdown").classList.remove("show");
-        openPage("settings");
+        window.location.href = "profile.html";
     }
 
     function logout() {
@@ -1179,31 +1192,25 @@
         if (confirmLogout) {
             localStorage.removeItem("currentUser");
             localStorage.removeItem("doctorLoggedIn");
-
-            // Change this path if your login file has another name
-            window.location.href = "../login/doctor-login.html";
+            sessionStorage.clear();
+            window.location.href = "doctor-login.html";
         }
     }
 
     function showNotification() {
-        alert(
-            "Notifications:\n\n" +
-            "1. Rahul Sharma has high blood pressure.\n" +
-            "2. Priya Raj recorded 102°F temperature.\n" +
-            "3. New lab report is available."
-        );
+        window.location.href = "notifications.html";
     }
 
     function viewPatient(patientName) {
-        alert(
-            "Patient Details\n\n" +
-            "Name: " + patientName + "\n" +
-            "Status: Under Doctor Review\n\n" +
-            "This is a demo patient profile."
-        );
+        window.location.href = "patients.html";
     }
 
     function openPage(pageName) {
+        if (pageRoutes[pageName] && pageName !== "dashboard") {
+            window.location.href = pageRoutes[pageName];
+            return;
+        }
+
         const pageTitles = {
             dashboard: "Doctor Dashboard",
             appointments: "Appointments",
@@ -1234,13 +1241,6 @@
         document.getElementById("pageSubtitle").textContent =
             pageSubtitles[pageName] || "MediMate AI Doctor Portal";
 
-        if (pageName !== "dashboard") {
-            alert(
-                pageTitles[pageName] +
-                " page selected.\n\nYou can connect this page with your actual HTML file."
-            );
-        }
-
         document.querySelectorAll(".nav-menu button").forEach(button => {
             button.classList.remove("active");
 
@@ -1270,6 +1270,81 @@
             dropdown.classList.remove("show");
         }
     });
+
+    // ============================================
+    // DYNAMIC DOCTOR SESSION LOADER
+    // ============================================
+    function loadDoctorSession() {
+        let doctor = null;
+
+        // 1. Try reading currentUser
+        try {
+            const rawUser = localStorage.getItem("currentUser") || sessionStorage.getItem("currentUser");
+            if (rawUser) {
+                doctor = JSON.parse(rawUser);
+            }
+        } catch (e) {}
+
+        // 2. Try looking up in medimateUsers registry
+        if (!doctor || !doctor.name) {
+            try {
+                const email = sessionStorage.getItem("medimateUser") || localStorage.getItem("doctorRememberedEmail");
+                const allUsers = JSON.parse(localStorage.getItem("medimateUsers") || "[]");
+                if (email && allUsers.length) {
+                    const matched = allUsers.find(u => u.email && u.email.toLowerCase() === email.toLowerCase());
+                    if (matched) doctor = { ...matched, ...doctor };
+                }
+                if (!doctor) {
+                    const docUser = allUsers.find(u => u.role === "doctor");
+                    if (docUser) doctor = docUser;
+                }
+            } catch (e) {}
+        }
+
+        // 3. Fallback to medimateDoctors registry if registered from admin
+        if (!doctor || !doctor.name) {
+            try {
+                const doctorsList = JSON.parse(localStorage.getItem("medimateDoctors") || "[]");
+                if (doctorsList.length > 0) {
+                    doctor = doctorsList[doctorsList.length - 1]; // most recently registered doctor
+                }
+            } catch (e) {}
+        }
+
+        // 4. Update UI with the actual registered doctor name
+        if (doctor) {
+            let rawName = (doctor.name || doctor.fullName || doctor.displayName || "").trim();
+            if (!rawName && doctor.email) {
+                rawName = doctor.email.split("@")[0].replace(/[._]/g, " ");
+                rawName = rawName.charAt(0).toUpperCase() + rawName.slice(1);
+            }
+            if (!rawName) rawName = "Doctor";
+
+            const displayDocName = rawName.toLowerCase().startsWith("dr.")
+                ? rawName
+                : ("Dr. " + rawName);
+
+            const navNameEl = document.getElementById("doctorNavName");
+            if (navNameEl) {
+                navNameEl.textContent = displayDocName;
+            }
+
+            const navRoleEl = document.getElementById("doctorNavRole");
+            if (navRoleEl && (doctor.specialization || doctor.department)) {
+                navRoleEl.textContent = doctor.specialization || doctor.department;
+            }
+
+            const greetingEl = document.getElementById("doctorGreeting");
+            if (greetingEl) {
+                const hour = new Date().getHours();
+                const timeGreeting = hour < 12 ? "Good Morning" : (hour < 18 ? "Good Afternoon" : "Good Evening");
+                greetingEl.textContent = `${timeGreeting}, ${displayDocName} 👋`;
+            }
+        }
+    }
+
+    document.addEventListener("DOMContentLoaded", loadDoctorSession);
+    loadDoctorSession();
 </script>
 
 </body>

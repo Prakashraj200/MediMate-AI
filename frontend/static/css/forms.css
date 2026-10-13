@@ -1,0 +1,65 @@
+/* ========================================================
+   MediMate-AI - Forms Stylesheet (forms.css)
+   Next-Gen Unified Clinical Intelligence Palette
+   ======================================================== */
+
+.form-layout-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.form-item {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.form-item label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-secondary, #94a3b8);
+}
+
+.form-item input,
+.form-item select,
+.form-item textarea {
+  width: 100%;
+  padding: 11px 16px;
+  border: 1px solid var(--border-glass, rgba(255, 255, 255, 0.12));
+  border-radius: var(--radius-md, 12px);
+  font-size: 14px;
+  color: var(--text-primary, #ffffff);
+  outline: none;
+  background: rgba(10, 18, 36, 0.85);
+  transition: all 0.2s ease;
+  font-family: inherit;
+}
+
+.form-item input::placeholder,
+.form-item textarea::placeholder {
+  color: var(--text-muted, #64748b);
+}
+
+.form-item input:focus,
+.form-item select:focus,
+.form-item textarea:focus {
+  border-color: var(--primary, #00e599);
+  box-shadow: 0 0 0 3px rgba(0, 229, 153, 0.2);
+  background: rgba(13, 24, 48, 0.95);
+}
+
+.form-item select option {
+  background: #0a1224;
+  color: #ffffff;
+}
+
+.form-switch {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border-glass, rgba(255, 255, 255, 0.08));
+  color: var(--text-primary, #f8fafc);
+}

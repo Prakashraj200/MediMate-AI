@@ -1,0 +1,41 @@
+/* ========================================================
+   MediMate-AI - Laboratory Module Stylesheet (laboratory.css)
+   Next-Gen Unified Clinical Intelligence Palette (Violet Accent)
+   ======================================================== */
+
+.specimen-barcode-tag {
+  font-family: var(--font-mono, monospace);
+  font-weight: 700;
+  font-size: 12px;
+  background: rgba(139, 92, 246, 0.15);
+  padding: 4px 10px;
+  border-radius: 6px;
+  color: #c4b5fd;
+  border: 1px solid rgba(139, 92, 246, 0.35);
+  display: inline-block;
+}
+
+.analyte-high {
+  color: #fb7185;
+  font-weight: 700;
+}
+
+.analyte-low {
+  color: #38bdf8;
+  font-weight: 700;
+}
+
+.analyte-normal {
+  color: #34d399;
+  font-weight: 600;
+}
+
+.lab-report-sheet {
+  border: 1px solid var(--border-glass, rgba(255, 255, 255, 0.08));
+  border-radius: var(--radius-lg, 20px);
+  padding: 26px;
+  background: var(--bg-card, rgba(13, 22, 41, 0.75));
+  backdrop-filter: blur(16px);
+  color: var(--text-primary, #f8fafc);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
+}

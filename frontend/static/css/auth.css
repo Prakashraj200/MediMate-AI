@@ -1,0 +1,200 @@
+/* ========================================================
+   MediMate-AI - Authentication Stylesheet (auth.css)
+   Next-Gen Unified Clinical Intelligence Palette
+   ======================================================== */
+
+.auth-wrapper {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background-color: var(--bg-deep, #050a14);
+  background-image: 
+    radial-gradient(circle at 15% 15%, rgba(0, 229, 153, 0.08) 0%, transparent 40%),
+    radial-gradient(circle at 85% 85%, rgba(0, 210, 255, 0.08) 0%, transparent 40%);
+  background-attachment: fixed;
+}
+
+.auth-card {
+  width: 100%;
+  max-width: 1050px;
+  min-height: 620px;
+  display: grid;
+  grid-template-columns: 1fr 1.15fr;
+  background: var(--bg-card, rgba(13, 22, 41, 0.85));
+  border-radius: 28px;
+  overflow: hidden;
+  box-shadow: 0 30px 70px rgba(0, 0, 0, 0.8), 0 0 40px rgba(0, 229, 153, 0.1);
+  border: 1px solid var(--border-glass, rgba(255, 255, 255, 0.08));
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+.auth-brand-pane {
+  background: linear-gradient(145deg, rgba(10, 20, 42, 0.95), rgba(5, 10, 20, 0.98));
+  color: #ffffff;
+  padding: 50px 42px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+  overflow: hidden;
+  border-right: 1px solid var(--border-glass, rgba(255, 255, 255, 0.08));
+}
+
+.auth-brand-pane::before {
+  content: '';
+  position: absolute;
+  width: 340px;
+  height: 340px;
+  background: radial-gradient(circle, rgba(0, 229, 153, 0.15) 0%, transparent 70%);
+  top: -80px;
+  right: -80px;
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.auth-form-pane {
+  padding: 50px 44px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background: rgba(8, 14, 28, 0.7);
+}
+
+.auth-header h1 {
+  font-size: 28px;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  color: #ffffff;
+  margin-bottom: 6px;
+}
+
+.auth-header p {
+  font-size: 14px;
+  color: var(--text-secondary, #94a3b8);
+  margin-bottom: 24px;
+}
+
+.role-pill-group {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.role-pill {
+  padding: 9px 12px;
+  border: 1px solid var(--border-glass, rgba(255, 255, 255, 0.1));
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--text-secondary, #94a3b8);
+  font-size: 13px;
+  font-weight: 600;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.role-pill:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: #ffffff;
+}
+
+.role-pill.active {
+  border-color: var(--primary, #00e599);
+  background: rgba(0, 229, 153, 0.15);
+  color: #ffffff;
+  box-shadow: 0 0 15px rgba(0, 229, 153, 0.25);
+}
+
+.input-field {
+  margin-bottom: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.input-field label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-secondary, #94a3b8);
+}
+
+.input-icon-box {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.input-icon-box i.prefix {
+  position: absolute;
+  left: 14px;
+  color: var(--text-muted, #64748b);
+  font-size: 14px;
+}
+
+.input-icon-box input {
+  width: 100%;
+  padding: 12px 14px 12px 42px;
+  border: 1px solid var(--border-glass, rgba(255, 255, 255, 0.12));
+  border-radius: 12px;
+  font-size: 14px;
+  outline: none;
+  background: rgba(10, 18, 36, 0.85);
+  color: #ffffff;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  font-family: inherit;
+}
+
+.input-icon-box input:focus {
+  border-color: var(--primary, #00e599);
+  box-shadow: 0 0 0 3px rgba(0, 229, 153, 0.2);
+  background: rgba(13, 24, 48, 0.95);
+}
+
+.toggle-password {
+  position: absolute;
+  right: 14px;
+  cursor: pointer;
+  color: var(--text-muted, #64748b);
+  transition: color 0.2s;
+}
+
+.toggle-password:hover {
+  color: #ffffff;
+}
+
+.btn-auth-submit {
+  width: 100%;
+  padding: 14px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, var(--primary, #00e599), #00b87a);
+  color: #050a14;
+  font-size: 15px;
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 4px 20px rgba(0, 229, 153, 0.35);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  margin-top: 10px;
+}
+
+.btn-auth-submit:hover {
+  transform: translateY(-2px);
+  background: linear-gradient(135deg, #26f2ae, #00d28d);
+  box-shadow: 0 8px 25px rgba(0, 229, 153, 0.5);
+}
+
+@media (max-width: 840px) {
+  .auth-card {
+    grid-template-columns: 1fr;
+  }
+  .auth-brand-pane {
+    display: none;
+  }
+  .auth-form-pane {
+    padding: 36px 24px;
+  }
+}

@@ -1,0 +1,235 @@
+/* ========================================================
+   MediMate-AI - Global Common Stylesheet (common.css)
+   Next-Gen Unified Clinical Intelligence Palette
+   ======================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap');
+
+:root {
+  /* Index-Matching Deep Luxury Clinical Palette */
+  --bg-deep: #050a14;
+  --bg-main: #050a14;
+  --bg-page: #050a14;
+  --bg-surface: #0a1224;
+  --surface: #0a1224;
+  --bg-card: rgba(13, 22, 41, 0.75);
+  --bg-card-hover: rgba(22, 36, 68, 0.85);
+  
+  --border-glass: rgba(255, 255, 255, 0.08);
+  --border: rgba(255, 255, 255, 0.08);
+  --border-focus: #00e599;
+  --border-glow: rgba(0, 229, 153, 0.35);
+
+  /* Primary Emerald & Cyan Accents */
+  --primary: #00e599;
+  --primary-hover: #26f2ae;
+  --primary-light: rgba(0, 229, 153, 0.12);
+  --primary-dark: #00b87a;
+  --primary-glow: rgba(0, 229, 153, 0.3);
+
+  --secondary: #00d2ff;
+  --secondary-light: rgba(0, 210, 255, 0.12);
+  --secondary-hover: #38bdf8;
+
+  --indigo-accent: #6366f1;
+  --violet-accent: #8b5cf6;
+  --accent-purple: #8b5cf6;
+
+  /* Status Colors */
+  --success: #10b981;
+  --success-bg: rgba(16, 185, 129, 0.15);
+  --warning: #f59e0b;
+  --warning-bg: rgba(245, 158, 11, 0.15);
+  --danger: #f43f5e;
+  --danger-bg: rgba(244, 63, 94, 0.15);
+  --info: #00d2ff;
+  --info-bg: rgba(0, 210, 255, 0.15);
+
+  /* High Contrast Typography */
+  --text-main: #f8fafc;
+  --text-primary: #f8fafc;
+  --text-secondary: #94a3b8;
+  --text-muted: #94a3b8;
+  --text-light: #64748b;
+
+  /* Typography & Shadows */
+  --font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+  --radius-full: 9999px;
+
+  --shadow-sm: 0 2px 10px rgba(0, 0, 0, 0.4);
+  --shadow-md: 0 6px 20px rgba(0, 0, 0, 0.6);
+  --shadow-lg: 0 15px 35px rgba(0, 0, 0, 0.7);
+  --shadow-xl: 0 25px 60px rgba(0, 0, 0, 0.85);
+
+  --transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Reset */
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--font-family);
+  background: var(--bg-main);
+  color: var(--text-main);
+  line-height: 1.6;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  background-image: 
+    radial-gradient(circle at 10% 10%, rgba(0, 229, 153, 0.05) 0%, transparent 40%),
+    radial-gradient(circle at 90% 20%, rgba(0, 210, 255, 0.05) 0%, transparent 45%);
+  background-attachment: fixed;
+}
+
+a {
+  color: var(--primary);
+  text-decoration: none;
+  transition: var(--transition);
+}
+
+a:hover {
+  color: var(--primary-hover);
+  text-decoration: none;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+  outline: none;
+  background: none;
+}
+
+/* Global Buttons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 11px 20px;
+  font-size: 13.5px;
+  font-weight: 700;
+  border-radius: var(--radius-md);
+  transition: var(--transition);
+  text-decoration: none;
+  cursor: pointer;
+  border: none;
+}
+
+.btn:active {
+  transform: scale(0.98);
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  color: #050a14;
+  box-shadow: 0 4px 15px rgba(0, 229, 153, 0.3);
+}
+
+.btn-primary:hover {
+  background: linear-gradient(135deg, var(--primary-hover), var(--primary));
+  box-shadow: 0 6px 22px rgba(0, 229, 153, 0.45);
+  transform: translateY(-2px);
+  color: #050a14;
+}
+
+.btn-secondary {
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text-primary);
+  border: 1px solid var(--border-glass);
+  backdrop-filter: blur(10px);
+}
+
+.btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.25);
+  transform: translateY(-2px);
+  color: #ffffff;
+}
+
+.btn-danger {
+  background: linear-gradient(135deg, var(--danger), #be123c);
+  color: #ffffff;
+  box-shadow: 0 4px 15px rgba(244, 63, 94, 0.3);
+}
+
+.btn-danger:hover {
+  background: linear-gradient(135deg, #fb7185, var(--danger));
+  transform: translateY(-2px);
+}
+
+/* Toast Alerts */
+.medimate-toast-container {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.medimate-toast {
+  padding: 14px 20px;
+  border-radius: var(--radius-md);
+  background: var(--bg-surface);
+  color: var(--text-main);
+  box-shadow: var(--shadow-xl);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 13.5px;
+  font-weight: 500;
+  animation: slideInToast 0.3s ease;
+  border: 1px solid var(--border-glass);
+  border-left: 4px solid var(--primary);
+  backdrop-filter: blur(16px);
+}
+
+.medimate-toast.success { border-left-color: var(--success); }
+.medimate-toast.error { border-left-color: var(--danger); }
+.medimate-toast.warning { border-left-color: var(--warning); }
+.medimate-toast.info { border-left-color: var(--info); }
+
+@keyframes slideInToast {
+  from { transform: translateX(100%); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+/* Modals */
+.modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(3, 6, 12, 0.75);
+  backdrop-filter: blur(10px);
+  z-index: 2000;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.modal-overlay.active {
+  display: flex;
+}
+
+.modal-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-lg);
+  width: 100%;
+  max-width: 600px;
+  padding: 28px;
+  box-shadow: var(--shadow-xl);
+  max-height: 90vh;
+  overflow-y: auto;
+  position: relative;
+  color: var(--text-main);
+}

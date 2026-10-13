@@ -1,0 +1,2532 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Laboratory | MediMate AI</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Segoe UI", Arial, sans-serif;
+        }
+
+        body {
+            background: #f2faf6;
+            color: #183b2a;
+        }
+
+        button,
+        input,
+        select,
+        textarea {
+            font-family: inherit;
+        }
+
+        button {
+            cursor: pointer;
+        }
+
+
+        /* ==============================
+           SIDEBAR
+        ============================== */
+
+        .sidebar {
+            width: 270px;
+            min-height: 100vh;
+            position: fixed;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            background: linear-gradient(180deg, #087f5b, #07583f);
+            color: white;
+            padding: 25px 18px;
+            z-index: 1000;
+            overflow-y: auto;
+            transition: .3s ease;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 8px 10px 28px;
+            border-bottom: 1px solid rgba(255,255,255,.25);
+        }
+
+        .logo-icon {
+            width: 48px;
+            height: 48px;
+            background: white;
+            color: #087f5b;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 25px;
+            font-weight: bold;
+        }
+
+        .logo h2 {
+            font-size: 21px;
+        }
+
+        .logo h2 span {
+            color: #b9f5d7;
+        }
+
+        .logo p {
+            font-size: 12px;
+            color: #c9f3dc;
+            margin-top: 4px;
+        }
+
+        .menu-title {
+            color: #b8e6d1;
+            font-size: 11px;
+            margin: 28px 12px 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .menu {
+            list-style: none;
+        }
+
+        .menu li {
+            margin: 7px 0;
+        }
+
+        .menu a {
+            text-decoration: none;
+            color: #e8fff3;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 14px;
+            border-radius: 13px;
+            font-size: 14px;
+            transition: .3s;
+        }
+
+        .menu a:hover,
+        .menu a.active {
+            background: white;
+            color: #087f5b;
+            transform: translateX(4px);
+        }
+
+        .menu-icon {
+            width: 24px;
+            text-align: center;
+            font-size: 19px;
+        }
+
+
+        /* ==============================
+           MAIN
+        ============================== */
+
+        .main {
+            margin-left: 270px;
+            min-height: 100vh;
+        }
+
+
+        /* ==============================
+           TOPBAR
+        ============================== */
+
+        .topbar {
+            min-height: 85px;
+            background: white;
+            border-bottom: 1px solid #e0eee6;
+            padding: 18px 35px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .welcome h1 {
+            color: #075f3d;
+            font-size: 25px;
+        }
+
+        .welcome p {
+            color: #71877a;
+            font-size: 13px;
+            margin-top: 5px;
+        }
+
+        .top-actions {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .notification {
+            width: 43px;
+            height: 43px;
+            border: none;
+            border-radius: 13px;
+            background: #e7f8ee;
+            color: #087f5b;
+            font-size: 19px;
+        }
+
+        .profile {
+            position: relative;
+        }
+
+        .profile-btn {
+            border: 1px solid #dcefe4;
+            background: #f0faf4;
+            padding: 8px 12px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            color: #174b35;
+        }
+
+        .profile-circle {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: #d6f3e3;
+            color: #087f5b;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .profile-menu {
+            position: absolute;
+            top: 54px;
+            right: 0;
+            width: 190px;
+            background: white;
+            border: 1px solid #dcefe4;
+            border-radius: 13px;
+            padding: 7px;
+            box-shadow: 0 12px 30px rgba(0,60,40,.15);
+            display: none;
+        }
+
+        .profile-menu.show {
+            display: block;
+        }
+
+        .profile-menu button {
+            width: 100%;
+            border: none;
+            background: transparent;
+            padding: 11px;
+            text-align: left;
+            border-radius: 8px;
+        }
+
+        .profile-menu button:hover {
+            background: #eaf8f0;
+        }
+
+        .logout {
+            color: #d93025;
+        }
+
+
+        /* ==============================
+           CONTENT
+        ============================== */
+
+        .content {
+            padding: 30px 35px;
+        }
+
+        .page-heading {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .page-heading h2 {
+            color: #174b35;
+            font-size: 25px;
+        }
+
+        .page-heading p {
+            color: #789083;
+            font-size: 13px;
+            margin-top: 5px;
+        }
+
+        .add-btn {
+            border: none;
+            background: #087f5b;
+            color: white;
+            padding: 13px 20px;
+            border-radius: 11px;
+            font-weight: bold;
+            transition: .3s;
+        }
+
+        .add-btn:hover {
+            background: #07583f;
+            transform: translateY(-2px);
+        }
+
+
+        /* ==============================
+           SUMMARY CARDS
+        ============================== */
+
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 18px;
+            margin-bottom: 25px;
+        }
+
+        .summary-card {
+            background: white;
+            border: 1px solid #e0eee6;
+            border-radius: 17px;
+            padding: 22px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .summary-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 13px;
+            background: #e1f8eb;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 23px;
+        }
+
+        .summary-card h3 {
+            font-size: 25px;
+            color: #174b35;
+        }
+
+        .summary-card p {
+            font-size: 12px;
+            color: #789083;
+            margin-top: 4px;
+        }
+
+
+        /* ==============================
+           PANEL
+        ============================== */
+
+        .panel {
+            background: white;
+            border: 1px solid #e0eee6;
+            border-radius: 18px;
+            padding: 23px;
+        }
+
+        .panel-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .panel-top h3 {
+            color: #174b35;
+        }
+
+        .search {
+            width: 300px;
+            border: 1px solid #d6e9de;
+            border-radius: 10px;
+            padding: 11px 13px;
+            outline: none;
+        }
+
+        .search:focus {
+            border-color: #087f5b;
+        }
+
+
+        /* ==============================
+           TABLE
+        ============================== */
+
+        .table-wrap {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 1100px;
+        }
+
+        th {
+            background: #f0faf4;
+            color: #789083;
+            font-size: 12px;
+            text-align: left;
+            padding: 14px;
+        }
+
+        td {
+            padding: 14px;
+            border-bottom: 1px solid #edf3ef;
+            font-size: 13px;
+        }
+
+        .empty {
+            text-align: center;
+            padding: 45px;
+            color: #789083;
+        }
+
+        .status {
+            padding: 6px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: bold;
+        }
+
+        .active {
+            background: #dff8e9;
+            color: #087f5b;
+        }
+
+        .inactive {
+            background: #ffe3e3;
+            color: #c62828;
+        }
+
+        .action-btn {
+            border: none;
+            padding: 7px 10px;
+            border-radius: 7px;
+            margin-right: 4px;
+            font-size: 12px;
+        }
+
+        .edit {
+            background: #e5f0ff;
+            color: #1769aa;
+        }
+
+        .delete {
+            background: #ffe7e7;
+            color: #c62828;
+        }
+
+
+        /* ==============================
+           MODAL
+        ============================== */
+
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,.45);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            z-index: 3000;
+        }
+
+        .modal-overlay.show {
+            display: flex;
+        }
+
+        .modal {
+            width: 100%;
+            max-width: 720px;
+            max-height: 90vh;
+            overflow-y: auto;
+            background: white;
+            border-radius: 20px;
+            padding: 28px;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 22px;
+        }
+
+        .modal-header h2 {
+            color: #174b35;
+        }
+
+        .close-btn {
+            width: 35px;
+            height: 35px;
+            border: none;
+            background: #edf8f2;
+            color: #087f5b;
+            border-radius: 9px;
+            font-size: 20px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 7px;
+        }
+
+        .full {
+            grid-column: 1 / -1;
+        }
+
+        .form-group label {
+            font-size: 12px;
+            color: #4c6758;
+            font-weight: 600;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            padding: 12px;
+            border: 1px solid #d6e9de;
+            border-radius: 9px;
+            outline: none;
+            background: white;
+        }
+
+        .form-group textarea {
+            min-height: 80px;
+            resize: vertical;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            border-color: #087f5b;
+        }
+
+        .modal-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 25px;
+        }
+
+        .cancel-btn {
+            border: 1px solid #d6e9de;
+            background: white;
+            color: #567060;
+            padding: 11px 18px;
+            border-radius: 9px;
+        }
+
+        .save-btn {
+            border: none;
+            background: #087f5b;
+            color: white;
+            padding: 11px 20px;
+            border-radius: 9px;
+            font-weight: bold;
+        }
+
+
+        /* ==============================
+           TOAST
+        ============================== */
+
+        .toast {
+            position: fixed;
+            right: 25px;
+            bottom: 25px;
+            background: #087f5b;
+            color: white;
+            padding: 14px 20px;
+            border-radius: 10px;
+            display: none;
+            z-index: 5000;
+            box-shadow: 0 10px 25px rgba(0,0,0,.15);
+        }
+
+        .toast.show {
+            display: block;
+        }
+
+
+        /* ==============================
+           MOBILE
+        ============================== */
+
+        .mobile-btn {
+            display: none;
+            border: none;
+            background: #e7f8ee;
+            color: #087f5b;
+            padding: 8px 11px;
+            border-radius: 9px;
+            font-size: 20px;
+        }
+
+        @media(max-width: 950px) {
+
+            .sidebar {
+                transform: translateX(-100%);
+            }
+
+            .sidebar.open {
+                transform: translateX(0);
+            }
+
+            .main {
+                margin-left: 0;
+            }
+
+            .mobile-btn {
+                display: block;
+            }
+
+            .summary-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .full {
+                grid-column: auto;
+            }
+
+            .page-heading {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+        }
+
+        @media(max-width: 600px) {
+
+            .content {
+                padding: 20px 15px;
+            }
+
+            .topbar {
+                padding: 15px;
+            }
+
+            .panel-top {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .search {
+                width: 100%;
+            }
+
+            .profile-btn span {
+                display: none;
+            }
+        }
+
+    </style>
+</head>
+
+
+<body>
+
+
+<!-- =====================================================
+     SIDEBAR
+===================================================== -->
+
+<aside class="sidebar" id="sidebar">
+
+    <div class="logo">
+
+        <div class="logo-icon">
+            M
+        </div>
+
+        <div>
+
+            <h2>
+                MediMate <span>AI</span>
+            </h2>
+
+            <p>
+                Admin Portal
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <p class="menu-title">
+        Main Menu
+    </p>
+
+
+    <ul class="menu">
+
+        <li>
+            <a href="dashboard.html">
+                <span class="menu-icon">📊</span>
+                Dashboard
+            </a>
+        </li>
+
+        <li>
+            <a href="doctors.html">
+                <span class="menu-icon">👨‍⚕️</span>
+                Doctors
+            </a>
+        </li>
+
+        <li>
+            <a href="patients.html">
+                <span class="menu-icon">🧑‍🤝‍🧑</span>
+                Patients
+            </a>
+        </li>
+
+        <li>
+            <a href="laboratory.html" class="active">
+                <span class="menu-icon">🧪</span>
+                Laboratory
+            </a>
+        </li>
+
+        <li>
+            <a href="pharmacy.html">
+                <span class="menu-icon">💊</span>
+                Pharmacy
+            </a>
+        </li>
+
+        <li>
+            <a href="appointments.html">
+                <span class="menu-icon">📅</span>
+                Appointments
+            </a>
+        </li>
+
+        <li>
+            <a href="departments.html">
+                <span class="menu-icon">🏥</span>
+                Departments
+            </a>
+        </li>
+
+        <li>
+            <a href="reports.html">
+                <span class="menu-icon">📈</span>
+                Reports
+            </a>
+        </li>
+
+    </ul>
+
+
+    <p class="menu-title">
+        Settings
+    </p>
+
+
+    <ul class="menu">
+
+        <li>
+            <a href="#" id="settingsLink">
+                <span class="menu-icon">⚙️</span>
+                Settings
+            </a>
+        </li>
+
+        <li>
+            <a href="#" id="notificationLink">
+                <span class="menu-icon">🔔</span>
+                Notifications
+            </a>
+        </li>
+
+    </ul>
+
+</aside>
+
+
+
+<!-- =====================================================
+     MAIN
+===================================================== -->
+
+<main class="main">
+
+
+    <!-- TOPBAR -->
+
+    <header class="topbar">
+
+        <div
+            style="
+                display:flex;
+                align-items:center;
+                gap:15px;
+            "
+        >
+
+            <button
+                class="mobile-btn"
+                id="mobileBtn"
+            >
+                ☰
+            </button>
+
+            <div class="welcome">
+
+                <h1>
+                    Laboratory Management
+                </h1>
+
+                <p>
+                    Add and manage laboratory information manually.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="top-actions">
+
+            <button
+                class="notification"
+                id="notificationBtn"
+            >
+                🔔
+            </button>
+
+
+            <div class="profile">
+
+                <button
+                    class="profile-btn"
+                    id="profileBtn"
+                >
+
+                    <div
+                        class="profile-circle"
+                        id="profileCircle"
+                    >
+                        A
+                    </div>
+
+                    <span id="adminName">
+                        Administrator
+                    </span>
+
+                    ▾
+
+                </button>
+
+
+                <div
+                    class="profile-menu"
+                    id="profileMenu"
+                >
+
+                    <button
+                        onclick="
+                            window.location.href = 'profile.html'
+                        "
+                    >
+                        👤 My Profile
+                    </button>
+
+                    <button
+                        onclick="
+                            window.location.href = 'settings.html'
+                        "
+                    >
+                        ⚙️ Settings
+                    </button>
+
+                    <button
+                        class="logout"
+                        id="logoutBtn"
+                    >
+                        🚪 Logout
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </header>
+
+
+
+    <!-- CONTENT -->
+
+    <section class="content">
+
+
+        <!-- PAGE HEADING -->
+
+        <div class="page-heading">
+
+            <div>
+
+                <h2>
+                    Laboratory Records
+                </h2>
+
+                <p>
+                    Create, update and manage laboratory records.
+                </p>
+
+            </div>
+
+
+            <button
+                class="add-btn"
+                id="addLaboratoryBtn"
+            >
+                + Add Laboratory
+            </button>
+
+        </div>
+
+
+
+        <!-- SUMMARY -->
+
+        <div class="summary-grid">
+
+
+            <div class="summary-card">
+
+                <div class="summary-icon">
+                    🧪
+                </div>
+
+                <div>
+
+                    <h3 id="totalLabs">
+                        0
+                    </h3>
+
+                    <p>
+                        Total Laboratories
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="summary-card">
+
+                <div class="summary-icon">
+                    ✅
+                </div>
+
+                <div>
+
+                    <h3 id="activeLabs">
+                        0
+                    </h3>
+
+                    <p>
+                        Active Laboratories
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="summary-card">
+
+                <div class="summary-icon">
+                    ⛔
+                </div>
+
+                <div>
+
+                    <h3 id="inactiveLabs">
+                        0
+                    </h3>
+
+                    <p>
+                        Inactive Laboratories
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- TABLE -->
+
+        <div class="panel">
+
+            <div class="panel-top">
+
+                <h3>
+                    Laboratory List
+                </h3>
+
+
+                <input
+                    type="text"
+                    id="searchInput"
+                    class="search"
+                    placeholder="Search laboratory..."
+                >
+
+            </div>
+
+
+            <div class="table-wrap">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                ID
+                            </th>
+
+                            <th>
+                                Laboratory Name
+                            </th>
+
+                            <th>
+                                Email
+                            </th>
+
+                            <th>
+                                Phone
+                            </th>
+
+                            <th>
+                                Type
+                            </th>
+
+                            <th>
+                                Location
+                            </th>
+
+                            <th>
+                                Status
+                            </th>
+
+                            <th>
+                                Actions
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody id="laboratoryTable">
+
+                        <tr>
+
+                            <td
+                                colspan="8"
+                                class="empty"
+                            >
+                                No laboratories added yet.
+                            </td>
+
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+
+<!-- =====================================================
+     ADD / EDIT MODAL
+===================================================== -->
+
+<div
+    class="modal-overlay"
+    id="modalOverlay"
+>
+
+    <div class="modal">
+
+
+        <div class="modal-header">
+
+            <h2 id="modalTitle">
+                Add Laboratory
+            </h2>
+
+            <button
+                class="close-btn"
+                id="closeModal"
+            >
+                ×
+            </button>
+
+        </div>
+
+
+        <form id="laboratoryForm">
+
+
+            <div class="form-grid">
+
+
+                <!-- LAB NAME -->
+
+                <div class="form-group">
+
+                    <label>
+                        Laboratory Name *
+                    </label>
+
+                    <input
+                        type="text"
+                        id="labName"
+                        placeholder="Enter laboratory name"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- EMAIL -->
+
+                <div class="form-group">
+
+                    <label>
+                        Email *
+                    </label>
+
+                    <input
+                        type="email"
+                        id="email"
+                        placeholder="laboratory@gmail.com"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- PHONE -->
+
+                <div class="form-group">
+
+                    <label>
+                        Phone Number *
+                    </label>
+
+                    <input
+                        type="tel"
+                        id="phone"
+                        placeholder="Enter phone number"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- LAB TYPE -->
+
+                <div class="form-group">
+
+                    <label>
+                        Laboratory Type
+                    </label>
+
+                    <select id="labType">
+
+                        <option value="">
+                            Select Type
+                        </option>
+
+                        <option value="Pathology">
+                            Pathology
+                        </option>
+
+                        <option value="Microbiology">
+                            Microbiology
+                        </option>
+
+                        <option value="Biochemistry">
+                            Biochemistry
+                        </option>
+
+                        <option value="Hematology">
+                            Hematology
+                        </option>
+
+                        <option value="Radiology">
+                            Radiology
+                        </option>
+
+                        <option value="General">
+                            General Laboratory
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- LOCATION -->
+
+                <div class="form-group">
+
+                    <label>
+                        Location
+                    </label>
+
+                    <input
+                        type="text"
+                        id="location"
+                        placeholder="Enter laboratory location"
+                    >
+
+                </div>
+
+
+                <!-- CONTACT PERSON -->
+
+                <div class="form-group">
+
+                    <label>
+                        Contact Person
+                    </label>
+
+                    <input
+                        type="text"
+                        id="contactPerson"
+                        placeholder="Enter contact person"
+                    >
+
+                </div>
+
+
+                <!-- LICENSE -->
+
+                <div class="form-group">
+
+                    <label>
+                        License Number
+                    </label>
+
+                    <input
+                        type="text"
+                        id="licenseNumber"
+                        placeholder="Enter license number"
+                    >
+
+                </div>
+
+
+                <!-- STATUS -->
+
+                <div class="form-group">
+
+                    <label>
+                        Status
+                    </label>
+
+                    <select id="status">
+
+                        <option value="active">
+                            Active
+                        </option>
+
+                        <option value="inactive">
+                            Inactive
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- DESCRIPTION -->
+
+                <div class="form-group full">
+
+                    <label>
+                        Description
+                    </label>
+
+                    <textarea
+                        id="description"
+                        placeholder="Enter laboratory description"
+                    ></textarea>
+
+                </div>
+
+
+            </div>
+
+
+            <div class="modal-actions">
+
+                <button
+                    type="button"
+                    class="cancel-btn"
+                    id="cancelBtn"
+                >
+                    Cancel
+                </button>
+
+                <button
+                    type="submit"
+                    class="save-btn"
+                >
+                    Save Laboratory
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+
+<!-- TOAST -->
+
+<div
+    class="toast"
+    id="toast"
+></div>
+
+
+
+<!-- =====================================================
+     JAVASCRIPT
+===================================================== -->
+
+<script type="module">
+
+
+    /* =====================================================
+       FIREBASE
+    ===================================================== */
+
+    import {
+        auth
+    } from "../static/js/firebase-config.js";
+
+
+    import {
+        onAuthStateChanged,
+        signOut
+    } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
+
+
+    /* =====================================================
+       BACKEND
+    ===================================================== */
+
+    const API_URL =
+        "http://127.0.0.1:5000";
+
+
+    /* =====================================================
+       ELEMENTS
+    ===================================================== */
+
+    const sidebar =
+        document.getElementById(
+            "sidebar"
+        );
+
+    const mobileBtn =
+        document.getElementById(
+            "mobileBtn"
+        );
+
+    const modalOverlay =
+        document.getElementById(
+            "modalOverlay"
+        );
+
+    const addLaboratoryBtn =
+        document.getElementById(
+            "addLaboratoryBtn"
+        );
+
+    const closeModal =
+        document.getElementById(
+            "closeModal"
+        );
+
+    const cancelBtn =
+        document.getElementById(
+            "cancelBtn"
+        );
+
+    const laboratoryForm =
+        document.getElementById(
+            "laboratoryForm"
+        );
+
+    const laboratoryTable =
+        document.getElementById(
+            "laboratoryTable"
+        );
+
+    const searchInput =
+        document.getElementById(
+            "searchInput"
+        );
+
+    const modalTitle =
+        document.getElementById(
+            "modalTitle"
+        );
+
+
+    /* =====================================================
+       FORM ELEMENTS
+    ===================================================== */
+
+    const labNameInput =
+        document.getElementById(
+            "labName"
+        );
+
+    const emailInput =
+        document.getElementById(
+            "email"
+        );
+
+    const phoneInput =
+        document.getElementById(
+            "phone"
+        );
+
+    const labTypeInput =
+        document.getElementById(
+            "labType"
+        );
+
+    const locationInput =
+        document.getElementById(
+            "location"
+        );
+
+    const contactPersonInput =
+        document.getElementById(
+            "contactPerson"
+        );
+
+    const licenseNumberInput =
+        document.getElementById(
+            "licenseNumber"
+        );
+
+    const statusInput =
+        document.getElementById(
+            "status"
+        );
+
+    const descriptionInput =
+        document.getElementById(
+            "description"
+        );
+
+
+    /* =====================================================
+       STATE
+    ===================================================== */
+
+    let laboratories = [];
+
+    let editingLaboratoryId = null;
+
+
+    /* =====================================================
+       AUTH CHECK
+    ===================================================== */
+
+    onAuthStateChanged(
+        auth,
+        async (user) => {
+
+            if (!user) {
+
+                window.location.href =
+                    "admin-login.html";
+
+                return;
+            }
+
+
+            let currentUser = null;
+
+
+            try {
+
+                currentUser =
+                    JSON.parse(
+                        localStorage.getItem(
+                            "currentUser"
+                        )
+                    );
+
+            } catch (error) {
+
+                console.log(
+                    "No current user data."
+                );
+
+            }
+
+
+            let adminName =
+                "Administrator";
+
+
+            if (
+                currentUser &&
+                currentUser.name
+            ) {
+
+                adminName =
+                    currentUser.name;
+
+            } else if (user.email) {
+
+                adminName =
+                    user.email.split("@")[0];
+
+            }
+
+
+            document.getElementById(
+                "adminName"
+            ).textContent =
+                adminName;
+
+
+            document.getElementById(
+                "profileCircle"
+            ).textContent =
+                adminName
+                    .charAt(0)
+                    .toUpperCase();
+
+
+            await loadLaboratories();
+
+        }
+    );
+
+
+    /* =====================================================
+       LOAD LABORATORIES
+    ===================================================== */
+
+    async function loadLaboratories() {
+
+        try {
+
+            /*
+             * Backend route:
+             * GET /api/laboratory/laboratories
+             */
+
+            const response =
+                await fetch(
+                    `${API_URL}/api/laboratory/laboratories`
+                );
+
+
+            if (!response.ok) {
+
+                throw new Error(
+                    "Laboratory API not available"
+                );
+
+            }
+
+
+            const result =
+                await response.json();
+
+
+            laboratories =
+                result.laboratories || [];
+
+
+            renderLaboratories();
+
+        } catch (error) {
+
+            console.error(
+                "Load laboratories error:",
+                error
+            );
+
+
+            /*
+             * No dummy data.
+             */
+
+            laboratories = [];
+
+            renderLaboratories();
+
+        }
+
+    }
+
+
+    /* =====================================================
+       RENDER LABORATORIES
+    ===================================================== */
+
+    function renderLaboratories() {
+
+        const search =
+            searchInput.value
+                .trim()
+                .toLowerCase();
+
+
+        const filtered =
+            laboratories.filter(
+                laboratory => {
+
+                    const text =
+                        `
+                        ${laboratory.name || ""}
+                        ${laboratory.labName || ""}
+                        ${laboratory.email || ""}
+                        ${laboratory.phone || ""}
+                        ${laboratory.type || ""}
+                        ${laboratory.labType || ""}
+                        ${laboratory.location || ""}
+                        `
+                        .toLowerCase();
+
+
+                    return text.includes(
+                        search
+                    );
+
+                }
+            );
+
+
+        if (
+            filtered.length === 0
+        ) {
+
+            laboratoryTable.innerHTML = `
+
+                <tr>
+
+                    <td
+                        colspan="8"
+                        class="empty"
+                    >
+
+                        No laboratory records found.
+
+                    </td>
+
+                </tr>
+
+            `;
+
+        } else {
+
+            laboratoryTable.innerHTML =
+                filtered
+                    .map(
+                        (laboratory, index) => {
+
+                            const name =
+                                laboratory.name ||
+                                laboratory.labName ||
+                                "-";
+
+
+                            const type =
+                                laboratory.type ||
+                                laboratory.labType ||
+                                "-";
+
+
+                            const status =
+                                String(
+                                    laboratory.status ||
+                                    "active"
+                                ).toLowerCase();
+
+
+                            return `
+
+                                <tr>
+
+                                    <td>
+                                        ${
+                                            laboratory.id ||
+                                            index + 1
+                                        }
+                                    </td>
+
+
+                                    <td>
+                                        <strong>
+                                            ${
+                                                escapeHTML(
+                                                    name
+                                                )
+                                            }
+                                        </strong>
+                                    </td>
+
+
+                                    <td>
+                                        ${
+                                            escapeHTML(
+                                                laboratory.email ||
+                                                "-"
+                                            )
+                                        }
+                                    </td>
+
+
+                                    <td>
+                                        ${
+                                            escapeHTML(
+                                                laboratory.phone ||
+                                                "-"
+                                            )
+                                        }
+                                    </td>
+
+
+                                    <td>
+                                        ${
+                                            escapeHTML(
+                                                type
+                                            )
+                                        }
+                                    </td>
+
+
+                                    <td>
+                                        ${
+                                            escapeHTML(
+                                                laboratory.location ||
+                                                "-"
+                                            )
+                                        }
+                                    </td>
+
+
+                                    <td>
+
+                                        <span
+                                            class="status ${
+                                                status === "active"
+                                                    ? "active"
+                                                    : "inactive"
+                                            }"
+                                        >
+
+                                            ${
+                                                status === "active"
+                                                    ? "Active"
+                                                    : "Inactive"
+                                            }
+
+                                        </span>
+
+                                    </td>
+
+
+                                    <td>
+
+                                        <button
+                                            class="action-btn edit"
+                                            onclick="
+                                                editLaboratory(
+                                                    '${laboratory.id}'
+                                                )
+                                            "
+                                        >
+                                            Edit
+                                        </button>
+
+
+                                        <button
+                                            class="action-btn delete"
+                                            onclick="
+                                                deleteLaboratory(
+                                                    '${laboratory.id}'
+                                                )
+                                            "
+                                        >
+                                            Delete
+                                        </button>
+
+                                    </td>
+
+                                </tr>
+
+                            `;
+
+                        }
+                    )
+                    .join("");
+
+        }
+
+
+        updateSummary();
+
+    }
+
+
+    /* =====================================================
+       SUMMARY
+    ===================================================== */
+
+    function updateSummary() {
+
+        const active =
+            laboratories.filter(
+                laboratory =>
+                    String(
+                        laboratory.status ||
+                        "active"
+                    ).toLowerCase()
+                    === "active"
+            ).length;
+
+
+        const inactive =
+            laboratories.length -
+            active;
+
+
+        document.getElementById(
+            "totalLabs"
+        ).textContent =
+            laboratories.length;
+
+
+        document.getElementById(
+            "activeLabs"
+        ).textContent =
+            active;
+
+
+        document.getElementById(
+            "inactiveLabs"
+        ).textContent =
+            inactive;
+
+    }
+
+
+    /* =====================================================
+       OPEN ADD MODAL
+    ===================================================== */
+
+    addLaboratoryBtn.addEventListener(
+        "click",
+        () => {
+
+            editingLaboratoryId =
+                null;
+
+
+            modalTitle.textContent =
+                "Add Laboratory";
+
+
+            laboratoryForm.reset();
+
+
+            statusInput.value =
+                "active";
+
+
+            modalOverlay.classList.add(
+                "show"
+            );
+
+        }
+    );
+
+
+    /* =====================================================
+       CLOSE MODAL
+    ===================================================== */
+
+    function closeLaboratoryModal() {
+
+        modalOverlay.classList.remove(
+            "show"
+        );
+
+
+        laboratoryForm.reset();
+
+
+        editingLaboratoryId =
+            null;
+
+    }
+
+
+    closeModal.addEventListener(
+        "click",
+        closeLaboratoryModal
+    );
+
+
+    cancelBtn.addEventListener(
+        "click",
+        closeLaboratoryModal
+    );
+
+
+    modalOverlay.addEventListener(
+        "click",
+        event => {
+
+            if (
+                event.target ===
+                modalOverlay
+            ) {
+
+                closeLaboratoryModal();
+
+            }
+
+        }
+    );
+
+
+    /* =====================================================
+       SAVE LABORATORY
+    ===================================================== */
+
+    laboratoryForm.addEventListener(
+        "submit",
+        async event => {
+
+            event.preventDefault();
+
+
+            const laboratoryData = {
+
+                name:
+                    labNameInput.value.trim(),
+
+                email:
+                    emailInput.value.trim(),
+
+                phone:
+                    phoneInput.value.trim(),
+
+                type:
+                    labTypeInput.value,
+
+                location:
+                    locationInput.value.trim(),
+
+                contactPerson:
+                    contactPersonInput.value.trim(),
+
+                licenseNumber:
+                    licenseNumberInput.value.trim(),
+
+                status:
+                    statusInput.value,
+
+                description:
+                    descriptionInput.value.trim()
+
+            };
+
+
+            if (
+                !laboratoryData.name ||
+                !laboratoryData.email ||
+                !laboratoryData.phone
+            ) {
+
+                showToast(
+                    "Please fill all required fields."
+                );
+
+                return;
+
+            }
+
+
+            try {
+
+                let response;
+
+
+                /* ==============================
+                   UPDATE
+                ============================== */
+
+                if (
+                    editingLaboratoryId
+                ) {
+
+                    response =
+                        await fetch(
+                            `${API_URL}/api/laboratory/laboratories/${editingLaboratoryId}`,
+                            {
+                                method: "PUT",
+
+                                headers: {
+                                    "Content-Type":
+                                        "application/json"
+                                },
+
+                                body:
+                                    JSON.stringify(
+                                        laboratoryData
+                                    )
+                            }
+                        );
+
+                }
+
+
+                /* ==============================
+                   CREATE
+                ============================== */
+
+                else {
+
+                    response =
+                        await fetch(
+                            `${API_URL}/api/laboratory/laboratories`,
+                            {
+                                method: "POST",
+
+                                headers: {
+                                    "Content-Type":
+                                        "application/json"
+                                },
+
+                                body:
+                                    JSON.stringify(
+                                        laboratoryData
+                                    )
+                            }
+                        );
+
+                }
+
+
+                if (!response.ok) {
+
+                    throw new Error(
+                        "Server error"
+                    );
+
+                }
+
+
+                closeLaboratoryModal();
+
+
+                showToast(
+                    editingLaboratoryId
+                        ? "Laboratory updated successfully."
+                        : "Laboratory added successfully."
+                );
+
+
+                await loadLaboratories();
+
+            } catch (error) {
+
+                console.error(
+                    "Save laboratory error:",
+                    error
+                );
+
+
+                showToast(
+                    "Unable to save laboratory. Check backend."
+                );
+
+            }
+
+        }
+    );
+
+
+    /* =====================================================
+       EDIT LABORATORY
+    ===================================================== */
+
+    window.editLaboratory =
+        function(laboratoryId) {
+
+            const laboratory =
+                laboratories.find(
+                    item =>
+                        String(item.id) ===
+                        String(laboratoryId)
+                );
+
+
+            if (!laboratory) {
+
+                return;
+
+            }
+
+
+            editingLaboratoryId =
+                laboratoryId;
+
+
+            modalTitle.textContent =
+                "Edit Laboratory";
+
+
+            labNameInput.value =
+                laboratory.name ||
+                laboratory.labName ||
+                "";
+
+
+            emailInput.value =
+                laboratory.email ||
+                "";
+
+
+            phoneInput.value =
+                laboratory.phone ||
+                "";
+
+
+            labTypeInput.value =
+                laboratory.type ||
+                laboratory.labType ||
+                "";
+
+
+            locationInput.value =
+                laboratory.location ||
+                "";
+
+
+            contactPersonInput.value =
+                laboratory.contactPerson ||
+                "";
+
+
+            licenseNumberInput.value =
+                laboratory.licenseNumber ||
+                "";
+
+
+            statusInput.value =
+                laboratory.status ||
+                "active";
+
+
+            descriptionInput.value =
+                laboratory.description ||
+                "";
+
+
+            modalOverlay.classList.add(
+                "show"
+            );
+
+        };
+
+
+    /* =====================================================
+       DELETE LABORATORY
+    ===================================================== */
+
+    window.deleteLaboratory =
+        async function(laboratoryId) {
+
+            const confirmDelete =
+                confirm(
+                    "Are you sure you want to delete this laboratory?"
+                );
+
+
+            if (!confirmDelete) {
+
+                return;
+
+            }
+
+
+            try {
+
+                const response =
+                    await fetch(
+                        `${API_URL}/api/laboratory/laboratories/${laboratoryId}`,
+                        {
+                            method: "DELETE"
+                        }
+                    );
+
+
+                if (!response.ok) {
+
+                    throw new Error(
+                        "Delete failed"
+                    );
+
+                }
+
+
+                showToast(
+                    "Laboratory deleted successfully."
+                );
+
+
+                await loadLaboratories();
+
+            } catch (error) {
+
+                console.error(
+                    "Delete laboratory error:",
+                    error
+                );
+
+
+                showToast(
+                    "Unable to delete laboratory."
+                );
+
+            }
+
+        };
+
+
+    /* =====================================================
+       SEARCH
+    ===================================================== */
+
+    searchInput.addEventListener(
+        "input",
+        renderLaboratories
+    );
+
+
+    /* =====================================================
+       MOBILE MENU
+    ===================================================== */
+
+    mobileBtn.addEventListener(
+        "click",
+        () => {
+
+            sidebar.classList.toggle(
+                "open"
+            );
+
+        }
+    );
+
+
+    /* =====================================================
+       PROFILE MENU
+    ===================================================== */
+
+    document
+        .getElementById("profileBtn")
+        .addEventListener(
+            "click",
+            event => {
+
+                event.stopPropagation();
+
+                document
+                    .getElementById(
+                        "profileMenu"
+                    )
+                    .classList.toggle(
+                        "show"
+                    );
+
+            }
+        );
+
+
+    document.addEventListener(
+        "click",
+        () => {
+
+            document
+                .getElementById(
+                    "profileMenu"
+                )
+                .classList.remove(
+                    "show"
+                );
+
+        }
+    );
+
+
+    /* =====================================================
+       NOTIFICATION
+    ===================================================== */
+
+    document
+        .getElementById(
+            "notificationBtn"
+        )
+        .addEventListener(
+            "click",
+            () => {
+
+                alert(
+                    "No new notifications."
+                );
+
+            }
+        );
+
+
+    document
+        .getElementById(
+            "notificationLink"
+        )
+        .addEventListener(
+            "click",
+            event => {
+
+                event.preventDefault();
+
+                alert(
+                    "No new notifications."
+                );
+
+            }
+        );
+
+
+    /* =====================================================
+       SETTINGS
+    ===================================================== */
+
+    document
+        .getElementById(
+            "settingsLink"
+        )
+        .addEventListener(
+            "click",
+            event => {
+
+                event.preventDefault();
+
+                alert(
+                    "Settings module will be added next."
+                );
+
+            }
+        );
+
+
+    /* =====================================================
+       LOGOUT
+    ===================================================== */
+
+    document
+        .getElementById(
+            "logoutBtn"
+        )
+        .addEventListener(
+            "click",
+            async () => {
+
+                const confirmLogout =
+                    confirm(
+                        "Are you sure you want to logout?"
+                    );
+
+
+                if (!confirmLogout) {
+
+                    return;
+
+                }
+
+
+                try {
+
+                    await signOut(auth);
+
+
+                    localStorage.removeItem(
+                        "currentUser"
+                    );
+
+                    localStorage.removeItem(
+                        "userRole"
+                    );
+
+                    localStorage.removeItem(
+                        "userUID"
+                    );
+
+                    localStorage.removeItem(
+                        "adminLoggedIn"
+                    );
+
+
+                    window.location.href =
+                        "admin-login.html";
+
+                } catch (error) {
+
+                    console.error(
+                        "Logout error:",
+                        error
+                    );
+
+
+                    alert(
+                        "Logout failed."
+                    );
+
+                }
+
+            }
+        );
+
+
+    /* =====================================================
+       TOAST
+    ===================================================== */
+
+    function showToast(message) {
+
+        const toast =
+            document.getElementById(
+                "toast"
+            );
+
+
+        toast.textContent =
+            message;
+
+
+        toast.classList.add(
+            "show"
+        );
+
+
+        setTimeout(
+            () => {
+
+                toast.classList.remove(
+                    "show"
+                );
+
+            },
+            2500
+        );
+
+    }
+
+
+    /* =====================================================
+       HTML ESCAPE
+    ===================================================== */
+
+    function escapeHTML(value) {
+
+        return String(value)
+            .replaceAll(
+                "&",
+                "&amp;"
+            )
+            .replaceAll(
+                "<",
+                "&lt;"
+            )
+            .replaceAll(
+                ">",
+                "&gt;"
+            )
+            .replaceAll(
+                '"',
+                "&quot;"
+            )
+            .replaceAll(
+                "'",
+                "&#039;"
+            );
+
+    }
+
+</script>
+
+
+</body>
+</html>

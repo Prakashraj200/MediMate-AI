@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prescription Dispensation | MediMate AI Pharmacy</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: "Segoe UI", sans-serif; }
+        body { background: #f3faf6; color: #26372f; min-height: 100vh; }
+        .dashboard { display: flex; min-height: 100vh; }
+
+        .sidebar {
+            width: 260px; height: 100vh; position: fixed; left: 0; top: 0;
+            padding: 25px 18px; background: linear-gradient(180deg, #087f5b, #064c39);
+            color: white; display: flex; flex-direction: column; overflow: hidden; z-index: 1000;
+        }
+
+        .logo { text-align: center; margin-bottom: 25px; flex-shrink: 0; }
+        .logo h2 { font-size: 24px; color: white; }
+        .logo span { color: #b7f7d5; }
+
+        .menu { list-style: none; flex: 1; overflow-y: auto; padding-right: 5px; margin-bottom: 18px; }
+        .menu li { margin: 8px 0; }
+        .menu a {
+            display: flex; align-items: center; gap: 12px; padding: 12px 14px;
+            color: #eafff4; text-decoration: none; border-radius: 10px;
+            transition: all 0.2s ease; font-size: 14px;
+        }
+        .menu a:hover, .menu a.active {
+            background: white; color: #087f5b; font-weight: 600;
+        }
+
+        .main-content {
+            margin-left: 260px; width: calc(100% - 260px); min-height: 100vh;
+        }
+
+        .topbar {
+            height: 80px; background: white; border-bottom: 1px solid #dceed8;
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 0 35px; position: sticky; top: 0; z-index: 50;
+        }
+
+        .content { padding: 30px 35px; }
+
+        .btn {
+            padding: 10px 18px; border-radius: 10px; font-size: 13.5px; font-weight: 600;
+            border: none; cursor: pointer; display: inline-flex; align-items: center; gap: 8px;
+            transition: all 0.2s ease;
+        }
+        .btn-primary { background: #087f5b; color: white; }
+        .btn-primary:hover { background: #066246; }
+        .btn-secondary { background: #eaf8f0; color: #087f5b; border: 1px solid #c2e5d4; }
+
+        .panel {
+            background: white; border-radius: 20px; padding: 24px; border: 1px solid #dceed8;
+            margin-bottom: 25px;
+        }
+
+        .table-responsive { overflow-x: auto; }
+        table { width: 100%; border-collapse: collapse; text-align: left; }
+        th {
+            background: #f4faf6; color: #4b6f5d; font-size: 12.5px; text-transform: uppercase;
+            padding: 14px 16px; border-bottom: 1.5px solid #dcefe4;
+        }
+        td { padding: 15px 16px; border-bottom: 1px solid #edf4ef; font-size: 13.5px; }
+        tr:hover td { background: #f9fdfa; }
+
+        .rx-badge {
+            padding: 4px 10px; border-radius: 999px; font-size: 12px; font-weight: 600;
+        }
+        .dispensed { background: #eafaf1; color: #1e7e34; }
+        .pending { background: #fff8e6; color: #b7791f; }
+
+        @media (max-width: 800px) {
+            .sidebar { transform: translateX(-100%); }
+            .sidebar.open { transform: translateX(0); }
+            .main-content { margin-left: 0; width: 100%; }
+        }
+    </style>
+</head>
+<body>
+<div class="dashboard">
+    <aside class="sidebar" id="sidebar">
+        <div class="logo">
+            <h2>MediMate <span>AI</span></h2>
+            <p>Pharmacy Portal</p>
+        </div>
+
+        <ul class="menu">
+            <li><a href="dashboard.html"><i class="fa-solid fa-chart-pie"></i> Dashboard</a></li>
+            <li><a href="medicines.html"><i class="fa-solid fa-pills"></i> Medicines Formulary</a></li>
+            <li><a href="prescriptions.html" class="active"><i class="fa-solid fa-receipt"></i> Dispense Rx</a></li>
+            <li><a href="inventory.html"><i class="fa-solid fa-boxes-stacked"></i> Inventory Overview</a></li>
+            <li><a href="stock-management.html"><i class="fa-solid fa-cart-flatbed"></i> Stock Restocking</a></li>
+            <li><a href="expiry-management.html"><i class="fa-solid fa-calendar-xmark"></i> Expiry Tracking</a></li>
+            <li><a href="notifications.html"><i class="fa-solid fa-bell"></i> Alerts & Notices</a></li>
+            <li><a href="profile.html"><i class="fa-solid fa-id-card"></i> Pharmacist Profile</a></li>
+        </ul>
+
+        <div style="padding-top:14px; border-top:1px solid rgba(255,255,255,0.2);">
+            <a href="pharmacy-login.html" onclick="localStorage.clear();" style="color:white; text-decoration:none; display:flex; align-items:center; gap:10px; font-size:13.5px;">
+                <i class="fa-solid fa-right-from-bracket"></i> Sign Out
+            </a>
+        </div>
+    </aside>
+
+    <div class="main-content">
+        <header class="topbar">
+            <div>
+                <h1 style="font-size:22px; color:#087f5b; font-weight:700;">Pharmacy Dispensation Queue</h1>
+                <p style="font-size:13px; color:#64748b;">Process incoming doctor e-prescriptions, verify interactions, and fill drug orders.</p>
+            </div>
+            <button class="btn btn-secondary" onclick="alert('Printing pharmacy batch dispensation log...')"><i class="fa-solid fa-print"></i> Print Dispense Log</button>
+        </header>
+
+        <main class="content">
+            <div class="panel">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+                    <div>
+                        <h3 style="font-size:16px; font-weight:700;">Active Electronic Prescriptions</h3>
+                        <p style="font-size:12.5px; color:#64748b;">Live queue of medical prescriptions pending pharmacist verification.</p>
+                    </div>
+                </div>
+
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Rx #</th>
+                                <th>Patient Name</th>
+                                <th>Prescribing Doctor</th>
+                                <th>Medication Items</th>
+                                <th>Dosage Regimen</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="dispenseTbody">
+                            <tr>
+                                <td><code>RX-9822</code></td>
+                                <td><strong>Elena Gilbert</strong></td>
+                                <td>Dr. Michael Roberts</td>
+                                <td>Amoxicillin 500mg, Paracetamol 650mg</td>
+                                <td>1-1-1 (7 Days), SOS for pain</td>
+                                <td><span class="rx-badge pending">Awaiting Fill</span></td>
+                                <td>
+                                    <button class="btn btn-primary" style="padding:5px 10px; font-size:12px;" onclick="dispenseRx(this, 'Elena Gilbert', 'RX-9822')"><i class="fa-solid fa-check"></i> Dispense</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><code>RX-9825</code></td>
+                                <td><strong>Robert Baratheon</strong></td>
+                                <td>Dr. James Wilson</td>
+                                <td>Aceclofenac 100mg + Paracetamol</td>
+                                <td>1-0-1 (5 Days)</td>
+                                <td><span class="rx-badge pending">Awaiting Fill</span></td>
+                                <td>
+                                    <button class="btn btn-primary" style="padding:5px 10px; font-size:12px;" onclick="dispenseRx(this, 'Robert Baratheon', 'RX-9825')"><i class="fa-solid fa-check"></i> Dispense</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><code>RX-9821</code></td>
+                                <td><strong>John Doe</strong></td>
+                                <td>Dr. Sarah Connor</td>
+                                <td>Amlodipine 5mg, Atorvastatin 20mg</td>
+                                <td>1-0-0 (30 Days), 0-0-1 (30 Days)</td>
+                                <td><span class="rx-badge dispensed">Dispensed</span></td>
+                                <td>
+                                    <button class="btn btn-secondary" style="padding:5px 10px; font-size:12px;" onclick="alert('Viewing dispensed receipt...')"><i class="fa-solid fa-receipt"></i> Slip</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+
+<script>
+    function dispenseRx(btn, patient, rxNo) {
+        const row = btn.closest('tr');
+        const badge = row.querySelector('.rx-badge');
+        badge.className = 'rx-badge dispensed';
+        badge.innerText = 'Dispensed';
+        btn.outerHTML = `<button class="btn btn-secondary" style="padding:5px 10px; font-size:12px;" onclick="alert('Viewing dispensed receipt...')"><i class="fa-solid fa-receipt"></i> Slip</button>`;
+        alert(`Prescription ${rxNo} for ${patient} filled and dispensed. Inventory stock deducted automatically.`);
+    }
+</script>
+</body>
+</html>

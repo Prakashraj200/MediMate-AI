@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Prescriptions | MediMate AI</title>
+  <link rel="stylesheet" href="patient-style.css">
+  <style>
+    .prescription-card {
+      background: white;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 24px;
+      margin-bottom: 18px;
+      transition: all 0.2s ease;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .prescription-card:hover {
+      border-color: var(--primary);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .rx-header-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 14px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .rx-id-tag {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--primary);
+      background: var(--primary-subtle);
+      padding: 4px 10px;
+      border-radius: var(--radius-sm);
+      display: inline-block;
+      margin-bottom: 6px;
+    }
+
+    .rx-doc-info h3 {
+      font-size: 18px;
+      color: var(--text-main);
+      font-weight: 700;
+    }
+
+    .rx-doc-info p {
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    .rx-diagnosis-box {
+      background: var(--bg-surface-alt);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      padding: 12px 16px;
+      margin-bottom: 16px;
+    }
+
+    .rx-diagnosis-box strong {
+      color: var(--text-main);
+      font-size: 14px;
+      display: block;
+      margin-bottom: 2px;
+    }
+
+    .rx-diagnosis-box p {
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    .rx-medicines-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+
+    .rx-pill-item {
+      background: white;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      padding: 10px 14px;
+    }
+
+    .rx-pill-item strong {
+      color: var(--primary-dark);
+      font-size: 14px;
+      display: block;
+    }
+
+    .rx-pill-item span {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .rx-footer-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-top: 1px solid var(--border-color);
+      padding-top: 14px;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    /* Full Digital Rx Slip Modal */
+    .digital-rx-paper {
+      background: white;
+      border: 2px solid var(--primary);
+      border-radius: var(--radius-md);
+      padding: 28px;
+      font-family: inherit;
+    }
+
+    .hospital-rx-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 2px solid var(--primary);
+      padding-bottom: 16px;
+      margin-bottom: 20px;
+    }
+
+    .hospital-rx-head h2 {
+      color: var(--primary);
+      font-size: 22px;
+    }
+
+    .rx-symbol {
+      font-size: 36px;
+      font-family: Georgia, serif;
+      font-weight: bold;
+      color: var(--primary);
+      line-height: 1;
+      margin-bottom: 14px;
+    }
+
+    .signature-box {
+      margin-top: 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      border-top: 1px dashed var(--border-color);
+      padding-top: 16px;
+    }
+
+    .signature-line {
+      text-align: right;
+    }
+
+    .signature-stamp {
+      font-family: 'Brush Script MT', cursive, sans-serif;
+      font-size: 26px;
+      color: #0c8599;
+      transform: rotate(-3deg);
+      display: block;
+      margin-bottom: 4px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="logo">
+      <div class="logo-icon">🏥</div>
+      <h2>MediMate AI</h2>
+      <p>Patient Portal</p>
+    </div>
+
+    <div class="menu-container">
+      <ul class="menu">
+        <li>
+          <a href="dashboard.html">
+            <span class="nav-icon">🏠</span>
+            <span>Dashboard</span>
+          </a>
+        </li>
+        <li>
+          <a href="appointments.html">
+            <span class="nav-icon">📅</span>
+            <span>Appointments</span>
+          </a>
+        </li>
+        <li>
+          <a href="health-records.html">
+            <span class="nav-icon">❤️</span>
+            <span>Health Records</span>
+          </a>
+        </li>
+        <li>
+          <a href="medicines.html">
+            <span class="nav-icon">💊</span>
+            <span>Medicines</span>
+          </a>
+        </li>
+        <li>
+          <a href="prescriptions.html" class="active">
+            <span class="nav-icon">📋</span>
+            <span>Prescriptions</span>
+          </a>
+        </li>
+        <li>
+          <a href="lab-reports.html">
+            <span class="nav-icon">🧪</span>
+            <span>Lab Reports</span>
+          </a>
+        </li>
+        <li>
+          <a href="doctors.html">
+            <span class="nav-icon">👨‍⚕️</span>
+            <span>Doctors</span>
+          </a>
+        </li>
+        <li>
+          <a href="preethi-ai.html">
+            <span class="nav-icon">🤖</span>
+            <span>Preethi AI</span>
+          </a>
+        </li>
+        <li>
+          <a href="notifications.html">
+            <span class="nav-icon">🔔</span>
+            <span>Notifications</span>
+          </a>
+        </li>
+        <li>
+          <a href="profile.html">
+            <span class="nav-icon">👤</span>
+            <span>My Profile</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+
+    <div class="logout">
+      <button id="logoutBtn">
+        <span>🚪</span>
+        <span>Logout</span>
+      </button>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main">
+
+    <!-- TOPBAR -->
+    <header class="topbar">
+      <div class="topbar-left">
+        <button class="sidebar-toggle-btn" id="sidebarToggleBtn" title="Toggle Menu">☰</button>
+        <div class="topbar-title">
+          <h1>Medical Prescriptions</h1>
+          <p>Verified electronic clinical prescriptions & doctor treatment plans</p>
+        </div>
+      </div>
+
+      <div class="topbar-right">
+        <a href="notifications.html" class="notif-link" title="Notifications">
+          <span>🔔</span>
+          <span class="notif-badge" id="notifBadge" style="display: none;">0</span>
+        </a>
+
+        <a href="profile.html" class="user-profile-widget">
+          <div class="user-profile-info">
+            <strong id="userName">Patient</strong>
+            <span>Verified Patient</span>
+          </div>
+          <div class="user-avatar-circle" id="userAvatar">P</div>
+        </a>
+      </div>
+    </header>
+
+    <!-- CONTENT -->
+    <section class="content">
+
+      <!-- BANNER -->
+      <div class="page-banner">
+        <div>
+          <h2>Digital Rx Repository</h2>
+          <p>Access your complete history of doctor-authorized prescriptions, view exact drug schedules, or print official slips for pharmacy fulfillment.</p>
+        </div>
+        <a href="medicines.html" class="btn btn-primary" style="background: white; color: var(--primary);">
+          <span>💊</span>
+          <span>View Daily Medicine Schedule</span>
+        </a>
+      </div>
+
+      <!-- STATS -->
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-icon">📋</div>
+          <div class="stat-details">
+            <h4>Total Prescriptions</h4>
+            <div class="stat-value" id="statTotalRx">3</div>
+            <p class="stat-sub">Lifetime history</p>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon">⚡</div>
+          <div class="stat-details">
+            <h4>Active Treatment Plans</h4>
+            <div class="stat-value" id="statActiveRx" style="color: var(--primary);">2</div>
+            <p class="stat-sub">Under current regimen</p>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon">👨‍⚕️</div>
+          <div class="stat-details">
+            <h4>Prescribing Specialists</h4>
+            <div class="stat-value">3</div>
+            <p class="stat-sub">Cardiology, Medicine, Skin</p>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon">🔒</div>
+          <div class="stat-details">
+            <h4>Digital Signatures</h4>
+            <div class="stat-value" style="color: var(--primary);">Verified</div>
+            <p class="stat-sub">MCI Registered Physicians</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- SEARCH TOOLBAR -->
+      <div class="toolbar">
+        <div class="search-box">
+          <span class="search-icon">🔍</span>
+          <input type="text" id="searchRxInput" placeholder="Search by doctor, diagnosis or medicine name...">
+        </div>
+
+        <div class="filter-group">
+          <button class="filter-btn active" data-filter="all">All Prescriptions</button>
+          <button class="filter-btn" data-filter="active">Active Treatments</button>
+          <button class="filter-btn" data-filter="completed">Completed Plans</button>
+        </div>
+      </div>
+
+      <!-- PRESCRIPTIONS LIST CONTAINER -->
+      <div id="prescriptionsContainer">
+        <!-- Rendered dynamically -->
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- ========================================================================
+       MODAL: FULL DIGITAL PRESCRIPTION SLIP
+       ======================================================================== -->
+  <div class="modal-backdrop" id="rxSlipModal">
+    <div class="modal-dialog" style="max-width: 720px;">
+      <div class="modal-header">
+        <h3>📋 Official Electronic Medical Prescription</h3>
+        <button class="modal-close" id="closeRxSlipBtn">&times;</button>
+      </div>
+      <div class="modal-body" id="rxSlipModalContent">
+        <!-- Rendered dynamically -->
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline" onclick="window.print()">🖨️ Print Prescription</button>
+        <a href="medicines.html" class="btn btn-secondary">📦 Order from Pharmacy</a>
+        <button type="button" class="btn btn-primary" id="doneRxSlipBtn">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- SCRIPT -->
+  <script type="module">
+    import { setupPatientAuth, PatientStore, showToast } from "./patient-common.js";
+
+    setupPatientAuth("prescriptions");
+
+    let currentRxFilter = "all";
+    let rxSearchQuery = "";
+
+    document.addEventListener("DOMContentLoaded", function () {
+      initPrescriptionsPage();
+    });
+
+    function initPrescriptionsPage() {
+      renderPrescriptions();
+
+      // Search input
+      document.getElementById("searchRxInput").addEventListener("input", function (e) {
+        rxSearchQuery = e.target.value.toLowerCase().trim();
+        renderPrescriptions();
+      });
+
+      // Filter buttons
+      document.querySelectorAll(".filter-btn").forEach(btn => {
+        btn.addEventListener("click", function () {
+          document.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
+          this.classList.add("active");
+          currentRxFilter = this.getAttribute("data-filter");
+          renderPrescriptions();
+        });
+      });
+
+      // Slip modal close
+      document.getElementById("closeRxSlipBtn").addEventListener("click", () => {
+        document.getElementById("rxSlipModal").classList.remove("active");
+      });
+      document.getElementById("doneRxSlipBtn").addEventListener("click", () => {
+        document.getElementById("rxSlipModal").classList.remove("active");
+      });
+    }
+
+    function renderPrescriptions() {
+      const rxList = PatientStore.getPrescriptions();
+      const container = document.getElementById("prescriptionsContainer");
+
+      document.getElementById("statTotalRx").textContent = rxList.length;
+      document.getElementById("statActiveRx").textContent = rxList.filter(r => r.status === "Active").length;
+
+      let filtered = rxList;
+      if (currentRxFilter !== "all") {
+        filtered = filtered.filter(r => r.status.toLowerCase() === currentRxFilter.toLowerCase());
+      }
+      if (rxSearchQuery) {
+        filtered = filtered.filter(r =>
+          r.doctorName.toLowerCase().includes(rxSearchQuery) ||
+          r.diagnosis.toLowerCase().includes(rxSearchQuery) ||
+          r.id.toLowerCase().includes(rxSearchQuery) ||
+          (r.medicines && r.medicines.some(m => m.name.toLowerCase().includes(rxSearchQuery)))
+        );
+      }
+
+      if (filtered.length === 0) {
+        container.innerHTML = `
+          <div class="surface-card" style="text-align: center; padding: 48px 20px;">
+            <div style="font-size: 42px; margin-bottom: 12px;">📋</div>
+            <h3 style="color: var(--primary-dark); margin-bottom: 6px;">No prescriptions match your filter</h3>
+            <p style="color: var(--text-muted); font-size: 14px;">Try searching for another specialist or medical diagnosis.</p>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = filtered.map(rx => `
+        <div class="prescription-card">
+          <div class="rx-header-row">
+            <div>
+              <span class="rx-id-tag">${rx.id}</span>
+              <div class="rx-doc-info">
+                <h3>${rx.doctorName}</h3>
+                <p>${rx.doctorDepartment} • Reg: <strong>${rx.doctorReg}</strong></p>
+              </div>
+            </div>
+            <div style="text-align: right;">
+              <span class="status-badge ${rx.status === 'Active' ? 'optimal' : 'borderline'}">${rx.status}</span>
+              <p style="font-size: 12px; color: var(--text-muted); margin-top: 6px;">Prescribed: ${rx.date}</p>
+            </div>
+          </div>
+
+          <div class="rx-diagnosis-box">
+            <strong>Diagnosis & Clinical Indication:</strong>
+            <p>${rx.diagnosis}</p>
+          </div>
+
+          <h4 style="font-size: 13px; color: var(--text-muted); margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.5px;">
+            Rx Prescribed Drugs & Schedules
+          </h4>
+
+          <div class="rx-medicines-list">
+            ${rx.medicines.map(m => `
+              <div class="rx-pill-item">
+                <strong>${m.name} (${m.dosage})</strong>
+                <span>Frequency: ${m.frequency} • ${m.instructions}</span>
+              </div>
+            `).join('')}
+          </div>
+
+          <div class="rx-footer-row">
+            <div style="font-size: 13px; color: var(--text-muted);">
+              <strong>Clinical Advice:</strong> ${rx.advice}
+            </div>
+            <div style="display: flex; gap: 8px;">
+              <button class="btn btn-outline btn-sm view-rx-slip-btn" data-id="${rx.id}">
+                🧾 View Digital Rx Slip
+              </button>
+              <a href="medicines.html" class="btn btn-primary btn-sm">
+                📦 Manage / Refill Meds
+              </a>
+            </div>
+          </div>
+        </div>
+      `).join("");
+
+      document.querySelectorAll(".view-rx-slip-btn").forEach(btn => {
+        btn.addEventListener("click", function () {
+          const id = this.getAttribute("data-id");
+          showFullRxSlipModal(id);
+        });
+      });
+    }
+
+    function showFullRxSlipModal(rxId) {
+      const rxList = PatientStore.getPrescriptions();
+      const rx = rxList.find(r => r.id === rxId);
+      const profile = PatientStore.getProfile();
+      if (!rx) return;
+
+      const content = document.getElementById("rxSlipModalContent");
+      content.innerHTML = `
+        <div class="digital-rx-paper">
+          <div class="hospital-rx-head">
+            <div>
+              <h2>MediMate AI Hospital & Medical Research Institute</h2>
+              <p style="font-size: 12px; color: var(--text-muted);">Affiliated with National Healthcare Accreditation Board • ISO 9001:2020</p>
+              <p style="font-size: 12px; color: var(--text-muted);">Anna Salai, Chennai, Tamil Nadu • 24/7 Helpline: 1800-419-MEDIMATE</p>
+            </div>
+            <div style="text-align: right; font-size: 13px;">
+              <div style="font-size: 26px;">🏥</div>
+              <strong>${rx.id}</strong>
+            </div>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; background: var(--bg-surface-alt); padding: 14px; border-radius: 8px; font-size: 13px; margin-bottom: 20px;">
+            <div><strong>Patient Name:</strong> ${profile.name}</div>
+            <div><strong>Patient ID:</strong> ${profile.id}</div>
+            <div><strong>Age / Gender:</strong> ${profile.age || 32} / ${profile.gender || 'Male'}</div>
+            <div><strong>Date of Prescription:</strong> ${rx.date}</div>
+            <div><strong>Prescribing Doctor:</strong> ${rx.doctorName}</div>
+            <div><strong>Doctor Registration:</strong> ${rx.doctorReg}</div>
+            <div><strong>Department:</strong> ${rx.doctorDepartment}</div>
+            <div><strong>Review Due:</strong> ${rx.nextVisit}</div>
+          </div>
+
+          <div class="rx-symbol">℞</div>
+
+          <div class="table-responsive" style="margin-bottom: 20px;">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Drug / Generic Name</th>
+                  <th>Strength</th>
+                  <th>Frequency</th>
+                  <th>Duration</th>
+                  <th>Instructions</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${rx.medicines.map(m => `
+                  <tr>
+                    <td><strong>${m.name}</strong></td>
+                    <td>${m.dosage}</td>
+                    <td>${m.frequency}</td>
+                    <td>${m.duration}</td>
+                    <td>${m.instructions}</td>
+                  </tr>
+                `).join('')}
+              </tbody>
+            </table>
+          </div>
+
+          <div style="background: white; border: 1px solid var(--border-color); padding: 14px; border-radius: 8px; font-size: 13px; margin-bottom: 20px; line-height: 1.5;">
+            <strong style="color: var(--primary-dark);">Special Doctor Instructions & Lifestyle Advice:</strong><br>
+            ${rx.advice}
+          </div>
+
+          <div class="signature-box">
+            <div style="font-size: 11px; color: var(--text-subtle); max-width: 320px;">
+              Digital Prescription electronically signed and secured under Section 5 of the Information Technology Act.
+            </div>
+            <div class="signature-line">
+              <span class="signature-stamp">${rx.doctorName}</span>
+              <strong style="font-size: 13px; color: var(--text-main);">${rx.doctorName}</strong><br>
+              <span style="font-size: 11px; color: var(--text-muted);">${rx.doctorDepartment}</span>
+            </div>
+          </div>
+        </div>
+      `;
+
+      document.getElementById("rxSlipModal").classList.add("active");
+    }
+  </script>
+
+</body>
+</html>

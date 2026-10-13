@@ -1,0 +1,57 @@
+/* ========================================================
+   MediMate-AI - Responsive Media Queries (responsive.css)
+   ======================================================== */
+
+@media (max-width: 1024px) {
+  .stats-grid-container {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 840px) {
+  .app-sidebar,
+  .sidebar {
+    transform: translateX(-100%);
+  }
+
+  .app-sidebar.open,
+  .sidebar.open {
+    transform: translateX(0);
+  }
+
+  .app-main,
+  .main-content {
+    margin-left: 0 !important;
+    width: 100% !important;
+  }
+
+  .mobile-toggle-btn {
+    display: inline-flex !important;
+  }
+
+  .app-topbar,
+  .topbar {
+    padding: 0 20px;
+  }
+
+  .app-content,
+  .content {
+    padding: 20px;
+  }
+}
+
+@media (max-width: 540px) {
+  .stats-grid-container {
+    grid-template-columns: 1fr;
+  }
+
+  .app-page-title h1,
+  .topbar h1 {
+    font-size: 18px;
+  }
+
+  .btn {
+    padding: 8px 14px;
+    font-size: 12.5px;
+  }
+}

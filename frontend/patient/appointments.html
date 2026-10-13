@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Appointments | MediMate AI</title>
+  <link rel="stylesheet" href="patient-style.css">
+  <style>
+    .appointment-card {
+      background: white;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 22px;
+      margin-bottom: 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: all 0.2s ease;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .appointment-card:hover {
+      border-color: var(--primary);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .apt-info-block {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+    }
+
+    .doc-avatar {
+      width: 60px;
+      height: 60px;
+      border-radius: 18px;
+      background: var(--primary-subtle);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 30px;
+      flex-shrink: 0;
+    }
+
+    .apt-details h3 {
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--text-main);
+      margin-bottom: 4px;
+    }
+
+    .apt-details .dept-pill {
+      font-size: 12px;
+      color: var(--primary);
+      font-weight: 600;
+      background: var(--primary-subtle);
+      padding: 2px 8px;
+      border-radius: 6px;
+      display: inline-block;
+      margin-bottom: 8px;
+    }
+
+    .apt-meta-row {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      font-size: 13px;
+      color: var(--text-muted);
+      flex-wrap: wrap;
+    }
+
+    .apt-meta-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .apt-status-actions {
+      text-align: right;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 12px;
+    }
+
+    .action-btn-row {
+      display: flex;
+      gap: 8px;
+    }
+
+    /* Video Telehealth Room Preview */
+    .telehealth-room {
+      background: #111e18;
+      border-radius: var(--radius-md);
+      color: white;
+      padding: 24px;
+      text-align: center;
+      position: relative;
+    }
+
+    .video-viewport {
+      background: #1f332a;
+      border-radius: var(--radius-sm);
+      height: 220px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 20px;
+      border: 2px dashed rgba(255, 255, 255, 0.2);
+    }
+
+    .call-controls {
+      display: flex;
+      justify-content: center;
+      gap: 14px;
+    }
+
+    .call-btn {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      background: rgba(255, 255, 255, 0.2);
+      color: white;
+      transition: all 0.2s ease;
+    }
+
+    .call-btn:hover {
+      background: rgba(255, 255, 255, 0.35);
+    }
+
+    .call-btn.end-call {
+      background: #e03131;
+    }
+
+    /* Printable Slip Styling */
+    .printable-slip {
+      border: 2px dashed var(--primary);
+      padding: 24px;
+      border-radius: var(--radius-md);
+      background: var(--bg-surface-alt);
+    }
+
+    .slip-header {
+      text-align: center;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--border-color);
+      margin-bottom: 16px;
+    }
+
+    .slip-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      font-size: 13px;
+      margin-bottom: 18px;
+    }
+
+    .slip-item strong {
+      display: block;
+      color: var(--text-muted);
+      font-size: 11px;
+      text-transform: uppercase;
+      margin-bottom: 2px;
+    }
+
+    @media (max-width: 768px) {
+      .appointment-card {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 16px;
+      }
+      .apt-status-actions {
+        align-items: flex-start;
+        width: 100%;
+      }
+      .action-btn-row {
+        width: 100%;
+        justify-content: flex-start;
+        flex-wrap: wrap;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="logo">
+      <div class="logo-icon">🏥</div>
+      <h2>MediMate AI</h2>
+      <p>Patient Portal</p>
+    </div>
+
+    <div class="menu-container">
+      <ul class="menu">
+        <li>
+          <a href="dashboard.html">
+            <span class="nav-icon">🏠</span>
+            <span>Dashboard</span>
+          </a>
+        </li>
+        <li>
+          <a href="appointments.html" class="active">
+            <span class="nav-icon">📅</span>
+            <span>Appointments</span>
+          </a>
+        </li>
+        <li>
+          <a href="health-records.html">
+            <span class="nav-icon">❤️</span>
+            <span>Health Records</span>
+          </a>
+        </li>
+        <li>
+          <a href="medicines.html">
+            <span class="nav-icon">💊</span>
+            <span>Medicines</span>
+          </a>
+        </li>
+        <li>
+          <a href="prescriptions.html">
+            <span class="nav-icon">📋</span>
+            <span>Prescriptions</span>
+          </a>
+        </li>
+        <li>
+          <a href="lab-reports.html">
+            <span class="nav-icon">🧪</span>
+            <span>Lab Reports</span>
+          </a>
+        </li>
+        <li>
+          <a href="doctors.html">
+            <span class="nav-icon">👨‍⚕️</span>
+            <span>Doctors</span>
+          </a>
+        </li>
+        <li>
+          <a href="preethi-ai.html">
+            <span class="nav-icon">🤖</span>
+            <span>Preethi AI</span>
+          </a>
+        </li>
+        <li>
+          <a href="notifications.html">
+            <span class="nav-icon">🔔</span>
+            <span>Notifications</span>
+          </a>
+        </li>
+        <li>
+          <a href="profile.html">
+            <span class="nav-icon">👤</span>
+            <span>My Profile</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+
+    <div class="logout">
+      <button id="logoutBtn">
+        <span>🚪</span>
+        <span>Logout</span>
+      </button>
+    </div>
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <main class="main">
+
+    <!-- TOPBAR -->
+    <header class="topbar">
+      <div class="topbar-left">
+        <button class="sidebar-toggle-btn" id="sidebarToggleBtn" title="Toggle Menu">☰</button>
+        <div class="topbar-title">
+          <h1>My Appointments</h1>
+          <p>Schedule, manage and join your medical consultations</p>
+        </div>
+      </div>
+
+      <div class="topbar-right">
+        <a href="notifications.html" class="notif-link" title="Notifications">
+          <span>🔔</span>
+          <span class="notif-badge" id="notifBadge" style="display: none;">0</span>
+        </a>
+
+        <a href="profile.html" class="user-profile-widget">
+          <div class="user-profile-info">
+            <strong id="userName">Patient</strong>
+            <span>Verified Patient</span>
+          </div>
+          <div class="user-avatar-circle" id="userAvatar">P</div>
+        </a>
+      </div>
+    </header>
+
+    <!-- CONTENT -->
+    <section class="content">
+
+      <!-- BANNER -->
+      <div class="page-banner">
+        <div>
+          <h2>Appointment Management</h2>
+          <p>Book instant appointments with hospital specialists, attend video consultations, or view prescription visit slips.</p>
+        </div>
+        <button class="btn btn-primary" id="openBookModalBtn" style="background: white; color: var(--primary);">
+          <span>➕</span>
+          <span>Book New Appointment</span>
+        </button>
+      </div>
+
+      <!-- STATS -->
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-icon">📅</div>
+          <div class="stat-details">
+            <h4>Total Appointments</h4>
+            <div class="stat-value" id="statTotalApts">0</div>
+            <p class="stat-sub">Lifetime history</p>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon">⏳</div>
+          <div class="stat-details">
+            <h4>Upcoming / Confirmed</h4>
+            <div class="stat-value" id="statUpcomingApts" style="color: var(--primary);">0</div>
+            <p class="stat-sub">Ready for consultation</p>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon">✅</div>
+          <div class="stat-details">
+            <h4>Completed Visits</h4>
+            <div class="stat-value" id="statCompletedApts">0</div>
+            <p class="stat-sub">Records archived</p>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon">📹</div>
+          <div class="stat-details">
+            <h4>Video Telehealth</h4>
+            <div class="stat-value" id="statVideoApts">0</div>
+            <p class="stat-sub">Virtual visits</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- TOOLBAR: SEARCH & FILTERS -->
+      <div class="toolbar">
+        <div class="search-box">
+          <span class="search-icon">🔍</span>
+          <input type="text" id="searchInput" placeholder="Search by doctor, department or reason...">
+        </div>
+
+        <div class="filter-group">
+          <button class="filter-btn active" data-filter="all">All</button>
+          <button class="filter-btn" data-filter="confirmed">Upcoming</button>
+          <button class="filter-btn" data-filter="completed">Completed</button>
+          <button class="filter-btn" data-filter="cancelled">Cancelled</button>
+        </div>
+      </div>
+
+      <!-- APPOINTMENTS LIST CONTAINER -->
+      <div id="appointmentsListContainer">
+        <!-- Rendered dynamically -->
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- ========================================================================
+       MODAL: BOOK NEW APPOINTMENT
+       ======================================================================== -->
+  <div class="modal-backdrop" id="bookModal">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h3>📅 Book a Medical Appointment</h3>
+        <button class="modal-close" id="closeBookModalBtn">&times;</button>
+      </div>
+      <form id="bookAppointmentForm">
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="deptSelect">Select Medical Department</label>
+            <select id="deptSelect" required>
+              <option value="">-- Choose Department --</option>
+              <option value="Cardiology">Cardiology (Heart & Circulation)</option>
+              <option value="General Medicine">General Medicine & Internal Care</option>
+              <option value="Dermatology">Dermatology (Skin & Hair)</option>
+              <option value="Orthopedics">Orthopedics (Bones & Joints)</option>
+              <option value="Neurology">Neurology (Brain & Nerves)</option>
+              <option value="Pediatrics">Pediatrics (Child Health)</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="doctorSelect">Select Specialist Doctor</label>
+            <select id="doctorSelect" required>
+              <option value="">-- Choose Doctor --</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="consultType">Consultation Mode</label>
+            <select id="consultType" required>
+              <option value="In-Person Consultation">In-Person Hospital Visit (OPD)</option>
+              <option value="Video Call">Virtual Video Call (Telehealth)</option>
+            </select>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="aptDate">Preferred Date</label>
+              <input type="date" id="aptDate" required>
+            </div>
+            <div class="form-group">
+              <label for="aptTime">Preferred Time Slot</label>
+              <select id="aptTime" required>
+                <option value="09:30 AM">09:30 AM (Morning)</option>
+                <option value="10:30 AM">10:30 AM (Morning)</option>
+                <option value="11:45 AM">11:45 AM (Late Morning)</option>
+                <option value="02:30 PM">02:30 PM (Afternoon)</option>
+                <option value="03:45 PM">03:45 PM (Afternoon)</option>
+                <option value="05:15 PM">05:15 PM (Evening)</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="aptReason">Reason for Visit / Symptoms</label>
+            <textarea id="aptReason" rows="3" placeholder="Briefly describe your symptoms or reason for visit (e.g., routine blood pressure review, headache, joint pain)..." required></textarea>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline" id="cancelBookBtn">Cancel</button>
+          <button type="submit" class="btn btn-primary">Confirm & Book Appointment</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ========================================================================
+       MODAL: VIEW APPOINTMENT SLIP
+       ======================================================================== -->
+  <div class="modal-backdrop" id="slipModal">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h3>🧾 Official Appointment Slip</h3>
+        <button class="modal-close" id="closeSlipModalBtn">&times;</button>
+      </div>
+      <div class="modal-body" id="slipModalBody">
+        <!-- Rendered dynamically -->
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline" onclick="window.print()">🖨️ Print Slip</button>
+        <button type="button" class="btn btn-primary" id="doneSlipBtn">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================================
+       MODAL: TELEHEALTH VIDEO CONSULTATION ROOM
+       ======================================================================== -->
+  <div class="modal-backdrop" id="videoModal">
+    <div class="modal-dialog" style="max-width: 650px;">
+      <div class="modal-header">
+        <h3>📹 MediMate Telehealth Video Call</h3>
+        <button class="modal-close" id="closeVideoModalBtn">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="telehealth-room">
+          <div class="video-viewport">
+            <div style="font-size: 50px; margin-bottom: 8px;">👨‍⚕️</div>
+            <h4 id="videoDoctorName">Dr. Specialist</h4>
+            <p style="font-size: 13px; color: #74b898; margin-top: 4px;">Connected • High Definition Audio & Video Encrypted</p>
+          </div>
+          <div class="call-controls">
+            <button class="call-btn" id="toggleMicBtn" title="Mute Microphone">🎤</button>
+            <button class="call-btn" id="toggleCamBtn" title="Turn Camera Off">📷</button>
+            <button class="call-btn end-call" id="leaveCallBtn" title="Leave Consultation">📞</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PAGE SCRIPT -->
+  <script type="module">
+    import { setupPatientAuth, PatientStore, showToast } from "./patient-common.js";
+
+    setupPatientAuth("appointments");
+
+    let currentFilter = "all";
+    let searchQuery = "";
+
+    document.addEventListener("DOMContentLoaded", function () {
+      initAppointmentsPage();
+    });
+
+    function initAppointmentsPage() {
+      // Set min date for datepicker
+      const dateInput = document.getElementById("aptDate");
+      const today = new Date().toISOString().split("T")[0];
+      dateInput.min = today;
+      dateInput.value = today;
+
+      // Populate doctor select dynamically based on dept
+      setupDoctorSelect();
+
+      // Render appointments
+      renderAppointments();
+
+      // Filter buttons
+      document.querySelectorAll(".filter-btn").forEach(btn => {
+        btn.addEventListener("click", function () {
+          document.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
+          this.classList.add("active");
+          currentFilter = this.getAttribute("data-filter");
+          renderAppointments();
+        });
+      });
+
+      // Search input
+      document.getElementById("searchInput").addEventListener("input", function (e) {
+        searchQuery = e.target.value.toLowerCase().trim();
+        renderAppointments();
+      });
+
+      // Book modal toggle
+      const bookModal = document.getElementById("bookModal");
+      document.getElementById("openBookModalBtn").addEventListener("click", () => {
+        bookModal.classList.add("active");
+      });
+      document.getElementById("closeBookModalBtn").addEventListener("click", () => {
+        bookModal.classList.remove("active");
+      });
+      document.getElementById("cancelBookBtn").addEventListener("click", () => {
+        bookModal.classList.remove("active");
+      });
+
+      // Form submission
+      document.getElementById("bookAppointmentForm").addEventListener("submit", function (e) {
+        e.preventDefault();
+        const dept = document.getElementById("deptSelect").value;
+        const doctorSelect = document.getElementById("doctorSelect");
+        const docName = doctorSelect.options[doctorSelect.selectedIndex].text;
+        const consultType = document.getElementById("consultType").value;
+        const date = document.getElementById("aptDate").value;
+        const time = document.getElementById("aptTime").value;
+        const reason = document.getElementById("aptReason").value;
+
+        const newApt = PatientStore.addAppointment({
+          doctorName: docName,
+          doctorRole: dept + " Specialist",
+          doctorAvatar: "👨‍⚕️",
+          department: dept,
+          date: date,
+          time: time,
+          type: consultType,
+          room: consultType === "Video Call" ? "Telehealth Room #2" : "OPD Room 204",
+          status: "Confirmed",
+          reason: reason,
+          fee: "₹650",
+          notes: "Appointment booked via MediMate Patient Portal."
+        });
+
+        bookModal.classList.remove("active");
+        this.reset();
+        showToast("Appointment successfully booked with " + docName + "!", "success");
+        renderAppointments();
+      });
+
+      // Close Slip Modal
+      document.getElementById("closeSlipModalBtn").addEventListener("click", () => {
+        document.getElementById("slipModal").classList.remove("active");
+      });
+      document.getElementById("doneSlipBtn").addEventListener("click", () => {
+        document.getElementById("slipModal").classList.remove("active");
+      });
+
+      // Video call modal
+      const videoModal = document.getElementById("videoModal");
+      document.getElementById("closeVideoModalBtn").addEventListener("click", () => {
+        videoModal.classList.remove("active");
+      });
+      document.getElementById("leaveCallBtn").addEventListener("click", () => {
+        videoModal.classList.remove("active");
+        showToast("Consultation call ended.", "info");
+      });
+
+      let micMuted = false;
+      document.getElementById("toggleMicBtn").addEventListener("click", function() {
+        micMuted = !micMuted;
+        this.textContent = micMuted ? "🔇" : "🎤";
+        showToast(micMuted ? "Microphone muted" : "Microphone active", "info");
+      });
+
+      let camOff = false;
+      document.getElementById("toggleCamBtn").addEventListener("click", function() {
+        camOff = !camOff;
+        this.textContent = camOff ? "🚫" : "📷";
+        showToast(camOff ? "Camera turned off" : "Camera turned on", "info");
+      });
+    }
+
+    function setupDoctorSelect() {
+      const deptSelect = document.getElementById("deptSelect");
+      const doctorSelect = document.getElementById("doctorSelect");
+      const doctors = PatientStore.getDoctors();
+
+      function updateDocOptions(dept) {
+        doctorSelect.innerHTML = `<option value="">-- Choose Specialist Doctor --</option>`;
+        const filtered = dept ? doctors.filter(d => d.department.toLowerCase() === dept.toLowerCase()) : doctors;
+        filtered.forEach(d => {
+          const opt = document.createElement("option");
+          opt.value = d.id;
+          opt.textContent = `${d.name} (${d.qualifications})`;
+          doctorSelect.appendChild(opt);
+        });
+      }
+
+      updateDocOptions("");
+      deptSelect.addEventListener("change", function () {
+        updateDocOptions(this.value);
+      });
+    }
+
+    function renderAppointments() {
+      const apts = PatientStore.getAppointments();
+      const container = document.getElementById("appointmentsListContainer");
+
+      // Update counters
+      document.getElementById("statTotalApts").textContent = apts.length;
+      document.getElementById("statUpcomingApts").textContent = apts.filter(a => a.status === "Confirmed").length;
+      document.getElementById("statCompletedApts").textContent = apts.filter(a => a.status === "Completed").length;
+      document.getElementById("statVideoApts").textContent = apts.filter(a => a.type.toLowerCase().includes("video")).length;
+
+      // Filter list
+      let filtered = apts;
+      if (currentFilter !== "all") {
+        filtered = filtered.filter(a => a.status.toLowerCase() === currentFilter.toLowerCase());
+      }
+      if (searchQuery) {
+        filtered = filtered.filter(a =>
+          a.doctorName.toLowerCase().includes(searchQuery) ||
+          a.department.toLowerCase().includes(searchQuery) ||
+          (a.reason && a.reason.toLowerCase().includes(searchQuery))
+        );
+      }
+
+      if (filtered.length === 0) {
+        container.innerHTML = `
+          <div class="surface-card" style="text-align: center; padding: 48px 20px;">
+            <div style="font-size: 42px; margin-bottom: 12px;">📅</div>
+            <h3 style="color: var(--primary-dark); margin-bottom: 6px;">No appointments match your filter</h3>
+            <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 20px;">
+              Try clearing search terms or schedule a new appointment with our doctors.
+            </p>
+            <button class="btn btn-primary" onclick="document.getElementById('openBookModalBtn').click()">
+              Schedule Appointment
+            </button>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = filtered.map(apt => `
+        <div class="appointment-card" id="apt-${apt.id}">
+          <div class="apt-info-block">
+            <div class="doc-avatar">${apt.doctorAvatar || "👨‍⚕️"}</div>
+            <div class="apt-details">
+              <h3>${apt.doctorName}</h3>
+              <span class="dept-pill">${apt.department} • ${apt.type}</span>
+              <div class="apt-meta-row">
+                <span class="apt-meta-item">🗓️ <strong>${apt.date}</strong></span>
+                <span class="apt-meta-item">⏰ <strong>${apt.time}</strong></span>
+                <span class="apt-meta-item">📍 ${apt.room || "OPD Room"}</span>
+                <span class="apt-meta-item">💳 Fee: ${apt.fee || "₹500"}</span>
+              </div>
+              ${apt.reason ? `<p style="font-size: 13px; color: var(--text-muted); margin-top: 6px;"><em>Reason:</em> ${apt.reason}</p>` : ''}
+            </div>
+          </div>
+
+          <div class="apt-status-actions">
+            <span class="status-badge ${apt.status.toLowerCase()}">${apt.status}</span>
+            <div class="action-btn-row">
+              <button class="btn btn-outline btn-sm view-slip-btn" data-id="${apt.id}">
+                🧾 Slip
+              </button>
+              ${apt.type.toLowerCase().includes("video") && apt.status === "Confirmed" ? `
+                <button class="btn btn-primary btn-sm join-video-btn" data-id="${apt.id}" data-doc="${apt.doctorName}">
+                  📹 Join Call
+                </button>
+              ` : ''}
+              ${apt.status === "Confirmed" ? `
+                <button class="btn btn-danger btn-sm cancel-apt-btn" data-id="${apt.id}">
+                  Cancel
+                </button>
+              ` : ''}
+            </div>
+          </div>
+        </div>
+      `).join("");
+
+      // Bind action listeners
+      document.querySelectorAll(".view-slip-btn").forEach(btn => {
+        btn.addEventListener("click", function () {
+          const id = this.getAttribute("data-id");
+          showSlipModal(id);
+        });
+      });
+
+      document.querySelectorAll(".join-video-btn").forEach(btn => {
+        btn.addEventListener("click", function () {
+          const doc = this.getAttribute("data-doc");
+          document.getElementById("videoDoctorName").textContent = doc;
+          document.getElementById("videoModal").classList.add("active");
+        });
+      });
+
+      document.querySelectorAll(".cancel-apt-btn").forEach(btn => {
+        btn.addEventListener("click", function () {
+          const id = this.getAttribute("data-id");
+          if (confirm("Are you sure you want to cancel this appointment?")) {
+            PatientStore.updateAppointmentStatus(id, "Cancelled");
+            showToast("Appointment has been cancelled.", "info");
+            renderAppointments();
+          }
+        });
+      });
+    }
+
+    function showSlipModal(aptId) {
+      const apts = PatientStore.getAppointments();
+      const apt = apts.find(a => a.id === aptId);
+      const profile = PatientStore.getProfile();
+      if (!apt) return;
+
+      const body = document.getElementById("slipModalBody");
+      body.innerHTML = `
+        <div class="printable-slip">
+          <div class="slip-header">
+            <h2 style="color: var(--primary); font-size: 20px;">MediMate AI Hospital & Diagnostics</h2>
+            <p style="font-size: 12px; color: var(--text-muted);">Accredited Healthcare Network • Patient Outpatient Receipt</p>
+            <div style="margin-top: 6px; font-weight: 700; color: var(--text-main);">APPOINTMENT PASS: ${apt.id}</div>
+          </div>
+
+          <div class="slip-grid">
+            <div class="slip-item">
+              <strong>Patient Name</strong>
+              ${profile.name} (Age: ${profile.age || 32}, ${profile.gender || 'Male'})
+            </div>
+            <div class="slip-item">
+              <strong>Patient ID</strong>
+              ${profile.id || 'MM-PAT-9042'}
+            </div>
+            <div class="slip-item">
+              <strong>Doctor / Specialist</strong>
+              ${apt.doctorName}
+            </div>
+            <div class="slip-item">
+              <strong>Department</strong>
+              ${apt.department}
+            </div>
+            <div class="slip-item">
+              <strong>Appointment Date & Time</strong>
+              ${apt.date} at ${apt.time}
+            </div>
+            <div class="slip-item">
+              <strong>Location / Mode</strong>
+              ${apt.type} • ${apt.room}
+            </div>
+            <div class="slip-item">
+              <strong>Consultation Fee</strong>
+              ${apt.fee} (Paid Online)
+            </div>
+            <div class="slip-item">
+              <strong>Booking Status</strong>
+              <span class="status-badge ${apt.status.toLowerCase()}">${apt.status}</span>
+            </div>
+          </div>
+
+          <div style="background: white; border: 1px solid var(--border-color); padding: 12px; border-radius: 8px; font-size: 12px; color: var(--text-muted); line-height: 1.5;">
+            <strong>Instructions for Patient:</strong><br>
+            • Please arrive at OPD 15 minutes prior to your scheduled slot.<br>
+            • For video consultations, enter the secure room link 5 minutes before scheduled start time.<br>
+            • In case of emergency or severe chest distress, contact our 24/7 ER hotline directly.
+          </div>
+        </div>
+      `;
+
+      document.getElementById("slipModal").classList.add("active");
+    }
+  </script>
+
+</body>
+</html>

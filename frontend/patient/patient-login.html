@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,11 +8,13 @@
     <title>Patient Login | MediMate-AI</title>
 
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap');
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: Arial, Helvetica, sans-serif;
+            font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
         }
 
         body {
@@ -20,7 +23,13 @@
             align-items: center;
             justify-content: center;
             padding: 20px;
-            background: linear-gradient(135deg, #eafff2, #ffffff);
+            background-color: #050a14;
+            background-image: 
+                radial-gradient(circle at 10% 10%, rgba(0, 229, 153, 0.08) 0%, transparent 40%),
+                radial-gradient(circle at 90% 90%, rgba(0, 210, 255, 0.08) 0%, transparent 40%);
+            background-attachment: fixed;
+            color: #f8fafc;
+            -webkit-font-smoothing: antialiased;
         }
 
         .login-container {
@@ -29,14 +38,17 @@
             min-height: 620px;
             display: grid;
             grid-template-columns: 1fr 1fr;
-            background: #ffffff;
-            border-radius: 25px;
+            background: rgba(13, 22, 41, 0.85);
+            border-radius: 28px;
             overflow: hidden;
-            box-shadow: 0 15px 45px rgba(0, 100, 50, 0.15);
+            box-shadow: 0 30px 70px rgba(0, 0, 0, 0.8), 0 0 40px rgba(0, 229, 153, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
         }
 
         .welcome-section {
-            background: linear-gradient(145deg, #087f45, #16b364);
+            background: linear-gradient(145deg, rgba(10, 20, 42, 0.95), rgba(5, 10, 20, 0.98));
             color: white;
             padding: 55px 45px;
             display: flex;
@@ -44,6 +56,7 @@
             justify-content: center;
             position: relative;
             overflow: hidden;
+            border-right: 1px solid rgba(255, 255, 255, 0.08);
         }
 
         .welcome-section::before,
@@ -51,7 +64,8 @@
             content: "";
             position: absolute;
             border-radius: 50%;
-            background: rgba(255, 255, 255, 0.10);
+            background: rgba(0, 229, 153, 0.08);
+            pointer-events: none;
         }
 
         .welcome-section::before {
@@ -69,37 +83,42 @@
         }
 
         .logo {
-            width: 78px;
-            height: 78px;
+            width: 70px;
+            height: 70px;
             display: flex;
             align-items: center;
             justify-content: center;
-            background: white;
-            color: #087f45;
+            background: linear-gradient(135deg, #00e599, #00d2ff);
+            color: #050a14;
             border-radius: 20px;
-            font-size: 36px;
-            font-weight: bold;
+            font-size: 32px;
+            font-weight: 800;
             margin-bottom: 25px;
             z-index: 1;
+            box-shadow: 0 0 25px rgba(0, 229, 153, 0.4);
         }
 
         .welcome-section h1 {
             font-size: 38px;
-            margin-bottom: 15px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            margin-bottom: 12px;
             z-index: 1;
         }
 
         .welcome-section h3 {
-            font-size: 21px;
-            font-weight: normal;
+            font-size: 19px;
+            font-weight: 600;
+            color: #00e599;
             margin-bottom: 18px;
             z-index: 1;
         }
 
         .welcome-section p {
             max-width: 410px;
-            font-size: 16px;
-            line-height: 1.8;
+            font-size: 15px;
+            line-height: 1.7;
+            color: #cbd5e1;
             z-index: 1;
         }
 
@@ -111,7 +130,10 @@
 
         .features li {
             margin: 15px 0;
-            font-size: 15px;
+            font-size: 14px;
+            color: #e2e8f0;
+            display: flex;
+            align-items: center;
         }
 
         .features li::before {
@@ -121,9 +143,12 @@
             justify-content: center;
             width: 24px;
             height: 24px;
-            margin-right: 10px;
+            margin-right: 12px;
             border-radius: 50%;
-            background: rgba(255, 255, 255, 0.2);
+            background: rgba(0, 229, 153, 0.2);
+            color: #00e599;
+            font-weight: bold;
+            font-size: 12px;
         }
 
         .form-section {
@@ -131,16 +156,19 @@
             display: flex;
             flex-direction: column;
             justify-content: center;
+            background: rgba(8, 14, 28, 0.7);
         }
 
         .form-section h2 {
-            color: #123d2b;
+            color: #ffffff;
             font-size: 30px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
             margin-bottom: 10px;
         }
 
         .description {
-            color: #718078;
+            color: #94a3b8;
             font-size: 14px;
             line-height: 1.6;
             margin-bottom: 30px;
@@ -152,25 +180,29 @@
 
         .form-group label {
             display: block;
-            color: #254b39;
-            font-size: 14px;
-            font-weight: bold;
+            color: #94a3b8;
+            font-size: 13px;
+            font-weight: 600;
             margin-bottom: 8px;
         }
 
         .form-group input {
             width: 100%;
-            padding: 14px 16px;
-            border: 1px solid #d5e5dc;
-            border-radius: 10px;
+            padding: 13px 16px;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 12px;
             outline: none;
             font-size: 14px;
-            transition: 0.3s;
+            background: rgba(10, 18, 36, 0.85);
+            color: #ffffff;
+            transition: all 0.2s;
+            font-family: inherit;
         }
 
         .form-group input:focus {
-            border-color: #10a45b;
-            box-shadow: 0 0 0 3px rgba(16, 164, 91, 0.12);
+            border-color: #00e599;
+            box-shadow: 0 0 0 3px rgba(0, 229, 153, 0.2);
+            background: rgba(13, 24, 48, 0.95);
         }
 
         .password-wrapper {
@@ -183,12 +215,12 @@
 
         .show-password {
             position: absolute;
-            right: 12px;
+            right: 14px;
             top: 50%;
             transform: translateY(-50%);
             border: none;
             background: transparent;
-            color: #087f45;
+            color: #00e599;
             cursor: pointer;
             font-size: 12px;
             font-weight: bold;
@@ -206,8 +238,8 @@
         .remember-me {
             display: flex;
             align-items: center;
-            gap: 7px;
-            color: #66766d;
+            gap: 8px;
+            color: #94a3b8;
         }
 
         .remember-me input {
@@ -215,9 +247,9 @@
         }
 
         .forgot-password {
-            color: #087f45;
+            color: #00e599;
             text-decoration: none;
-            font-weight: bold;
+            font-weight: 600;
         }
 
         .forgot-password:hover {
@@ -226,15 +258,22 @@
 
         .login-button {
             width: 100%;
-            padding: 15px;
+            padding: 14px;
             border: none;
-            border-radius: 10px;
-            background: linear-gradient(135deg, #087f45, #16b364);
-            color: white;
-            font-size: 16px;
-            font-weight: bold;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #00e599, #00b87a);
+            color: #050a14;
+            font-size: 15px;
+            font-weight: 800;
             cursor: pointer;
-            transition: 0.3s;
+            transition: all 0.25s ease;
+            box-shadow: 0 4px 20px rgba(0, 229, 153, 0.35);
+        }
+
+        .login-button:hover {
+            transform: translateY(-2px);
+            background: linear-gradient(135deg, #26f2ae, #00d28d);
+            box-shadow: 0 8px 25px rgba(0, 229, 153, 0.5);
         }
 
         .login-button:hover {
@@ -242,8 +281,10 @@
             box-shadow: 0 8px 20px rgba(8, 127, 69, 0.25);
         }
 
-        .login-button:active {
-            transform: translateY(0);
+        .login-button:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none;
         }
 
         .message {
@@ -280,10 +321,6 @@
             color: #087f45;
             text-decoration: none;
             font-weight: bold;
-        }
-
-        .register-link a:hover {
-            text-decoration: underline;
         }
 
         .footer {
@@ -331,6 +368,7 @@
     <main class="login-container">
 
         <section class="welcome-section">
+
             <div class="logo">M+</div>
 
             <h1>MediMate-AI</h1>
@@ -349,7 +387,9 @@
                 <li>Track vital information</li>
                 <li>Chat with Preethi AI</li>
             </ul>
+
         </section>
+
 
         <section class="form-section">
 
@@ -359,10 +399,14 @@
                 Sign in to access your personal healthcare dashboard.
             </p>
 
+
             <form id="patientLoginForm">
 
                 <div class="form-group">
-                    <label for="email">Patient Email</label>
+
+                    <label for="email">
+                        Patient Email
+                    </label>
 
                     <input
                         type="email"
@@ -372,12 +416,18 @@
                         autocomplete="email"
                         required
                     >
+
                 </div>
 
+
                 <div class="form-group">
-                    <label for="password">Password</label>
+
+                    <label for="password">
+                        Password
+                    </label>
 
                     <div class="password-wrapper">
+
                         <input
                             type="password"
                             id="password"
@@ -395,32 +445,64 @@
                         >
                             Show
                         </button>
+
                     </div>
+
                 </div>
+
 
                 <div class="form-options">
+
                     <label class="remember-me">
-                        <input type="checkbox" id="rememberMe">
+
+                        <input
+                            type="checkbox"
+                            id="rememberMe"
+                        >
+
                         Remember me
+
                     </label>
 
-                    <a href="#" class="forgot-password" id="forgotPassword">
+
+                    <a
+                        href="#"
+                        class="forgot-password"
+                        id="forgotPassword"
+                    >
                         Forgot password?
                     </a>
+
                 </div>
 
-                <button type="submit" class="login-button">
+
+                <button
+                    type="submit"
+                    class="login-button"
+                    id="loginButton"
+                >
                     Login to Patient Dashboard
                 </button>
 
-                <div id="message" class="message"></div>
+
+                <div
+                    id="message"
+                    class="message"
+                ></div>
 
             </form>
 
+
             <p class="register-link">
+
                 Don't have a patient account?
-                <a href="../register.html">Register here</a>
+
+                <a href="../register.html">
+                    Register here
+                </a>
+
             </p>
+
 
             <p class="footer">
                 © 2026 MediMate-AI | Healthcare Monitoring System
@@ -430,107 +512,404 @@
 
     </main>
 
-    <script>
-        const loginForm = document.getElementById("patientLoginForm");
-        const emailInput = document.getElementById("email");
-        const passwordInput = document.getElementById("password");
-        const showPasswordButton = document.getElementById("showPassword");
-        const forgotPassword = document.getElementById("forgotPassword");
-        const messageBox = document.getElementById("message");
-        const rememberMe = document.getElementById("rememberMe");
 
-        // Load remembered email
-        const savedEmail = localStorage.getItem(
-            "patientRememberedEmail"
-        );
+    <!-- =========================
+         FIREBASE LOGIN
+    ========================== -->
+
+    <script type="module">
+
+        import { auth } from "../static/js/firebase-config.js";
+
+        import {
+            signInWithEmailAndPassword,
+            sendPasswordResetEmail,
+            signOut
+        } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
+
+
+        const loginForm =
+            document.getElementById("patientLoginForm");
+
+        const emailInput =
+            document.getElementById("email");
+
+        const passwordInput =
+            document.getElementById("password");
+
+        const showPasswordButton =
+            document.getElementById("showPassword");
+
+        const forgotPassword =
+            document.getElementById("forgotPassword");
+
+        const messageBox =
+            document.getElementById("message");
+
+        const rememberMe =
+            document.getElementById("rememberMe");
+
+        const loginButton =
+            document.getElementById("loginButton");
+
+
+        // =========================
+        // MESSAGE
+        // =========================
+
+        function showMessage(message, type) {
+
+            messageBox.className = "message " + type;
+
+            messageBox.textContent = message;
+        }
+
+
+        // =========================
+        // REMEMBERED EMAIL
+        // =========================
+
+        const savedEmail =
+            localStorage.getItem("patientRememberedEmail");
 
         if (savedEmail) {
+
             emailInput.value = savedEmail;
+
             rememberMe.checked = true;
         }
 
-        // Show or hide password
-        showPasswordButton.addEventListener("click", function () {
-            if (passwordInput.type === "password") {
-                passwordInput.type = "text";
-                showPasswordButton.textContent = "Hide";
-            } else {
-                passwordInput.type = "password";
-                showPasswordButton.textContent = "Show";
-            }
-        });
 
-        // Forgot password
-        forgotPassword.addEventListener("click", function (event) {
-            event.preventDefault();
+        // =========================
+        // SHOW / HIDE PASSWORD
+        // =========================
 
-            messageBox.className = "message error";
-            messageBox.textContent =
-                "Password reset will be connected with Firebase Authentication.";
-        });
+        showPasswordButton.addEventListener(
+            "click",
+            function () {
 
-        // Patient login
-        loginForm.addEventListener("submit", function (event) {
-            event.preventDefault();
+                if (passwordInput.type === "password") {
 
-            const email = emailInput.value.trim().toLowerCase();
-            const password = passwordInput.value.trim();
+                    passwordInput.type = "text";
 
-            const users = JSON.parse(
-                localStorage.getItem("medimateUsers")
-            ) || [];
+                    showPasswordButton.textContent = "Hide";
 
-            const patientUser = users.find(function (user) {
-                return (
-                    String(user.email || "").trim().toLowerCase() === email &&
-                    String(user.password || "") === password &&
-                    String(user.role || "").trim().toLowerCase() === "patient"
-                );
-            });
-
-            if (patientUser) {
-
-                if (rememberMe.checked) {
-                    localStorage.setItem(
-                        "patientRememberedEmail",
-                        email
-                    );
                 } else {
-                    localStorage.removeItem(
-                        "patientRememberedEmail"
-                    );
+
+                    passwordInput.type = "password";
+
+                    showPasswordButton.textContent = "Show";
                 }
 
-                localStorage.setItem(
-                    "currentUser",
-                    JSON.stringify(patientUser)
-                );
-
-                sessionStorage.setItem(
-                    "medimateRole",
-                    "patient"
-                );
-
-                sessionStorage.setItem(
-                    "medimateUser",
-                    email
-                );
-
-                messageBox.className = "message success";
-                messageBox.textContent =
-                    "Patient login successful. Opening dashboard...";
-
-                setTimeout(function () {
-                    window.location.href = "dashboard.html";
-                }, 700);
-
-            } else {
-                messageBox.className = "message error";
-                messageBox.textContent =
-                    "Invalid registered patient email or password. Please register first.";
             }
-        });
+        );
+
+
+        // =========================
+        // FORGOT PASSWORD
+        // =========================
+
+        forgotPassword.addEventListener(
+            "click",
+            async function (event) {
+
+                event.preventDefault();
+
+                const email =
+                    emailInput.value.trim().toLowerCase();
+
+
+                if (!email) {
+
+                    showMessage(
+                        "Enter your patient email first.",
+                        "error"
+                    );
+
+                    emailInput.focus();
+
+                    return;
+                }
+
+
+                try {
+
+                    await sendPasswordResetEmail(
+                        auth,
+                        email
+                    );
+
+
+                    showMessage(
+                        "Password reset email sent successfully. Please check your email.",
+                        "success"
+                    );
+
+
+                } catch (error) {
+
+                    console.error(
+                        "Password reset error:",
+                        error
+                    );
+
+
+                    if (
+                        error.code ===
+                        "auth/user-not-found"
+                    ) {
+
+                        showMessage(
+                            "No Firebase account found with this email.",
+                            "error"
+                        );
+
+                    } else {
+
+                        showMessage(
+                            "Unable to send password reset email. Please try again.",
+                            "error"
+                        );
+                    }
+
+                }
+
+            }
+        );
+
+
+        // =========================
+        // PATIENT LOGIN
+        // =========================
+
+        loginForm.addEventListener(
+            "submit",
+            async function (event) {
+
+                event.preventDefault();
+
+
+                const email =
+                    emailInput.value.trim().toLowerCase();
+
+                const password =
+                    passwordInput.value;
+
+
+                if (!email || !password) {
+
+                    showMessage(
+                        "Please enter email and password.",
+                        "error"
+                    );
+
+                    return;
+                }
+
+
+                loginButton.disabled = true;
+
+                loginButton.textContent =
+                    "Signing in...";
+
+
+                try {
+
+                    // Firebase Authentication
+                    const userCredential =
+                        await signInWithEmailAndPassword(
+                            auth,
+                            email,
+                            password
+                        );
+
+
+                    const firebaseUser =
+                        userCredential.user;
+
+
+                    // Get Firebase ID token
+                    const idToken =
+                        await firebaseUser.getIdToken();
+
+
+                    // Send token to Flask backend (with graceful fallback if offline)
+                    let userProfile = null;
+                    try {
+                        const response =
+                            await fetch(
+                                "http://127.0.0.1:5000/api/auth/verify-token",
+                                {
+                                    method: "POST",
+                                    headers: {
+                                        "Content-Type": "application/json"
+                                    },
+                                    body: JSON.stringify({
+                                        idToken: idToken
+                                    }),
+                                    signal: AbortSignal.timeout(3000)
+                                }
+                            );
+
+                        if (response.ok) {
+                            const result = await response.json();
+                            if (result.success) {
+                                userProfile = result.user;
+                            }
+                        }
+                    } catch (fetchErr) {
+                        console.log("Backend offline or unreachable, using local profile verification.");
+                    }
+
+                    // Fallback to local profile if backend is offline
+                    if (!userProfile) {
+                        const localUsers = JSON.parse(localStorage.getItem("medimateUsers") || "[]");
+                        const matched = localUsers.find(u => u.email === email);
+                        userProfile = matched || {
+                            uid: firebaseUser.uid,
+                            name: firebaseUser.displayName || email.split("@")[0],
+                            email: email,
+                            role: "patient"
+                        };
+                    }
+
+                    // Check patient role
+                    const role =
+                        String(userProfile.role || "patient")
+                            .trim()
+                            .toLowerCase();
+
+                    if (role !== "patient") {
+                        await signOut(auth);
+                        throw new Error(
+                            "This account is registered as " + role + ", not as a patient."
+                        );
+                    }
+
+
+                    // Remember email
+                    if (rememberMe.checked) {
+
+                        localStorage.setItem(
+                            "patientRememberedEmail",
+                            email
+                        );
+
+                    } else {
+
+                        localStorage.removeItem(
+                            "patientRememberedEmail"
+                        );
+                    }
+
+
+                    // Save current user profile
+                    localStorage.setItem(
+                        "currentUser",
+                        JSON.stringify(userProfile)
+                    );
+
+
+                    // Session information
+                    sessionStorage.setItem(
+                        "medimateRole",
+                        "patient"
+                    );
+
+                    sessionStorage.setItem(
+                        "medimateUser",
+                        email
+                    );
+
+                    sessionStorage.setItem(
+                        "medimateUid",
+                        firebaseUser.uid
+                    );
+
+
+                    showMessage(
+                        "Patient login successful. Opening dashboard...",
+                        "success"
+                    );
+
+
+                    setTimeout(
+                        function () {
+
+                            window.location.href =
+                                "dashboard.html";
+
+                        },
+                        700
+                    );
+
+
+                } catch (error) {
+
+                    console.error(
+                        "Patient login error:",
+                        error
+                    );
+
+
+                    let errorMessage =
+                        "Unable to login. Please try again.";
+
+
+                    if (
+                        error.code ===
+                        "auth/invalid-credential" ||
+                        error.code ===
+                        "auth/invalid-login-credentials"
+                    ) {
+
+                        errorMessage =
+                            "Invalid patient email or password.";
+
+                    } else if (
+                        error.code ===
+                        "auth/user-disabled"
+                    ) {
+
+                        errorMessage =
+                            "This patient account has been disabled.";
+
+                    } else if (
+                        error.code ===
+                        "auth/too-many-requests"
+                    ) {
+
+                        errorMessage =
+                            "Too many login attempts. Please try again later.";
+
+                    } else if (
+                        error.message
+                    ) {
+
+                        errorMessage =
+                            error.message;
+                    }
+
+
+                    showMessage(
+                        errorMessage,
+                        "error"
+                    );
+
+
+                } finally {
+
+                    loginButton.disabled = false;
+
+                    loginButton.textContent =
+                        "Login to Patient Dashboard";
+                }
+
+            }
+        );
+
     </script>
 
 </body>
+
 </html>

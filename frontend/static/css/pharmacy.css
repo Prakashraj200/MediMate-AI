@@ -1,0 +1,50 @@
+/* ========================================================
+   MediMate-AI - Pharmacy Module Stylesheet (pharmacy.css)
+   Next-Gen Unified Clinical Intelligence Palette (Pink/Emerald Accent)
+   ======================================================== */
+
+.stock-meter-container {
+  width: 100%;
+  height: 8px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 9999px;
+  overflow: hidden;
+  margin-top: 6px;
+}
+
+.stock-meter-fill {
+  height: 100%;
+  background: var(--primary, #00e599);
+  border-radius: 9999px;
+  transition: width 0.4s ease;
+}
+
+.stock-meter-fill.low {
+  background: var(--warning, #f59e0b);
+}
+
+.stock-meter-fill.critical {
+  background: var(--danger, #f43f5e);
+}
+
+.rx-tag-pill {
+  font-size: 11px;
+  font-weight: 700;
+  font-family: var(--font-mono, monospace);
+  text-transform: uppercase;
+  padding: 3px 10px;
+  border-radius: 6px;
+  letter-spacing: 0.5px;
+}
+
+.rx-tag-prescription {
+  background: rgba(244, 63, 94, 0.15);
+  color: #fb7185;
+  border: 1px solid rgba(244, 63, 94, 0.35);
+}
+
+.rx-tag-otc {
+  background: rgba(0, 229, 153, 0.15);
+  color: #34d399;
+  border: 1px solid rgba(0, 229, 153, 0.35);
+}

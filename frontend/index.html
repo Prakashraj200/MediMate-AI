@@ -3,487 +3,2044 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MediMate AI | Next-Gen Unified Clinical Intelligence & Hospital Operating System</title>
+    <!-- Favicon -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='25' fill='%2300e599'/><text x='50' y='68' font-size='55' font-family='sans-serif' font-weight='800' text-anchor='middle' fill='%23050a14'>M</text></svg>">
 
-    <title>MediMate AI | Smart Healthcare</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
 
+    <!-- Modern Vanilla Styling -->
     <style>
+        :root {
+            --bg-deep: #050a14;
+            --bg-card: rgba(13, 22, 41, 0.75);
+            --bg-card-hover: rgba(22, 36, 68, 0.85);
+            --border-glass: rgba(255, 255, 255, 0.08);
+            --border-glow: rgba(0, 229, 153, 0.3);
+            
+            --emerald-accent: #00e599;
+            --emerald-glow: rgba(0, 229, 153, 0.25);
+            --cyan-accent: #00d2ff;
+            --indigo-accent: #6366f1;
+            --violet-accent: #8b5cf6;
+            --amber-accent: #f59e0b;
+            --rose-accent: #f43f5e;
+            
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+            --radius-sm: 8px;
+            --radius-md: 14px;
+            --radius-lg: 22px;
+            --radius-full: 9999px;
+            
+            --font-main: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+        }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: Arial, Helvetica, sans-serif;
+            scroll-behavior: smooth;
         }
 
         body {
-            background: #f5fcf8;
-            color: #173d2b;
+            background-color: var(--bg-deep);
+            color: var(--text-primary);
+            font-family: var(--font-main);
+            overflow-x: hidden;
+            line-height: 1.6;
+            background-image: 
+                radial-gradient(circle at 15% 10%, rgba(0, 229, 153, 0.08) 0%, transparent 40%),
+                radial-gradient(circle at 85% 25%, rgba(0, 210, 255, 0.08) 0%, transparent 45%),
+                radial-gradient(circle at 50% 70%, rgba(99, 102, 241, 0.06) 0%, transparent 50%);
+            background-attachment: fixed;
         }
 
+        /* Subtle ambient grid overlay */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background-size: 50px 50px;
+            background-image: 
+                linear-gradient(to right, rgba(255, 255, 255, 0.015) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* Ambient Glow Blobs */
+        .glow-sphere {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(120px);
+            pointer-events: none;
+            z-index: 0;
+        }
+        .sphere-1 {
+            width: 450px;
+            height: 450px;
+            background: rgba(0, 229, 153, 0.12);
+            top: 50px;
+            left: 5%;
+        }
+        .sphere-2 {
+            width: 500px;
+            height: 500px;
+            background: rgba(0, 210, 255, 0.1);
+            top: 250px;
+            right: 5%;
+        }
+
+        /* ================= NAVIGATION ================= */
         header {
-            background: white;
-            padding: 18px 7%;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            padding: 16px 8%;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            box-shadow: 0 3px 15px rgba(0, 80, 50, 0.07);
-            position: sticky;
-            top: 0;
-            z-index: 100;
+            background: rgba(5, 10, 20, 0.82);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border-glass);
+            transition: all 0.3s ease;
         }
 
-        .logo {
+        .brand-container {
             display: flex;
             align-items: center;
-            gap: 10px;
-            color: #087f5b;
+            gap: 12px;
+            text-decoration: none;
         }
 
-        .logo-box {
+        .brand-logo-icon {
             width: 42px;
             height: 42px;
             border-radius: 12px;
-            background: #087f5b;
-            color: white;
+            background: linear-gradient(135deg, var(--emerald-accent), var(--cyan-accent));
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 25px;
-            font-weight: bold;
-        }
-
-        .logo h2 {
+            color: #050a14;
             font-size: 22px;
+            font-weight: 800;
+            box-shadow: 0 0 20px rgba(0, 229, 153, 0.4);
+            position: relative;
         }
 
-        .logo span {
-            color: #32b77e;
+        .brand-logo-icon::after {
+            content: '';
+            position: absolute;
+            inset: -2px;
+            border-radius: 14px;
+            background: linear-gradient(135deg, var(--emerald-accent), transparent);
+            z-index: -1;
+            opacity: 0.5;
         }
 
-        nav a {
-            text-decoration: none;
-            color: #426052;
-            margin-left: 25px;
-            font-size: 14px;
-            font-weight: bold;
-        }
-
-        nav a:hover {
-            color: #087f5b;
-        }
-
-        .hero {
-            min-height: 480px;
-            padding: 75px 7%;
+        .brand-title {
+            font-size: 22px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            color: #ffffff;
             display: flex;
             align-items: center;
-            justify-content: space-between;
-            gap: 40px;
+            gap: 6px;
         }
 
-        .hero-content {
-            max-width: 570px;
+        .brand-title span {
+            background: linear-gradient(135deg, var(--emerald-accent), var(--cyan-accent));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
-        .hero-content h1 {
-            font-size: 50px;
-            line-height: 1.15;
-            margin-bottom: 22px;
-            color: #123d2b;
-        }
-
-        .hero-content h1 span {
-            color: #087f5b;
-        }
-
-        .hero-content p {
-            color: #6c8578;
-            font-size: 17px;
-            line-height: 1.7;
-            margin-bottom: 30px;
-        }
-
-        .hero-buttons {
+        .nav-links {
             display: flex;
+            align-items: center;
+            gap: 28px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+            transition: color 0.2s ease;
+            position: relative;
+        }
+
+        .nav-links a:hover {
+            color: var(--emerald-accent);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0%;
+            height: 2px;
+            background: var(--emerald-accent);
+            transition: width 0.3s ease;
+            border-radius: 2px;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
             gap: 14px;
-            flex-wrap: wrap;
+        }
+
+        .status-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(0, 229, 153, 0.08);
+            border: 1px solid rgba(0, 229, 153, 0.25);
+            padding: 6px 14px;
+            border-radius: var(--radius-full);
+            font-size: 12px;
+            font-family: var(--font-mono);
+            color: var(--emerald-accent);
+            font-weight: 600;
+        }
+
+        .pulse-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--emerald-accent);
+            border-radius: 50%;
+            box-shadow: 0 0 10px var(--emerald-accent);
+            animation: pulse-ring 2s infinite;
+        }
+
+        @keyframes pulse-ring {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(0, 229, 153, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 8px rgba(0, 229, 153, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(0, 229, 153, 0); }
         }
 
         .btn {
-            text-decoration: none;
-            padding: 14px 24px;
-            border-radius: 30px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 11px 22px;
+            border-radius: var(--radius-full);
             font-size: 14px;
-            font-weight: bold;
-            display: inline-block;
-            transition: 0.3s;
+            font-weight: 700;
+            text-decoration: none;
+            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+            cursor: pointer;
+            border: none;
         }
 
-        .primary-btn {
-            background: #087f5b;
+        .btn-primary {
+            background: linear-gradient(135deg, var(--emerald-accent), #00b87a);
+            color: #050a14;
+            box-shadow: 0 8px 24px rgba(0, 229, 153, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 30px rgba(0, 229, 153, 0.5);
+            background: linear-gradient(135deg, #26f2ae, #00d28d);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-glass);
+            color: var(--text-primary);
+            backdrop-filter: blur(10px);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.25);
+            transform: translateY(-2px);
+            color: #ffffff;
+        }
+
+        /* ================= HERO SECTION ================= */
+        .hero {
+            position: relative;
+            padding: 90px 8% 70px;
+            min-height: 88vh;
+            display: grid;
+            grid-template-columns: 1.15fr 1fr;
+            align-items: center;
+            gap: 60px;
+            z-index: 1;
+        }
+
+        .hero-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(99, 102, 241, 0.12);
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            padding: 7px 18px;
+            border-radius: var(--radius-full);
+            font-size: 13px;
+            font-weight: 600;
+            color: #a5b4fc;
+            margin-bottom: 24px;
+        }
+
+        .hero-tag span {
+            background: #6366f1;
             color: white;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 10px;
+            text-transform: uppercase;
+            font-weight: 800;
         }
 
-        .primary-btn:hover {
-            background: #075e45;
-            transform: translateY(-3px);
+        .hero-title {
+            font-size: 54px;
+            font-weight: 800;
+            line-height: 1.12;
+            letter-spacing: -1.8px;
+            color: #ffffff;
+            margin-bottom: 24px;
         }
 
-        .secondary-btn {
-            border: 1px solid #087f5b;
-            color: #087f5b;
-            background: white;
+        .hero-title .gradient-text {
+            background: linear-gradient(135deg, #00e599 0%, #00d2ff 50%, #818cf8 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
-        .secondary-btn:hover {
-            background: #e5f8ed;
-            transform: translateY(-3px);
+        .hero-desc {
+            font-size: 18px;
+            color: var(--text-secondary);
+            line-height: 1.7;
+            margin-bottom: 36px;
+            max-width: 580px;
         }
 
-        .hero-image {
-            width: 390px;
-            height: 350px;
-            border-radius: 35px;
-            background: linear-gradient(135deg, #dff8e9, #b9efd3);
+        .hero-cta-group {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            flex-wrap: wrap;
+            margin-bottom: 45px;
+        }
+
+        .hero-features-strip {
+            display: flex;
+            align-items: center;
+            gap: 28px;
+            padding-top: 24px;
+            border-top: 1px solid var(--border-glass);
+        }
+
+        .hero-feat-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        .hero-feat-item svg {
+            color: var(--emerald-accent);
+            flex-shrink: 0;
+        }
+
+        /* Hero Visual Showcase */
+        .hero-visual-wrapper {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .hero-visual-card {
+            position: relative;
+            width: 100%;
+            border-radius: var(--radius-lg);
+            background: var(--bg-card);
+            border: 1px solid rgba(0, 229, 153, 0.25);
+            box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.8), 0 0 50px rgba(0, 229, 153, 0.15);
+            overflow: hidden;
+            backdrop-filter: blur(16px);
+            transition: transform 0.4s ease;
+        }
+
+        .hero-visual-card:hover {
+            transform: translateY(-6px);
+            border-color: rgba(0, 229, 153, 0.45);
+        }
+
+        .hero-screen-header {
+            padding: 12px 18px;
+            background: rgba(10, 18, 32, 0.85);
+            border-bottom: 1px solid var(--border-glass);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .screen-dots {
+            display: flex;
+            gap: 7px;
+        }
+
+        .screen-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+        }
+        .dot-red { background: #ef4444; }
+        .dot-yellow { background: #f59e0b; }
+        .dot-green { background: #10b981; }
+
+        .screen-badge {
+            font-size: 11px;
+            font-family: var(--font-mono);
+            color: var(--emerald-accent);
+            background: rgba(0, 229, 153, 0.1);
+            padding: 3px 10px;
+            border-radius: var(--radius-full);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .hero-image-container {
+            position: relative;
+            width: 100%;
+            height: 380px;
+            overflow: hidden;
+        }
+
+        .hero-image-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            filter: contrast(105%) brightness(96%);
+            transition: transform 0.6s ease;
+        }
+
+        .hero-visual-card:hover .hero-image-container img {
+            transform: scale(1.03);
+        }
+
+        /* Floating HUD overlays */
+        .hud-overlay-pill {
+            position: absolute;
+            background: rgba(10, 18, 34, 0.85);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            padding: 12px 18px;
+            border-radius: var(--radius-md);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            z-index: 2;
+            animation: float-pill 4s ease-in-out infinite;
+        }
+
+        .hud-pill-bottom-left {
+            bottom: 24px;
+            left: -20px;
+            border-left: 3px solid var(--emerald-accent);
+        }
+
+        .hud-pill-top-right {
+            top: 24px;
+            right: -20px;
+            border-left: 3px solid var(--cyan-accent);
+            animation-delay: -2s;
+        }
+
+        @keyframes float-pill {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+
+        .hud-pill-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            background: rgba(0, 229, 153, 0.15);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 150px;
-            box-shadow: 20px 20px 0 #e2f5e9;
+            color: var(--emerald-accent);
+            font-size: 18px;
         }
 
-        .section {
-            padding: 55px 7%;
+        .hud-pill-text strong {
+            display: block;
+            font-size: 13px;
+            color: #ffffff;
+        }
+
+        .hud-pill-text small {
+            font-size: 11px;
+            color: var(--emerald-accent);
+            font-family: var(--font-mono);
+        }
+
+        /* ================= STATS TICKER STRIP ================= */
+        .stats-section {
+            padding: 20px 8% 60px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            background: rgba(13, 22, 41, 0.65);
+            border: 1px solid var(--border-glass);
+            border-radius: var(--radius-lg);
+            padding: 35px 25px;
+            backdrop-filter: blur(16px);
+        }
+
+        .stat-card {
+            text-align: center;
+            position: relative;
+        }
+
+        .stat-card:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            right: 0;
+            top: 15%;
+            height: 70%;
+            width: 1px;
+            background: var(--border-glass);
+        }
+
+        .stat-number {
+            font-size: 40px;
+            font-weight: 800;
+            letter-spacing: -1px;
+            background: linear-gradient(135deg, #ffffff, #cbd5e1);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-family: var(--font-mono);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+        }
+
+        .stat-number span {
+            color: var(--emerald-accent);
+            -webkit-text-fill-color: var(--emerald-accent);
+            font-size: 28px;
+        }
+
+        .stat-label {
+            font-size: 14px;
+            font-weight: 600;
+            color: #94a3b8;
+            margin-top: 6px;
+        }
+
+        .stat-subtext {
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-top: 4px;
+        }
+
+        /* ================= SECTION HEADINGS ================= */
+        .section-header {
+            text-align: center;
+            max-width: 720px;
+            margin: 0 auto 55px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .badge-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 16px;
+            border-radius: var(--radius-full);
+            background: rgba(0, 229, 153, 0.08);
+            border: 1px solid rgba(0, 229, 153, 0.25);
+            color: var(--emerald-accent);
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 16px;
         }
 
         .section-title {
-            text-align: center;
-            margin-bottom: 35px;
+            font-size: 38px;
+            font-weight: 800;
+            letter-spacing: -1px;
+            color: #ffffff;
+            margin-bottom: 16px;
+            line-height: 1.25;
         }
 
-        .section-title h2 {
-            font-size: 32px;
-            color: #123d2b;
-            margin-bottom: 10px;
+        .section-desc {
+            font-size: 16px;
+            color: var(--text-secondary);
+            line-height: 1.7;
         }
 
-        .section-title p {
-            color: #789083;
-            font-size: 14px;
+        /* ================= 5 ROLE PORTALS SECTION ================= */
+        .portals-section {
+            padding: 60px 8% 80px;
+            position: relative;
+            z-index: 1;
         }
 
-        .login-grid {
+        .portals-grid {
             display: grid;
             grid-template-columns: repeat(5, 1fr);
-            gap: 18px;
+            gap: 20px;
         }
 
-        .login-card {
-            background: white;
-            border-radius: 20px;
-            padding: 25px 15px;
-            text-align: center;
-            box-shadow: 0 8px 25px rgba(0, 80, 50, 0.07);
-            border: 1px solid #e3f2e9;
-            transition: 0.3s;
+        .portal-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-glass);
+            border-radius: var(--radius-lg);
+            padding: 30px 22px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            backdrop-filter: blur(16px);
+            transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+            overflow: hidden;
         }
 
-        .login-card:hover {
+        .portal-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: var(--card-accent, var(--emerald-accent));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .portal-card:hover {
             transform: translateY(-8px);
-            box-shadow: 0 15px 35px rgba(0, 80, 50, 0.13);
+            border-color: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.7);
+            background: var(--bg-card-hover);
         }
 
-        .login-icon {
-            width: 70px;
-            height: 70px;
-            border-radius: 20px;
-            background: #e3f8ed;
+        .portal-card:hover::before {
+            opacity: 1;
+        }
+
+        .portal-icon-box {
+            width: 58px;
+            height: 58px;
+            border-radius: 16px;
+            background: rgba(255, 255, 255, 0.05);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 35px;
-            margin: 0 auto 18px;
+            margin-bottom: 22px;
+            font-size: 26px;
+            color: var(--card-accent, var(--emerald-accent));
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: transform 0.3s ease;
         }
 
-        .login-card h3 {
-            font-size: 17px;
-            margin-bottom: 9px;
+        .portal-card:hover .portal-icon-box {
+            transform: scale(1.1) rotate(4deg);
+            background: rgba(255, 255, 255, 0.1);
         }
 
-        .login-card p {
-            color: #819589;
+        .portal-role-name {
+            font-size: 20px;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 8px;
+        }
+
+        .portal-role-desc {
+            font-size: 13px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin-bottom: 22px;
+            flex-grow: 1;
+        }
+
+        .portal-feature-list {
+            list-style: none;
+            margin-bottom: 24px;
+            padding-top: 14px;
+            border-top: 1px solid var(--border-glass);
+        }
+
+        .portal-feature-list li {
             font-size: 12px;
-            line-height: 1.5;
-            min-height: 38px;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 7px;
+        }
+
+        .portal-feature-list li svg {
+            color: var(--card-accent, var(--emerald-accent));
+            flex-shrink: 0;
+            width: 14px;
+            height: 14px;
+        }
+
+        .portal-btn-stack {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .portal-action-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            padding: 10px 14px;
+            border-radius: var(--radius-md);
+            font-size: 12px;
+            font-weight: 700;
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+
+        .portal-primary-btn {
+            background: var(--card-accent, var(--emerald-accent));
+            color: #050a14;
+        }
+
+        .portal-primary-btn:hover {
+            filter: brightness(1.15);
+            transform: translateY(-1px);
+        }
+
+        .portal-secondary-btn {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--border-glass);
+            color: var(--text-primary);
+        }
+
+        .portal-secondary-btn:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        /* Specific card color accents */
+        .portal-patient { --card-accent: #00e599; }
+        .portal-doctor { --card-accent: #00d2ff; }
+        .portal-admin { --card-accent: #f59e0b; }
+        .portal-lab { --card-accent: #8b5cf6; }
+        .portal-pharmacy { --card-accent: #ec4899; }
+
+        /* ================= PREETHI AI INTERACTIVE SIMULATOR ================= */
+        .simulator-section {
+            padding: 70px 8% 90px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .simulator-wrapper {
+            background: linear-gradient(145deg, rgba(16, 28, 54, 0.9), rgba(9, 16, 32, 0.95));
+            border: 1px solid rgba(0, 229, 153, 0.3);
+            border-radius: var(--radius-lg);
+            padding: 50px 6%;
+            display: grid;
+            grid-template-columns: 1fr 1.15fr;
+            gap: 50px;
+            align-items: center;
+            box-shadow: 0 30px 70px -15px rgba(0, 0, 0, 0.8), 0 0 50px rgba(0, 229, 153, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .simulator-wrapper::after {
+            content: '';
+            position: absolute;
+            top: -150px;
+            right: -150px;
+            width: 350px;
+            height: 350px;
+            background: radial-gradient(circle, rgba(0, 229, 153, 0.15) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        .sim-info h3 {
+            font-size: 32px;
+            font-weight: 800;
+            color: #ffffff;
+            margin-bottom: 16px;
+            line-height: 1.2;
+        }
+
+        .sim-info p {
+            color: var(--text-secondary);
+            font-size: 15px;
+            line-height: 1.7;
+            margin-bottom: 24px;
+        }
+
+        .sim-features-bullets {
+            list-style: none;
+            margin-bottom: 30px;
+        }
+
+        .sim-features-bullets li {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 14px;
+            color: #cbd5e1;
+            margin-bottom: 12px;
+        }
+
+        .sim-features-bullets li svg {
+            color: var(--emerald-accent);
+            flex-shrink: 0;
+        }
+
+        /* Interactive Console Box */
+        .sim-console {
+            background: rgba(6, 12, 24, 0.9);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: var(--radius-md);
+            padding: 24px;
+            box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        .console-topbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--border-glass);
             margin-bottom: 18px;
         }
 
-        .login-link {
-            display: inline-block;
-            text-decoration: none;
-            background: #087f5b;
-            color: white;
-            padding: 10px 17px;
-            border-radius: 22px;
-            font-size: 12px;
-            font-weight: bold;
-            transition: 0.3s;
-        }
-
-        .login-link:hover {
-            background: #075e45;
-        }
-
-        .ai-section {
-            margin: 35px 7% 65px;
-            padding: 45px;
-            border-radius: 25px;
-            background: linear-gradient(135deg, #087f5b, #0ca36e);
-            color: white;
+        .console-label {
             display: flex;
-            justify-content: space-between;
             align-items: center;
-            gap: 30px;
-        }
-
-        .ai-section h2 {
-            font-size: 30px;
-            margin-bottom: 13px;
-        }
-
-        .ai-section p {
-            color: #d8ffeb;
-            line-height: 1.6;
-            max-width: 600px;
-            font-size: 14px;
-        }
-
-        .ai-icon {
-            font-size: 85px;
-        }
-
-        footer {
-            background: #073f2f;
-            color: #d6f5e5;
-            padding: 28px 7%;
-            text-align: center;
+            gap: 8px;
             font-size: 13px;
+            font-weight: 700;
+            color: #ffffff;
         }
 
-        @media (max-width: 1100px) {
-            .login-grid {
+        .console-badge {
+            font-size: 10px;
+            font-family: var(--font-mono);
+            background: rgba(0, 229, 153, 0.15);
+            color: var(--emerald-accent);
+            padding: 3px 8px;
+            border-radius: 4px;
+            text-transform: uppercase;
+        }
+
+        .symptom-quick-chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 18px;
+        }
+
+        .chip-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-glass);
+            color: var(--text-secondary);
+            font-size: 12px;
+            padding: 6px 14px;
+            border-radius: var(--radius-full);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .chip-btn:hover, .chip-btn.active {
+            background: rgba(0, 229, 153, 0.15);
+            border-color: var(--emerald-accent);
+            color: #ffffff;
+        }
+
+        .sim-input-row {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .sim-input {
+            flex-grow: 1;
+            background: rgba(13, 22, 41, 0.8);
+            border: 1px solid var(--border-glass);
+            color: #ffffff;
+            padding: 12px 16px;
+            border-radius: var(--radius-sm);
+            font-size: 13px;
+            font-family: var(--font-main);
+            outline: none;
+            transition: border 0.2s ease;
+        }
+
+        .sim-input:focus {
+            border-color: var(--emerald-accent);
+            box-shadow: 0 0 10px rgba(0, 229, 153, 0.2);
+        }
+
+        .sim-submit-btn {
+            background: var(--emerald-accent);
+            color: #050a14;
+            border: none;
+            padding: 0 20px;
+            border-radius: var(--radius-sm);
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .sim-submit-btn:hover {
+            background: #22f7b2;
+            transform: translateY(-1px);
+        }
+
+        /* Result Panel */
+        .sim-result-box {
+            background: rgba(13, 22, 41, 0.7);
+            border: 1px solid rgba(0, 229, 153, 0.25);
+            border-radius: var(--radius-sm);
+            padding: 18px;
+            display: none;
+            animation: fadeIn 0.4s ease forwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .result-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+
+        .result-risk-tag {
+            font-size: 11px;
+            font-weight: 700;
+            padding: 4px 10px;
+            border-radius: 4px;
+            text-transform: uppercase;
+            font-family: var(--font-mono);
+        }
+
+        .risk-low { background: rgba(16, 185, 129, 0.2); color: #34d399; }
+        .risk-moderate { background: rgba(245, 158, 11, 0.2); color: #fbbf24; }
+        .risk-high { background: rgba(244, 63, 94, 0.2); color: #fb7185; }
+
+        .result-dept {
+            font-size: 12px;
+            color: var(--cyan-accent);
+            font-family: var(--font-mono);
+        }
+
+        .result-analysis-text {
+            font-size: 13px;
+            color: #e2e8f0;
+            line-height: 1.6;
+            margin-bottom: 12px;
+        }
+
+        .result-actions {
+            display: flex;
+            gap: 10px;
+            padding-top: 12px;
+            border-top: 1px solid var(--border-glass);
+        }
+
+        /* ================= ARCHITECTURE PILLARS SECTION ================= */
+        .pillars-section {
+            padding: 70px 8% 80px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .pillars-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 28px;
+        }
+
+        .pillar-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-glass);
+            border-radius: var(--radius-lg);
+            padding: 35px 28px;
+            backdrop-filter: blur(16px);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .pillar-card:hover {
+            transform: translateY(-6px);
+            border-color: rgba(0, 229, 153, 0.3);
+            box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.6);
+        }
+
+        .pillar-icon-wrapper {
+            width: 52px;
+            height: 52px;
+            border-radius: 14px;
+            background: rgba(0, 229, 153, 0.1);
+            color: var(--emerald-accent);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        .pillar-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 12px;
+        }
+
+        .pillar-desc {
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.7;
+        }
+
+        /* ================= DEEP SYSTEM OVERVIEW (ABOUT MEDIMATE AI) ================= */
+        .about-section {
+            padding: 80px 8% 90px;
+            position: relative;
+            z-index: 1;
+            background: rgba(8, 14, 28, 0.6);
+            border-top: 1px solid var(--border-glass);
+            border-bottom: 1px solid var(--border-glass);
+        }
+
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+        }
+
+        .about-content h2 {
+            font-size: 36px;
+            font-weight: 800;
+            color: #ffffff;
+            margin-bottom: 20px;
+            line-height: 1.25;
+        }
+
+        .about-content p {
+            font-size: 16px;
+            color: var(--text-secondary);
+            line-height: 1.8;
+            margin-bottom: 24px;
+        }
+
+        .about-specs {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-top: 30px;
+        }
+
+        .spec-box {
+            background: rgba(13, 22, 41, 0.8);
+            border: 1px solid var(--border-glass);
+            border-radius: var(--radius-md);
+            padding: 18px 20px;
+        }
+
+        .spec-box h4 {
+            font-size: 15px;
+            color: var(--emerald-accent);
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+
+        .spec-box p {
+            font-size: 12px;
+            color: var(--text-secondary);
+            line-height: 1.5;
+            margin-bottom: 0;
+        }
+
+        .about-diagram-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-glass);
+            border-radius: var(--radius-lg);
+            padding: 30px;
+            box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.7);
+        }
+
+        .diagram-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 14px 18px;
+            background: rgba(6, 12, 24, 0.8);
+            border: 1px solid var(--border-glass);
+            border-radius: var(--radius-sm);
+            margin-bottom: 12px;
+        }
+
+        .diagram-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .diagram-tag {
+            font-size: 11px;
+            font-family: var(--font-mono);
+            padding: 3px 8px;
+            border-radius: 4px;
+            background: rgba(0, 229, 153, 0.15);
+            color: var(--emerald-accent);
+        }
+
+        /* ================= FAQ SECTION ================= */
+        .faq-section {
+            padding: 80px 8% 90px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .faq-container {
+            max-width: 840px;
+            margin: 0 auto;
+        }
+
+        .faq-item {
+            background: var(--bg-card);
+            border: 1px solid var(--border-glass);
+            border-radius: var(--radius-md);
+            margin-bottom: 14px;
+            overflow: hidden;
+            transition: all 0.25s ease;
+        }
+
+        .faq-item.active {
+            border-color: rgba(0, 229, 153, 0.3);
+            background: rgba(18, 30, 56, 0.85);
+        }
+
+        .faq-question {
+            padding: 20px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 700;
+            color: #ffffff;
+            user-select: none;
+        }
+
+        .faq-icon {
+            font-size: 20px;
+            color: var(--emerald-accent);
+            transition: transform 0.3s ease;
+        }
+
+        .faq-item.active .faq-icon {
+            transform: rotate(45deg);
+        }
+
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.35s ease;
+            padding: 0 24px;
+            color: var(--text-secondary);
+            font-size: 14px;
+            line-height: 1.7;
+        }
+
+        .faq-item.active .faq-answer {
+            max-height: 250px;
+            padding-bottom: 20px;
+        }
+
+        /* ================= FOOTER ================= */
+        footer {
+            background: #03060c;
+            border-top: 1px solid var(--border-glass);
+            padding: 70px 8% 35px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 1.4fr 1fr 1fr 1fr;
+            gap: 40px;
+            margin-bottom: 50px;
+        }
+
+        .footer-brand p {
+            color: var(--text-secondary);
+            font-size: 14px;
+            line-height: 1.7;
+            margin: 16px 0 24px;
+            max-width: 340px;
+        }
+
+        .footer-col h5 {
+            font-size: 15px;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 18px;
+            letter-spacing: -0.3px;
+        }
+
+        .footer-col ul {
+            list-style: none;
+        }
+
+        .footer-col ul li {
+            margin-bottom: 10px;
+        }
+
+        .footer-col ul li a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 13px;
+            transition: color 0.2s ease;
+        }
+
+        .footer-col ul li a:hover {
+            color: var(--emerald-accent);
+        }
+
+        .footer-bottom {
+            padding-top: 30px;
+            border-top: 1px solid var(--border-glass);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 13px;
+            color: var(--text-muted);
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        /* Responsive Breakpoints */
+        @media (max-width: 1200px) {
+            .portals-grid {
                 grid-template-columns: repeat(3, 1fr);
             }
-
-            .hero-image {
-                width: 320px;
-                height: 300px;
-            }
-        }
-
-        @media (max-width: 800px) {
-            header {
-                padding: 15px 5%;
-            }
-
-            nav {
-                display: none;
-            }
-
-            .hero {
-                padding: 55px 7%;
-                flex-direction: column;
-                text-align: center;
-            }
-
-            .hero-content h1 {
-                font-size: 38px;
-            }
-
-            .hero-buttons {
-                justify-content: center;
-            }
-
-            .hero-image {
-                width: 100%;
-                max-width: 350px;
-            }
-
-            .login-grid {
+            .pillars-grid {
                 grid-template-columns: repeat(2, 1fr);
             }
+        }
 
-            .ai-section {
-                margin: 20px;
-                padding: 30px;
-                flex-direction: column;
+        @media (max-width: 992px) {
+            .hero {
+                grid-template-columns: 1fr;
+                padding-top: 60px;
                 text-align: center;
+            }
+            .hero-desc {
+                margin: 0 auto 36px;
+            }
+            .hero-cta-group {
+                justify-content: center;
+            }
+            .hero-features-strip {
+                justify-content: center;
+            }
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .stat-card:not(:last-child)::after {
+                display: none;
+            }
+            .simulator-wrapper {
+                grid-template-columns: 1fr;
+            }
+            .about-grid {
+                grid-template-columns: 1fr;
+            }
+            .footer-grid {
+                grid-template-columns: repeat(2, 1fr);
             }
         }
 
-        @media (max-width: 480px) {
-            .login-grid {
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            .portals-grid {
                 grid-template-columns: 1fr;
             }
-
-            .section {
-                padding: 40px 7%;
+            .pillars-grid {
+                grid-template-columns: 1fr;
             }
-
-            .section-title h2 {
-                font-size: 27px;
+            .hero-title {
+                font-size: 40px;
+            }
+            .section-title {
+                font-size: 30px;
+            }
+            .hud-overlay-pill {
+                display: none;
             }
         }
     </style>
 </head>
-
 <body>
 
-    <!-- Header -->
+    <!-- Ambient Glowing Spheres -->
+    <div class="glow-sphere sphere-1"></div>
+    <div class="glow-sphere sphere-2"></div>
 
+    <!-- ================= NAVBAR ================= -->
     <header>
-        <div class="logo">
-            <div class="logo-box">M</div>
-            <h2>MediMate <span>AI</span></h2>
-        </div>
+        <a href="#home" class="brand-container">
+            <div class="brand-logo-icon">M</div>
+            <div class="brand-title">MediMate <span>AI</span></div>
+        </a>
 
-        <nav>
-            <a href="#home">Home</a>
-            <a href="#login">Login</a>
-            <a href="#about">About</a>
-        </nav>
+        <ul class="nav-links">
+            <li><a href="#portals">5 Hospital Portals</a></li>
+            <li><a href="#preethi-ai">Preethi AI Simulator</a></li>
+            <li><a href="#architecture">Architecture</a></li>
+            <li><a href="#about-medimate">About Platform</a></li>
+            <li><a href="#faq">FAQ</a></li>
+        </ul>
+
+        <div class="nav-actions">
+            <div class="status-pill">
+                <span class="pulse-dot"></span>
+                <span>SYSTEM ONLINE</span>
+            </div>
+            <a href="register.html" class="btn btn-secondary">Register</a>
+            <a href="#portals" class="btn btn-primary">Sign In</a>
+        </div>
     </header>
 
-    <!-- Hero Section -->
-
+    <!-- ================= HERO SECTION ================= -->
     <section class="hero" id="home">
-
         <div class="hero-content">
-            <h1>
-                Your Health,<br>
-                Our <span>Smart Care.</span>
+            <div class="hero-tag">
+                <span>NEW</span> Next-Gen Clinical Intelligence Platform v2.4
+            </div>
+
+            <h1 class="hero-title">
+                Intelligent Healthcare, <br>
+                <span class="gradient-text">Unified Care Delivery</span> & AI Triage.
             </h1>
 
-            <p>
-                MediMate AI is a smart healthcare management system
-                that connects doctors, patients, laboratories and
-                pharmacies in one secure platform.
+            <p class="hero-desc">
+                MediMate AI connects patients, licensed physicians, diagnostic laboratories, 
+                and smart hospital pharmacies into one synchronous clinical ecosystem. Powered by 
+                <strong>Preethi AI</strong>, deliver sub-second symptom triaging, automated drug-interaction safety checks, 
+                and closed-loop electronic health records.
             </p>
 
-            <div class="hero-buttons">
-                <a href="#login" class="btn primary-btn">
-                    Explore Login
+            <div class="hero-cta-group">
+                <a href="#portals" class="btn btn-primary" style="padding: 14px 28px; font-size: 15px;">
+                    <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4M10 17l5-5-5-5M15 12H3"/></svg>
+                    Access Your Portal
                 </a>
-
-                <a href="register.html" class="btn secondary-btn">
+                <a href="#preethi-ai" class="btn btn-secondary" style="padding: 14px 26px; font-size: 15px;">
+                    <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 2a10 10 0 0 1 10 10c0 5.5-4.5 10-10 10S2 17.5 2 12A10 10 0 0 1 12 2zm0 6v4m0 4h.01"/></svg>
+                    Test Preethi AI Live
+                </a>
+                <a href="register.html" class="btn btn-secondary" style="padding: 14px 26px; font-size: 15px; border-color: rgba(0, 229, 153, 0.4); color: var(--emerald-accent);">
                     Create Account
                 </a>
             </div>
+
+            <div class="hero-features-strip">
+                <div class="hero-feat-item">
+                    <svg width="16" height="16" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+                    <span>15 Microservice APIs</span>
+                </div>
+                <div class="hero-feat-item">
+                    <svg width="16" height="16" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+                    <span>FHIR / HL7 Data Standard</span>
+                </div>
+                <div class="hero-feat-item">
+                    <svg width="16" height="16" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+                    <span>Zero-Trust AES-256 Security</span>
+                </div>
+            </div>
         </div>
 
-        <div class="hero-image">
-            🏥
-        </div>
+        <!-- 3D Holographic AI Telemetry Visual Asset -->
+        <div class="hero-visual-wrapper">
+            <div class="hero-visual-card">
+                <div class="hero-screen-header">
+                    <div class="screen-dots">
+                        <div class="screen-dot dot-red"></div>
+                        <div class="screen-dot dot-yellow"></div>
+                        <div class="screen-dot dot-green"></div>
+                    </div>
+                    <div class="screen-badge">
+                        <span class="pulse-dot" style="width: 6px; height: 6px;"></span>
+                        <span>NEURAL ENGINE ACTIVE • 120 FPS</span>
+                    </div>
+                </div>
 
+                <div class="hero-image-container">
+                    <img src="static/images/medimate_hero_ai.jpg" alt="MediMate AI Clinical Telemetry Platform">
+                </div>
+            </div>
+
+            <!-- Floating Interactive HUD Badges -->
+            <div class="hud-overlay-pill hud-pill-bottom-left">
+                <div class="hud-pill-icon">❤️</div>
+                <div class="hud-pill-text">
+                    <strong>Vitals Telemetry Synchronized</strong>
+                    <small>ECG: 72 bpm • SpO2: 98% • BP: 118/74</small>
+                </div>
+            </div>
+
+            <div class="hud-overlay-pill hud-pill-top-right">
+                <div class="hud-pill-icon">🤖</div>
+                <div class="hud-pill-text">
+                    <strong>Preethi AI Triage Active</strong>
+                    <small>Confidence: 99.4% • Latency: 18ms</small>
+                </div>
+            </div>
+        </div>
     </section>
 
-    <!-- Login Section -->
-
-    <section class="section" id="login">
-
-        <div class="section-title">
-            <h2>Choose Your Login</h2>
-            <p>Access MediMate AI according to your hospital role.</p>
+    <!-- ================= STATS TICKER STRIP ================= -->
+    <section class="stats-section">
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-number">15<span>+</span></div>
+                <div class="stat-label">Clinical Blueprints</div>
+                <div class="stat-subtext">Auth, EHR, Vitals, Labs, Pharmacy</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">&lt; 120<span>ms</span></div>
+                <div class="stat-label">AI Triage Speed</div>
+                <div class="stat-subtext">Preethi AI deep clinical inference</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">99.98<span>%</span></div>
+                <div class="stat-label">Platform Availability</div>
+                <div class="stat-subtext">High availability cloud cluster</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">5<span>-in-1</span></div>
+                <div class="stat-label">Synchronous Portals</div>
+                <div class="stat-subtext">Patient, Doctor, Admin, Lab, Pharmacy</div>
+            </div>
         </div>
-
-        <div class="login-grid">
-
-            <!-- Admin -->
-
-            <div class="login-card">
-                <div class="login-icon">🛡️</div>
-                <h3>Admin</h3>
-                <p>Manage users, doctors, departments and reports.</p>
-
-                <a href="admin/admin-login.html" class="login-link">
-                    Admin Login
-                </a>
-            </div>
-
-            <!-- Doctor -->
-
-            <div class="login-card">
-                <div class="login-icon">👨‍⚕️</div>
-                <h3>Doctor</h3>
-                <p>Manage appointments, prescriptions and patients.</p>
-
-                <a href="doctor/doctor-login.html" class="login-link">
-                    Doctor Login
-                </a>
-            </div>
-
-            <!-- Patient -->
-
-            <div class="login-card">
-                <div class="login-icon">🧑‍🤝‍🧑</div>
-                <h3>Patient</h3>
-                <p>View appointments, reports and medical records.</p>
-
-                <a href="patient/patient-login.html" class="login-link">
-                    Patient Login
-                </a>
-            </div>
-
-            <!-- Laboratory -->
-
-            <div class="login-card">
-                <div class="login-icon">🧪</div>
-                <h3>Laboratory</h3>
-                <p>Manage test requests and upload lab reports.</p>
-
-                <a href="laboratory/laboratory-login.html" class="login-link">
-                    Lab Login
-                </a>
-            </div>
-
-            <!-- Pharmacy -->
-
-            <div class="login-card">
-                <div class="login-icon">💊</div>
-                <h3>Pharmacy</h3>
-                <p>Manage medicines, stock and prescriptions.</p>
-
-                <a href="pharmacy/pharmacy-login.html" class="login-link">
-                    Pharmacy Login
-                </a>
-            </div>
-
-        </div>
-
     </section>
 
-    <!-- AI Section -->
-
-    <section class="ai-section" id="about">
-
-        <div>
-            <h2>Meet Preethi AI 🤖</h2>
-
-            <p>
-                Preethi AI helps users understand basic health information,
-                appointment details and healthcare workflows. It supports
-                doctors and patients with smart recommendations.
+    <!-- ================= 5 ROLE PORTALS SECTION ================= -->
+    <section class="portals-section" id="portals">
+        <div class="section-header">
+            <div class="badge-pill">Role-Based Access Control</div>
+            <h2 class="section-title">Select Your Hospital Workspace</h2>
+            <p class="section-desc">
+                Log in to your specialized clinical workspace or access live interactive dashboards with dual offline & cloud authentication.
             </p>
         </div>
 
-        <div class="ai-icon">🤖</div>
+        <div class="portals-grid">
+            <!-- 1. Patient Portal -->
+            <div class="portal-card portal-patient">
+                <div class="portal-icon-box">🧑‍⚕️</div>
+                <h3 class="portal-role-name">Patient Portal</h3>
+                <p class="portal-role-desc">
+                    Book physician appointments, monitor continuous vitals, download lab results, and chat 24/7 with Preethi AI.
+                </p>
+                <ul class="portal-feature-list">
+                    <li><svg viewBox="0 0 20 20" fill="currentColor"><path d="M16.7 5.3l-8 8-4-4 1.4-1.4 2.6 2.6 6.6-6.6 1.4 1.4z"/></svg> Electronic Health Records (EHR)</li>
+                    <li><svg viewBox="0 0 20 20" fill="currentColor"><path d="M16.7 5.3l-8 8-4-4 1.4-1.4 2.6 2.6 6.6-6.6 1.4 1.4z"/></svg> Live Telemetry & Vitals Tracking</li>
+                    <li><svg viewBox="0 0 20 20" fill="currentColor"><path d="M16.7 5.3l-8 8-4-4 1.4-1.4 2.6 2.6 6.6-6.6 1.4 1.4z"/></svg> Preethi AI Health Guidance</li>
+                </ul>
+                <div class="portal-btn-stack">
+                    <a href="patient/patient-login.html" class="portal-action-btn portal-primary-btn">Sign In to Patient</a>
+                    <a href="patient/dashboard.html" class="portal-action-btn portal-secondary-btn">Direct Dashboard &rarr;</a>
+                </div>
+            </div>
 
+            <!-- 2. Doctor Portal -->
+            <div class="portal-card portal-doctor">
+                <div class="portal-icon-box">👨‍⚕️</div>
+                <h3 class="portal-role-name">Doctor Portal</h3>
+                <p class="portal-role-desc">
+                    Review triage queues, issue digital prescriptions, monitor critical telemetry flags, and access longitudinal charts.
+                </p>
+                <ul class="portal-feature-list">
+                    <li><svg viewBox="0 0 20 20" fill="currentColor"><path d="M16.7 5.3l-8 8-4-4 1.4-1.4 2.6 2.6 6.6-6.6 1.4 1.4z"/></svg> Clinical Queue & Consultations</li>
+                    <li><svg viewBox="0 0 20 20" fill="currentColor"><path d="M16.7 5.3l-8 8-4-4 1.4-1.4 2.6 2.6 6.6-6.6 1.4 1.4z"/></svg> Smart Digital Prescription Pad</li>
+                    <li><svg viewBox="0 0 20 20" fill="currentColor"><path d="M16.7 5.3l-8 8-4-4 1.4-1.4 2.6 2.6 6.6-6.6 1.4 1.4z"/></svg> Vitals Anomaly Alert System</li>
+                </ul>
+                <div class="portal-btn-stack">
+                    <a href="doctor/doctor-login.html" class="portal-action-btn portal-primary-btn">Sign In to Doctor</a>
+                    <a href="doctor/dashboard.html" class="portal-action-btn portal-secondary-btn">Direct Dashboard &rarr;</a>
+                </div>
+            </div>
+
+            <!-- 3. Admin Portal -->
+            <div class="portal-card portal-admin">
+                <div class="portal-icon-box">🛡️</div>
+                <h3 class="portal-role-name">Hospital Admin</h3>
+                <p class="portal-role-desc">
+                    Enterprise facility analytics, department rosters, user access provisioning, revenue logs, and compliance audit tracks.
+                </p>
+                <ul class="portal-feature-list">
+                    <li><svg viewBox="0 0 20 20" fill="currentColor"><path d="M16.7 5.3l-8 8-4-4 1.4-1.4 2.6 2.6 6.6-6.6 1.4 1.4z"/></svg> Complete Staff & Patient Registry</li>
+                    <li><svg viewBox="0 0 20 20" fill="currentColor"><path d="M16.7 5.3l-8 8-4-4 1.4-1.4 2.6 2.6 6.6-6.6 1.4 1.4z"/></svg> Department & Bed Utilization</li>
+                    <li><svg viewBox="0 0 20 20" fill="currentColor"><path d="M16.7 5.3l-8 8-4-4 1.4-1.4 2.6 2.6 6.6-6.6 1.4 1.4z"/></svg> Financial & Operational Reports</li>
+                </ul>
+                <div class="portal-btn-stack">
+                    <a href="admin/admin-login.html" class="portal-action-btn portal-primary-btn">Sign In to Admin</a>
+                    <a href="admin/dashboard.html" class="portal-action-btn portal-secondary-btn">Direct Dashboard &rarr;</a>
+                </div>
+            </div>
+
+            <!-- 4. Laboratory Portal -->
+            <div class="portal-card portal-lab">
+                <div class="portal-icon-box">🧪</div>
+                <h3 class="portal-role-name">Diagnostic Lab</h3>
+                <p class="portal-role-desc">
+                    Process incoming test orders, record bio-specimen pathology values, and publish verified digital lab reports instantly.
+                </p>
+                <ul class="portal-feature-list">
+                    <li><svg viewBox="0 0 20 20" fill="currentColor"><path d="M16.7 5.3l-8 8-4-4 1.4-1.4 2.6 2.6 6.6-6.6 1.4 1.4z"/></svg> Test Request Management</li>
+                    <li><svg viewBox="0 0 20 20" fill="currentColor"><path d="M16.7 5.3l-8 8-4-4 1.4-1.4 2.6 2.6 6.6-6.6 1.4 1.4z"/></svg> Specimen Tracking & Status</li>
+                    <li><svg viewBox="0 0 20 20" fill="currentColor"><path d="M16.7 5.3l-8 8-4-4 1.4-1.4 2.6 2.6 6.6-6.6 1.4 1.4z"/></svg> Digital Report Publishing</li>
+                </ul>
+                <div class="portal-btn-stack">
+                    <a href="laboratory/lab-login.html" class="portal-action-btn portal-primary-btn">Sign In to Lab</a>
+                    <a href="laboratory/dashboard.html" class="portal-action-btn portal-secondary-btn">Direct Dashboard &rarr;</a>
+                </div>
+            </div>
+
+            <!-- 5. Pharmacy Portal -->
+            <div class="portal-card portal-pharmacy">
+                <div class="portal-icon-box">💊</div>
+                <h3 class="portal-role-name">Smart Pharmacy</h3>
+                <p class="portal-role-desc">
+                    Fulfill digital prescriptions, run automated batch expiry radar, manage low-inventory reorders, and verify drug dosages.
+                </p>
+                <ul class="portal-feature-list">
+                    <li><svg viewBox="0 0 20 20" fill="currentColor"><path d="M16.7 5.3l-8 8-4-4 1.4-1.4 2.6 2.6 6.6-6.6 1.4 1.4z"/></svg> Prescription Dispensation Hub</li>
+                    <li><svg viewBox="0 0 20 20" fill="currentColor"><path d="M16.7 5.3l-8 8-4-4 1.4-1.4 2.6 2.6 6.6-6.6 1.4 1.4z"/></svg> Batch Expiry Early Radar</li>
+                    <li><svg viewBox="0 0 20 20" fill="currentColor"><path d="M16.7 5.3l-8 8-4-4 1.4-1.4 2.6 2.6 6.6-6.6 1.4 1.4z"/></svg> Real-Time Inventory Tracking</li>
+                </ul>
+                <div class="portal-btn-stack">
+                    <a href="pharmacy/pharmacy-login.html" class="portal-action-btn portal-primary-btn">Sign In to Pharmacy</a>
+                    <a href="pharmacy/dashboard.html" class="portal-action-btn portal-secondary-btn">Direct Dashboard &rarr;</a>
+                </div>
+            </div>
+        </div>
     </section>
 
-    <!-- Footer -->
+    <!-- ================= PREETHI AI INTERACTIVE SIMULATOR ================= -->
+    <section class="simulator-section" id="preethi-ai">
+        <div class="simulator-wrapper">
+            <div class="sim-info">
+                <div class="badge-pill" style="margin-bottom: 14px;">Preethi AI Engine</div>
+                <h3>Clinical Triage & Intelligent Symptom Analyzer</h3>
+                <p>
+                    Preethi AI is our proprietary clinical natural language model trained to assist patients with immediate risk stratification, 
+                    recommend the appropriate clinical specialty, and alert doctors when acute red-flag symptoms arise.
+                </p>
 
+                <ul class="sim-features-bullets">
+                    <li>
+                        <svg width="18" height="18" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+                        <span>Sub-second clinical risk stratification (Low / Moderate / High Priority)</span>
+                    </li>
+                    <li>
+                        <svg width="18" height="18" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+                        <span>Automated routing to appropriate hospital department</span>
+                    </li>
+                    <li>
+                        <svg width="18" height="18" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+                        <span>Immediate non-prescriptive supportive care guidance</span>
+                    </li>
+                </ul>
+
+                <a href="patient/preethi-ai.html" class="btn btn-primary">
+                    Launch Full Preethi AI Workspace &rarr;
+                </a>
+            </div>
+
+            <!-- Interactive Console Box -->
+            <div class="sim-console">
+                <div class="console-topbar">
+                    <div class="console-label">
+                        <span class="pulse-dot"></span>
+                        <span>Interactive Triage Simulator</span>
+                    </div>
+                    <span class="console-badge">Live Clinical Sandbox</span>
+                </div>
+
+                <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 10px;">Select a sample clinical symptom scenario:</div>
+                <div class="symptom-quick-chips">
+                    <button class="chip-btn active" onclick="selectScenario('fever')">🤒 Fever & Dry Cough</button>
+                    <button class="chip-btn" onclick="selectScenario('migraine')">⚡ Severe Throbbing Headache</button>
+                    <button class="chip-btn" onclick="selectScenario('chest')">🫀 Chest Tightness & Palpitations</button>
+                    <button class="chip-btn" onclick="selectScenario('joint')">🦵 Knee Swelling & Joint Stiffness</button>
+                </div>
+
+                <div class="sim-input-row">
+                    <input type="text" id="simSymptomInput" class="sim-input" value="Persistent mild fever (100.4°F) and dry cough for 2 days" placeholder="Type your symptoms or select a scenario...">
+                    <button class="sim-submit-btn" onclick="runTriageSimulation()">
+                        Analyze
+                    </button>
+                </div>
+
+                <!-- Simulation Result Panel -->
+                <div id="simResultBox" class="sim-result-box" style="display: block;">
+                    <div class="result-header">
+                        <span id="resRiskTag" class="result-risk-tag risk-low">Triage Risk: Low Priority</span>
+                        <span id="resDept" class="result-dept">Department: General Medicine</span>
+                    </div>
+                    <p id="resAnalysisText" class="result-analysis-text">
+                        Symptoms indicate a mild upper respiratory viral presentation without red-flag respiratory distress. Recommended action: Rest, maintain adequate hydration, monitor body temperature twice daily. If temperature exceeds 102°F or shortness of breath occurs, consult a physician immediately.
+                    </p>
+                    <div class="result-actions">
+                        <a href="patient/appointments.html" class="btn btn-primary" style="padding: 8px 16px; font-size: 12px;">Book General Consult</a>
+                        <a href="patient/preethi-ai.html" class="btn btn-secondary" style="padding: 8px 16px; font-size: 12px;">Deep Chat With Preethi AI</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================= ARCHITECTURE PILLARS SECTION ================= -->
+    <section class="pillars-section" id="architecture">
+        <div class="section-header">
+            <div class="badge-pill">Enterprise Engineering</div>
+            <h2 class="section-title">Six Pillars of MediMate AI</h2>
+            <p class="section-desc">
+                Engineered for maximum reliability, military-grade security, and seamless multi-department collaboration.
+            </p>
+        </div>
+
+        <div class="pillars-grid">
+            <div class="pillar-card">
+                <div class="pillar-icon-wrapper">🔄</div>
+                <h4 class="pillar-title">Unified EHR Lifeline</h4>
+                <p class="pillar-desc">
+                    Synchronizes patient clinical history across emergency admissions, consultations, diagnostic labs, and bedside vitals charts with zero duplicate entry.
+                </p>
+            </div>
+
+            <div class="pillar-card">
+                <div class="pillar-icon-wrapper">🧠</div>
+                <h4 class="pillar-title">Preethi AI Clinical Copilot</h4>
+                <p class="pillar-desc">
+                    Provides physician decision-support, symptom triage NLP algorithms, and automated cross-referencing against contraindications and drug allergies.
+                </p>
+            </div>
+
+            <div class="pillar-card">
+                <div class="pillar-icon-wrapper">🛡️</div>
+                <h4 class="pillar-title">Zero-Trust Clinical Security</h4>
+                <p class="pillar-desc">
+                    End-to-end AES-256 data encryption in transit and at rest, granular Role-Based Access Control (RBAC), and HIPAA/HL7 compliant immutable audit logs.
+                </p>
+            </div>
+
+            <div class="pillar-card">
+                <div class="pillar-icon-wrapper">🔬</div>
+                <h4 class="pillar-title">High-Throughput Pathology Lab</h4>
+                <p class="pillar-desc">
+                    Laboratory technicians record specimen parameters with instant barcode tracing. Reports are dispatched digitally to both doctors and patient portals.
+                </p>
+            </div>
+
+            <div class="pillar-card">
+                <div class="pillar-icon-wrapper">💊</div>
+                <h4 class="pillar-title">Smart Pharmacy Expiry Radar</h4>
+                <p class="pillar-desc">
+                    Predictive inventory algorithms automatically flag near-expiry medication batches, prevent dispensing errors, and trigger automated stock replenishment.
+                </p>
+            </div>
+
+            <div class="pillar-card">
+                <div class="pillar-icon-wrapper">📊</div>
+                <h4 class="pillar-title">Real-Time Hospital Telemetry</h4>
+                <p class="pillar-desc">
+                    Administrators access live ward bed-occupancy monitors, doctor scheduling loads, patient wait-time heatmaps, and financial analytics in one dashboard.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================= DEEP SYSTEM OVERVIEW (ABOUT MEDIMATE AI) ================= -->
+    <section class="about-section" id="about-medimate">
+        <div class="about-grid">
+            <div class="about-content">
+                <div class="badge-pill">The Mission</div>
+                <h2>What is MediMate AI?</h2>
+                <p>
+                    <strong>MediMate AI</strong> is an all-in-one clinical operating system engineered to eliminate the fragmentation 
+                    that plagues modern hospitals. In traditional healthcare systems, patient records, diagnostic laboratories, 
+                    physician appointments, and pharmacy dispensation function in isolated silos.
+                </p>
+                <p>
+                    MediMate AI creates a continuous, secure data bridge between every stakeholder. A patient books an appointment 
+                    online; Preethi AI provides preliminary triage; the physician reviews the chart and issues an electronic prescription; 
+                    the laboratory automatically receives diagnostic requisitions; and the pharmacy dispenses verified medications with 
+                    real-time batch expiration safety checks.
+                </p>
+
+                <div class="about-specs">
+                    <div class="spec-box">
+                        <h4>⚡ Dual-Engine Auth</h4>
+                        <p>Works effortlessly with Firebase Cloud Auth or local browser fallback for uninterrupted clinical uptime.</p>
+                    </div>
+                    <div class="spec-box">
+                        <h4>🔒 HIPAA Standard</h4>
+                        <p>Designed around strict patient privacy, data integrity, and role-segregated medical records access.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="about-diagram-card">
+                <h3 style="font-size: 20px; font-weight: 700; color: #ffffff; margin-bottom: 20px;">
+                    Closed-Loop Clinical Data Flow
+                </h3>
+
+                <div class="diagram-item">
+                    <div class="diagram-left">
+                        <span style="font-size: 20px;">1️⃣</span>
+                        <div>
+                            <strong style="color: #ffffff; font-size: 14px;">Patient Self-Assessment</strong>
+                            <div style="font-size: 11px; color: var(--text-muted);">Symptom intake via Preethi AI Engine</div>
+                        </div>
+                    </div>
+                    <span class="diagram-tag">TRIAGE</span>
+                </div>
+
+                <div class="diagram-item">
+                    <div class="diagram-left">
+                        <span style="font-size: 20px;">2️⃣</span>
+                        <div>
+                            <strong style="color: #ffffff; font-size: 14px;">Physician Consultation</strong>
+                            <div style="font-size: 11px; color: var(--text-muted);">Digital prescription & lab order issue</div>
+                        </div>
+                    </div>
+                    <span class="diagram-tag" style="color: var(--cyan-accent); background: rgba(0, 210, 255, 0.15);">DIAGNOSIS</span>
+                </div>
+
+                <div class="diagram-item">
+                    <div class="diagram-left">
+                        <span style="font-size: 20px;">3️⃣</span>
+                        <div>
+                            <strong style="color: #ffffff; font-size: 14px;">Diagnostic Pathology Lab</strong>
+                            <div style="font-size: 11px; color: var(--text-muted);">Specimen intake & digital test results</div>
+                        </div>
+                    </div>
+                    <span class="diagram-tag" style="color: var(--violet-accent); background: rgba(139, 92, 246, 0.15);">LABORATORY</span>
+                </div>
+
+                <div class="diagram-item">
+                    <div class="diagram-left">
+                        <span style="font-size: 20px;">4️⃣</span>
+                        <div>
+                            <strong style="color: #ffffff; font-size: 14px;">Smart Pharmacy Dispensation</strong>
+                            <div style="font-size: 11px; color: var(--text-muted);">Batch verification & automated stock sync</div>
+                        </div>
+                    </div>
+                    <span class="diagram-tag" style="color: var(--rose-accent); background: rgba(244, 63, 94, 0.15);">DISPENSE</span>
+                </div>
+
+                <div class="diagram-item" style="margin-bottom: 0;">
+                    <div class="diagram-left">
+                        <span style="font-size: 20px;">5️⃣</span>
+                        <div>
+                            <strong style="color: #ffffff; font-size: 14px;">Executive Administration</strong>
+                            <div style="font-size: 11px; color: var(--text-muted);">Continuous facility metrics & quality audit</div>
+                        </div>
+                    </div>
+                    <span class="diagram-tag" style="color: var(--amber-accent); background: rgba(245, 158, 11, 0.15);">GOVERN</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================= FAQ SECTION ================= -->
+    <section class="faq-section" id="faq">
+        <div class="section-header">
+            <div class="badge-pill">Have Questions?</div>
+            <h2 class="section-title">Frequently Asked Questions</h2>
+            <p class="section-desc">
+                Everything you need to know about the MediMate AI clinical operating platform.
+            </p>
+        </div>
+
+        <div class="faq-container">
+            <div class="faq-item active">
+                <div class="faq-question" onclick="toggleFaq(this)">
+                    <span>What is Preethi AI and how does it assist clinicians?</span>
+                    <span class="faq-icon">+</span>
+                </div>
+                <div class="faq-answer">
+                    Preethi AI is our specialized healthcare neural assistant. It parses patient symptom narratives in real time, computes clinical risk scores (Low, Moderate, Urgent), highlights potential drug interactions, and suggests appropriate hospital departments. It acts as a safety copilot to assist licensed doctors rather than replacing clinical judgment.
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(this)">
+                    <span>Can I test the platform without an internet connection?</span>
+                    <span class="faq-icon">+</span>
+                </div>
+                <div class="faq-answer">
+                    Yes! MediMate AI includes an automated dual-engine authentication and storage system. If Firebase Cloud services are unreachable or running locally, the system seamlessly transitions to synchronized local clinical registries so workflows never halt.
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(this)">
+                    <span>How does the Smart Pharmacy Expiry Radar work?</span>
+                    <span class="faq-icon">+</span>
+                </div>
+                <div class="faq-answer">
+                    The Smart Pharmacy module constantly tracks batch manufacturing dates and shelf-life horizons. Any medication within 30 days of expiration is automatically flagged with high-visibility warnings, preventing inadvertent dispensing and optimizing hospital reordering cycles.
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(this)">
+                    <span>How do patients receive their diagnostic lab reports?</span>
+                    <span class="faq-icon">+</span>
+                </div>
+                <div class="faq-answer">
+                    As soon as a certified laboratory pathologist records and signs off on test results in the Lab Portal, the patient's Electronic Health Record is updated instantly with real-time notifications and downloadable report documents.
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(this)">
+                    <span>How is patient medical privacy protected?</span>
+                    <span class="faq-icon">+</span>
+                </div>
+                <div class="faq-answer">
+                    Every data transfer uses military-grade AES-256 encryption. Our strict Role-Based Access Control (RBAC) architecture guarantees that laboratory technicians only see diagnostic requests, pharmacists only view prescription fulfillment records, and doctors only access authorized patient health files.
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================= FOOTER ================= -->
     <footer>
-        © 2026 MediMate AI | Smart Healthcare Management System
+        <div class="footer-grid">
+            <div class="footer-brand">
+                <div class="brand-container" style="margin-bottom: 12px;">
+                    <div class="brand-logo-icon">M</div>
+                    <div class="brand-title">MediMate <span>AI</span></div>
+                </div>
+                <p>
+                    Next-generation unified hospital intelligence platform. Connecting patients, licensed clinicians, diagnostic laboratories, and pharmacies.
+                </p>
+                <div class="status-pill">
+                    <span class="pulse-dot"></span>
+                    <span>15 / 15 Microservices Healthy</span>
+                </div>
+            </div>
+
+            <div class="footer-col">
+                <h5>Hospital Portals</h5>
+                <ul>
+                    <li><a href="patient/dashboard.html">Patient Portal</a></li>
+                    <li><a href="doctor/dashboard.html">Doctor & Clinician Portal</a></li>
+                    <li><a href="admin/dashboard.html">Hospital Administrator</a></li>
+                    <li><a href="laboratory/dashboard.html">Diagnostic Pathology Lab</a></li>
+                    <li><a href="pharmacy/dashboard.html">Smart Pharmacy & Inventory</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h5>Clinical Features</h5>
+                <ul>
+                    <li><a href="patient/preethi-ai.html">Preethi AI Clinical Assistant</a></li>
+                    <li><a href="patient/appointments.html">Smart Appointment Booking</a></li>
+                    <li><a href="patient/vitals.html">Continuous Vitals Telemetry</a></li>
+                    <li><a href="patient/health-records.html">Electronic Health Records</a></li>
+                    <li><a href="patient/lab-reports.html">Digital Pathology Reports</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h5>Access & Security</h5>
+                <ul>
+                    <li><a href="register.html">Create New Account</a></li>
+                    <li><a href="forgot-password.html">Reset Password</a></li>
+                    <li><a href="api/health">System Health API</a></li>
+                    <li><a href="#about-medimate">HIPAA & HL7 Compliance</a></li>
+                    <li><a href="#faq">Clinical FAQ</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <div>
+                &copy; 2026 MediMate AI. All rights reserved. Precision Healthcare Intelligence.
+            </div>
+            <div style="display: flex; gap: 20px;">
+                <span>Zero-Trust Architecture</span>
+                <span>HL7 / FHIR Synchronized</span>
+                <span>AES-256 Vault Encrypted</span>
+            </div>
+        </div>
     </footer>
 
+    <!-- ================= INTERACTIVE SCRIPTS ================= -->
+    <script>
+        // Predefined Clinical Scenario Data for Interactive Preethi AI Simulator
+        const scenarios = {
+            fever: {
+                text: "Persistent mild fever (100.4°F) and dry cough for 2 days",
+                risk: "Low Priority",
+                riskClass: "risk-low",
+                dept: "Department: General Medicine",
+                analysis: "Symptoms indicate an early viral respiratory presentation without immediate red-flag distress. Recommended supportive care: Rest, hydration, paracetamol as clinically advised. Seek urgent care if SpO2 drops below 95% or dyspnea develops."
+            },
+            migraine: {
+                text: "Throbbing unilateral headache with photophobia and nausea for 6 hours",
+                risk: "Moderate Priority",
+                riskClass: "risk-moderate",
+                dept: "Department: Neurology",
+                analysis: "Classic migraine symptom cluster without acute meningeal irritation signs. Recommended: Dark room rest, hydration, prompt neurology consultation for preventive and abortive therapy."
+            },
+            chest: {
+                text: "Substernal chest pressure with shortness of breath and mild diaphoresis",
+                risk: "HIGH PRIORITY - URGENT",
+                riskClass: "risk-high",
+                dept: "Department: Emergency Cardiology",
+                analysis: "RED FLAG INDICATOR: Acute chest discomfort with autonomic symptoms requires immediate clinical evaluation. Please visit the Emergency Department immediately or call emergency services for an urgent ECG and cardiac enzyme panel."
+            },
+            joint: {
+                text: "Right knee swelling, warmth, and stiffness following minor sports twist",
+                risk: "Moderate Priority",
+                riskClass: "risk-moderate",
+                dept: "Department: Orthopedics & Rheumatology",
+                analysis: "Acute joint effusion and inflammation. Recommended R.I.C.E. protocol (Rest, Ice, Compression, Elevation) and an orthopedic consultation with imaging (X-Ray/MRI) to assess ligamentous integrity."
+            }
+        };
+
+        function selectScenario(key) {
+            // Update active chip
+            document.querySelectorAll('.chip-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+
+            const sc = scenarios[key];
+            if (!sc) return;
+
+            document.getElementById('simSymptomInput').value = sc.text;
+            displayTriageResult(sc.risk, sc.riskClass, sc.dept, sc.analysis);
+        }
+
+        function runTriageSimulation() {
+            const inputVal = document.getElementById('simSymptomInput').value.trim().toLowerCase();
+            if (!inputVal) {
+                alert('Please enter your symptoms to analyze.');
+                return;
+            }
+
+            // Keyword based clinical intelligence triage rules
+            let risk = "Low Priority";
+            let riskClass = "risk-low";
+            let dept = "Department: General Medicine";
+            let analysis = "General symptomatic assessment suggests non-emergency presentation. Maintain rest, monitor vitals, and consult a physician if condition persists beyond 48 hours.";
+
+            if (inputVal.includes('chest') || inputVal.includes('heart') || inputVal.includes('pressure') || inputVal.includes('breath') || inputVal.includes('shortness')) {
+                risk = "HIGH PRIORITY - URGENT";
+                riskClass = "risk-high";
+                dept = "Department: Emergency Cardiology";
+                analysis = "POTENTIAL RED FLAG: Cardio-pulmonary symptoms detected. Immediate professional medical assessment or Emergency Department consultation is strongly recommended.";
+            } else if (inputVal.includes('headache') || inputVal.includes('migraine') || inputVal.includes('dizzy') || inputVal.includes('numb')) {
+                risk = "Moderate Priority";
+                riskClass = "risk-moderate";
+                dept = "Department: Neurology";
+                analysis = "Neurological symptom pattern detected. Recommended: Clinical evaluation by a neurologist, vitals monitoring (Blood Pressure), and symptom journaling.";
+            } else if (inputVal.includes('joint') || inputVal.includes('knee') || inputVal.includes('bone') || inputVal.includes('fracture') || inputVal.includes('swelling')) {
+                risk = "Moderate Priority";
+                riskClass = "risk-moderate";
+                dept = "Department: Orthopedics";
+                analysis = "Musculoskeletal strain or joint inflammation identified. Recommended: Rest, joint stabilization, and orthopedic clinical examination with diagnostic imaging.";
+            } else if (inputVal.includes('rash') || inputVal.includes('skin') || inputVal.includes('itch') || inputVal.includes('allergy')) {
+                risk = "Low Priority";
+                riskClass = "risk-low";
+                dept = "Department: Dermatology & Allergy";
+                analysis = "Dermatological or allergic presentation. Monitor for any facial or airway swelling (angioedema). Consult a dermatologist for topical or systemic therapy.";
+            }
+
+            displayTriageResult(risk, riskClass, dept, analysis);
+        }
+
+        function displayTriageResult(risk, riskClass, dept, analysis) {
+            const resBox = document.getElementById('simResultBox');
+            const resTag = document.getElementById('resRiskTag');
+            const resDept = document.getElementById('resDept');
+            const resAnalysis = document.getElementById('resAnalysisText');
+
+            resTag.className = 'result-risk-tag ' + riskClass;
+            resTag.textContent = 'Triage Risk: ' + risk;
+            resDept.textContent = dept;
+            resAnalysis.textContent = analysis;
+
+            resBox.style.display = 'block';
+        }
+
+        // Interactive FAQ Accordion
+        function toggleFaq(headerEl) {
+            const item = headerEl.parentElement;
+            const wasActive = item.classList.contains('active');
+
+            // Close all items
+            document.querySelectorAll('.faq-item').forEach(el => el.classList.remove('active'));
+
+            if (!wasActive) {
+                item.classList.add('active');
+            }
+        }
+    </script>
 </body>
 </html>

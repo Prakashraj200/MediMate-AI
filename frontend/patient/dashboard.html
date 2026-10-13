@@ -1,1271 +1,572 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Laboratory Dashboard | MediMate AI</title>
-
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: Arial, Helvetica, sans-serif;
-        }
-
-        body {
-            background: #f3faf6;
-            color: #183b2a;
-        }
-
-        .dashboard-container {
-            display: flex;
-            min-height: 100vh;
-        }
-
-        /* ================= SIDEBAR ================= */
-
-        .sidebar {
-            position: fixed;
-            top: 0;
-            left: 0;
-            bottom: 0;
-
-            width: 270px;
-            height: 100vh;
-
-            padding: 25px 18px;
-            color: white;
-
-            background: linear-gradient(
-                180deg,
-                #087f5b,
-                #075e45
-            );
-
-            display: flex;
-            flex-direction: column;
-
-            overflow-y: auto;
-            z-index: 1000;
-        }
-
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-
-            padding: 8px 10px 25px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.3);
-        }
-
-        .logo-icon {
-            width: 48px;
-            height: 48px;
-
-            display: flex;
-            align-items: center;
-            justify-content: center;
-
-            border-radius: 14px;
-            background: white;
-            color: #087f5b;
-
-            font-size: 26px;
-            font-weight: bold;
-        }
-
-        .logo h2 {
-            font-size: 22px;
-        }
-
-        .logo p {
-            margin-top: 5px;
-            color: #c9f5df;
-            font-size: 12px;
-        }
-
-        .menu-title {
-            margin: 28px 12px 12px;
-
-            color: #bcebd5;
-            font-size: 12px;
-            font-weight: bold;
-
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .menu {
-            list-style: none;
-        }
-
-        .menu li {
-            margin-bottom: 8px;
-        }
-
-        .menu a {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-
-            padding: 14px 15px;
-
-            color: #edfff6;
-            text-decoration: none;
-
-            border-radius: 13px;
-            font-size: 15px;
-
-            transition: 0.3s ease;
-        }
-
-        .menu a:hover,
-        .menu a.active {
-            color: #087f5b;
-            background: white;
-            transform: translateX(4px);
-        }
-
-        .menu-icon {
-            width: 25px;
-            text-align: center;
-            font-size: 20px;
-        }
-
-        /* ================= SIDEBAR BOTTOM ================= */
-
-        .sidebar-bottom {
-            margin-top: auto;
-            padding-top: 22px;
-
-            border-top: 1px solid rgba(255, 255, 255, 0.35);
-        }
-
-        .logout-btn {
-            width: 100%;
-
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-
-            padding: 15px;
-
-            border: none;
-            border-radius: 14px;
-
-            background: #ffe8e8;
-            color: #c0392b;
-
-            font-size: 15px;
-            font-weight: bold;
-
-            cursor: pointer;
-            transition: 0.3s ease;
-        }
-
-        .logout-btn:hover {
-            background: white;
-            color: #a93226;
-            transform: translateY(-2px);
-        }
-
-        /* ================= MAIN CONTENT ================= */
-
-        .main-content {
-            width: calc(100% - 270px);
-            margin-left: 270px;
-            padding: 30px;
-        }
-
-        .topbar {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 20px;
-
-            margin-bottom: 30px;
-        }
-
-        .welcome h1 {
-            font-size: 28px;
-            margin-bottom: 8px;
-        }
-
-        .welcome p {
-            color: #70877a;
-            font-size: 14px;
-        }
-
-        .lab-profile {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-
-            padding: 12px 16px;
-            background: white;
-            border-radius: 16px;
-
-            box-shadow: 0 6px 22px rgba(0, 80, 50, 0.07);
-        }
-
-        .profile-icon {
-            width: 45px;
-            height: 45px;
-
-            display: flex;
-            align-items: center;
-            justify-content: center;
-
-            border-radius: 50%;
-            background: #dff8eb;
-            color: #087f5b;
-
-            font-size: 22px;
-            font-weight: bold;
-        }
-
-        .profile-details h4 {
-            font-size: 14px;
-        }
-
-        .profile-details p {
-            margin-top: 4px;
-            color: #789083;
-            font-size: 12px;
-        }
-
-        /* ================= STATISTICS ================= */
-
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 20px;
-
-            margin-bottom: 28px;
-        }
-
-        .stat-card {
-            padding: 22px;
-
-            background: white;
-            border-radius: 18px;
-
-            border-left: 5px solid #087f5b;
-            box-shadow: 0 7px 25px rgba(0, 80, 50, 0.07);
-
-            transition: 0.3s ease;
-        }
-
-        .stat-card:hover {
-            transform: translateY(-5px);
-        }
-
-        .stat-top {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-
-            margin-bottom: 18px;
-        }
-
-        .stat-icon {
-            width: 46px;
-            height: 46px;
-
-            display: flex;
-            align-items: center;
-            justify-content: center;
-
-            border-radius: 14px;
-            background: #e0f8ec;
-
-            font-size: 23px;
-        }
-
-        .stat-status {
-            color: #0b9b68;
-            font-size: 12px;
-            font-weight: bold;
-        }
-
-        .stat-card h2 {
-            color: #174b35;
-            font-size: 30px;
-            margin-bottom: 7px;
-        }
-
-        .stat-card p {
-            color: #789083;
-            font-size: 13px;
-        }
-
-        /* ================= CONTENT GRID ================= */
-
-        .content-grid {
-            display: grid;
-            grid-template-columns: 2fr 1fr;
-            gap: 24px;
-
-            margin-bottom: 28px;
-        }
-
-        .panel {
-            padding: 25px;
-
-            background: white;
-            border-radius: 20px;
-
-            box-shadow: 0 7px 25px rgba(0, 80, 50, 0.06);
-        }
-
-        .panel-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-
-            gap: 15px;
-            margin-bottom: 22px;
-        }
-
-        .panel-header h2 {
-            font-size: 20px;
-        }
-
-        .view-all {
-            color: #087f5b;
-            text-decoration: none;
-            font-size: 13px;
-            font-weight: bold;
-        }
-
-        /* ================= TEST REQUESTS ================= */
-
-        .test-list {
-            display: flex;
-            flex-direction: column;
-            gap: 18px;
-        }
-
-        .test-item {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-
-            padding-bottom: 17px;
-            border-bottom: 1px solid #e8f1eb;
-        }
-
-        .test-item:last-child {
-            border-bottom: none;
-            padding-bottom: 0;
-        }
-
-        .test-icon {
-            width: 48px;
-            height: 48px;
-
-            display: flex;
-            align-items: center;
-            justify-content: center;
-
-            border-radius: 14px;
-            background: #e0f8ec;
-
-            font-size: 23px;
-        }
-
-        .test-info {
-            flex: 1;
-        }
-
-        .test-info h4 {
-            font-size: 15px;
-            margin-bottom: 6px;
-        }
-
-        .test-info p {
-            color: #789083;
-            font-size: 13px;
-        }
-
-        .test-time {
-            text-align: right;
-        }
-
-        .test-time strong {
-            display: block;
-            color: #087f5b;
-            font-size: 14px;
-            margin-bottom: 7px;
-        }
-
-        /* ================= STATUS ================= */
-
-        .status {
-            display: inline-block;
-
-            padding: 7px 12px;
-            border-radius: 20px;
-
-            font-size: 11px;
-            font-weight: bold;
-        }
-
-        .status.pending {
-            background: #fff0cf;
-            color: #a56a00;
-        }
-
-        .status.processing {
-            background: #dceeff;
-            color: #17649b;
-        }
-
-        .status.completed {
-            background: #d9f7e7;
-            color: #087f5b;
-        }
-
-        .status.critical {
-            background: #ffe0e0;
-            color: #c0392b;
-        }
-
-        .status.review {
-            background: #fff0cf;
-            color: #a56a00;
-        }
-
-        /* ================= ALERTS ================= */
-
-        .alert-list {
-            display: flex;
-            flex-direction: column;
-            gap: 17px;
-        }
-
-        .alert-box {
-            display: flex;
-            align-items: flex-start;
-            gap: 13px;
-
-            padding: 18px;
-            border-radius: 15px;
-        }
-
-        .alert-box strong {
-            display: block;
-            margin-bottom: 7px;
-            font-size: 14px;
-        }
-
-        .alert-box p {
-            font-size: 13px;
-            line-height: 1.5;
-        }
-
-        .alert-icon {
-            font-size: 23px;
-        }
-
-        .alert-danger {
-            background: #ffe4e4;
-            color: #bd3030;
-        }
-
-        .alert-warning {
-            background: #fff1d6;
-            color: #a56a00;
-        }
-
-        .alert-info {
-            background: #e1f0ff;
-            color: #17649b;
-        }
-
-        /* ================= TABLE ================= */
-
-        .table-wrapper {
-            overflow-x: auto;
-        }
-
-        table {
-            width: 100%;
-            min-width: 750px;
-            border-collapse: collapse;
-        }
-
-        th {
-            padding: 15px;
-            text-align: left;
-
-            background: #eff9f3;
-            color: #087f5b;
-
-            font-size: 13px;
-        }
-
-        td {
-            padding: 17px 15px;
-
-            border-bottom: 1px solid #e8f1eb;
-            color: #526c5d;
-
-            font-size: 14px;
-        }
-
-        td strong {
-            color: #183b2a;
-        }
-
-        tr:last-child td {
-            border-bottom: none;
-        }
-
-        .view-btn {
-            padding: 10px 17px;
-
-            border: none;
-            border-radius: 10px;
-
-            background: #e0f8ec;
-            color: #087f5b;
-
-            cursor: pointer;
-            font-weight: bold;
-
-            transition: 0.3s ease;
-        }
-
-        .view-btn:hover {
-            background: #087f5b;
-            color: white;
-        }
-
-        /* ================= BOTTOM GRID ================= */
-
-        .bottom-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 24px;
-
-            margin-top: 28px;
-        }
-
-        .equipment-list,
-        .activity-list {
-            display: flex;
-            flex-direction: column;
-            gap: 18px;
-        }
-
-        .equipment-item,
-        .activity-item {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-        }
-
-        .equipment-icon,
-        .activity-icon {
-            width: 46px;
-            height: 46px;
-
-            display: flex;
-            align-items: center;
-            justify-content: center;
-
-            border-radius: 14px;
-            background: #e0f8ec;
-
-            font-size: 23px;
-        }
-
-        .equipment-info,
-        .activity-info {
-            flex: 1;
-        }
-
-        .equipment-info h4,
-        .activity-info h4 {
-            font-size: 14px;
-            margin-bottom: 5px;
-        }
-
-        .equipment-info p,
-        .activity-info p {
-            color: #789083;
-            font-size: 12px;
-        }
-
-        .equipment-status {
-            color: #087f5b;
-            font-size: 13px;
-            font-weight: bold;
-        }
-
-        .footer {
-            margin-top: 30px;
-            padding-bottom: 10px;
-
-            text-align: center;
-            color: #8ba095;
-            font-size: 12px;
-        }
-
-        /* ================= RESPONSIVE ================= */
-
-        @media (max-width: 1200px) {
-            .stats-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-            .content-grid,
-            .bottom-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        @media (max-width: 800px) {
-            .sidebar {
-                width: 82px;
-                padding: 20px 10px;
-            }
-
-            .logo {
-                justify-content: center;
-                padding: 0 0 22px;
-            }
-
-            .logo h2,
-            .logo p,
-            .menu-title,
-            .menu a span:last-child,
-            .logout-btn span:last-child {
-                display: none;
-            }
-
-            .logo-icon {
-                width: 48px;
-                height: 48px;
-            }
-
-            .menu a {
-                justify-content: center;
-                padding: 15px 8px;
-            }
-
-            .menu-icon {
-                font-size: 22px;
-            }
-
-            .logout-btn {
-                padding: 15px 5px;
-                font-size: 22px;
-            }
-
-            .main-content {
-                width: calc(100% - 82px);
-                margin-left: 82px;
-                padding: 20px;
-            }
-
-            .topbar {
-                align-items: flex-start;
-                flex-direction: column;
-            }
-
-            .lab-profile {
-                width: 100%;
-            }
-        }
-
-        @media (max-width: 520px) {
-            .stats-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .main-content {
-                padding: 14px;
-            }
-
-            .panel {
-                padding: 18px;
-            }
-
-            .welcome h1 {
-                font-size: 23px;
-            }
-
-            .test-item {
-                align-items: flex-start;
-            }
-
-            .test-time strong {
-                font-size: 12px;
-            }
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Patient Dashboard - MediMate AI</title>
+  <link rel="stylesheet" href="patient-style.css">
+  <style>
+    /* Dashboard specific customizations */
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: 2fr 1.2fr;
+      gap: 24px;
+    }
+
+    .appointment-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      margin-bottom: 12px;
+      background: var(--bg-surface-alt);
+      transition: all 0.2s ease;
+    }
+
+    .appointment-item:hover {
+      border-color: var(--primary);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .doctor-meta {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .doctor-avatar-box {
+      width: 48px;
+      height: 48px;
+      border-radius: 14px;
+      background: var(--primary-subtle);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      flex-shrink: 0;
+    }
+
+    .doctor-meta strong {
+      display: block;
+      font-size: 15px;
+      color: var(--text-main);
+    }
+
+    .doctor-meta span {
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    .appointment-actions {
+      text-align: right;
+    }
+
+    .quick-actions-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    .action-tile {
+      padding: 18px 14px;
+      text-align: center;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      background: white;
+      transition: all 0.2s ease;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .action-tile:hover {
+      background: var(--primary-subtle);
+      border-color: var(--primary);
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .action-tile .action-icon {
+      font-size: 28px;
+    }
+
+    .action-tile span {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-main);
+    }
+
+    .vitals-preview-strip {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    .vital-mini-card {
+      background: var(--bg-surface-alt);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      padding: 12px;
+      text-align: center;
+    }
+
+    .vital-mini-card p {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+    }
+
+    .vital-mini-card strong {
+      font-size: 16px;
+      color: var(--primary-dark);
+    }
+
+    .ai-banner-card {
+      background: linear-gradient(135deg, #094833 0%, #0ca678 100%);
+      color: white;
+      border-radius: var(--radius-md);
+      padding: 22px;
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      margin-top: 24px;
+    }
+
+    .ai-banner-card .ai-avatar {
+      font-size: 42px;
+      background: rgba(255, 255, 255, 0.15);
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .ai-banner-card h4 {
+      font-size: 16px;
+      margin-bottom: 4px;
+    }
+
+    .ai-banner-card p {
+      font-size: 13px;
+      opacity: 0.9;
+      line-height: 1.4;
+      margin-bottom: 12px;
+    }
+
+    @media (max-width: 992px) {
+      .dashboard-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
 </head>
-
 <body>
 
-<div class="dashboard-container">
+  <!-- =========================
+       SIDEBAR
+  ========================== -->
+  <aside class="sidebar">
+    <div class="logo">
+      <div class="logo-icon">🏥</div>
+      <h2>MediMate AI</h2>
+      <p>Patient Portal</p>
+    </div>
 
-    <!-- ================= SIDEBAR ================= -->
+    <div class="menu-container">
+      <ul class="menu">
+        <li>
+          <a href="dashboard.html" class="active">
+            <span class="nav-icon">🏠</span>
+            <span>Dashboard</span>
+          </a>
+        </li>
+        <li>
+          <a href="appointments.html">
+            <span class="nav-icon">📅</span>
+            <span>Appointments</span>
+          </a>
+        </li>
+        <li>
+          <a href="health-records.html">
+            <span class="nav-icon">❤️</span>
+            <span>Health Records</span>
+          </a>
+        </li>
+        <li>
+          <a href="medicines.html">
+            <span class="nav-icon">💊</span>
+            <span>Medicines</span>
+          </a>
+        </li>
+        <li>
+          <a href="prescriptions.html">
+            <span class="nav-icon">📋</span>
+            <span>Prescriptions</span>
+          </a>
+        </li>
+        <li>
+          <a href="lab-reports.html">
+            <span class="nav-icon">🧪</span>
+            <span>Lab Reports</span>
+          </a>
+        </li>
+        <li>
+          <a href="doctors.html">
+            <span class="nav-icon">👨‍⚕️</span>
+            <span>Doctors</span>
+          </a>
+        </li>
+        <li>
+          <a href="preethi-ai.html">
+            <span class="nav-icon">🤖</span>
+            <span>Preethi AI</span>
+          </a>
+        </li>
+        <li>
+          <a href="notifications.html">
+            <span class="nav-icon">🔔</span>
+            <span>Notifications</span>
+          </a>
+        </li>
+        <li>
+          <a href="profile.html">
+            <span class="nav-icon">👤</span>
+            <span>My Profile</span>
+          </a>
+        </li>
+      </ul>
+    </div>
 
-    <aside class="sidebar">
+    <div class="logout">
+      <button id="logoutBtn">
+        <span>🚪</span>
+        <span>Logout</span>
+      </button>
+    </div>
+  </aside>
 
-        <div class="logo">
-            <div class="logo-icon">🧪</div>
+  <!-- =========================
+       MAIN CONTENT
+  ========================== -->
+  <main class="main">
 
+    <!-- TOPBAR -->
+    <header class="topbar">
+      <div class="topbar-left">
+        <button class="sidebar-toggle-btn" id="sidebarToggleBtn" title="Toggle Menu">☰</button>
+        <div class="topbar-title">
+          <h1>Patient Dashboard</h1>
+          <p>Welcome to your personal health hub</p>
+        </div>
+      </div>
+
+      <div class="topbar-right">
+        <a href="notifications.html" class="notif-link" title="Notifications">
+          <span>🔔</span>
+          <span class="notif-badge" id="notifBadge" style="display: none;">0</span>
+        </a>
+
+        <a href="profile.html" class="user-profile-widget">
+          <div class="user-profile-info">
+            <strong id="userName">Patient</strong>
+            <span>Verified Patient</span>
+          </div>
+          <div class="user-avatar-circle" id="userAvatar">P</div>
+        </a>
+      </div>
+    </header>
+
+    <!-- CONTENT -->
+    <section class="content">
+
+      <!-- WELCOME HERO -->
+      <div class="page-banner">
+        <div>
+          <h2>Welcome back, <span id="welcomeName">Patient</span>! 👋</h2>
+          <p>Manage your health, upcoming appointments, prescriptions and diagnostic records in one secure, unified portal.</p>
+        </div>
+        <a href="appointments.html" class="btn btn-primary" style="background: white; color: var(--primary);">
+          <span>📅</span>
+          <span>Book Appointment</span>
+        </a>
+      </div>
+
+      <!-- SUMMARY STAT CARDS -->
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-icon">📅</div>
+          <div class="stat-details">
+            <h4>Upcoming Appointments</h4>
+            <div class="stat-value" id="statAppointments">0</div>
+            <p class="stat-sub">Next: In 2 days</p>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon">💊</div>
+          <div class="stat-details">
+            <h4>Active Medicines</h4>
+            <div class="stat-value" id="statMedicines">0</div>
+            <p class="stat-sub">Daily dosages tracked</p>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon">🧪</div>
+          <div class="stat-details">
+            <h4>Lab Reports</h4>
+            <div class="stat-value" id="statReports">0</div>
+            <p class="stat-sub">Recent: Lipid Profile</p>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon">❤️</div>
+          <div class="stat-details">
+            <h4>Health Status</h4>
+            <div class="stat-value" style="color: var(--primary);">Normal</div>
+            <p class="stat-sub">BP: 120/80 mmHg</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- MAIN DASHBOARD TWO-COLUMN GRID -->
+      <div class="dashboard-grid">
+
+        <!-- LEFT COLUMN: APPOINTMENTS & HEALTH VITALS PREVIEW -->
+        <div class="dashboard-left">
+
+          <!-- Upcoming Appointments Card -->
+          <div class="surface-card">
+            <div class="card-header-flex">
+              <h3>
+                <span>📅</span>
+                <span>Upcoming Appointments</span>
+              </h3>
+              <a href="appointments.html" class="btn btn-outline btn-sm">View All</a>
+            </div>
+
+            <div id="upcomingAppointmentsList">
+              <!-- Dynamically populated -->
+            </div>
+          </div>
+
+          <!-- Active Prescriptions Preview -->
+          <div class="surface-card">
+            <div class="card-header-flex">
+              <h3>
+                <span>💊</span>
+                <span>Current Medication Regimen</span>
+              </h3>
+              <a href="medicines.html" class="btn btn-outline btn-sm">Manage Meds</a>
+            </div>
+
+            <div id="medicinesPreviewList">
+              <!-- Dynamically populated -->
+            </div>
+          </div>
+
+        </div>
+
+        <!-- RIGHT COLUMN: QUICK ACTIONS & PREETHI AI & VITALS -->
+        <div class="dashboard-right">
+
+          <!-- Quick Actions Tile Grid -->
+          <div class="surface-card">
+            <div class="card-header-flex">
+              <h3>
+                <span>⚡</span>
+                <span>Quick Actions</span>
+              </h3>
+            </div>
+
+            <div class="quick-actions-grid">
+              <a href="appointments.html" class="action-tile">
+                <div class="action-icon">📅</div>
+                <span>Book Appointment</span>
+              </a>
+
+              <a href="medicines.html" class="action-tile">
+                <div class="action-icon">💊</div>
+                <span>My Medicines</span>
+              </a>
+
+              <a href="lab-reports.html" class="action-tile">
+                <div class="action-icon">🧪</div>
+                <span>Lab Reports</span>
+              </a>
+
+              <a href="doctors.html" class="action-tile">
+                <div class="action-icon">👨‍⚕️</div>
+                <span>Find Doctors</span>
+              </a>
+
+              <a href="health-records.html" class="action-tile">
+                <div class="action-icon">❤️</div>
+                <span>Health Records</span>
+              </a>
+
+              <a href="prescriptions.html" class="action-tile">
+                <div class="action-icon">📋</div>
+                <span>Prescriptions</span>
+              </a>
+            </div>
+          </div>
+
+          <!-- Quick Vitals Snapshot -->
+          <div class="surface-card">
+            <div class="card-header-flex">
+              <h3>
+                <span>🩺</span>
+                <span>Recent Vitals Snapshot</span>
+              </h3>
+              <a href="health-records.html" class="btn btn-outline btn-sm">All Vitals</a>
+            </div>
+
+            <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 8px;">
+              Recorded today at 08:30 AM
+            </p>
+
+            <div class="vitals-preview-strip">
+              <div class="vital-mini-card">
+                <p>Blood Pressure</p>
+                <strong id="bpVal">120/80</strong>
+              </div>
+              <div class="vital-mini-card">
+                <p>Heart Rate</p>
+                <strong id="hrVal">72 bpm</strong>
+              </div>
+              <div class="vital-mini-card">
+                <p>Fasting Sugar</p>
+                <strong id="sugarVal">95 mg/dL</strong>
+              </div>
+            </div>
+          </div>
+
+          <!-- Preethi AI Chat Promotion -->
+          <div class="ai-banner-card">
+            <div class="ai-avatar">🤖</div>
             <div>
-                <h2>MediMate AI</h2>
-                <p>Laboratory Portal</p>
+              <h4>Have Symptoms or Questions?</h4>
+              <p>Consult with Preethi AI, your 24/7 intelligent clinical wellness guide.</p>
+              <a href="preethi-ai.html" class="btn btn-primary" style="background: white; color: #094833;">
+                <span>💬</span>
+                <span>Chat with Preethi AI</span>
+              </a>
             </div>
-        </div>
-
-        <p class="menu-title">Main Menu</p>
-
-        <ul class="menu">
-
-            <li>
-                <a href="#" class="active">
-                    <span class="menu-icon">📊</span>
-                    <span>Dashboard</span>
-                </a>
-            </li>
-
-            <li>
-                <a href="#">
-                    <span class="menu-icon">🧪</span>
-                    <span>Test Requests</span>
-                </a>
-            </li>
-
-            <li>
-                <a href="#">
-                    <span class="menu-icon">📄</span>
-                    <span>Lab Reports</span>
-                </a>
-            </li>
-
-            <li>
-                <a href="#">
-                    <span class="menu-icon">🧑‍🤝‍🧑</span>
-                    <span>Patients</span>
-                </a>
-            </li>
-
-            <li>
-                <a href="#">
-                    <span class="menu-icon">🚨</span>
-                    <span>Critical Tests</span>
-                </a>
-            </li>
-
-            <li>
-                <a href="#">
-                    <span class="menu-icon">⚙️</span>
-                    <span>Equipment</span>
-                </a>
-            </li>
-
-        </ul>
-
-        <p class="menu-title">Account</p>
-
-        <ul class="menu">
-
-            <li>
-                <a href="#">
-                    <span class="menu-icon">👤</span>
-                    <span>Lab Profile</span>
-                </a>
-            </li>
-
-            <li>
-                <a href="#">
-                    <span class="menu-icon">🔔</span>
-                    <span>Notifications</span>
-                </a>
-            </li>
-
-            <li>
-                <a href="#">
-                    <span class="menu-icon">⚙️</span>
-                    <span>Settings</span>
-                </a>
-            </li>
-
-        </ul>
-
-        <!-- LOGOUT ALWAYS AT LAST -->
-
-        <div class="sidebar-bottom">
-
-            <button type="button" class="logout-btn" id="logoutBtn">
-                <span>🚪</span>
-                <span>Logout</span>
-            </button>
+          </div>
 
         </div>
 
-    </aside>
+      </div>
 
-    <!-- ================= MAIN CONTENT ================= -->
+    </section>
 
-    <main class="main-content">
+  </main>
 
-        <!-- TOPBAR -->
+  <!-- =========================
+       PAGE SCRIPT
+  ========================== -->
+  <script type="module">
+    import { setupPatientAuth, PatientStore } from "./patient-common.js";
 
-        <div class="topbar">
+    // Setup Auth and header info
+    setupPatientAuth("dashboard");
 
-            <div class="welcome">
-                <h1>Good Morning, Laboratory 👋</h1>
-                <p>Manage laboratory tests and reports from one place.</p>
-            </div>
-
-            <div class="lab-profile">
-
-                <div class="profile-icon" id="profileIcon">
-                    L
-                </div>
-
-                <div class="profile-details">
-                    <h4 id="labName">Laboratory Staff</h4>
-                    <p>Laboratory Department</p>
-                </div>
-
-            </div>
-
-        </div>
-
-        <!-- STATISTICS -->
-
-        <section class="stats-grid">
-
-            <div class="stat-card">
-                <div class="stat-top">
-                    <div class="stat-icon">🧪</div>
-                    <span class="stat-status">Today</span>
-                </div>
-
-                <h2>48</h2>
-                <p>Total Test Requests</p>
-            </div>
-
-            <div class="stat-card">
-                <div class="stat-top">
-                    <div class="stat-icon">⏳</div>
-                    <span class="stat-status">Pending</span>
-                </div>
-
-                <h2>12</h2>
-                <p>Pending Tests</p>
-            </div>
-
-            <div class="stat-card">
-                <div class="stat-top">
-                    <div class="stat-icon">📄</div>
-                    <span class="stat-status">Completed</span>
-                </div>
-
-                <h2>32</h2>
-                <p>Reports Completed</p>
-            </div>
-
-            <div class="stat-card">
-                <div class="stat-top">
-                    <div class="stat-icon">🚨</div>
-                    <span class="stat-status">Attention</span>
-                </div>
-
-                <h2>4</h2>
-                <p>Critical Results</p>
-            </div>
-
-        </section>
-
-        <!-- TEST REQUESTS AND ALERTS -->
-
-        <section class="content-grid">
-
-            <div class="panel">
-
-                <div class="panel-header">
-                    <h2>Today's Test Requests</h2>
-                    <a href="#" class="view-all">View All →</a>
-                </div>
-
-                <div class="test-list">
-
-                    <div class="test-item">
-
-                        <div class="test-icon">🩸</div>
-
-                        <div class="test-info">
-                            <h4>Complete Blood Count</h4>
-                            <p>Patient: Rahul Sharma</p>
-                        </div>
-
-                        <div class="test-time">
-                            <strong>09:30 AM</strong>
-                            <span class="status pending">Pending</span>
-                        </div>
-
-                    </div>
-
-                    <div class="test-item">
-
-                        <div class="test-icon">🧪</div>
-
-                        <div class="test-info">
-                            <h4>Blood Sugar Test</h4>
-                            <p>Patient: Priya Raj</p>
-                        </div>
-
-                        <div class="test-time">
-                            <strong>10:00 AM</strong>
-                            <span class="status processing">Processing</span>
-                        </div>
-
-                    </div>
-
-                    <div class="test-item">
-
-                        <div class="test-icon">🧬</div>
-
-                        <div class="test-info">
-                            <h4>Lipid Profile</h4>
-                            <p>Patient: Anitha Kumar</p>
-                        </div>
-
-                        <div class="test-time">
-                            <strong>11:30 AM</strong>
-                            <span class="status completed">Completed</span>
-                        </div>
-
-                    </div>
-
-                    <div class="test-item">
-
-                        <div class="test-icon">🔬</div>
-
-                        <div class="test-info">
-                            <h4>Urine Analysis</h4>
-                            <p>Patient: Suresh Babu</p>
-                        </div>
-
-                        <div class="test-time">
-                            <strong>01:00 PM</strong>
-                            <span class="status pending">Pending</span>
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-            <div class="panel">
-
-                <div class="panel-header">
-                    <h2>Laboratory Alerts</h2>
-                </div>
-
-                <div class="alert-list">
-
-                    <div class="alert-box alert-danger">
-                        <div class="alert-icon">🚨</div>
-
-                        <div>
-                            <strong>Critical Blood Sugar</strong>
-                            <p>Patient Priya Raj has a high glucose reading.</p>
-                        </div>
-                    </div>
-
-                    <div class="alert-box alert-warning">
-                        <div class="alert-icon">⚠️</div>
-
-                        <div>
-                            <strong>Abnormal CBC Result</strong>
-                            <p>Rahul Sharma's blood count requires doctor review.</p>
-                        </div>
-                    </div>
-
-                    <div class="alert-box alert-info">
-                        <div class="alert-icon">ℹ️</div>
-
-                        <div>
-                            <strong>Report Submission Reminder</strong>
-                            <p>Three reports are waiting for final submission.</p>
-                        </div>
-                    </div>
-
-                </div>
-
-            </div>
-
-        </section>
-
-        <!-- RECENT REPORTS -->
-
-        <section class="panel">
-
-            <div class="panel-header">
-                <h2>Recent Laboratory Reports</h2>
-                <a href="#" class="view-all">View All →</a>
-            </div>
-
-            <div class="table-wrapper">
-
-                <table>
-
-                    <thead>
-                        <tr>
-                            <th>Patient Name</th>
-                            <th>Test Name</th>
-                            <th>Report Date</th>
-                            <th>Result</th>
-                            <th>Status</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-
-                    <tbody>
-
-                        <tr>
-                            <td><strong>Anitha Kumar</strong></td>
-                            <td>Lipid Profile</td>
-                            <td>Today</td>
-                            <td><strong style="color:#087f5b;">Normal</strong></td>
-                            <td>
-                                <span class="status completed">Completed</span>
-                            </td>
-                            <td>
-                                <button class="view-btn" onclick="viewReport('Anitha Kumar', 'Lipid Profile')">
-                                    View
-                                </button>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td><strong>Rahul Sharma</strong></td>
-                            <td>Complete Blood Count</td>
-                            <td>Today</td>
-                            <td><strong style="color:#c0392b;">Abnormal</strong></td>
-                            <td>
-                                <span class="status critical">Critical</span>
-                            </td>
-                            <td>
-                                <button class="view-btn" onclick="viewReport('Rahul Sharma', 'Complete Blood Count')">
-                                    View
-                                </button>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td><strong>Priya Raj</strong></td>
-                            <td>Blood Sugar Test</td>
-                            <td>Today</td>
-                            <td><strong style="color:#c0392b;">High</strong></td>
-                            <td>
-                                <span class="status review">Review</span>
-                            </td>
-                            <td>
-                                <button class="view-btn" onclick="viewReport('Priya Raj', 'Blood Sugar Test')">
-                                    View
-                                </button>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td><strong>Suresh Babu</strong></td>
-                            <td>Urine Analysis</td>
-                            <td>Yesterday</td>
-                            <td><strong style="color:#a56a00;">Needs Review</strong></td>
-                            <td>
-                                <span class="status processing">Processing</span>
-                            </td>
-                            <td>
-                                <button class="view-btn" onclick="viewReport('Suresh Babu', 'Urine Analysis')">
-                                    View
-                                </button>
-                            </td>
-                        </tr>
-
-                    </tbody>
-
-                </table>
-
-            </div>
-
-        </section>
-
-        <!-- EQUIPMENT AND ACTIVITIES -->
-
-        <section class="bottom-grid">
-
-            <div class="panel">
-
-                <div class="panel-header">
-                    <h2>Laboratory Equipment</h2>
-                    <a href="#" class="view-all">Manage</a>
-                </div>
-
-                <div class="equipment-list">
-
-                    <div class="equipment-item">
-                        <div class="equipment-icon">🔬</div>
-
-                        <div class="equipment-info">
-                            <h4>Microscope</h4>
-                            <p>Last maintenance: 2 days ago</p>
-                        </div>
-
-                        <span class="equipment-status">Active</span>
-                    </div>
-
-                    <div class="equipment-item">
-                        <div class="equipment-icon">🧪</div>
-
-                        <div class="equipment-info">
-                            <h4>Blood Analyzer</h4>
-                            <p>Last maintenance: 5 days ago</p>
-                        </div>
-
-                        <span class="equipment-status">Active</span>
-                    </div>
-
-                    <div class="equipment-item">
-                        <div class="equipment-icon">❄️</div>
-
-                        <div class="equipment-info">
-                            <h4>Sample Refrigerator</h4>
-                            <p>Temperature: 4°C</p>
-                        </div>
-
-                        <span class="equipment-status">Normal</span>
-                    </div>
-
-                </div>
-
-            </div>
-
-            <div class="panel">
-
-                <div class="panel-header">
-                    <h2>Recent Activities</h2>
-                </div>
-
-                <div class="activity-list">
-
-                    <div class="activity-item">
-                        <div class="activity-icon">📄</div>
-
-                        <div class="activity-info">
-                            <h4>New report uploaded</h4>
-                            <p>Blood test report uploaded successfully.</p>
-                        </div>
-                    </div>
-
-                    <div class="activity-item">
-                        <div class="activity-icon">🧪</div>
-
-                        <div class="activity-info">
-                            <h4>Test request received</h4>
-                            <p>A new CBC test request was received.</p>
-                        </div>
-                    </div>
-
-                    <div class="activity-item">
-                        <div class="activity-icon">🚨</div>
-
-                        <div class="activity-info">
-                            <h4>Critical result detected</h4>
-                            <p>High blood sugar result requires attention.</p>
-                        </div>
-                    </div>
-
-                    <div class="activity-item">
-                        <div class="activity-icon">⚙️</div>
-
-                        <div class="activity-info">
-                            <h4>Equipment checked</h4>
-                            <p>Blood analyzer maintenance completed.</p>
-                        </div>
-                    </div>
-
-                </div>
-
-            </div>
-
-        </section>
-
-        <div class="footer">
-            © 2026 MediMate AI. Smart Healthcare Management System.
-        </div>
-
-    </main>
-
-</div>
-
-<script>
-    /* ================= LOAD USER ================= */
-
-    let currentUser = null;
-
-    try {
-        currentUser = JSON.parse(
-            localStorage.getItem("currentUser")
-        );
-    } catch (error) {
-        currentUser = null;
-    }
-
-    if (currentUser) {
-        const userName =
-            currentUser.name ||
-            currentUser.username ||
-            "Laboratory Staff";
-
-        document.getElementById("labName").textContent = userName;
-
-        document.getElementById("profileIcon").textContent =
-            userName.charAt(0).toUpperCase();
-    }
-
-    /* ================= LOGOUT ================= */
-
-    document.getElementById("logoutBtn").addEventListener("click", function () {
-
-        const confirmLogout = confirm(
-            "Are you sure you want to logout?"
-        );
-
-        if (confirmLogout) {
-            localStorage.removeItem("currentUser");
-
-            window.location.href = "../login/login.html";
-        }
-
+    // Load dynamic data onto dashboard
+    document.addEventListener("DOMContentLoaded", function () {
+      loadDashboardData();
     });
 
-    /* ================= VIEW REPORT ================= */
+    function loadDashboardData() {
+      const appointments = PatientStore.getAppointments();
+      const medicines = PatientStore.getMedicines();
+      const labReports = PatientStore.getLabReports();
+      const vitals = PatientStore.getVitals();
 
-    function viewReport(patientName, testName) {
-        alert(
-            "Patient: " + patientName +
-            "\nTest: " + testName +
-            "\n\nReport details will be connected soon."
-        );
+      // Counts
+      const upcomingApts = appointments.filter(a => a.status === "Confirmed" || a.status === "Pending");
+      document.getElementById("statAppointments").textContent = upcomingApts.length;
+      document.getElementById("statMedicines").textContent = medicines.length;
+      document.getElementById("statReports").textContent = labReports.length;
+
+      // Vitals values
+      if (vitals && vitals.bloodPressure) {
+        document.getElementById("bpVal").textContent = `${vitals.bloodPressure.systolic}/${vitals.bloodPressure.diastolic}`;
+      }
+      if (vitals && vitals.heartRate) {
+        document.getElementById("hrVal").textContent = `${vitals.heartRate.value} bpm`;
+      }
+      if (vitals && vitals.bloodSugar) {
+        document.getElementById("sugarVal").textContent = `${vitals.bloodSugar.fasting} mg/dL`;
+      }
+
+      // Render upcoming appointments
+      const aptsContainer = document.getElementById("upcomingAppointmentsList");
+      if (upcomingApts.length === 0) {
+        aptsContainer.innerHTML = `
+          <div style="text-align: center; padding: 24px; color: var(--text-muted);">
+            <div style="font-size: 32px; margin-bottom: 8px;">📅</div>
+            <p>No upcoming appointments found.</p>
+            <a href="appointments.html" class="btn btn-primary btn-sm" style="margin-top: 10px;">Book One Now</a>
+          </div>
+        `;
+      } else {
+        aptsContainer.innerHTML = upcomingApts.slice(0, 3).map(apt => `
+          <div class="appointment-item">
+            <div class="doctor-meta">
+              <div class="doctor-avatar-box">${apt.doctorAvatar || "👨‍⚕️"}</div>
+              <div>
+                <strong>${apt.doctorName}</strong>
+                <span>${apt.department} • ${apt.date} at ${apt.time}</span>
+              </div>
+            </div>
+            <div class="appointment-actions">
+              <span class="status-badge ${apt.status.toLowerCase()}">${apt.status}</span>
+              <div style="margin-top: 6px;">
+                <a href="appointments.html" class="btn btn-outline btn-sm">Details</a>
+              </div>
+            </div>
+          </div>
+        `).join("");
+      }
+
+      // Render medication preview
+      const medsContainer = document.getElementById("medicinesPreviewList");
+      if (medicines.length === 0) {
+        medsContainer.innerHTML = `
+          <div style="text-align: center; padding: 24px; color: var(--text-muted);">
+            <p>No active medications logged.</p>
+          </div>
+        `;
+      } else {
+        medsContainer.innerHTML = medicines.slice(0, 3).map(med => `
+          <div class="appointment-item" style="padding: 12px 16px;">
+            <div class="doctor-meta">
+              <div class="doctor-avatar-box" style="font-size: 20px;">💊</div>
+              <div>
+                <strong>${med.name}</strong>
+                <span style="font-size: 12px;">${med.scheduleDescription}</span>
+              </div>
+            </div>
+            <div>
+              <span class="status-badge ${med.refillNeeded ? 'high' : 'normal'}">
+                ${med.remainingPills} pills left
+              </span>
+            </div>
+          </div>
+        `).join("");
+      }
     }
-</script>
+  </script>
 
 </body>
 </html>

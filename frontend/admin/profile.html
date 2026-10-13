@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Administrator Profile | MediMate-AI Admin</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Arial, sans-serif;
+        }
+
+        body {
+            background: #f2faf6;
+            color: #183b2a;
+            min-height: 100vh;
+        }
+
+        .dashboard-container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: 270px;
+            min-height: 100vh;
+            background: linear-gradient(180deg, #087f5b, #07583f);
+            color: white;
+            padding: 25px 18px;
+            position: fixed;
+            top: 0; left: 0; bottom: 0;
+            z-index: 1000;
+            overflow-y: auto;
+            transition: 0.3s ease;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 8px 10px 28px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.25);
+        }
+
+        .logo-icon {
+            width: 46px;
+            height: 46px;
+            background: white;
+            color: #087f5b;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        .logo h2 { font-size: 20px; }
+        .logo h2 span { color: #b9f5d7; }
+        .logo p { font-size: 11px; color: #c9f3dc; }
+
+        .menu-title {
+            color: #b8e6d1;
+            font-size: 11px;
+            margin: 24px 12px 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .menu { list-style: none; }
+        .menu li { margin: 6px 0; }
+        .menu a {
+            text-decoration: none;
+            color: #e8fff3;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 14px;
+            border-radius: 12px;
+            font-size: 14px;
+            transition: 0.2s ease;
+        }
+
+        .menu a:hover, .menu a.active {
+            background: rgba(255, 255, 255, 0.16);
+            color: #ffffff;
+            font-weight: 600;
+        }
+
+        .menu-icon { font-size: 18px; width: 22px; text-align: center; }
+
+        .main-content {
+            margin-left: 270px;
+            width: calc(100% - 270px);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .topbar {
+            background: #ffffff;
+            padding: 18px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #dceed8;
+            position: sticky;
+            top: 0;
+            z-index: 99;
+        }
+
+        .content {
+            padding: 30px;
+            flex: 1;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border-radius: 10px;
+            font-size: 13.5px;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s ease;
+        }
+
+        .btn-primary { background: #087f5b; color: white; }
+        .btn-primary:hover { background: #076d4e; }
+        .btn-secondary { background: #edf7f2; color: #087f5b; border: 1px solid #c2e5d4; }
+
+        .profile-card {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 30px;
+            border: 1px solid #e1efe7;
+            box-shadow: 0 4px 15px rgba(8, 127, 91, 0.04);
+            margin-bottom: 24px;
+        }
+
+        .profile-banner {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            padding-bottom: 24px;
+            border-bottom: 1px solid #edf4ef;
+            margin-bottom: 24px;
+        }
+
+        .avatar-box {
+            width: 86px;
+            height: 86px;
+            background: linear-gradient(135deg, #087f5b, #10b981);
+            color: white;
+            border-radius: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 34px;
+            font-weight: 700;
+            box-shadow: 0 8px 20px rgba(8, 127, 91, 0.25);
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 18px;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .form-group label {
+            font-size: 13px;
+            font-weight: 600;
+            color: #3b5a4b;
+        }
+
+        .form-group input {
+            padding: 10px 14px;
+            border: 1px solid #cce3d6;
+            border-radius: 10px;
+            font-size: 13.5px;
+            outline: none;
+        }
+
+        .form-group input:focus {
+            border-color: #087f5b;
+        }
+
+        .audit-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid #f1f5f9;
+            font-size: 13.5px;
+        }
+
+        @media (max-width: 800px) {
+            .sidebar { transform: translateX(-100%); }
+            .sidebar.open { transform: translateX(0); }
+            .main-content { margin-left: 0; width: 100%; }
+            .form-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+<div class="dashboard-container">
+    <aside class="sidebar" id="sidebar">
+        <div class="logo">
+            <div class="logo-icon">M</div>
+            <div>
+                <h2>MediMate <span>AI</span></h2>
+                <p>Hospital Administration</p>
+            </div>
+        </div>
+
+        <p class="menu-title">Main Navigation</p>
+        <ul class="menu">
+            <li><a href="dashboard.html"><span class="menu-icon">📊</span><span>Dashboard</span></a></li>
+            <li><a href="doctors.html"><span class="menu-icon">👨‍⚕️</span><span>Doctors</span></a></li>
+            <li><a href="patients.html"><span class="menu-icon">🧑‍🤝‍🧑</span><span>Patients</span></a></li>
+            <li><a href="laboratory.html"><span class="menu-icon">🧪</span><span>Laboratory</span></a></li>
+            <li><a href="pharmacy.html"><span class="menu-icon">💊</span><span>Pharmacy</span></a></li>
+            <li><a href="appointments.html"><span class="menu-icon">📅</span><span>Appointments</span></a></li>
+            <li><a href="departments.html"><span class="menu-icon">🏥</span><span>Departments</span></a></li>
+            <li><a href="medicines.html"><span class="menu-icon">📦</span><span>Medicines Inventory</span></a></li>
+            <li><a href="prescriptions.html"><span class="menu-icon">📋</span><span>Prescriptions</span></a></li>
+            <li><a href="reports.html"><span class="menu-icon">📈</span><span>Reports & Analytics</span></a></li>
+        </ul>
+
+        <p class="menu-title">System & Security</p>
+        <ul class="menu">
+            <li><a href="notifications.html"><span class="menu-icon">🔔</span><span>Notifications</span></a></li>
+            <li><a href="settings.html"><span class="menu-icon">⚙️</span><span>Settings</span></a></li>
+            <li><a href="profile.html" class="active"><span class="menu-icon">👤</span><span>Admin Profile</span></a></li>
+            <li><a href="admin-login.html" onclick="localStorage.clear();"><span class="menu-icon">🚪</span><span>Sign Out</span></a></li>
+        </ul>
+    </aside>
+
+    <div class="main-content">
+        <header class="topbar">
+            <h3 style="font-size: 18px; color: #087f5b; font-weight: 700;">Administrator Profile & Credentials</h3>
+            <button class="btn btn-primary" onclick="updateProfile()"><i class="fa-solid fa-check"></i> Update Profile</button>
+        </header>
+
+        <main class="content">
+            <div class="profile-card">
+                <div class="profile-banner">
+                    <div class="avatar-box">AD</div>
+                    <div>
+                        <h2 style="font-size:22px; color:#123d2b; font-weight:700;">Super Administrator</h2>
+                        <p style="font-size:13.5px; color:#64748b; margin-top:2px;">Hospital System Executive & Chief Medical IT Officer</p>
+                        <div style="margin-top:8px; display:flex; gap:8px;">
+                            <span style="background:#ecfdf5; color:#065f46; border:1px solid #a7f3d0; font-size:12px; font-weight:600; padding:3px 10px; border-radius:999px;">
+                                <i class="fa-solid fa-shield"></i> Full System Access (Role: Admin)
+                            </span>
+                            <span style="background:#e0f2fe; color:#0369a1; border:1px solid #bae6fd; font-size:12px; font-weight:600; padding:3px 10px; border-radius:999px;">
+                                Staff ID: ADM-2026-001
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <h3 style="font-size:16px; font-weight:700; color:#123d2b; margin-bottom:14px;">Contact & Identification Details</h3>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Full Official Name</label>
+                        <input type="text" id="adminName" value="Dr. Arthur Vance, MD">
+                    </div>
+                    <div class="form-group">
+                        <label>Administrative Email</label>
+                        <input type="email" id="adminEmail" value="admin@medimate.ai">
+                    </div>
+                    <div class="form-group">
+                        <label>Direct Phone Extension</label>
+                        <input type="text" id="adminPhone" value="+1 (555) 019-2834">
+                    </div>
+                    <div class="form-group">
+                        <label>Office / Building Wing</label>
+                        <input type="text" id="adminOffice" value="Wing C, Executive Suite 402">
+                    </div>
+                </div>
+
+                <h3 style="font-size:16px; font-weight:700; color:#123d2b; margin:24px 0 14px;">Security & Password Management</h3>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Current Password</label>
+                        <input type="password" placeholder="••••••••••••">
+                    </div>
+                    <div class="form-group">
+                        <label>New Password</label>
+                        <input type="password" placeholder="Enter new strong password">
+                    </div>
+                </div>
+            </div>
+
+            <div class="profile-card">
+                <h3 style="font-size:16px; font-weight:700; color:#123d2b; margin-bottom:16px;">Recent Administrative Audit Log</h3>
+                <div class="audit-item">
+                    <div>
+                        <strong>Approved Clinician Profile: Dr. Sarah Connor</strong>
+                        <p style="font-size:12px; color:#64748b;">Granted Cardiology Department Level 3 Prescribing Privileges</p>
+                    </div>
+                    <span style="font-size:12px; color:#94a3b8;">Today, 14:20</span>
+                </div>
+                <div class="audit-item">
+                    <div>
+                        <strong>Updated Drug Formulary Stock Threshold</strong>
+                        <p style="font-size:12px; color:#64748b;">Set Amoxicillin 500mg safety buffer to 100 units</p>
+                    </div>
+                    <span style="font-size:12px; color:#94a3b8;">Yesterday, 16:45</span>
+                </div>
+                <div class="audit-item">
+                    <div>
+                        <strong>Dispatched System Broadcast Announcement</strong>
+                        <p style="font-size:12px; color:#64748b;">Targeted All Clinicians regarding ICU O-Negative reserve status</p>
+                    </div>
+                    <span style="font-size:12px; color:#94a3b8;">Oct 11, 2026</span>
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+
+<script>
+    function updateProfile() {
+        alert('Administrator profile updated successfully!');
+    }
+</script>
+</body>
+</html>

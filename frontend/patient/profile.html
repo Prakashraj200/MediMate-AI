@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Profile | MediMate AI</title>
+  <link rel="stylesheet" href="patient-style.css">
+  <style>
+    .profile-hero-card {
+      background: white;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 28px;
+      margin-bottom: 28px;
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      box-shadow: var(--shadow-sm);
+      flex-wrap: wrap;
+    }
+
+    .profile-big-avatar {
+      width: 88px;
+      height: 88px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary) 0%, #0ca678 100%);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 38px;
+      font-weight: 700;
+      box-shadow: 0 6px 18px rgba(8, 127, 91, 0.25);
+      border: 3px solid white;
+    }
+
+    .profile-hero-meta {
+      flex: 1;
+    }
+
+    .profile-hero-meta h2 {
+      font-size: 22px;
+      color: var(--text-main);
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .profile-hero-meta p {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+    }
+
+    .meta-badges-row {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    /* Emergency Card Preview */
+    .emergency-card-preview {
+      background: #fff5f5;
+      border: 2px dashed #ffc9c9;
+      border-radius: var(--radius-md);
+      padding: 20px;
+      margin-top: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .emergency-card-info h4 {
+      color: #c92a2a;
+      font-size: 15px;
+      margin-bottom: 4px;
+    }
+
+    .emergency-card-info p {
+      color: #495057;
+      font-size: 13px;
+    }
+
+    /* Form Card */
+    .section-fieldset {
+      margin-bottom: 24px;
+      padding-bottom: 24px;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .section-fieldset:last-child {
+      border-bottom: none;
+      margin-bottom: 0;
+      padding-bottom: 0;
+    }
+
+    .fieldset-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--primary-dark);
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="logo">
+      <div class="logo-icon">🏥</div>
+      <h2>MediMate AI</h2>
+      <p>Patient Portal</p>
+    </div>
+
+    <div class="menu-container">
+      <ul class="menu">
+        <li>
+          <a href="dashboard.html">
+            <span class="nav-icon">🏠</span>
+            <span>Dashboard</span>
+          </a>
+        </li>
+        <li>
+          <a href="appointments.html">
+            <span class="nav-icon">📅</span>
+            <span>Appointments</span>
+          </a>
+        </li>
+        <li>
+          <a href="health-records.html">
+            <span class="nav-icon">❤️</span>
+            <span>Health Records</span>
+          </a>
+        </li>
+        <li>
+          <a href="medicines.html">
+            <span class="nav-icon">💊</span>
+            <span>Medicines</span>
+          </a>
+        </li>
+        <li>
+          <a href="prescriptions.html">
+            <span class="nav-icon">📋</span>
+            <span>Prescriptions</span>
+          </a>
+        </li>
+        <li>
+          <a href="lab-reports.html">
+            <span class="nav-icon">🧪</span>
+            <span>Lab Reports</span>
+          </a>
+        </li>
+        <li>
+          <a href="doctors.html">
+            <span class="nav-icon">👨‍⚕️</span>
+            <span>Doctors</span>
+          </a>
+        </li>
+        <li>
+          <a href="preethi-ai.html">
+            <span class="nav-icon">🤖</span>
+            <span>Preethi AI</span>
+          </a>
+        </li>
+        <li>
+          <a href="notifications.html">
+            <span class="nav-icon">🔔</span>
+            <span>Notifications</span>
+          </a>
+        </li>
+        <li>
+          <a href="profile.html" class="active">
+            <span class="nav-icon">👤</span>
+            <span>My Profile</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+
+    <div class="logout">
+      <button id="logoutBtn">
+        <span>🚪</span>
+        <span>Logout</span>
+      </button>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main">
+
+    <!-- TOPBAR -->
+    <header class="topbar">
+      <div class="topbar-left">
+        <button class="sidebar-toggle-btn" id="sidebarToggleBtn" title="Toggle Menu">☰</button>
+        <div class="topbar-title">
+          <h1>Patient Health Profile</h1>
+          <p>Personal credentials, emergency contacts and medical insurance records</p>
+        </div>
+      </div>
+
+      <div class="topbar-right">
+        <a href="notifications.html" class="notif-link" title="Notifications">
+          <span>🔔</span>
+          <span class="notif-badge" id="notifBadge" style="display: none;">0</span>
+        </a>
+
+        <a href="profile.html" class="user-profile-widget">
+          <div class="user-profile-info">
+            <strong id="userName">Patient</strong>
+            <span>Verified Patient</span>
+          </div>
+          <div class="user-avatar-circle" id="userAvatar">P</div>
+        </a>
+      </div>
+    </header>
+
+    <!-- CONTENT -->
+    <section class="content">
+
+      <!-- PROFILE HERO -->
+      <div class="profile-hero-card">
+        <div class="profile-big-avatar" id="heroAvatar">P</div>
+        <div class="profile-hero-meta">
+          <h2>
+            <span id="heroName">Prakash Raj</span>
+            <span class="status-badge optimal" style="font-size: 11px;">Verified Account</span>
+          </h2>
+          <p>
+            Patient ID: <strong id="heroPatientId">MM-PAT-2026-9042</strong> • Primary Doctor: <strong>Dr. Sarah Jenkins</strong>
+          </p>
+          <div class="meta-badges-row">
+            <span class="status-badge optimal">Blood Group: O+</span>
+            <span class="status-badge info">Member Since Jan 2024</span>
+            <span class="status-badge optimal">Insurance Active</span>
+          </div>
+        </div>
+        <div>
+          <button class="btn btn-outline" id="viewEmergencyCardBtn">
+            <span>🚨</span>
+            <span>View Emergency Medical ID</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- EDITABLE PROFILE FORM -->
+      <form id="profileForm">
+        <div class="surface-card">
+
+          <!-- 1. PERSONAL INFORMATION -->
+          <div class="section-fieldset">
+            <div class="fieldset-title">
+              <span>👤</span>
+              <span>Personal & Contact Information</span>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="profName">Full Name</label>
+                <input type="text" id="profName" required>
+              </div>
+              <div class="form-group">
+                <label for="profEmail">Email Address</label>
+                <input type="email" id="profEmail" required>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="profPhone">Mobile Phone Number</label>
+                <input type="tel" id="profPhone" required>
+              </div>
+              <div class="form-group">
+                <label for="profDob">Date of Birth</label>
+                <input type="date" id="profDob" required>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="profGender">Gender</label>
+                <select id="profGender">
+                  <option value="Male">Male</option>
+                  <option value="Female">Female</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="profBlood">Blood Group</label>
+                <select id="profBlood">
+                  <option value="O+">O Positive (O+)</option>
+                  <option value="O-">O Negative (O-)</option>
+                  <option value="A+">A Positive (A+)</option>
+                  <option value="A-">A Negative (A-)</option>
+                  <option value="B+">B Positive (B+)</option>
+                  <option value="B-">B Negative (B-)</option>
+                  <option value="AB+">AB Positive (AB+)</option>
+                  <option value="AB-">AB Negative (AB-)</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="profAddress">Residential Address</label>
+              <input type="text" id="profAddress" required>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="profCity">City</label>
+                <input type="text" id="profCity" required>
+              </div>
+              <div class="form-group">
+                <label for="profPincode">Postal Pincode</label>
+                <input type="text" id="profPincode" required>
+              </div>
+            </div>
+          </div>
+
+          <!-- 2. EMERGENCY CONTACT -->
+          <div class="section-fieldset">
+            <div class="fieldset-title">
+              <span>🚨</span>
+              <span>Emergency Contact Details</span>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="emContactName">Emergency Contact Person</label>
+                <input type="text" id="emContactName" required>
+              </div>
+              <div class="form-group">
+                <label for="emContactRelation">Relationship to Patient</label>
+                <input type="text" id="emContactRelation" placeholder="e.g. Spouse / Parent / Sibling" required>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="emContactPhone">Emergency Contact Phone</label>
+              <input type="tel" id="emContactPhone" required>
+            </div>
+          </div>
+
+          <!-- 3. HEALTH INSURANCE -->
+          <div class="section-fieldset">
+            <div class="fieldset-title">
+              <span>🛡️</span>
+              <span>Health Insurance & Hospital Coverage</span>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="insProvider">Insurance Provider</label>
+                <input type="text" id="insProvider" required>
+              </div>
+              <div class="form-group">
+                <label for="insPolicy">Policy / TPA Number</label>
+                <input type="text" id="insPolicy" required>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="insValidTill">Valid Through</label>
+                <input type="date" id="insValidTill">
+              </div>
+              <div class="form-group">
+                <label for="insCoverage">Sum Insured / Limit</label>
+                <input type="text" id="insCoverage">
+              </div>
+            </div>
+          </div>
+
+          <!-- SUBMIT ACTIONS -->
+          <div style="display: flex; justify-content: flex-end; gap: 14px; margin-top: 20px;">
+            <button type="reset" class="btn btn-outline">Reset Changes</button>
+            <button type="submit" class="btn btn-primary">Save Profile Changes</button>
+          </div>
+
+        </div>
+      </form>
+
+    </section>
+
+  </main>
+
+  <!-- ========================================================================
+       MODAL: EMERGENCY MEDICAL ID CARD
+       ======================================================================== -->
+  <div class="modal-backdrop" id="emModal">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h3>🚨 Emergency Medical ID Card</h3>
+        <button class="modal-close" id="closeEmModalBtn">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div style="border: 2px solid #e03131; border-radius: 12px; padding: 20px; background: #fff5f5;">
+          <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #ffc9c9; padding-bottom: 12px; margin-bottom: 12px;">
+            <div>
+              <h3 style="color: #c92a2a; font-size: 18px;">MediMate Emergency Medical ID</h3>
+              <p style="font-size: 11px; color: #495057;">Hospital Trauma Network Quick-Response Identification</p>
+            </div>
+            <div style="font-size: 28px;">🩸 <strong id="emBloodGroup">O+</strong></div>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; font-size: 13px; margin-bottom: 14px;">
+            <div><strong>Patient:</strong> <span id="emPatientName">Prakash Raj</span></div>
+            <div><strong>DOB:</strong> <span id="emDob">15 Jun 1994</span></div>
+            <div><strong>Height / Weight:</strong> 174 cm / 68 kg</div>
+            <div><strong>Organ Donor:</strong> Yes (Opted-in)</div>
+          </div>
+
+          <div style="background: white; border: 1px solid #ffc9c9; padding: 10px; border-radius: 6px; font-size: 13px; margin-bottom: 12px;">
+            <strong style="color: #c92a2a;">Severe Allergies:</strong><br>
+            Penicillin (Anaphylaxis Risk), Peanuts
+          </div>
+
+          <div style="background: white; border: 1px solid #ffc9c9; padding: 10px; border-radius: 6px; font-size: 13px;">
+            <strong style="color: #c92a2a;">Emergency Contact Person:</strong><br>
+            <span id="emNameAndPhone">Priya Raj (Spouse) - +91 98765 43211</span>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline" onclick="window.print()">🖨️ Print ID Card</button>
+        <button type="button" class="btn btn-primary" id="doneEmModalBtn">Done</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- SCRIPT -->
+  <script type="module">
+    import { setupPatientAuth, PatientStore, showToast } from "./patient-common.js";
+
+    setupPatientAuth("profile");
+
+    document.addEventListener("DOMContentLoaded", function () {
+      initProfilePage();
+    });
+
+    function initProfilePage() {
+      loadProfileData();
+
+      // Form submission
+      document.getElementById("profileForm").addEventListener("submit", function (e) {
+        e.preventDefault();
+        const profile = PatientStore.getProfile();
+
+        profile.name = document.getElementById("profName").value.trim();
+        profile.email = document.getElementById("profEmail").value.trim();
+        profile.phone = document.getElementById("profPhone").value.trim();
+        profile.dob = document.getElementById("profDob").value;
+        profile.gender = document.getElementById("profGender").value;
+        profile.bloodGroup = document.getElementById("profBlood").value;
+        profile.address = document.getElementById("profAddress").value.trim();
+        profile.city = document.getElementById("profCity").value.trim();
+        profile.pincode = document.getElementById("profPincode").value.trim();
+
+        if (!profile.emergencyContact) profile.emergencyContact = {};
+        profile.emergencyContact.name = document.getElementById("emContactName").value.trim();
+        profile.emergencyContact.relation = document.getElementById("emContactRelation").value.trim();
+        profile.emergencyContact.phone = document.getElementById("emContactPhone").value.trim();
+
+        if (!profile.insurance) profile.insurance = {};
+        profile.insurance.provider = document.getElementById("insProvider").value.trim();
+        profile.insurance.policyNumber = document.getElementById("insPolicy").value.trim();
+        profile.insurance.validTill = document.getElementById("insValidTill").value;
+        profile.insurance.coverageLimit = document.getElementById("insCoverage").value.trim();
+
+        PatientStore.saveProfile(profile);
+
+        showToast("Profile details updated successfully!", "success");
+        loadProfileData();
+      });
+
+      // Emergency ID modal
+      const emModal = document.getElementById("emModal");
+      document.getElementById("viewEmergencyCardBtn").addEventListener("click", () => {
+        emModal.classList.add("active");
+      });
+      document.getElementById("closeEmModalBtn").addEventListener("click", () => {
+        emModal.classList.remove("active");
+      });
+      document.getElementById("doneEmModalBtn").addEventListener("click", () => {
+        emModal.classList.remove("active");
+      });
+    }
+
+    function loadProfileData() {
+      const p = PatientStore.getProfile();
+      if (!p) return;
+
+      // Update hero
+      document.getElementById("heroName").textContent = p.name;
+      document.getElementById("heroPatientId").textContent = p.id;
+      document.getElementById("heroAvatar").textContent = p.name.charAt(0).toUpperCase();
+
+      // Form fields
+      document.getElementById("profName").value = p.name || "";
+      document.getElementById("profEmail").value = p.email || "";
+      document.getElementById("profPhone").value = p.phone || "";
+      document.getElementById("profDob").value = p.dob || "1994-06-15";
+      document.getElementById("profGender").value = p.gender || "Male";
+      document.getElementById("profBlood").value = p.bloodGroup || "O+";
+      document.getElementById("profAddress").value = p.address || "";
+      document.getElementById("profCity").value = p.city || "";
+      document.getElementById("profPincode").value = p.pincode || "";
+
+      // Emergency
+      if (p.emergencyContact) {
+        document.getElementById("emContactName").value = p.emergencyContact.name || "";
+        document.getElementById("emContactRelation").value = p.emergencyContact.relation || "";
+        document.getElementById("emContactPhone").value = p.emergencyContact.phone || "";
+        document.getElementById("emNameAndPhone").textContent =
+          `${p.emergencyContact.name} (${p.emergencyContact.relation}) - ${p.emergencyContact.phone}`;
+      }
+
+      // Insurance
+      if (p.insurance) {
+        document.getElementById("insProvider").value = p.insurance.provider || "";
+        document.getElementById("insPolicy").value = p.insurance.policyNumber || "";
+        document.getElementById("insValidTill").value = p.insurance.validTill || "2027-03-31";
+        document.getElementById("insCoverage").value = p.insurance.coverageLimit || "₹10,00,000";
+      }
+
+      // Emergency modal
+      document.getElementById("emPatientName").textContent = p.name;
+      document.getElementById("emBloodGroup").textContent = p.bloodGroup || "O+";
+      document.getElementById("emDob").textContent = p.dob || "15 Jun 1994";
+    }
+  </script>
+
+</body>
+</html>

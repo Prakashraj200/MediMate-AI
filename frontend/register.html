@@ -1,294 +1,959 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-  <title>Register - MediMate AI</title>
+  <title>Create Account | MediMate AI</title>
 
   <style>
+    /* =====================================================
+       RESET & THEME TOKENS
+       ===================================================== */
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap');
+
+    :root {
+      --primary: #00e599;
+      --primary-dark: #00b87a;
+      --primary-light: #26f2ae;
+      --primary-subtle: rgba(0, 229, 153, 0.15);
+      --primary-glow: rgba(0, 229, 153, 0.35);
+      --secondary: #00d2ff;
+      
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --text-subtle: #64748b;
+      
+      --bg-page: #050a14;
+      --bg-card: rgba(13, 22, 41, 0.85);
+      --border-color: rgba(255, 255, 255, 0.08);
+      --border-focus: #00e599;
+      
+      --shadow-soft: 0 30px 70px rgba(0, 0, 0, 0.8), 0 0 40px rgba(0, 229, 153, 0.1);
+      --radius-lg: 26px;
+      --radius-md: 14px;
+      --radius-sm: 10px;
+    }
+
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
-      font-family: Arial, sans-serif;
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     }
 
     body {
       min-height: 100vh;
       display: flex;
-      justify-content: center;
       align-items: center;
-      background: linear-gradient(135deg, #eafff0, #ffffff);
-      padding: 20px;
+      justify-content: center;
+      padding: 24px;
+      background-color: var(--bg-page);
+      background-image: 
+        radial-gradient(circle at 10% 10%, rgba(0, 229, 153, 0.08) 0%, transparent 40%),
+        radial-gradient(circle at 90% 90%, rgba(0, 210, 255, 0.08) 0%, transparent 40%);
+      background-attachment: fixed;
+      color: var(--text-main);
+      -webkit-font-smoothing: antialiased;
     }
 
-    .register-container {
-      width: 420px;
-      background: white;
-      padding: 32px;
-      border-radius: 20px;
-      box-shadow: 0 10px 30px rgba(0, 128, 70, 0.15);
+    /* =====================================================
+       REGISTRATION CONTAINER
+       ===================================================== */
+    .register-wrapper {
+      width: 100%;
+      max-width: 1100px;
+      min-height: 680px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      display: grid;
+      grid-template-columns: 1.05fr 1.2fr;
+      box-shadow: var(--shadow-soft);
+      animation: appear 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
     }
 
-    .logo {
-      width: 70px;
-      height: 70px;
-      margin: auto;
-      border-radius: 50%;
-      background: #0b8f55;
+    @keyframes appear {
+      from {
+        opacity: 0;
+        transform: translateY(24px) scale(0.98);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    /* =====================================================
+       LEFT HERO BANNER
+       ===================================================== */
+    .hero-panel {
+      background: linear-gradient(145deg, rgba(10, 20, 42, 0.95), rgba(5, 10, 20, 0.98));
+      border-right: 1px solid var(--border-color);
       color: white;
+      padding: 55px 44px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-panel::before,
+    .hero-panel::after {
+      content: "";
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(0, 229, 153, 0.08);
+      pointer-events: none;
+    }
+
+    .hero-panel::before {
+      width: 320px;
+      height: 320px;
+      top: -120px;
+      right: -100px;
+    }
+
+    .hero-panel::after {
+      width: 240px;
+      height: 240px;
+      bottom: -80px;
+      left: -80px;
+    }
+
+    .brand-box {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      z-index: 1;
+    }
+
+    .brand-icon {
+      width: 58px;
+      height: 58px;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      color: #050a14;
+      border-radius: 18px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 32px;
-      margin-bottom: 15px;
+      font-size: 28px;
+      font-weight: 800;
+      box-shadow: 0 0 25px rgba(0, 229, 153, 0.35);
     }
 
-    h2 {
-      text-align: center;
-      color: #087443;
-      margin-bottom: 8px;
+    .brand-name h2 {
+      font-size: 24px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
     }
 
-    .subtitle {
-      text-align: center;
-      color: #777;
-      font-size: 14px;
-      margin-bottom: 25px;
+    .brand-name p {
+      font-size: 13px;
+      color: #bbf7d0;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      font-weight: 600;
     }
 
-    .input-group {
+    .hero-body {
+      margin: 40px 0;
+      z-index: 1;
+    }
+
+    .hero-body h1 {
+      font-size: 34px;
+      font-weight: 800;
+      line-height: 1.2;
       margin-bottom: 16px;
     }
 
-    label {
+    .hero-body p {
+      font-size: 15px;
+      line-height: 1.6;
+      color: #e4faee;
+      opacity: 0.95;
+      margin-bottom: 24px;
+    }
+
+    .feature-points {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .feature-points li {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 14px;
+      color: #f0fdf4;
+    }
+
+    .feature-icon {
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      flex-shrink: 0;
+    }
+
+    .hero-footer {
+      font-size: 12px;
+      color: #bbf7d0;
+      opacity: 0.85;
+      z-index: 1;
+    }
+
+    /* =====================================================
+       RIGHT FORM PANEL
+       ===================================================== */
+    .form-panel {
+      padding: 48px 46px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      overflow-y: auto;
+    }
+
+    .form-header {
+      margin-bottom: 24px;
+    }
+
+    .form-header h2 {
+      font-size: 28px;
+      font-weight: 800;
+      color: #ffffff;
+      margin-bottom: 6px;
+    }
+
+    .form-header p {
+      font-size: 14px;
+      color: var(--text-muted);
+    }
+
+    /* Role Select Grid */
+    .role-selection-group {
+      margin-bottom: 20px;
+    }
+
+    .role-selection-group label {
       display: block;
-      margin-bottom: 7px;
-      font-size: 14px;
-      font-weight: bold;
-      color: #333;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text-main);
+      margin-bottom: 8px;
     }
 
-    input,
-    select {
-      width: 100%;
-      padding: 12px;
-      border: 1px solid #cce8d8;
-      border-radius: 10px;
-      outline: none;
-      font-size: 14px;
+    .roles-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 8px;
     }
 
-    input:focus,
-    select:focus {
-      border-color: #0b8f55;
-      box-shadow: 0 0 7px rgba(11, 143, 85, 0.2);
-    }
-
-    button {
-      width: 100%;
-      padding: 13px;
-      border: none;
-      border-radius: 10px;
-      background: #0b8f55;
-      color: white;
-      font-size: 16px;
-      font-weight: bold;
+    .role-card {
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      padding: 10px 4px;
+      text-align: center;
       cursor: pointer;
-      transition: 0.3s;
+      transition: all 0.2s ease;
+      background: rgba(255, 255, 255, 0.04);
+      user-select: none;
     }
 
-    button:hover {
-      background: #076b40;
+    .role-card:hover {
+      border-color: var(--primary);
+      background: var(--primary-subtle);
       transform: translateY(-2px);
     }
 
-    .message {
-      text-align: center;
-      margin-top: 15px;
-      font-size: 14px;
+    .role-card.active {
+      border-color: var(--primary);
+      background: var(--primary-subtle);
+      box-shadow: 0 0 15px rgba(0, 229, 153, 0.25);
     }
 
-    .login-link {
+    .role-card .role-emoji {
+      font-size: 22px;
       display: block;
-      text-align: center;
-      margin-top: 20px;
-      color: #0b8f55;
-      text-decoration: none;
-      font-size: 14px;
+      margin-bottom: 4px;
     }
 
-    .login-link:hover {
+    .role-card .role-title {
+      font-size: 12px;
+      font-weight: 700;
+      color: #ffffff;
+      display: block;
+    }
+
+    .role-card.active .role-title {
+      color: var(--primary);
+    }
+
+    /* Form Fields */
+    .input-field {
+      margin-bottom: 16px;
+    }
+
+    .input-field label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-main);
+      margin-bottom: 6px;
+    }
+
+    .input-wrapper {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .input-icon {
+      position: absolute;
+      left: 14px;
+      font-size: 16px;
+      color: var(--text-subtle);
+      pointer-events: none;
+    }
+
+    .input-wrapper input {
+      width: 100%;
+      padding: 12px 14px 12px 42px;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      font-size: 14px;
+      color: #ffffff;
+      background: rgba(10, 18, 36, 0.85);
+      outline: none;
+      transition: all 0.2s ease;
+      font-family: inherit;
+    }
+
+    .input-wrapper input:focus {
+      border-color: var(--border-focus);
+      box-shadow: 0 0 0 3px rgba(0, 229, 153, 0.2);
+      background: rgba(13, 24, 48, 0.95);
+    }
+
+    .toggle-pass-btn {
+      position: absolute;
+      right: 12px;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      font-size: 16px;
+      color: var(--text-subtle);
+      padding: 4px;
+    }
+
+    .toggle-pass-btn:hover {
+      color: var(--primary);
+    }
+
+    .form-row-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    /* Password Strength Meter */
+    .strength-meter {
+      height: 4px;
+      background: #e9ecef;
+      border-radius: 4px;
+      margin-top: 6px;
+      overflow: hidden;
+    }
+
+    .strength-bar {
+      height: 100%;
+      width: 0%;
+      transition: width 0.3s ease, background-color 0.3s ease;
+    }
+
+    .strength-text {
+      font-size: 11px;
+      color: var(--text-subtle);
+      margin-top: 4px;
+      text-align: right;
+    }
+
+    /* Action Button */
+    .submit-btn {
+      width: 100%;
+      padding: 14px;
+      border: none;
+      border-radius: var(--radius-sm);
+      background: linear-gradient(135deg, var(--primary) 0%, #00b87a 100%);
+      color: #050a14;
+      font-size: 15px;
+      font-weight: 800;
+      cursor: pointer;
+      margin-top: 8px;
+      box-shadow: 0 4px 20px rgba(0, 229, 153, 0.35);
+      transition: all 0.25s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .submit-btn:hover {
+      background: linear-gradient(135deg, #26f2ae 0%, #00d28d 100%);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(0, 229, 153, 0.5);
+    }
+
+    .submit-btn:disabled {
+      background: #93c5ae;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
+
+    /* Alert Message */
+    .status-msg {
+      margin-top: 14px;
+      padding: 12px 14px;
+      border-radius: var(--radius-sm);
+      font-size: 13px;
+      font-weight: 500;
+      display: none;
+      line-height: 1.4;
+      animation: fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .status-msg.error {
+      display: block;
+      background: #ffe3e3;
+      border: 1px solid #ffc9c9;
+      color: #c92a2a;
+    }
+
+    .status-msg.success {
+      display: block;
+      background: #e6f8ee;
+      border: 1px solid #b4dec5;
+      color: #087f5b;
+    }
+
+    /* Switch to Login Link */
+    .login-prompt {
+      text-align: center;
+      margin-top: 22px;
+      font-size: 14px;
+      color: var(--text-muted);
+    }
+
+    .login-prompt a {
+      color: var(--primary);
+      text-decoration: none;
+      font-weight: 700;
+      margin-left: 4px;
+    }
+
+    .login-prompt a:hover {
       text-decoration: underline;
+    }
+
+    .back-home {
+      display: inline-block;
+      text-align: center;
+      margin-top: 14px;
+      color: var(--text-subtle);
+      font-size: 13px;
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+
+    .back-home:hover {
+      color: var(--primary);
+    }
+
+    /* =====================================================
+       RESPONSIVE DESIGN
+       ===================================================== */
+    @media (max-width: 900px) {
+      .register-wrapper {
+        grid-template-columns: 1fr;
+      }
+      .hero-panel {
+        display: none;
+      }
+      .form-panel {
+        padding: 36px 28px;
+      }
+    }
+
+    @media (max-width: 580px) {
+      body {
+        padding: 14px;
+      }
+      .roles-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+      .form-row-2 {
+        grid-template-columns: 1fr;
+      }
     }
   </style>
 </head>
 
 <body>
 
-  <div class="register-container">
+  <div class="register-wrapper">
 
-    <div class="logo">🏥</div>
+    <!-- =====================================================
+         LEFT HERO PANEL
+         ===================================================== -->
+    <div class="hero-panel">
 
-    <h2>Create Account</h2>
-
-    <p class="subtitle">
-      Register your MediMate AI account
-    </p>
-
-    <form id="registerForm">
-
-      <div class="input-group">
-        <label for="fullname">Full Name</label>
-        <input
-          type="text"
-          id="fullname"
-          placeholder="Enter your full name"
-          required
-        />
+      <div class="brand-box">
+        <div class="brand-icon">🏥</div>
+        <div class="brand-name">
+          <h2>MediMate AI</h2>
+          <p>Smart Healthcare Ecosystem</p>
+        </div>
       </div>
 
-      <div class="input-group">
-        <label for="email">Email Address</label>
-        <input
-          type="email"
-          id="email"
-          placeholder="Enter your email"
-          required
-        />
+      <div class="hero-body">
+        <h1>Your Health,<br>Our Smart Care.</h1>
+        <p>
+          Join MediMate AI to seamlessly connect patients, doctors, laboratories and pharmacies under one unified, secure platform.
+        </p>
+
+        <ul class="feature-points">
+          <li>
+            <span class="feature-icon">✓</span>
+            <span>24/7 Intelligent Preethi AI clinical assistant</span>
+          </li>
+          <li>
+            <span class="feature-icon">✓</span>
+            <span>Instant doctor appointments & telehealth rooms</span>
+          </li>
+          <li>
+            <span class="feature-icon">✓</span>
+            <span>Digital prescription repository & dosage adherence</span>
+          </li>
+          <li>
+            <span class="feature-icon">✓</span>
+            <span>Live diagnostic laboratory reports & telemetry</span>
+          </li>
+        </ul>
       </div>
 
-      <div class="input-group">
-        <label for="role">Select Role</label>
-
-        <select id="role" required>
-          <option value="">Choose your role</option>
-          <option value="admin">Admin</option>
-          <option value="doctor">Doctor</option>
-          <option value="patient">Patient</option>
-          <option value="laboratory">Laboratory</option>
-          <option value="pharmacy">Pharmacy</option>
-        </select>
+      <div class="hero-footer">
+        © 2026 MediMate-AI Health Systems • ISO 27001 Certified Security
       </div>
 
-      <div class="input-group">
-        <label for="password">Create Password</label>
-        <input
-          type="password"
-          id="password"
-          placeholder="Create a password"
-          required
-        />
+    </div>
+
+    <!-- =====================================================
+         RIGHT REGISTRATION FORM PANEL
+         ===================================================== -->
+    <div class="form-panel">
+
+      <div class="form-header">
+        <h2>Create an Account</h2>
+        <p>Choose your portal role and get started in seconds.</p>
       </div>
 
-      <div class="input-group">
-        <label for="confirmPassword">Confirm Password</label>
-        <input
-          type="password"
-          id="confirmPassword"
-          placeholder="Confirm your password"
-          required
-        />
+      <form id="registerForm" novalidate>
+
+        <!-- Role Selector Cards -->
+        <div class="role-selection-group">
+          <label>Select Your Hospital Role</label>
+          <div class="roles-grid" id="rolesGrid">
+            <div class="role-card active" data-role="patient">
+              <span class="role-emoji">🧑‍🤝‍🧑</span>
+              <span class="role-title">Patient</span>
+            </div>
+            <div class="role-card" data-role="doctor">
+              <span class="role-emoji">👨‍⚕️</span>
+              <span class="role-title">Doctor</span>
+            </div>
+            <div class="role-card" data-role="admin">
+              <span class="role-emoji">🛡️</span>
+              <span class="role-title">Admin</span>
+            </div>
+            <div class="role-card" data-role="laboratory">
+              <span class="role-emoji">🧪</span>
+              <span class="role-title">Lab</span>
+            </div>
+            <div class="role-card" data-role="pharmacy">
+              <span class="role-emoji">💊</span>
+              <span class="role-title">Pharmacy</span>
+            </div>
+          </div>
+          <!-- Hidden input for selected role -->
+          <input type="hidden" id="selectedRole" value="patient">
+        </div>
+
+        <!-- Full Name -->
+        <div class="input-field">
+          <label for="fullname">Full Name</label>
+          <div class="input-wrapper">
+            <span class="input-icon">👤</span>
+            <input
+              type="text"
+              id="fullname"
+              placeholder="e.g. Prakash Raj"
+              autocomplete="name"
+              required
+            />
+          </div>
+        </div>
+
+        <!-- Email Address -->
+        <div class="input-field">
+          <label for="email">Email Address</label>
+          <div class="input-wrapper">
+            <span class="input-icon">✉️</span>
+            <input
+              type="email"
+              id="email"
+              placeholder="name@example.com"
+              autocomplete="email"
+              required
+            />
+          </div>
+        </div>
+
+        <!-- Passwords Row -->
+        <div class="form-row-2">
+          <!-- Password -->
+          <div class="input-field">
+            <label for="password">Create Password</label>
+            <div class="input-wrapper">
+              <span class="input-icon">🔒</span>
+              <input
+                type="password"
+                id="password"
+                placeholder="At least 6 characters"
+                autocomplete="new-password"
+                required
+              />
+              <button type="button" class="toggle-pass-btn" id="togglePass1" title="Show/Hide Password">👁️</button>
+            </div>
+            <div class="strength-meter">
+              <div class="strength-bar" id="strengthBar"></div>
+            </div>
+            <div class="strength-text" id="strengthText">Min 6 characters</div>
+          </div>
+
+          <!-- Confirm Password -->
+          <div class="input-field">
+            <label for="confirmPassword">Confirm Password</label>
+            <div class="input-wrapper">
+              <span class="input-icon">🔒</span>
+              <input
+                type="password"
+                id="confirmPassword"
+                placeholder="Re-type password"
+                autocomplete="new-password"
+                required
+              />
+              <button type="button" class="toggle-pass-btn" id="togglePass2" title="Show/Hide Password">👁️</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Submit Button -->
+        <button type="submit" class="submit-btn" id="submitBtn">
+          <span>Create Account</span>
+          <span>➔</span>
+        </button>
+
+        <!-- Dynamic Status Message -->
+        <div class="status-msg" id="statusMessage"></div>
+
+      </form>
+
+      <!-- Switch to Login -->
+      <div class="login-prompt">
+        Already registered?
+        <a href="patient/patient-login.html" id="dynamicLoginLink">Sign in to your portal</a>
       </div>
 
-      <button type="submit">Register</button>
+      <div style="text-align: center;">
+        <a href="index.html" class="back-home">← Back to MediMate Home</a>
+      </div>
 
-      <p class="message" id="message"></p>
-
-    </form>
-
-    <a href="index.html" class="login-link">
-      ← Back to Home
-    </a>
+    </div>
 
   </div>
 
-  <script>
-    document
-      .getElementById("registerForm")
-      .addEventListener("submit", function (event) {
+  <!-- =====================================================
+       REGISTRATION SCRIPT (FIREBASE CLIENT + MULTI-STORE)
+       ===================================================== -->
+  <script type="module">
+    import { auth } from "./static/js/firebase-config.js";
+    import {
+      createUserWithEmailAndPassword,
+      updateProfile
+    } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
 
-        event.preventDefault();
+    // Elements
+    const rolesGrid = document.getElementById("rolesGrid");
+    const selectedRoleInput = document.getElementById("selectedRole");
+    const registerForm = document.getElementById("registerForm");
+    const fullnameInput = document.getElementById("fullname");
+    const emailInput = document.getElementById("email");
+    const passwordInput = document.getElementById("password");
+    const confirmPasswordInput = document.getElementById("confirmPassword");
+    const submitBtn = document.getElementById("submitBtn");
+    const statusMessage = document.getElementById("statusMessage");
+    const dynamicLoginLink = document.getElementById("dynamicLoginLink");
+    const strengthBar = document.getElementById("strengthBar");
+    const strengthText = document.getElementById("strengthText");
 
-        const fullname =
-          document.getElementById("fullname").value.trim();
+    // Login page mapping per role
+    const loginRoutes = {
+      patient: "patient/patient-login.html",
+      doctor: "doctor/doctor-login.html",
+      admin: "admin/admin-login.html",
+      laboratory: "laboratory/lab-login.html",
+      pharmacy: "pharmacy/pharmacy-login.html"
+    };
 
-        const email =
-          document.getElementById("email").value.trim().toLowerCase();
+    // Dashboard routes per role
+    const dashboardRoutes = {
+      patient: "patient/dashboard.html",
+      doctor: "doctor/dashboard.html",
+      admin: "admin/dashboard.html",
+      laboratory: "laboratory/dashboard.html",
+      pharmacy: "pharmacy/dashboard.html"
+    };
 
-        const role =
-          document.getElementById("role").value;
+    // -----------------------------------------------------
+    // Role Selection Handling
+    // -----------------------------------------------------
+    document.querySelectorAll(".role-card").forEach(card => {
+      card.addEventListener("click", function () {
+        document.querySelectorAll(".role-card").forEach(c => c.classList.remove("active"));
+        this.classList.add("active");
+        const role = this.getAttribute("data-role");
+        selectedRoleInput.value = role;
 
-        const password =
-          document.getElementById("password").value;
+        // Update login link
+        if (loginRoutes[role]) {
+          dynamicLoginLink.href = loginRoutes[role];
+          dynamicLoginLink.textContent = `Sign in to ${capitalize(role)} Portal`;
+        }
+      });
+    });
 
-        const confirmPassword =
-          document.getElementById("confirmPassword").value;
+    function capitalize(str) {
+      return str.charAt(0).toUpperCase() + str.slice(1);
+    }
 
-        const message =
-          document.getElementById("message");
+    // -----------------------------------------------------
+    // Password Visibility Toggles
+    // -----------------------------------------------------
+    setupToggle("togglePass1", "password");
+    setupToggle("togglePass2", "confirmPassword");
 
-        if (password !== confirmPassword) {
-          message.style.color = "red";
-          message.textContent = "Passwords do not match.";
-          return;
+    function setupToggle(btnId, inputId) {
+      const btn = document.getElementById(btnId);
+      const input = document.getElementById(inputId);
+      btn.addEventListener("click", () => {
+        if (input.type === "password") {
+          input.type = "text";
+          btn.textContent = "🙈";
+        } else {
+          input.type = "password";
+          btn.textContent = "👁️";
+        }
+      });
+    }
+
+    // -----------------------------------------------------
+    // Password Strength Meter
+    // -----------------------------------------------------
+    passwordInput.addEventListener("input", function () {
+      const val = this.value;
+      if (!val) {
+        strengthBar.style.width = "0%";
+        strengthText.textContent = "Min 6 characters";
+        return;
+      }
+
+      let strength = 0;
+      if (val.length >= 6) strength += 30;
+      if (val.length >= 8) strength += 20;
+      if (/[A-Z]/.test(val)) strength += 20;
+      if (/[0-9]/.test(val)) strength += 15;
+      if (/[^A-Za-z0-9]/.test(val)) strength += 15;
+
+      strengthBar.style.width = `${Math.min(strength, 100)}%`;
+
+      if (strength < 40) {
+        strengthBar.style.backgroundColor = "#fa5252";
+        strengthText.textContent = "Weak password";
+      } else if (strength < 75) {
+        strengthBar.style.backgroundColor = "#fab005";
+        strengthText.textContent = "Moderate strength";
+      } else {
+        strengthBar.style.backgroundColor = "#12b886";
+        strengthText.textContent = "Strong password";
+      }
+    });
+
+    // -----------------------------------------------------
+    // Registration Submission
+    // -----------------------------------------------------
+    registerForm.addEventListener("submit", async function (e) {
+      e.preventDefault();
+      clearStatus();
+
+      const name = fullnameInput.value.trim();
+      const email = emailInput.value.trim().toLowerCase();
+      const role = selectedRoleInput.value.trim().toLowerCase();
+      const password = passwordInput.value;
+      const confirmPassword = confirmPasswordInput.value;
+
+      // Validation
+      if (!name) return showStatus("Please enter your full name.", "error");
+      if (!email || !email.includes("@")) return showStatus("Please provide a valid email address.", "error");
+      if (!role) return showStatus("Please select a hospital role.", "error");
+      if (password.length < 6) return showStatus("Password must contain at least 6 characters.", "error");
+      if (password !== confirmPassword) return showStatus("Passwords do not match. Please recheck.", "error");
+
+      // UI state
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = `<span>Creating your account...</span> <span>⏳</span>`;
+
+      try {
+        let firebaseUid = "USR-" + Date.now();
+        let firebaseSuccess = false;
+
+        // 1. ATTEMPT FIREBASE AUTH CLIENT REGISTRATION
+        try {
+          const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+          if (userCredential && userCredential.user) {
+            firebaseUid = userCredential.user.uid;
+            firebaseSuccess = true;
+            // Update displayName
+            await updateProfile(userCredential.user, { displayName: name });
+          }
+        } catch (fbErr) {
+          console.warn("Firebase Auth client notice:", fbErr.code, fbErr.message);
+          // If already in use
+          if (fbErr.code === "auth/email-already-in-use") {
+            throw new Error("This email is already registered. Please sign in instead.");
+          }
+          // If weak password
+          if (fbErr.code === "auth/weak-password") {
+            throw new Error("Password is too weak. Please use at least 6 characters.");
+          }
+          // If network error on client, fallback gracefully to backend/local store
         }
 
-        if (password.length < 6) {
-          message.style.color = "red";
-          message.textContent =
-            "Password must contain at least 6 characters.";
-          return;
+        // 2. ATTEMPT FLASK BACKEND SYNC (Optional / Background Sync)
+        try {
+          await fetch("http://127.0.0.1:5000/api/auth/register", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ name, email, password, role }),
+            signal: AbortSignal.timeout(3000)
+          });
+        } catch (apiErr) {
+          console.info("Backend API server currently offline; using local data synchronization.");
         }
 
-        let users =
-          JSON.parse(localStorage.getItem("medimateUsers")) || [];
-
-        const existingUser = users.find(function (user) {
-          return user.email === email;
-        });
-
-        if (existingUser) {
-          message.style.color = "red";
-          message.textContent =
-            "This email is already registered.";
-          return;
-        }
-
-        const newUser = {
-          fullname: fullname,
+        // 3. MULTI-STORE SYNCHRONIZATION (For Doctor, Pharmacy, Lab, Patient portals)
+        const userProfile = {
+          uid: firebaseUid,
+          name: name,
           email: email,
+          password: password,
           role: role,
-          password: password
+          createdAt: new Date().toISOString()
         };
 
-        users.push(newUser);
+        // Add to medimateUsers (used by doctor, pharmacy, lab logins)
+        const medimateUsers = JSON.parse(localStorage.getItem("medimateUsers") || "[]");
+        const existingIdx = medimateUsers.findIndex(u => u.email === email && u.role === role);
+        if (existingIdx >= 0) {
+          medimateUsers[existingIdx] = userProfile;
+        } else {
+          medimateUsers.push(userProfile);
+        }
+        localStorage.setItem("medimateUsers", JSON.stringify(medimateUsers));
 
-        localStorage.setItem(
-          "medimateUsers",
-          JSON.stringify(users)
+        // Save current user and session
+        localStorage.setItem("currentUser", JSON.stringify(userProfile));
+        localStorage.setItem("userRole", role);
+        localStorage.setItem("userUID", firebaseUid);
+        sessionStorage.setItem("medimateRole", role);
+        sessionStorage.setItem("medimateUser", email);
+        sessionStorage.setItem("medimateUid", firebaseUid);
+
+        // Pre-seed patient profile if role is patient
+        if (role === "patient") {
+          let patProfile = JSON.parse(localStorage.getItem("patient_profile") || "null");
+          if (!patProfile) {
+            patProfile = {
+              id: "MM-PAT-" + Math.floor(1000 + Math.random() * 9000),
+              name: name,
+              email: email,
+              phone: "+91 98765 43210",
+              bloodGroup: "O+",
+              age: 30,
+              gender: "Male"
+            };
+          } else {
+            patProfile.name = name;
+            patProfile.email = email;
+          }
+          localStorage.setItem("patient_profile", JSON.stringify(patProfile));
+        }
+
+        // SUCCESS DISPLAY
+        const targetLogin = loginRoutes[role] || "index.html";
+        showStatus(
+          `🎉 Account registered successfully as ${capitalize(role)}! Redirecting to login...`,
+          "success"
         );
 
-        message.style.color = "green";
-        message.textContent =
-          "Registration successful! Redirecting...";
-
-        setTimeout(function () {
-
-          const loginPages = {
-            admin: "admin/admin-login.html",
-            doctor: "doctor/doctor-login.html",
-            patient: "patient/patient-login.html",
-            laboratory: "laboratory/lab-login.html",
-            pharmacy: "pharmacy/pharmacy-login.html"
-          };
-
-          window.location.href = loginPages[role];
-
+        setTimeout(() => {
+          window.location.href = targetLogin;
         }, 1200);
 
-      });
+      } catch (err) {
+        console.error("Registration error:", err);
+        showStatus(err.message || "Failed to create account. Please try again.", "error");
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = `<span>Create Account</span> <span>➔</span>`;
+      }
+    });
+
+    function showStatus(text, type) {
+      statusMessage.className = `status-msg ${type}`;
+      statusMessage.textContent = text;
+      statusMessage.style.display = "block";
+    }
+
+    function clearStatus() {
+      statusMessage.style.display = "none";
+      statusMessage.textContent = "";
+    }
   </script>
 
 </body>

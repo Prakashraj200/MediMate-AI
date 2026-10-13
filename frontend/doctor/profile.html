@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doctor Profile & Credentials | MediMate AI</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Arial, sans-serif;
+        }
+
+        body {
+            background: #f1faf5;
+            color: #183b2b;
+            min-height: 100vh;
+        }
+
+        .app-container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: 270px;
+            min-height: 100vh;
+            background: linear-gradient(180deg, #056238, #079653);
+            color: white;
+            padding: 28px 20px;
+            position: fixed;
+            left: 0; top: 0; bottom: 0;
+            z-index: 100;
+            transition: 0.3s ease;
+            overflow-y: auto;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 5px 12px 28px;
+            border-bottom: 1px solid rgba(255,255,255,0.25);
+        }
+
+        .brand-icon {
+            width: 50px;
+            height: 50px;
+            background: white;
+            color: #087743;
+            border-radius: 16px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 26px;
+        }
+
+        .brand h2 { font-size: 21px; }
+        .brand p { font-size: 12px; color: #d3f5e1; }
+
+        .menu-title {
+            font-size: 11px;
+            letter-spacing: 1px;
+            color: #bcebd0;
+            margin: 26px 12px 10px;
+            text-transform: uppercase;
+        }
+
+        .nav-menu { list-style: none; }
+        .nav-menu li { margin: 6px 0; }
+        .nav-menu a {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            color: white;
+            padding: 12px 14px;
+            border-radius: 12px;
+            font-size: 14.5px;
+            transition: 0.2s ease;
+        }
+
+        .nav-menu a:hover, .nav-menu a.active {
+            background: rgba(255,255,255,0.22);
+            font-weight: 600;
+        }
+
+        .nav-icon { width: 22px; text-align: center; font-size: 18px; }
+
+        .main-content {
+            width: calc(100% - 270px);
+            margin-left: 270px;
+            min-height: 100vh;
+        }
+
+        .topbar {
+            height: 80px;
+            background: white;
+            border-bottom: 1px solid #e1eee6;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 35px;
+            position: sticky;
+            top: 0;
+            z-index: 50;
+        }
+
+        .content { padding: 30px 35px; }
+
+        .btn {
+            padding: 10px 18px;
+            border-radius: 10px;
+            font-size: 13.5px;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s ease;
+        }
+
+        .btn-primary { background: #087743; color: white; }
+        .btn-primary:hover { background: #065e35; }
+        .btn-secondary { background: #eaf8f0; color: #087743; border: 1px solid #c2e5d4; }
+
+        .profile-card {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            border: 1px solid #e1eee6;
+            box-shadow: 0 4px 15px rgba(8, 119, 67, 0.04);
+            margin-bottom: 24px;
+        }
+
+        .profile-banner {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            padding-bottom: 24px;
+            border-bottom: 1px solid #edf4ef;
+            margin-bottom: 24px;
+        }
+
+        .avatar-box {
+            width: 86px;
+            height: 86px;
+            background: linear-gradient(135deg, #056238, #079653);
+            color: white;
+            border-radius: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 34px;
+            font-weight: 700;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 18px;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .form-group label {
+            font-size: 13px;
+            font-weight: 600;
+            color: #3b5a4b;
+        }
+
+        .form-group input, .form-group select {
+            padding: 10px 14px;
+            border: 1px solid #cce3d6;
+            border-radius: 10px;
+            font-size: 13.5px;
+            outline: none;
+        }
+
+        @media (max-width: 800px) {
+            .sidebar { transform: translateX(-100%); }
+            .sidebar.open { transform: translateX(0); }
+            .main-content { margin-left: 0; width: 100%; }
+            .form-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+<div class="app-container">
+    <aside class="sidebar" id="sidebar">
+        <div class="brand">
+            <div class="brand-icon">🩺</div>
+            <div>
+                <h2>MediMate AI</h2>
+                <p>Doctor Portal</p>
+            </div>
+        </div>
+
+        <p class="menu-title">Clinical Navigation</p>
+        <ul class="nav-menu">
+            <li><a href="dashboard.html"><span class="nav-icon">📊</span><span>Dashboard</span></a></li>
+            <li><a href="appointments.html"><span class="nav-icon">🗓️</span><span>Appointments</span></a></li>
+            <li><a href="patients.html"><span class="nav-icon">👥</span><span>My Patients</span></a></li>
+            <li><a href="patient-records.html"><span class="nav-icon">📁</span><span>Patient Records</span></a></li>
+            <li><a href="prescriptions.html"><span class="nav-icon">💊</span><span>Prescriptions</span></a></li>
+            <li><a href="health-monitoring.html"><span class="nav-icon">❤️</span><span>Telemetry Monitoring</span></a></li>
+        </ul>
+
+        <p class="menu-title">Account & Support</p>
+        <ul class="nav-menu">
+            <li><a href="notifications.html"><span class="nav-icon">🔔</span><span>Notifications</span></a></li>
+            <li><a href="profile.html" class="active"><span class="nav-icon">👤</span><span>My Profile</span></a></li>
+            <li><a href="doctor-login.html" onclick="localStorage.clear();"><span class="nav-icon">🚪</span><span>Sign Out</span></a></li>
+        </ul>
+    </aside>
+
+    <div class="main-content">
+        <header class="topbar">
+            <div>
+                <h1 style="font-size:22px; color:#075f36; font-weight:700;">Clinician Profile & Credentials</h1>
+                <p style="font-size:13px; color:#789082;">Manage board certifications, department affiliation, and digital signature.</p>
+            </div>
+            <button class="btn btn-primary" onclick="saveDoctorProfile()"><i class="fa-solid fa-check"></i> Save Changes</button>
+        </header>
+
+        <main class="content">
+            <div class="profile-card">
+                <div class="profile-banner">
+                    <div class="avatar-box" id="avatarText">DR</div>
+                    <div>
+                        <h2 style="font-size:22px; color:#123d2b; font-weight:700;" id="docHeaderName">Dr. Sarah Connor, MD</h2>
+                        <p style="font-size:13.5px; color:#64748b; margin-top:2px;" id="docHeaderSpecialty">Senior Consultant &ndash; Department of Cardiology</p>
+                        <div style="margin-top:8px; display:flex; gap:8px;">
+                            <span style="background:#ecfdf5; color:#065f46; border:1px solid #a7f3d0; font-size:12px; font-weight:600; padding:3px 10px; border-radius:999px;">
+                                License: MD-MED-ACTIVE
+                            </span>
+                            <span style="background:#e0f2fe; color:#0369a1; border:1px solid #bae6fd; font-size:12px; font-weight:600; padding:3px 10px; border-radius:999px;">
+                                Status: Active Board Certified
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <h3 style="font-size:16px; font-weight:700; color:#123d2b; margin-bottom:14px;">Clinical Profile Information</h3>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Doctor Full Name</label>
+                        <input type="text" id="docFullName" placeholder="e.g. Dr. John Doe">
+                    </div>
+                    <div class="form-group">
+                        <label>Clinical Specialty</label>
+                        <input type="text" id="docSpecialty" placeholder="e.g. General Medicine / Cardiology">
+                    </div>
+                    <div class="form-group">
+                        <label>Department</label>
+                        <input type="text" id="docDepartment" placeholder="e.g. Clinical Medicine">
+                    </div>
+                    <div class="form-group">
+                        <label>Clinic Consultation Room</label>
+                        <input type="text" id="docRoom" placeholder="Room 204, OPD">
+                    </div>
+                    <div class="form-group">
+                        <label>Official Email</label>
+                        <input type="email" id="docEmail" placeholder="doctor@medimate.ai">
+                    </div>
+                    <div class="form-group">
+                        <label>Phone / Pager</label>
+                        <input type="text" id="docPhone" placeholder="+91 9876543210">
+                    </div>
+                </div>
+
+                <h3 style="font-size:16px; font-weight:700; color:#123d2b; margin:24px 0 14px;">Digital Signature & e-Prescription Stamp</h3>
+                <div style="padding:16px; background:#f8fafc; border:2px dashed #087743; border-radius:12px; display:flex; align-items:center; justify-content:space-between;">
+                    <div>
+                        <strong style="color:#087743; font-size:14px;">Cryptographic e-Signature Verified</strong>
+                        <p style="font-size:12.5px; color:#64748b;">Public Key: 0x8F9A...B3C1 &bull; Active on all generated prescriptions</p>
+                    </div>
+                    <span style="background:#ecfdf5; color:#065f46; font-size:12px; font-weight:700; padding:4px 10px; border-radius:999px;">STAMP ACTIVE</span>
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+
+<script>
+    function loadProfile() {
+        let doctor = null;
+        try {
+            const rawUser = localStorage.getItem("currentUser") || sessionStorage.getItem("currentUser");
+            if (rawUser) doctor = JSON.parse(rawUser);
+        } catch(e) {}
+
+        if (!doctor || !doctor.name) {
+            try {
+                const email = sessionStorage.getItem("medimateUser") || localStorage.getItem("doctorRememberedEmail");
+                const allUsers = JSON.parse(localStorage.getItem("medimateUsers") || "[]");
+                if (email && allUsers.length) {
+                    const matched = allUsers.find(u => u.email && u.email.toLowerCase() === email.toLowerCase());
+                    if (matched) doctor = { ...matched, ...doctor };
+                }
+                if (!doctor) {
+                    const docUser = allUsers.find(u => u.role === "doctor");
+                    if (docUser) doctor = docUser;
+                }
+            } catch(e) {}
+        }
+
+        if (doctor) {
+            let name = (doctor.name || doctor.fullName || doctor.displayName || "Doctor").trim();
+            const formattedName = name.toLowerCase().startsWith("dr.") ? name : ("Dr. " + name);
+            const specialty = doctor.specialization || doctor.specialty || "General Physician";
+            const department = doctor.department || "Clinical Medicine";
+            const email = doctor.email || "";
+            const phone = doctor.phone || "+91 9876543210";
+            const room = doctor.room || "Room 204, OPD";
+
+            document.getElementById("docHeaderName").textContent = formattedName;
+            document.getElementById("docHeaderSpecialty").textContent = `${specialty} – ${department}`;
+            document.getElementById("docFullName").value = formattedName;
+            document.getElementById("docSpecialty").value = specialty;
+            document.getElementById("docDepartment").value = department;
+            document.getElementById("docRoom").value = room;
+            document.getElementById("docEmail").value = email;
+            document.getElementById("docPhone").value = phone;
+
+            const initials = name.replace(/^dr\.?\s*/i, "").substring(0, 2).toUpperCase() || "DR";
+            document.getElementById("avatarText").textContent = initials;
+        }
+    }
+
+    function saveDoctorProfile() {
+        const fullName = document.getElementById("docFullName").value.trim();
+        const specialty = document.getElementById("docSpecialty").value.trim();
+        const department = document.getElementById("docDepartment").value.trim();
+        const room = document.getElementById("docRoom").value.trim();
+        const email = document.getElementById("docEmail").value.trim();
+        const phone = document.getElementById("docPhone").value.trim();
+
+        if (!fullName) {
+            alert("Please enter the doctor name.");
+            return;
+        }
+
+        let doctor = {};
+        try {
+            const rawUser = localStorage.getItem("currentUser");
+            if (rawUser) doctor = JSON.parse(rawUser);
+        } catch(e) {}
+
+        doctor.name = fullName;
+        doctor.fullName = fullName;
+        doctor.specialization = specialty;
+        doctor.specialty = specialty;
+        doctor.department = department;
+        doctor.room = room;
+        doctor.email = email || doctor.email;
+        doctor.phone = phone;
+        doctor.role = "doctor";
+
+        localStorage.setItem("currentUser", JSON.stringify(doctor));
+
+        // Also update medimateUsers registry
+        try {
+            const users = JSON.parse(localStorage.getItem("medimateUsers") || "[]");
+            const idx = users.findIndex(u => (doctor.email && u.email && u.email.toLowerCase() === doctor.email.toLowerCase()) || u.role === "doctor");
+            if (idx !== -1) {
+                users[idx] = { ...users[idx], ...doctor };
+            } else {
+                users.push(doctor);
+            }
+            localStorage.setItem("medimateUsers", JSON.stringify(users));
+        } catch(e) {}
+
+        // Also update medimateDoctors registry
+        try {
+            const docs = JSON.parse(localStorage.getItem("medimateDoctors") || "[]");
+            const dIdx = docs.findIndex(d => (doctor.email && d.email && d.email.toLowerCase() === doctor.email.toLowerCase()) || d.id === doctor.id);
+            if (dIdx !== -1) {
+                docs[dIdx] = { ...docs[dIdx], ...doctor };
+            } else {
+                docs.push({ id: doctor.id || `DOC-${Date.now()}`, ...doctor, status: "active" });
+            }
+            localStorage.setItem("medimateDoctors", JSON.stringify(docs));
+        } catch(e) {}
+
+        loadProfile();
+        alert("Doctor profile updated successfully! The name will now display everywhere across MediMate-AI.");
+    }
+
+    document.addEventListener("DOMContentLoaded", loadProfile);
+    loadProfile();
+</script>
+</body>
+</html>

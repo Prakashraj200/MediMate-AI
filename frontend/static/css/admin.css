@@ -1,0 +1,66 @@
+/* ========================================================
+   MediMate-AI - Admin Module Stylesheet (admin.css)
+   Next-Gen Unified Clinical Intelligence Palette (Amber/Gold Accent)
+   ======================================================== */
+
+.admin-badge-super {
+  background: rgba(245, 158, 11, 0.15);
+  color: #fbbf24;
+  border: 1px solid rgba(245, 158, 11, 0.35);
+  padding: 4px 12px;
+  border-radius: 9999px;
+  font-size: 11.5px;
+  font-weight: 700;
+  font-family: var(--font-mono, monospace);
+  text-transform: uppercase;
+}
+
+.admin-analytics-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 24px;
+  margin-bottom: 25px;
+}
+
+.system-status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--primary, #00e599);
+  background: rgba(0, 229, 153, 0.1);
+  padding: 5px 14px;
+  border-radius: 9999px;
+  border: 1px solid rgba(0, 229, 153, 0.25);
+  font-family: var(--font-mono, monospace);
+}
+
+.system-status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--primary, #00e599);
+  box-shadow: 0 0 10px var(--primary, #00e599);
+  animation: pulse-ring 2s infinite;
+}
+
+.broadcast-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 18px;
+  border-radius: var(--radius-md, 14px);
+  border: 1px solid var(--border-glass, rgba(255, 255, 255, 0.08));
+  background: var(--bg-card, rgba(13, 22, 41, 0.75));
+  backdrop-filter: blur(16px);
+  margin-bottom: 12px;
+  color: var(--text-primary, #f8fafc);
+  transition: all 0.25s ease;
+}
+
+.broadcast-item:hover {
+  border-color: rgba(245, 158, 11, 0.4);
+  transform: translateX(4px);
+  background: var(--bg-card-hover, rgba(22, 36, 68, 0.85));
+}

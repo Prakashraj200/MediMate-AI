@@ -3,3 +3,9 @@ venv/
 __pycache__/
 *.pyc
 .env
+config/firebase-service-account.json
+*service-account*.json
+serviceAccountKey.json
+*.pem
+*.key
+

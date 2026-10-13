@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lab Facility Profile & Accreditation | MediMate AI Lab</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: Arial, Helvetica, sans-serif; }
+        :root {
+            --green: #087f5b;
+            --dark-green: #075e45;
+            --light-green: #e3f8ec;
+            --bg: #f4faf6;
+            --text: #183b2a;
+            --muted: #789083;
+            --white: #ffffff;
+            --border: #e5f0e9;
+        }
+        body { background: var(--bg); color: var(--text); min-height: 100vh; }
+        .dashboard-container { display: flex; min-height: 100vh; }
+
+        .sidebar {
+            width: 270px;
+            background: linear-gradient(180deg, var(--green), var(--dark-green));
+            color: white;
+            padding: 24px 18px;
+            position: fixed;
+            top: 0; left: 0; bottom: 0;
+            overflow-y: auto;
+            z-index: 1000;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 8px 10px 25px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.25);
+        }
+
+        .logo-icon {
+            width: 48px; height: 48px; border-radius: 14px; background: white;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 27px; color: var(--green);
+        }
+
+        .menu-title {
+            color: #bcebd4;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin: 24px 14px 10px;
+        }
+
+        .menu { list-style: none; }
+        .menu li { margin: 6px 0; }
+        .menu a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 14px;
+            color: #d9f7e8;
+            text-decoration: none;
+            border-radius: 12px;
+            font-size: 14px;
+            transition: all 0.2s ease;
+        }
+        .menu a:hover, .menu a.active {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            font-weight: 600;
+        }
+
+        .main-content {
+            margin-left: 270px;
+            width: calc(100% - 270px);
+            min-height: 100vh;
+        }
+
+        .topbar {
+            height: 80px;
+            background: white;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 32px;
+            position: sticky;
+            top: 0;
+            z-index: 50;
+        }
+
+        .content { padding: 30px 32px; }
+
+        .btn {
+            padding: 10px 18px;
+            border-radius: 10px;
+            font-size: 13.5px;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s ease;
+        }
+        .btn-primary { background: var(--green); color: white; }
+        .btn-primary:hover { background: var(--dark-green); }
+
+        .profile-card {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            border: 1px solid var(--border);
+            margin-bottom: 24px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 18px;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .form-group label {
+            font-size: 13px;
+            font-weight: 600;
+            color: #3b5a4b;
+        }
+
+        .form-group input {
+            padding: 10px 14px;
+            border: 1px solid #cce3d6;
+            border-radius: 10px;
+            font-size: 13.5px;
+            outline: none;
+        }
+
+        @media (max-width: 800px) {
+            .sidebar { transform: translateX(-100%); }
+            .sidebar.open { transform: translateX(0); }
+            .main-content { margin-left: 0; width: 100%; }
+            .form-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+<div class="dashboard-container">
+    <aside class="sidebar" id="sidebar">
+        <div class="logo">
+            <div class="logo-icon">🧪</div>
+            <div>
+                <h2>MediMate AI</h2>
+                <p style="font-size:12px; color:#c5f4dc;">Laboratory Portal</p>
+            </div>
+        </div>
+
+        <p class="menu-title">Lab Management</p>
+        <ul class="menu">
+            <li><a href="dashboard.html"><i class="fa-solid fa-chart-pie" style="width:20px;"></i> Dashboard</a></li>
+            <li><a href="test-management.html"><i class="fa-solid fa-vials" style="width:20px;"></i> Test Catalog</a></li>
+            <li><a href="test-requests.html"><i class="fa-solid fa-clipboard-list" style="width:20px;"></i> Test Requests</a></li>
+            <li><a href="test-results.html"><i class="fa-solid fa-square-poll-vertical" style="width:20px;"></i> Results Entry</a></li>
+            <li><a href="lab-reports.html"><i class="fa-solid fa-file-medical" style="width:20px;"></i> Diagnostic Reports</a></li>
+        </ul>
+
+        <p class="menu-title">System & Account</p>
+        <ul class="menu">
+            <li><a href="notifications.html"><i class="fa-solid fa-bell" style="width:20px;"></i> Notifications</a></li>
+            <li><a href="profile.html" class="active"><i class="fa-solid fa-user-gear" style="width:20px;"></i> Lab Profile</a></li>
+            <li><a href="lab-login.html" onclick="localStorage.clear();"><i class="fa-solid fa-arrow-right-from-bracket" style="width:20px;"></i> Sign Out</a></li>
+        </ul>
+    </aside>
+
+    <div class="main-content">
+        <header class="topbar">
+            <div>
+                <h1 style="font-size:22px; color:var(--dark-green); font-weight:700;">Diagnostic Facility & Accreditation</h1>
+                <p style="font-size:13px; color:var(--muted);">Pathology department credentials, ISO certifications, and director information.</p>
+            </div>
+            <button class="btn btn-primary" onclick="alert('Laboratory profile updated successfully!')"><i class="fa-solid fa-check"></i> Save Details</button>
+        </header>
+
+        <main class="content">
+            <div class="profile-card">
+                <div style="display:flex; align-items:center; gap:20px; padding-bottom:20px; border-bottom:1px solid #edf4ef; margin-bottom:20px;">
+                    <div style="width:76px; height:76px; border-radius:20px; background:linear-gradient(135deg, #087f5b, #059669); color:white; display:flex; align-items:center; justify-content:center; font-size:32px;">
+                        🔬
+                    </div>
+                    <div>
+                        <h2 style="font-size:20px; font-weight:700; color:#123d2b;">Central Clinical Pathology & Diagnostic Labs</h2>
+                        <p style="font-size:13px; color:#64748b;">MediMate-AI Hospital Main Campus &bull; Level 2 Pathology Complex</p>
+                        <div style="margin-top:6px; display:flex; gap:8px;">
+                            <span style="background:#ecfdf5; color:#065f46; font-size:12px; font-weight:600; padding:2px 8px; border-radius:6px;">ISO 15189:2022 Certified</span>
+                            <span style="background:#e0f2fe; color:#0369a1; font-size:12px; font-weight:600; padding:2px 8px; border-radius:6px;">License: LAB-NABL-44021</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Chief Clinical Pathologist</label>
+                        <input type="text" value="Dr. Marcus Brody, MD (Pathology)">
+                    </div>
+                    <div class="form-group">
+                        <label>Laboratory Director Registration</label>
+                        <input type="text" value="PATH-DIR-9941-MED">
+                    </div>
+                    <div class="form-group">
+                        <label>Department Hotline</label>
+                        <input type="text" value="+1 (555) 782-9901 Ext: 44">
+                    </div>
+                    <div class="form-group">
+                        <label>Official Lab Email</label>
+                        <input type="email" value="laboratory@medimate.ai">
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+</body>
+</html>

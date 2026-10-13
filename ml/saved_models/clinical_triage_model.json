@@ -1,0 +1,30 @@
+{
+  "model_type": "ClinicalTriageThresholdClassifier",
+  "version": "1.0.0",
+  "features": [
+    "age",
+    "systolic",
+    "diastolic",
+    "heart_rate",
+    "glucose"
+  ],
+  "classes": [
+    0,
+    1,
+    2
+  ],
+  "accuracy_baseline": 0.965,
+  "thresholds": {
+    "high_risk": {
+      "systolic": 160,
+      "diastolic": 105,
+      "glucose": 200,
+      "heart_rate": 120
+    },
+    "moderate_risk": {
+      "systolic": 140,
+      "diastolic": 90,
+      "glucose": 140
+    }
+  }
+}

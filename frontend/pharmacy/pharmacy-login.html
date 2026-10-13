@@ -7,11 +7,13 @@
   <title>Pharmacy Login - MediMate AI</title>
 
   <style>
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap');
+
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
-      font-family: Arial, sans-serif;
+      font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
     }
 
     body {
@@ -19,40 +21,55 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      background: linear-gradient(135deg, #eafff0, #ffffff);
+      background-color: #050a14;
+      background-image: 
+        radial-gradient(circle at 10% 20%, rgba(236, 72, 153, 0.08), transparent 40%),
+        radial-gradient(circle at 90% 80%, rgba(0, 229, 153, 0.08), transparent 40%);
+      background-attachment: fixed;
+      color: #f8fafc;
+      -webkit-font-smoothing: antialiased;
+      padding: 20px;
     }
 
     .login-container {
-      width: 380px;
-      background: white;
-      padding: 35px;
-      border-radius: 20px;
-      box-shadow: 0 10px 30px rgba(0, 128, 70, 0.15);
+      width: 420px;
+      max-width: 100%;
+      background: rgba(13, 22, 41, 0.85);
+      padding: 40px 35px;
+      border-radius: 28px;
+      box-shadow: 0 30px 70px rgba(0, 0, 0, 0.8), 0 0 40px rgba(236, 72, 153, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
       text-align: center;
       animation: fadeIn 0.8s ease-in-out;
     }
 
     .logo {
-      width: 75px;
-      height: 75px;
-      margin: auto auto 15px;
-      border-radius: 50%;
-      background: #0b8f55;
-      color: white;
+      width: 70px;
+      height: 70px;
+      margin: 0 auto 18px;
+      border-radius: 20px;
+      background: linear-gradient(135deg, #ec4899, #00e599);
+      color: #050a14;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 38px;
-      font-weight: bold;
+      font-size: 34px;
+      font-weight: 800;
+      box-shadow: 0 0 25px rgba(236, 72, 153, 0.4);
     }
 
     h2 {
-      color: #087443;
-      margin-bottom: 8px;
+      color: #ffffff;
+      font-size: 26px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      margin-bottom: 6px;
     }
 
     .subtitle {
-      color: #777;
+      color: #94a3b8;
       font-size: 14px;
       margin-bottom: 25px;
     }
@@ -65,24 +82,28 @@
     label {
       display: block;
       margin-bottom: 7px;
-      color: #333;
-      font-size: 14px;
-      font-weight: bold;
+      color: #94a3b8;
+      font-size: 13px;
+      font-weight: 600;
     }
 
     input {
       width: 100%;
-      padding: 13px;
-      border: 1px solid #cce8d8;
-      border-radius: 10px;
+      padding: 13px 16px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 12px;
       outline: none;
       font-size: 14px;
-      transition: 0.3s;
+      background: rgba(10, 18, 36, 0.85);
+      color: #ffffff;
+      transition: all 0.2s ease;
+      font-family: inherit;
     }
 
     input:focus {
-      border-color: #0b8f55;
-      box-shadow: 0 0 8px rgba(11, 143, 85, 0.2);
+      border-color: #ec4899;
+      box-shadow: 0 0 0 3px rgba(236, 72, 153, 0.2);
+      background: rgba(13, 24, 48, 0.95);
     }
 
     .remember-row {
@@ -90,33 +111,35 @@
       align-items: center;
       gap: 8px;
       text-align: left;
-      margin-bottom: 10px;
+      margin-bottom: 15px;
       font-size: 13px;
-      color: #555;
+      color: #94a3b8;
     }
 
     .remember-row input {
       width: auto;
-      accent-color: #0b8f55;
+      accent-color: #ec4899;
     }
 
     button {
       width: 100%;
-      padding: 13px;
+      padding: 14px;
       border: none;
-      border-radius: 10px;
-      background: #0b8f55;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #ec4899, #db2777);
       color: white;
-      font-size: 16px;
-      font-weight: bold;
+      font-size: 15px;
+      font-weight: 800;
       cursor: pointer;
-      transition: 0.3s;
+      transition: all 0.25s ease;
       margin-top: 8px;
+      box-shadow: 0 4px 20px rgba(236, 72, 153, 0.35);
     }
 
     button:hover {
-      background: #076b40;
+      background: linear-gradient(135deg, #f472b6, #ec4899);
       transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(236, 72, 153, 0.5);
     }
 
     .message {
@@ -127,15 +150,15 @@
 
     .register-text {
       margin-top: 20px;
-      font-size: 14px;
-      color: #666;
+      font-size: 13px;
+      color: #94a3b8;
     }
 
     .register-text a,
     .back-link {
-      color: #0b8f55;
+      color: #ec4899;
       text-decoration: none;
-      font-weight: bold;
+      font-weight: 700;
     }
 
     .register-text a:hover,

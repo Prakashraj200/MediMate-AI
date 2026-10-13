@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verified Diagnostic Reports | MediMate AI Lab</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: Arial, Helvetica, sans-serif; }
+        :root {
+            --green: #087f5b;
+            --dark-green: #075e45;
+            --light-green: #e3f8ec;
+            --bg: #f4faf6;
+            --text: #183b2a;
+            --muted: #789083;
+            --white: #ffffff;
+            --border: #e5f0e9;
+        }
+        body { background: var(--bg); color: var(--text); min-height: 100vh; }
+        .dashboard-container { display: flex; min-height: 100vh; }
+
+        .sidebar {
+            width: 270px;
+            background: linear-gradient(180deg, var(--green), var(--dark-green));
+            color: white;
+            padding: 24px 18px;
+            position: fixed;
+            top: 0; left: 0; bottom: 0;
+            overflow-y: auto;
+            z-index: 1000;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 8px 10px 25px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.25);
+        }
+
+        .logo-icon {
+            width: 48px; height: 48px; border-radius: 14px; background: white;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 27px; color: var(--green);
+        }
+
+        .menu-title {
+            color: #bcebd4;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin: 24px 14px 10px;
+        }
+
+        .menu { list-style: none; }
+        .menu li { margin: 6px 0; }
+        .menu a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 14px;
+            color: #d9f7e8;
+            text-decoration: none;
+            border-radius: 12px;
+            font-size: 14px;
+            transition: all 0.2s ease;
+        }
+        .menu a:hover, .menu a.active {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            font-weight: 600;
+        }
+
+        .main-content {
+            margin-left: 270px;
+            width: calc(100% - 270px);
+            min-height: 100vh;
+        }
+
+        .topbar {
+            height: 80px;
+            background: white;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 32px;
+            position: sticky;
+            top: 0;
+            z-index: 50;
+        }
+
+        .content { padding: 30px 32px; }
+
+        .btn {
+            padding: 10px 18px;
+            border-radius: 10px;
+            font-size: 13.5px;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s ease;
+        }
+        .btn-primary { background: var(--green); color: white; }
+        .btn-secondary { background: var(--light-green); color: var(--green); }
+
+        .panel {
+            background: white;
+            border-radius: 20px;
+            padding: 24px;
+            border: 1px solid var(--border);
+            margin-bottom: 25px;
+        }
+
+        .table-responsive { overflow-x: auto; }
+        table { width: 100%; border-collapse: collapse; text-align: left; }
+        th {
+            background: #f4faf6;
+            color: #4b6f5d;
+            font-size: 12.5px;
+            text-transform: uppercase;
+            padding: 14px 16px;
+            border-bottom: 1.5px solid #dcefe4;
+        }
+        td {
+            padding: 15px 16px;
+            border-bottom: 1px solid #edf4ef;
+            font-size: 13.5px;
+        }
+        tr:hover td { background: #f9fdfa; }
+
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(8, 127, 91, 0.4);
+            backdrop-filter: blur(4px);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal {
+            background: white;
+            border-radius: 20px;
+            width: 100%;
+            max-width: 680px;
+            padding: 28px;
+        }
+
+        .report-slip {
+            border: 1px solid #cce3d6;
+            border-radius: 12px;
+            padding: 24px;
+            margin: 15px 0;
+            background: #fdfdfd;
+        }
+
+        @media (max-width: 800px) {
+            .sidebar { transform: translateX(-100%); }
+            .sidebar.open { transform: translateX(0); }
+            .main-content { margin-left: 0; width: 100%; }
+        }
+    </style>
+</head>
+<body>
+<div class="dashboard-container">
+    <aside class="sidebar" id="sidebar">
+        <div class="logo">
+            <div class="logo-icon">🧪</div>
+            <div>
+                <h2>MediMate AI</h2>
+                <p style="font-size:12px; color:#c5f4dc;">Laboratory Portal</p>
+            </div>
+        </div>
+
+        <p class="menu-title">Lab Management</p>
+        <ul class="menu">
+            <li><a href="dashboard.html"><i class="fa-solid fa-chart-pie" style="width:20px;"></i> Dashboard</a></li>
+            <li><a href="test-management.html"><i class="fa-solid fa-vials" style="width:20px;"></i> Test Catalog</a></li>
+            <li><a href="test-requests.html"><i class="fa-solid fa-clipboard-list" style="width:20px;"></i> Test Requests</a></li>
+            <li><a href="test-results.html"><i class="fa-solid fa-square-poll-vertical" style="width:20px;"></i> Results Entry</a></li>
+            <li><a href="lab-reports.html" class="active"><i class="fa-solid fa-file-medical" style="width:20px;"></i> Diagnostic Reports</a></li>
+        </ul>
+
+        <p class="menu-title">System & Account</p>
+        <ul class="menu">
+            <li><a href="notifications.html"><i class="fa-solid fa-bell" style="width:20px;"></i> Notifications</a></li>
+            <li><a href="profile.html"><i class="fa-solid fa-user-gear" style="width:20px;"></i> Lab Profile</a></li>
+            <li><a href="lab-login.html" onclick="localStorage.clear();"><i class="fa-solid fa-arrow-right-from-bracket" style="width:20px;"></i> Sign Out</a></li>
+        </ul>
+    </aside>
+
+    <div class="main-content">
+        <header class="topbar">
+            <div>
+                <h1 style="font-size:22px; color:var(--dark-green); font-weight:700;">Verified Diagnostic Pathology Reports</h1>
+                <p style="font-size:13px; color:var(--muted);">Clinically verified laboratory reports with tamper-proof digital certification.</p>
+            </div>
+            <button class="btn btn-secondary" onclick="alert('Exporting pathology log...')"><i class="fa-solid fa-download"></i> Export Reports Log</button>
+        </header>
+
+        <main class="content">
+            <div class="panel">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+                    <div>
+                        <h3 style="font-size:16px; font-weight:700;">Diagnostic Archives</h3>
+                        <p style="font-size:12.5px; color:#64748b;">Search verified reports by Patient, Accession code, or Doctor.</p>
+                    </div>
+                </div>
+
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Report #</th>
+                                <th>Date</th>
+                                <th>Patient Name</th>
+                                <th>Investigation Name</th>
+                                <th>Ordering Clinician</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code>REP-7741</code></td>
+                                <td>Oct 12, 2026</td>
+                                <td><strong>David Kim</strong> (MRN-7821)</td>
+                                <td>Complete Blood Count (CBC)</td>
+                                <td>Dr. Alex Mercer</td>
+                                <td><span style="color:#059669; font-weight:600;"><i class="fa-solid fa-circle-check"></i> Released</span></td>
+                                <td>
+                                    <button class="btn btn-secondary" style="padding:4px 10px; font-size:12px;" onclick="viewReportModal('David Kim', 'Complete Blood Count (CBC)', 'REP-7741')"><i class="fa-solid fa-eye"></i> View</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><code>REP-7740</code></td>
+                                <td>Oct 10, 2026</td>
+                                <td><strong>John Doe</strong> (MRN-1001)</td>
+                                <td>Lipid Profile Panel (Fasting)</td>
+                                <td>Dr. Sarah Connor</td>
+                                <td><span style="color:#059669; font-weight:600;"><i class="fa-solid fa-circle-check"></i> Released</span></td>
+                                <td>
+                                    <button class="btn btn-secondary" style="padding:4px 10px; font-size:12px;" onclick="viewReportModal('John Doe', 'Lipid Profile Panel', 'REP-7740')"><i class="fa-solid fa-eye"></i> View</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+
+<!-- Modal: View Report -->
+<div class="modal-overlay" id="reportModal">
+    <div class="modal">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+            <h3 style="color:var(--green);"><i class="fa-solid fa-file-waveform"></i> Official Diagnostic Pathology Report</h3>
+            <button style="border:none; background:transparent; font-size:22px; cursor:pointer;" onclick="closeModal('reportModal')">&times;</button>
+        </div>
+        <div class="report-slip" id="reportSlip">
+            <!-- Details -->
+        </div>
+        <div style="display:flex; justify-content:flex-end; gap:10px;">
+            <button class="btn btn-secondary" onclick="window.print()"><i class="fa-solid fa-print"></i> Print Report</button>
+            <button class="btn btn-primary" onclick="closeModal('reportModal')">Close</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    function closeModal(id) { document.getElementById(id).style.display = 'none'; }
+    function viewReportModal(patient, test, repNo) {
+        const slip = document.getElementById('reportSlip');
+        slip.innerHTML = `
+            <div style="text-align:center; border-bottom:2px solid #087f5b; padding-bottom:12px; margin-bottom:14px;">
+                <h3 style="color:#087f5b; font-size:18px;">MEDIMATE-AI CENTRAL DIAGNOSTIC LABORATORIES</h3>
+                <p style="font-size:12px; color:#64748b;">ISO 15189:2022 & NABL Accredited Clinical Reference Laboratory</p>
+            </div>
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; font-size:13px; margin-bottom:14px;">
+                <div><strong>Patient Name:</strong> ${patient}</div>
+                <div><strong>Report Number:</strong> ${repNo}</div>
+                <div><strong>Investigation:</strong> ${test}</div>
+                <div><strong>Date of Release:</strong> Oct 12, 2026</div>
+            </div>
+            <div style="background:#eef7f2; padding:12px; border-radius:8px; font-size:13px; margin-bottom:14px;">
+                <strong>Analyte Results Summary:</strong><br>
+                <span>All parameters validated by automated cell counters with quality control concordance.</span>
+            </div>
+            <div style="display:flex; justify-content:space-between; align-items:center; font-size:12px; color:#64748b; margin-top:20px; border-top:1px solid #edf4ef; padding-top:12px;">
+                <span>Digital Verification: <strong>VERIFIED-PATH-2026</strong></span>
+                <span>Chief Pathologist: <strong style="color:#087f5b;">Dr. Marcus Brody, MD (Path)</strong></span>
+            </div>
+        `;
+        document.getElementById('reportModal').style.display = 'flex';
+    }
+</script>
+</body>
+</html>

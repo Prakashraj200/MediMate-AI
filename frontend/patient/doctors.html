@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Specialist Doctors Directory | MediMate AI</title>
+  <link rel="stylesheet" href="patient-style.css">
+  <style>
+    .doctors-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 24px;
+    }
+
+    .doctor-card {
+      background: white;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 24px;
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: all 0.25s ease;
+    }
+
+    .doctor-card:hover {
+      border-color: var(--primary);
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .doc-card-top {
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+      margin-bottom: 16px;
+    }
+
+    .doc-big-avatar {
+      width: 68px;
+      height: 68px;
+      border-radius: 20px;
+      background: var(--primary-subtle);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 36px;
+      flex-shrink: 0;
+      border: 2px solid white;
+      box-shadow: 0 4px 12px rgba(8, 127, 91, 0.12);
+    }
+
+    .doc-main-meta h3 {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--text-main);
+      margin-bottom: 2px;
+    }
+
+    .doc-dept-badge {
+      display: inline-block;
+      font-size: 12px;
+      color: var(--primary);
+      font-weight: 600;
+      background: var(--primary-subtle);
+      padding: 2px 8px;
+      border-radius: 6px;
+      margin-bottom: 4px;
+    }
+
+    .doc-qual {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .doc-stats-strip {
+      display: flex;
+      justify-content: space-between;
+      background: var(--bg-surface-alt);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      padding: 10px 14px;
+      margin-bottom: 16px;
+      font-size: 13px;
+    }
+
+    .doc-stats-strip div strong {
+      display: block;
+      color: var(--text-main);
+      font-size: 14px;
+    }
+
+    .doc-stats-strip div span {
+      font-size: 11px;
+      color: var(--text-subtle);
+    }
+
+    .doc-bio-snippet {
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.5;
+      margin-bottom: 18px;
+    }
+
+    .doc-next-slot {
+      background: #f0fdf4;
+      border: 1px solid #bbf7d0;
+      color: #166534;
+      padding: 8px 12px;
+      border-radius: var(--radius-sm);
+      font-size: 12px;
+      font-weight: 600;
+      margin-bottom: 18px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .doc-actions-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="logo">
+      <div class="logo-icon">🏥</div>
+      <h2>MediMate AI</h2>
+      <p>Patient Portal</p>
+    </div>
+
+    <div class="menu-container">
+      <ul class="menu">
+        <li>
+          <a href="dashboard.html">
+            <span class="nav-icon">🏠</span>
+            <span>Dashboard</span>
+          </a>
+        </li>
+        <li>
+          <a href="appointments.html">
+            <span class="nav-icon">📅</span>
+            <span>Appointments</span>
+          </a>
+        </li>
+        <li>
+          <a href="health-records.html">
+            <span class="nav-icon">❤️</span>
+            <span>Health Records</span>
+          </a>
+        </li>
+        <li>
+          <a href="medicines.html">
+            <span class="nav-icon">💊</span>
+            <span>Medicines</span>
+          </a>
+        </li>
+        <li>
+          <a href="prescriptions.html">
+            <span class="nav-icon">📋</span>
+            <span>Prescriptions</span>
+          </a>
+        </li>
+        <li>
+          <a href="lab-reports.html">
+            <span class="nav-icon">🧪</span>
+            <span>Lab Reports</span>
+          </a>
+        </li>
+        <li>
+          <a href="doctors.html" class="active">
+            <span class="nav-icon">👨‍⚕️</span>
+            <span>Doctors</span>
+          </a>
+        </li>
+        <li>
+          <a href="preethi-ai.html">
+            <span class="nav-icon">🤖</span>
+            <span>Preethi AI</span>
+          </a>
+        </li>
+        <li>
+          <a href="notifications.html">
+            <span class="nav-icon">🔔</span>
+            <span>Notifications</span>
+          </a>
+        </li>
+        <li>
+          <a href="profile.html">
+            <span class="nav-icon">👤</span>
+            <span>My Profile</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+
+    <div class="logout">
+      <button id="logoutBtn">
+        <span>🚪</span>
+        <span>Logout</span>
+      </button>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main">
+
+    <!-- TOPBAR -->
+    <header class="topbar">
+      <div class="topbar-left">
+        <button class="sidebar-toggle-btn" id="sidebarToggleBtn" title="Toggle Menu">☰</button>
+        <div class="topbar-title">
+          <h1>Find Specialist Doctors</h1>
+          <p>Explore board-certified medical specialists, ratings & schedule visits</p>
+        </div>
+      </div>
+
+      <div class="topbar-right">
+        <a href="notifications.html" class="notif-link" title="Notifications">
+          <span>🔔</span>
+          <span class="notif-badge" id="notifBadge" style="display: none;">0</span>
+        </a>
+
+        <a href="profile.html" class="user-profile-widget">
+          <div class="user-profile-info">
+            <strong id="userName">Patient</strong>
+            <span>Verified Patient</span>
+          </div>
+          <div class="user-avatar-circle" id="userAvatar">P</div>
+        </a>
+      </div>
+    </header>
+
+    <!-- CONTENT -->
+    <section class="content">
+
+      <!-- BANNER -->
+      <div class="page-banner">
+        <div>
+          <h2>Expert Clinical Care Directory</h2>
+          <p>Book video telehealth or hospital outpatient visits directly with our department heads and consultant surgeons.</p>
+        </div>
+        <a href="appointments.html" class="btn btn-primary" style="background: white; color: var(--primary);">
+          <span>📅</span>
+          <span>View My Booked Visits</span>
+        </a>
+      </div>
+
+      <!-- TOOLBAR -->
+      <div class="toolbar">
+        <div class="search-box">
+          <span class="search-icon">🔍</span>
+          <input type="text" id="searchDocInput" placeholder="Search doctor name, specialty or clinical expertise...">
+        </div>
+
+        <div class="filter-group">
+          <button class="filter-btn active" data-filter="all">All Specialties</button>
+          <button class="filter-btn" data-filter="cardiology">Cardiology</button>
+          <button class="filter-btn" data-filter="general medicine">General Medicine</button>
+          <button class="filter-btn" data-filter="dermatology">Dermatology</button>
+          <button class="filter-btn" data-filter="orthopedics">Orthopedics</button>
+          <button class="filter-btn" data-filter="neurology">Neurology</button>
+          <button class="filter-btn" data-filter="pediatrics">Pediatrics</button>
+        </div>
+      </div>
+
+      <!-- DOCTORS GRID -->
+      <div class="doctors-grid" id="doctorsGridContainer">
+        <!-- Rendered dynamically -->
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- ========================================================================
+       MODAL: DOCTOR CREDENTIALS & BIO
+       ======================================================================== -->
+  <div class="modal-backdrop" id="bioModal">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h3 id="bioDocTitle">👨‍⚕️ Specialist Profile</h3>
+        <button class="modal-close" id="closeBioModalBtn">&times;</button>
+      </div>
+      <div class="modal-body" id="bioModalBody">
+        <!-- Rendered dynamically -->
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline" id="doneBioBtn">Close</button>
+        <button type="button" class="btn btn-primary" id="bookFromBioBtn">Book Appointment</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- SCRIPT -->
+  <script type="module">
+    import { setupPatientAuth, PatientStore, showToast } from "./patient-common.js";
+
+    setupPatientAuth("doctors");
+
+    let currentDeptFilter = "all";
+    let docSearchQuery = "";
+    let selectedDoctorForBooking = null;
+
+    document.addEventListener("DOMContentLoaded", function () {
+      initDoctorsPage();
+    });
+
+    function initDoctorsPage() {
+      renderDoctors();
+
+      // Search input
+      document.getElementById("searchDocInput").addEventListener("input", function (e) {
+        docSearchQuery = e.target.value.toLowerCase().trim();
+        renderDoctors();
+      });
+
+      // Filter buttons
+      document.querySelectorAll(".filter-btn").forEach(btn => {
+        btn.addEventListener("click", function () {
+          document.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
+          this.classList.add("active");
+          currentDeptFilter = this.getAttribute("data-filter");
+          renderDoctors();
+        });
+      });
+
+      // Bio modal close
+      document.getElementById("closeBioModalBtn").addEventListener("click", () => {
+        document.getElementById("bioModal").classList.remove("active");
+      });
+      document.getElementById("doneBioBtn").addEventListener("click", () => {
+        document.getElementById("bioModal").classList.remove("active");
+      });
+
+      document.getElementById("bookFromBioBtn").addEventListener("click", () => {
+        if (selectedDoctorForBooking) {
+          quickBookDoctor(selectedDoctorForBooking);
+          document.getElementById("bioModal").classList.remove("active");
+        }
+      });
+    }
+
+    function renderDoctors() {
+      const doctors = PatientStore.getDoctors();
+      const container = document.getElementById("doctorsGridContainer");
+
+      let filtered = doctors;
+      if (currentDeptFilter !== "all") {
+        filtered = filtered.filter(d => d.department.toLowerCase() === currentDeptFilter.toLowerCase());
+      }
+      if (docSearchQuery) {
+        filtered = filtered.filter(d =>
+          d.name.toLowerCase().includes(docSearchQuery) ||
+          d.department.toLowerCase().includes(docSearchQuery) ||
+          d.bio.toLowerCase().includes(docSearchQuery) ||
+          d.qualifications.toLowerCase().includes(docSearchQuery)
+        );
+      }
+
+      if (filtered.length === 0) {
+        container.innerHTML = `
+          <div class="surface-card" style="grid-column: 1 / -1; text-align: center; padding: 48px 20px;">
+            <div style="font-size: 42px; margin-bottom: 12px;">👨‍⚕️</div>
+            <h3 style="color: var(--primary-dark); margin-bottom: 6px;">No doctors found matching your criteria</h3>
+            <p style="color: var(--text-muted); font-size: 14px;">Try searching for another medical condition or specialty.</p>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = filtered.map(d => `
+        <div class="doctor-card">
+          <div>
+            <div class="doc-card-top">
+              <div class="doc-big-avatar">${d.avatar || "👨‍⚕️"}</div>
+              <div class="doc-main-meta">
+                <h3>${d.name}</h3>
+                <span class="doc-dept-badge">${d.department}</span>
+                <p class="doc-qual">${d.qualifications}</p>
+              </div>
+            </div>
+
+            <div class="doc-stats-strip">
+              <div>
+                <strong>${d.experience}</strong>
+                <span>Experience</span>
+              </div>
+              <div>
+                <strong>★ ${d.rating}</strong>
+                <span>${d.reviewsCount} Reviews</span>
+              </div>
+              <div>
+                <strong>${d.fee}</strong>
+                <span>Consultation</span>
+              </div>
+            </div>
+
+            <p class="doc-bio-snippet">${d.bio}</p>
+
+            <div class="doc-next-slot">
+              <span>⚡ Next Slot:</span>
+              <span><strong>${d.nextSlot}</strong></span>
+            </div>
+          </div>
+
+          <div class="doc-actions-row">
+            <button class="btn btn-outline btn-sm view-bio-btn" data-id="${d.id}">
+              Bio & Info
+            </button>
+            <button class="btn btn-primary btn-sm book-doc-btn" data-id="${d.id}">
+              Book Now
+            </button>
+          </div>
+        </div>
+      `).join("");
+
+      document.querySelectorAll(".view-bio-btn").forEach(btn => {
+        btn.addEventListener("click", function () {
+          const id = this.getAttribute("data-id");
+          showDocBioModal(id);
+        });
+      });
+
+      document.querySelectorAll(".book-doc-btn").forEach(btn => {
+        btn.addEventListener("click", function () {
+          const id = this.getAttribute("data-id");
+          const doc = doctors.find(d => d.id === id);
+          if (doc) quickBookDoctor(doc);
+        });
+      });
+    }
+
+    function showDocBioModal(docId) {
+      const doctors = PatientStore.getDoctors();
+      const doc = doctors.find(d => d.id === docId);
+      if (!doc) return;
+
+      selectedDoctorForBooking = doc;
+      document.getElementById("bioDocTitle").textContent = `${doc.avatar || '👨‍⚕️'} ${doc.name}`;
+
+      const body = document.getElementById("bioModalBody");
+      body.innerHTML = `
+        <div style="background: var(--bg-surface-alt); padding: 16px; border-radius: 8px; border: 1px solid var(--border-color); margin-bottom: 16px;">
+          <h4 style="color: var(--primary); font-size: 16px; margin-bottom: 2px;">${doc.department}</h4>
+          <p style="font-size: 13px; color: var(--text-muted);">${doc.qualifications}</p>
+          <div style="display: flex; gap: 16px; margin-top: 10px; font-size: 13px;">
+            <span>💼 <strong>${doc.experience}</strong></span>
+            <span>⭐ <strong>${doc.rating} / 5.0</strong> (${doc.reviewsCount} patient reviews)</span>
+            <span>💳 <strong>${doc.fee}</strong></span>
+          </div>
+        </div>
+
+        <div style="margin-bottom: 16px;">
+          <h4 style="font-size: 14px; color: var(--text-main); margin-bottom: 6px;">Clinical Biography & Background</h4>
+          <p style="font-size: 13px; color: var(--text-muted); line-height: 1.6;">${doc.bio}</p>
+        </div>
+
+        <div style="background: #f0fdf4; border: 1px solid #bbf7d0; padding: 12px; border-radius: 8px; font-size: 13px; color: #166534;">
+          <strong>Clinic Days:</strong> ${doc.availableDays}<br>
+          <strong>Earliest Available Slot:</strong> ${doc.nextSlot} (Hospital OPD & Telehealth)
+        </div>
+      `;
+
+      document.getElementById("bioModal").classList.add("active");
+    }
+
+    function quickBookDoctor(doc) {
+      const confirmBooking = confirm(`Schedule an appointment with ${doc.name} (${doc.department}) for ${doc.nextSlot}?`);
+      if (confirmBooking) {
+        const todayDate = new Date();
+        todayDate.setDate(todayDate.getDate() + 1);
+        const dateStr = todayDate.toISOString().split("T")[0];
+
+        PatientStore.addAppointment({
+          doctorName: doc.name,
+          doctorRole: doc.department + " Specialist",
+          doctorAvatar: doc.avatar || "👨‍⚕️",
+          department: doc.department,
+          date: dateStr,
+          time: "10:30 AM",
+          type: "In-Person Consultation",
+          room: "OPD Suite 208",
+          status: "Confirmed",
+          reason: "Consultation booked via Specialists Directory.",
+          fee: doc.fee,
+          notes: "Confirmed through MediMate Doctors Directory."
+        });
+
+        showToast(`Appointment booked with ${doc.name}! Check your Appointments tab.`, "success");
+      }
+    }
+  </script>
+
+</body>
+</html>

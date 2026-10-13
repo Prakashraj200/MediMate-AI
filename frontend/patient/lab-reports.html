@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lab Reports & Diagnostics | MediMate AI</title>
+  <link rel="stylesheet" href="patient-style.css">
+  <style>
+    .report-card {
+      background: white;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 22px;
+      margin-bottom: 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: all 0.2s ease;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .report-card:hover {
+      border-color: var(--primary);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .report-main {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .report-icon-box {
+      width: 54px;
+      height: 54px;
+      border-radius: 16px;
+      background: var(--primary-subtle);
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 26px;
+      flex-shrink: 0;
+    }
+
+    .report-details h3 {
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--text-main);
+      margin-bottom: 4px;
+    }
+
+    .report-details p {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+    }
+
+    .report-actions {
+      text-align: right;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 10px;
+    }
+
+    /* Modal Parameter Row Visuals */
+    .param-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--border-color);
+      font-size: 14px;
+    }
+
+    .param-row:last-child {
+      border-bottom: none;
+    }
+
+    .param-name strong {
+      display: block;
+      color: var(--text-main);
+    }
+
+    .param-name span {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .param-values {
+      text-align: right;
+    }
+
+    .param-values .val-num {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+
+    .param-values .val-range {
+      font-size: 11px;
+      color: var(--text-subtle);
+      display: block;
+    }
+
+    @media (max-width: 768px) {
+      .report-card {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 16px;
+      }
+      .report-actions {
+        align-items: flex-start;
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="logo">
+      <div class="logo-icon">🏥</div>
+      <h2>MediMate AI</h2>
+      <p>Patient Portal</p>
+    </div>
+
+    <div class="menu-container">
+      <ul class="menu">
+        <li>
+          <a href="dashboard.html">
+            <span class="nav-icon">🏠</span>
+            <span>Dashboard</span>
+          </a>
+        </li>
+        <li>
+          <a href="appointments.html">
+            <span class="nav-icon">📅</span>
+            <span>Appointments</span>
+          </a>
+        </li>
+        <li>
+          <a href="health-records.html">
+            <span class="nav-icon">❤️</span>
+            <span>Health Records</span>
+          </a>
+        </li>
+        <li>
+          <a href="medicines.html">
+            <span class="nav-icon">💊</span>
+            <span>Medicines</span>
+          </a>
+        </li>
+        <li>
+          <a href="prescriptions.html">
+            <span class="nav-icon">📋</span>
+            <span>Prescriptions</span>
+          </a>
+        </li>
+        <li>
+          <a href="lab-reports.html" class="active">
+            <span class="nav-icon">🧪</span>
+            <span>Lab Reports</span>
+          </a>
+        </li>
+        <li>
+          <a href="doctors.html">
+            <span class="nav-icon">👨‍⚕️</span>
+            <span>Doctors</span>
+          </a>
+        </li>
+        <li>
+          <a href="preethi-ai.html">
+            <span class="nav-icon">🤖</span>
+            <span>Preethi AI</span>
+          </a>
+        </li>
+        <li>
+          <a href="notifications.html">
+            <span class="nav-icon">🔔</span>
+            <span>Notifications</span>
+          </a>
+        </li>
+        <li>
+          <a href="profile.html">
+            <span class="nav-icon">👤</span>
+            <span>My Profile</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+
+    <div class="logout">
+      <button id="logoutBtn">
+        <span>🚪</span>
+        <span>Logout</span>
+      </button>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main">
+
+    <!-- TOPBAR -->
+    <header class="topbar">
+      <div class="topbar-left">
+        <button class="sidebar-toggle-btn" id="sidebarToggleBtn" title="Toggle Menu">☰</button>
+        <div class="topbar-title">
+          <h1>Diagnostic Laboratory Reports</h1>
+          <p>Verified laboratory assays, biochemistry & imaging diagnostics</p>
+        </div>
+      </div>
+
+      <div class="topbar-right">
+        <a href="notifications.html" class="notif-link" title="Notifications">
+          <span>🔔</span>
+          <span class="notif-badge" id="notifBadge" style="display: none;">0</span>
+        </a>
+
+        <a href="profile.html" class="user-profile-widget">
+          <div class="user-profile-info">
+            <strong id="userName">Patient</strong>
+            <span>Verified Patient</span>
+          </div>
+          <div class="user-avatar-circle" id="userAvatar">P</div>
+        </a>
+      </div>
+    </header>
+
+    <!-- CONTENT -->
+    <section class="content">
+
+      <!-- BANNER -->
+      <div class="page-banner">
+        <div>
+          <h2>Diagnostic Results Portal</h2>
+          <p>Review comprehensive diagnostic findings, understand biological marker ranges, and download verified digital pathology reports.</p>
+        </div>
+        <button class="btn btn-primary" id="openBookTestBtn" style="background: white; color: var(--primary);">
+          <span>🧪</span>
+          <span>Schedule Lab Test</span>
+        </button>
+      </div>
+
+      <!-- STATS -->
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-icon">🧪</div>
+          <div class="stat-details">
+            <h4>Total Lab Tests</h4>
+            <div class="stat-value" id="statTotalTests">5</div>
+            <p class="stat-sub">Validated investigations</p>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon">✅</div>
+          <div class="stat-details">
+            <h4>Normal Reference</h4>
+            <div class="stat-value" id="statNormalTests" style="color: var(--primary);">4</div>
+            <p class="stat-sub">Within optimal physiology</p>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon">⚠️</div>
+          <div class="stat-details">
+            <h4>Attention / Borderline</h4>
+            <div class="stat-value" id="statAttentionTests" style="color: #b26b00;">1</div>
+            <p class="stat-sub">Total cholesterol mildly high</p>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon">🔬</div>
+          <div class="stat-details">
+            <h4>Lab Certification</h4>
+            <div class="stat-value" style="color: var(--primary);">NABL</div>
+            <p class="stat-sub">Accredited testing facility</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- TOOLBAR -->
+      <div class="toolbar">
+        <div class="search-box">
+          <span class="search-icon">🔍</span>
+          <input type="text" id="searchLabInput" placeholder="Search by test name, category or parameter...">
+        </div>
+
+        <div class="filter-group">
+          <button class="filter-btn active" data-filter="all">All Reports</button>
+          <button class="filter-btn" data-filter="biochemistry">Biochemistry</button>
+          <button class="filter-btn" data-filter="hematology">Hematology</button>
+          <button class="filter-btn" data-filter="cardiology">Cardiology</button>
+        </div>
+      </div>
+
+      <!-- REPORTS LIST -->
+      <div id="reportsListContainer">
+        <!-- Rendered dynamically -->
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- ========================================================================
+       MODAL: TEST PARAMETER BREAKDOWN
+       ======================================================================== -->
+  <div class="modal-backdrop" id="reportModal">
+    <div class="modal-dialog" style="max-width: 680px;">
+      <div class="modal-header">
+        <h3 id="modalReportTitle">🧪 Diagnostic Test Results</h3>
+        <button class="modal-close" id="closeReportModalBtn">&times;</button>
+      </div>
+      <div class="modal-body" id="reportModalBody">
+        <!-- Rendered dynamically -->
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline" onclick="window.print()">🖨️ Print Report</button>
+        <button type="button" class="btn btn-primary" id="doneReportBtn">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================================
+       MODAL: SCHEDULE NEW LAB TEST
+       ======================================================================== -->
+  <div class="modal-backdrop" id="bookTestModal">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h3>🔬 Schedule Diagnostic Investigation</h3>
+        <button class="modal-close" id="closeBookTestModalBtn">&times;</button>
+      </div>
+      <form id="bookTestForm">
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="testPackage">Select Diagnostic Test / Package</label>
+            <select id="testPackage" required>
+              <option value="">-- Choose Diagnostic Test --</option>
+              <option value="Comprehensive Metabolic & Kidney Panel">Comprehensive Metabolic & Kidney Panel (₹1,200)</option>
+              <option value="Advanced Cardiac Biomarkers">Advanced Cardiac Biomarkers (Hs-CRP, Homocysteine) (₹1,500)</option>
+              <option value="Vitamin Profile (D3 & B12)">Vitamin Profile (D3 & B12) (₹950)</option>
+              <option value="Thyroid Full Profile (T3, T4, TSH)">Thyroid Full Profile (T3, T4, TSH) (₹600)</option>
+              <option value="Complete Blood Count (CBC)">Complete Blood Count (CBC) (₹350)</option>
+              <option value="HbA1c Diabetes Evaluation">HbA1c Diabetes Evaluation (₹450)</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="sampleMethod">Sample Collection Method</label>
+            <select id="sampleMethod" required>
+              <option value="Home Phlebotomy">Home Sample Collection (Phlebotomist visits home)</option>
+              <option value="Hospital Lab">Walk-in at MediMate Central Pathology Lab</option>
+            </select>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="sampleDate">Preferred Date</label>
+              <input type="date" id="sampleDate" required>
+            </div>
+            <div class="form-group">
+              <label for="sampleTime">Preferred Time Slot (Fasting)</label>
+              <select id="sampleTime" required>
+                <option value="07:00 AM">07:00 AM - 08:00 AM (Early Fasting)</option>
+                <option value="08:30 AM">08:30 AM - 09:30 AM (Fasting)</option>
+                <option value="10:00 AM">10:00 AM - 11:00 AM</option>
+                <option value="04:00 PM">04:00 PM - 05:00 PM (Non-fasting)</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline" id="cancelBookTestBtn">Cancel</button>
+          <button type="submit" class="btn btn-primary">Book Investigation</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- SCRIPT -->
+  <script type="module">
+    import { setupPatientAuth, PatientStore, showToast } from "./patient-common.js";
+
+    setupPatientAuth("lab-reports");
+
+    let currentLabFilter = "all";
+    let labSearchQuery = "";
+
+    document.addEventListener("DOMContentLoaded", function () {
+      initLabReportsPage();
+    });
+
+    function initLabReportsPage() {
+      // Date min
+      const today = new Date().toISOString().split("T")[0];
+      const sampleDate = document.getElementById("sampleDate");
+      sampleDate.min = today;
+      sampleDate.value = today;
+
+      renderLabReports();
+
+      // Search input
+      document.getElementById("searchLabInput").addEventListener("input", function (e) {
+        labSearchQuery = e.target.value.toLowerCase().trim();
+        renderLabReports();
+      });
+
+      // Filter buttons
+      document.querySelectorAll(".filter-btn").forEach(btn => {
+        btn.addEventListener("click", function () {
+          document.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
+          this.classList.add("active");
+          currentLabFilter = this.getAttribute("data-filter");
+          renderLabReports();
+        });
+      });
+
+      // Book Test modal
+      const bookTestModal = document.getElementById("bookTestModal");
+      document.getElementById("openBookTestBtn").addEventListener("click", () => {
+        bookTestModal.classList.add("active");
+      });
+      document.getElementById("closeBookTestModalBtn").addEventListener("click", () => {
+        bookTestModal.classList.remove("active");
+      });
+      document.getElementById("cancelBookTestBtn").addEventListener("click", () => {
+        bookTestModal.classList.remove("active");
+      });
+
+      document.getElementById("bookTestForm").addEventListener("submit", function (e) {
+        e.preventDefault();
+        const pkg = document.getElementById("testPackage").value;
+        const method = document.getElementById("sampleMethod").value;
+        const date = document.getElementById("sampleDate").value;
+
+        bookTestModal.classList.remove("active");
+        this.reset();
+        showToast(`Diagnostic slot booked for ${pkg} on ${date}!`, "success");
+      });
+
+      // Details modal
+      document.getElementById("closeReportModalBtn").addEventListener("click", () => {
+        document.getElementById("reportModal").classList.remove("active");
+      });
+      document.getElementById("doneReportBtn").addEventListener("click", () => {
+        document.getElementById("reportModal").classList.remove("active");
+      });
+    }
+
+    function renderLabReports() {
+      const reports = PatientStore.getLabReports();
+      const container = document.getElementById("reportsListContainer");
+
+      document.getElementById("statTotalTests").textContent = reports.length;
+      document.getElementById("statNormalTests").textContent = reports.filter(r => r.flag === "Normal").length;
+      document.getElementById("statAttentionTests").textContent = reports.filter(r => r.flag !== "Normal").length;
+
+      let filtered = reports;
+      if (currentLabFilter !== "all") {
+        filtered = filtered.filter(r => r.category.toLowerCase().includes(currentLabFilter.toLowerCase()));
+      }
+      if (labSearchQuery) {
+        filtered = filtered.filter(r =>
+          r.testName.toLowerCase().includes(labSearchQuery) ||
+          r.category.toLowerCase().includes(labSearchQuery) ||
+          r.summary.toLowerCase().includes(labSearchQuery)
+        );
+      }
+
+      if (filtered.length === 0) {
+        container.innerHTML = `
+          <div class="surface-card" style="text-align: center; padding: 48px 20px;">
+            <div style="font-size: 42px; margin-bottom: 12px;">🧪</div>
+            <h3 style="color: var(--primary-dark); margin-bottom: 6px;">No diagnostic reports found</h3>
+            <p style="color: var(--text-muted); font-size: 14px;">Try searching for another laboratory test.</p>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = filtered.map(r => `
+        <div class="report-card">
+          <div class="report-main">
+            <div class="report-icon-box">🧪</div>
+            <div class="report-details">
+              <h3>${r.testName}</h3>
+              <p>${r.category} • Specimen Date: <strong>${r.date}</strong> • Auth: ${r.labTechnician}</p>
+              <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
+                <span class="status-badge ${r.flag === 'Normal' ? 'optimal' : 'borderline'}">${r.flag}</span>
+                <span style="font-size: 12px; color: var(--text-muted);">${r.summary}</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="report-actions">
+            <button class="btn btn-primary btn-sm view-report-btn" data-id="${r.id}">
+              📊 View Results Breakdown
+            </button>
+          </div>
+        </div>
+      `).join("");
+
+      document.querySelectorAll(".view-report-btn").forEach(btn => {
+        btn.addEventListener("click", function () {
+          const id = this.getAttribute("data-id");
+          showReportDetailsModal(id);
+        });
+      });
+    }
+
+    function showReportDetailsModal(reportId) {
+      const reports = PatientStore.getLabReports();
+      const report = reports.find(r => r.id === reportId);
+      const profile = PatientStore.getProfile();
+      if (!report) return;
+
+      document.getElementById("modalReportTitle").textContent = `🧪 ${report.testName}`;
+      const body = document.getElementById("reportModalBody");
+
+      body.innerHTML = `
+        <div style="background: var(--bg-surface-alt); padding: 14px; border-radius: 8px; border: 1px solid var(--border-color); margin-bottom: 18px; font-size: 13px;">
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+            <div><strong>Patient Name:</strong> ${profile.name}</div>
+            <div><strong>Patient ID:</strong> ${profile.id}</div>
+            <div><strong>Date of Analysis:</strong> ${report.date}</div>
+            <div><strong>Pathologist:</strong> ${report.labTechnician}</div>
+          </div>
+        </div>
+
+        <div style="border: 1px solid var(--border-color); border-radius: 8px; overflow: hidden; margin-bottom: 18px;">
+          <div style="background: var(--primary-subtle); color: var(--primary-dark); font-weight: 700; font-size: 13px; padding: 10px 16px; display: flex; justify-content: space-between;">
+            <span>Biological Parameter Analyzed</span>
+            <span>Observed Value & Target</span>
+          </div>
+
+          ${report.parameters.map(p => `
+            <div class="param-row">
+              <div class="param-name">
+                <strong>${p.name}</strong>
+                <span>Unit: ${p.unit}</span>
+              </div>
+              <div class="param-values">
+                <span class="val-num">${p.value} <span style="font-size: 12px; font-weight: 400;">${p.unit}</span></span>
+                <span class="val-range">Normal Range: ${p.normalRange}</span>
+                <span class="status-badge ${p.status === 'Normal' ? 'optimal' : 'high'}" style="font-size: 10px; margin-top: 4px;">
+                  ${p.status}
+                </span>
+              </div>
+            </div>
+          `).join('')}
+        </div>
+
+        <div style="background: white; border: 1px solid var(--border-color); padding: 14px; border-radius: 8px; font-size: 13px; line-height: 1.5;">
+          <strong style="color: var(--primary-dark);">Diagnostic Conclusion & Remarks:</strong><br>
+          ${report.summary}
+        </div>
+      `;
+
+      document.getElementById("reportModal").classList.add("active");
+    }
+  </script>
+
+</body>
+</html>
