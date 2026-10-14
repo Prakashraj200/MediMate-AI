@@ -1,0 +1,584 @@
+/* ==========================================================================
+   MediMate AI - Universal Dark Glassmorphic Theme System
+   Unified Across All Modules: Hospital Admin, Doctor, Laboratory, Pharmacy, Patient
+   Based on the Dark Emerald & Amber Glass Aesthetics of admin-login.html
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+:root {
+    --bg-base: #050a14;
+    --bg-surface: rgba(13, 22, 41, 0.85);
+    --bg-surface-elevated: rgba(18, 30, 56, 0.9);
+    --bg-input: rgba(5, 10, 20, 0.75);
+    --sidebar-bg: rgba(10, 18, 36, 0.95);
+    --topbar-bg: rgba(10, 18, 36, 0.85);
+    --border-color: rgba(255, 255, 255, 0.08);
+    --border-highlight: rgba(0, 229, 153, 0.35);
+    --primary: #00e599;
+    --primary-glow: rgba(0, 229, 153, 0.35);
+    --accent-amber: #f59e0b;
+    --accent-blue: #00d2ff;
+    --accent-indigo: #6366f1;
+    --accent-red: #ef4444;
+    --accent-pink: #ec4899;
+    --text-main: #f8fafc;
+    --text-muted: #94a3b8;
+    --text-dim: #64748b;
+    --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+}
+
+/* =========================================
+   GLOBAL RESET & BASE
+========================================= */
+* {
+    box-sizing: border-box;
+    font-family: var(--font-sans) !important;
+}
+
+html, body {
+    min-height: 100vh !important;
+    background-color: var(--bg-base) !important;
+    background-image:
+        radial-gradient(circle at 10% 20%, rgba(245, 158, 11, 0.08), transparent 40%),
+        radial-gradient(circle at 90% 80%, rgba(0, 229, 153, 0.08), transparent 40%) !important;
+    background-attachment: fixed !important;
+    color: var(--text-main) !important;
+    -webkit-font-smoothing: antialiased !important;
+    margin: 0 !important;
+}
+
+a {
+    color: var(--primary);
+    text-decoration: none;
+}
+
+/* =========================================
+   LAYOUTS & WRAPPERS
+========================================= */
+.app-container, .dashboard, .dashboard-container, .main-container {
+    display: flex !important;
+    min-height: 100vh !important;
+    background: transparent !important;
+}
+
+.main, .main-content, .content, .content-area, .dashboard-body {
+    background: transparent !important;
+    color: var(--text-main) !important;
+}
+
+/* =========================================
+   SIDEBAR (Universal across all portals)
+========================================= */
+.sidebar, aside.sidebar, #sidebar {
+    background: var(--sidebar-bg) !important;
+    border-right: 1px solid var(--border-color) !important;
+    color: var(--text-main) !important;
+    backdrop-filter: blur(20px) !important;
+    -webkit-backdrop-filter: blur(20px) !important;
+    box-shadow: 4px 0 24px rgba(0, 0, 0, 0.5) !important;
+}
+
+.logo, .brand {
+    border-bottom: 1px solid var(--border-color) !important;
+    background: transparent !important;
+}
+
+.logo-icon, .brand-icon, .brand-logo {
+    background: linear-gradient(135deg, #00e599 0%, #059669 100%) !important;
+    color: #050a14 !important;
+    box-shadow: 0 0 20px rgba(0, 229, 153, 0.4) !important;
+    border-radius: 14px !important;
+    font-weight: 800 !important;
+}
+
+.logo h2, .brand h2, .brand-text h2 {
+    color: #ffffff !important;
+    letter-spacing: -0.3px !important;
+}
+
+.logo span, .brand span, .brand p, .logo p, .brand-text p {
+    color: var(--primary) !important;
+}
+
+.menu-title, .nav-title {
+    color: var(--text-dim) !important;
+    font-size: 11px !important;
+    font-weight: 700 !important;
+    letter-spacing: 1.2px !important;
+    text-transform: uppercase !important;
+}
+
+.menu a, .nav-link, .nav-menu a, .nav-menu button {
+    color: var(--text-muted) !important;
+    border: 1px solid transparent !important;
+    border-radius: 12px !important;
+    background: transparent !important;
+    font-weight: 500 !important;
+    transition: all 0.25s ease !important;
+    text-decoration: none !important;
+}
+
+.menu a:hover, .nav-link:hover, .nav-menu a:hover, .nav-menu button:hover {
+    background: rgba(255, 255, 255, 0.05) !important;
+    color: #ffffff !important;
+    transform: translateX(4px) !important;
+}
+
+.menu a.active, .nav-link.active, .nav-menu a.active, .nav-menu button.active {
+    background: linear-gradient(135deg, rgba(0, 229, 153, 0.16) 0%, rgba(0, 229, 153, 0.04) 100%) !important;
+    color: var(--primary) !important;
+    border: 1px solid var(--border-highlight) !important;
+    box-shadow: 0 4px 20px rgba(0, 229, 153, 0.15) !important;
+    font-weight: 600 !important;
+}
+
+/* =========================================
+   TOPBAR & HEADER
+========================================= */
+.topbar, .header {
+    background: var(--topbar-bg) !important;
+    border-bottom: 1px solid var(--border-color) !important;
+    backdrop-filter: blur(20px) !important;
+    -webkit-backdrop-filter: blur(20px) !important;
+    color: #ffffff !important;
+}
+
+.welcome h1, .header-title h1, .page-heading h1, .page-heading h2, .header h1, .section-title h2 {
+    color: #ffffff !important;
+    font-weight: 800 !important;
+    letter-spacing: -0.3px !important;
+}
+
+.welcome p, .header-title p, .page-heading p, .header p, .section-title p {
+    color: var(--text-muted) !important;
+}
+
+.notification, .notification-btn {
+    background: rgba(255, 255, 255, 0.04) !important;
+    border: 1px solid var(--border-color) !important;
+    color: #ffffff !important;
+    border-radius: 12px !important;
+    transition: all 0.2s ease !important;
+}
+
+.notification:hover, .notification-btn:hover {
+    background: rgba(255, 255, 255, 0.08) !important;
+    border-color: rgba(255, 255, 255, 0.16) !important;
+}
+
+.profile, .profile-btn, .admin-profile, .lab-profile, .doctor-profile, .user-card {
+    background: var(--bg-surface) !important;
+    border: 1px solid var(--border-color) !important;
+    color: #ffffff !important;
+    border-radius: 14px !important;
+}
+
+.profile-icon, .profile-circle, .profile-avatar, .user-avatar, .doctor-avatar, .patient-avatar, .small-avatar {
+    background: linear-gradient(135deg, #00e599, #059669) !important;
+    color: #050a14 !important;
+    box-shadow: 0 0 15px rgba(0, 229, 153, 0.3) !important;
+    font-weight: 800 !important;
+}
+
+.profile-details h4, .profile-text strong, .doctor-info strong {
+    color: #ffffff !important;
+}
+
+.profile-details p, .profile-text span, .doctor-info span {
+    color: var(--primary) !important;
+}
+
+.profile-menu, .profile-dropdown {
+    background: rgba(13, 22, 41, 0.96) !important;
+    border: 1px solid rgba(255, 255, 255, 0.12) !important;
+    border-radius: 16px !important;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8), 0 0 30px rgba(0, 229, 153, 0.1) !important;
+    backdrop-filter: blur(20px) !important;
+    color: #ffffff !important;
+}
+
+.profile-menu button, .profile-dropdown button {
+    color: #cbd5e1 !important;
+    background: transparent !important;
+}
+
+.profile-menu button:hover, .profile-dropdown button:hover {
+    background: rgba(255, 255, 255, 0.08) !important;
+    color: var(--primary) !important;
+}
+
+/* =========================================
+   STAT CARDS & METRICS
+========================================= */
+.summary-grid, .stats-grid, .stats, .stats-overview {
+    gap: 20px !important;
+}
+
+.summary-card, .stat-card, .metric-card {
+    background: var(--bg-surface) !important;
+    border: 1px solid var(--border-color) !important;
+    border-left: 1px solid var(--border-color) !important;
+    border-radius: 18px !important;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4) !important;
+    backdrop-filter: blur(16px) !important;
+    -webkit-backdrop-filter: blur(16px) !important;
+    transition: all 0.3s ease !important;
+    color: #ffffff !important;
+}
+
+.summary-card:hover, .stat-card:hover, .metric-card:hover {
+    border-color: rgba(0, 229, 153, 0.3) !important;
+    transform: translateY(-3px) !important;
+    box-shadow: 0 14px 35px rgba(0, 229, 153, 0.12) !important;
+}
+
+.summary-icon, .stat-icon {
+    width: 52px !important;
+    height: 52px !important;
+    border-radius: 14px !important;
+    background: rgba(0, 229, 153, 0.12) !important;
+    color: var(--primary) !important;
+    border: 1px solid rgba(0, 229, 153, 0.25) !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    font-size: 24px !important;
+}
+
+.summary-card h3, .stat-card h3, .stat-info strong, .metric-card h3 {
+    color: #ffffff !important;
+    font-size: 28px !important;
+    font-weight: 800 !important;
+    letter-spacing: -0.5px !important;
+}
+
+.summary-card p, .stat-card p, .stat-info span, .metric-card p {
+    color: var(--text-muted) !important;
+    font-size: 13px !important;
+    font-weight: 500 !important;
+}
+
+.stat-change {
+    color: var(--primary) !important;
+}
+
+/* =========================================
+   PANELS, CARDS & CONTAINERS
+========================================= */
+.panel, .card, .table-card, .welcome-box, .ai-box, .header-banner, .sample-card, .test-card, .order-card {
+    background: var(--bg-surface) !important;
+    border: 1px solid var(--border-color) !important;
+    border-radius: 22px !important;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5) !important;
+    backdrop-filter: blur(20px) !important;
+    -webkit-backdrop-filter: blur(20px) !important;
+    overflow: hidden !important;
+    color: var(--text-main) !important;
+}
+
+.welcome-box, .ai-box {
+    background: linear-gradient(135deg, rgba(0, 229, 153, 0.12) 0%, rgba(13, 22, 41, 0.85) 100%) !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+
+.panel-top, .panel-header, .table-header {
+    border-bottom: 1px solid var(--border-color) !important;
+    background: transparent !important;
+}
+
+.panel-top h3, .panel-header h2, .panel-header h3, .welcome-box h2, .ai-box h2 {
+    color: #ffffff !important;
+    font-weight: 800 !important;
+    letter-spacing: -0.3px !important;
+}
+
+.panel-top p, .panel-header p, .welcome-box p, .ai-box p {
+    color: var(--text-muted) !important;
+}
+
+/* =========================================
+   INPUTS, SELECTS, FORMS
+========================================= */
+.search, .search-box input, input[type="text"], input[type="search"], input[type="email"],
+input[type="password"], input[type="tel"], input[type="number"], input[type="date"],
+select, textarea, .status-filter {
+    background: var(--bg-input) !important;
+    border: 1px solid var(--border-color) !important;
+    border-radius: 12px !important;
+    color: #ffffff !important;
+    outline: none !important;
+    transition: all 0.25s ease !important;
+    font-size: 13.5px !important;
+}
+
+.search:focus, .search-box input:focus, input:focus, select:focus, textarea:focus {
+    border-color: var(--primary) !important;
+    box-shadow: 0 0 0 3px rgba(0, 229, 153, 0.18) !important;
+    background: rgba(5, 10, 20, 0.95) !important;
+}
+
+select option {
+    background: #0a1428 !important;
+    color: #ffffff !important;
+}
+
+label, .form-group label {
+    color: #cbd5e1 !important;
+    font-weight: 600 !important;
+    font-size: 13px !important;
+}
+
+/* =========================================
+   TABLES
+========================================= */
+table, .patients-table, .inventory-table, .lab-table {
+    width: 100% !important;
+    border-collapse: collapse !important;
+}
+
+thead, th, .patients-table th, .inventory-table th {
+    background: rgba(5, 10, 20, 0.65) !important;
+    color: var(--text-muted) !important;
+    font-size: 11.5px !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.8px !important;
+    font-weight: 700 !important;
+    border-bottom: 1px solid var(--border-color) !important;
+    padding: 16px 20px !important;
+}
+
+tbody tr, tr {
+    background: transparent !important;
+    transition: all 0.2s ease !important;
+}
+
+tbody tr:hover, tr:hover, tr:hover td {
+    background: rgba(0, 229, 153, 0.04) !important;
+}
+
+td, .patients-table td, .inventory-table td {
+    padding: 18px 20px !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.05) !important;
+    border-bottom: none !important;
+    font-size: 13.5px !important;
+    color: #cbd5e1 !important;
+    vertical-align: middle !important;
+}
+
+.patient-name, .doctor-name, .medicine-name {
+    color: #ffffff !important;
+    font-weight: 600 !important;
+}
+
+/* =========================================
+   BUTTONS
+========================================= */
+.add-btn, .add-button, .btn-primary, .save-btn, .btn-save, .view-btn, .ai-btn, button.primary, .btn-action {
+    background: linear-gradient(135deg, #00e599 0%, #059669 100%) !important;
+    color: #050a14 !important;
+    border: none !important;
+    border-radius: 12px !important;
+    font-size: 14px !important;
+    font-weight: 800 !important;
+    cursor: pointer !important;
+    box-shadow: 0 8px 25px rgba(0, 229, 153, 0.35) !important;
+    transition: all 0.25s ease !important;
+}
+
+.add-btn:hover, .add-button:hover, .btn-primary:hover, .save-btn:hover, .btn-save:hover, .view-btn:hover, .ai-btn:hover, .btn-action:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 12px 30px rgba(0, 229, 153, 0.5) !important;
+    filter: brightness(1.05) !important;
+}
+
+.cancel-btn, .cancel-button, .btn-cancel, .btn-secondary {
+    background: rgba(255, 255, 255, 0.06) !important;
+    border: 1px solid var(--border-color) !important;
+    color: var(--text-muted) !important;
+    border-radius: 11px !important;
+    cursor: pointer !important;
+    font-weight: 700 !important;
+    transition: all 0.2s ease !important;
+}
+
+.cancel-btn:hover, .cancel-button:hover, .btn-cancel:hover, .btn-secondary:hover {
+    background: rgba(255, 255, 255, 0.12) !important;
+    color: #ffffff !important;
+}
+
+.btn-danger, .delete-btn {
+    background: rgba(239, 68, 68, 0.15) !important;
+    border: 1px solid rgba(239, 68, 68, 0.35) !important;
+    color: #f87171 !important;
+    border-radius: 11px !important;
+    font-weight: 700 !important;
+    cursor: pointer !important;
+}
+
+.btn-danger:hover, .delete-btn:hover {
+    background: rgba(239, 68, 68, 0.28) !important;
+    box-shadow: 0 4px 14px rgba(239, 68, 68, 0.25) !important;
+}
+
+.quick-btn, .quick-tile, .quick-action {
+    background: rgba(255, 255, 255, 0.03) !important;
+    border: 1px solid var(--border-color) !important;
+    color: var(--text-main) !important;
+    border-radius: 16px !important;
+    transition: all 0.25s ease !important;
+}
+
+.quick-btn:hover, .quick-tile:hover, .quick-action:hover {
+    background: rgba(0, 229, 153, 0.1) !important;
+    border-color: rgba(0, 229, 153, 0.35) !important;
+    transform: translateY(-3px) !important;
+    color: #ffffff !important;
+}
+
+.view-all {
+    color: var(--primary) !important;
+    font-weight: 700 !important;
+}
+
+/* =========================================
+   BADGES & STATUS
+========================================= */
+.status, .badge, .status-badge, .pill {
+    display: inline-block !important;
+    padding: 5px 12px !important;
+    border-radius: 20px !important;
+    font-size: 11px !important;
+    font-weight: 700 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
+}
+
+.status.active, .badge.active, .completed, .status.completed, .status-badge.success,
+.badge-confirmed, .confirmed, .stock-ok {
+    background: rgba(0, 229, 153, 0.14) !important;
+    color: #00e599 !important;
+    border: 1px solid rgba(0, 229, 153, 0.35) !important;
+}
+
+.status.pending, .badge.pending, .warning, .status.warning, .status-badge.warning,
+.badge-pending, .pending, .stock-low {
+    background: rgba(245, 158, 11, 0.14) !important;
+    color: #f59e0b !important;
+    border: 1px solid rgba(245, 158, 11, 0.35) !important;
+}
+
+.badge-completed, .status-badge.info {
+    background: rgba(0, 210, 255, 0.14) !important;
+    color: #00d2ff !important;
+    border: 1px solid rgba(0, 210, 255, 0.35) !important;
+}
+
+.status.inactive, .badge.inactive, .cancelled, .status.cancelled, .status.danger,
+.status-badge.danger, .badge-cancelled, .exp-badge {
+    background: rgba(239, 68, 68, 0.14) !important;
+    color: #f87171 !important;
+    border: 1px solid rgba(239, 68, 68, 0.35) !important;
+}
+
+/* =========================================
+   APPOINTMENTS & ALERTS
+========================================= */
+.appointment-item {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06) !important;
+}
+
+.appointment-details h4 {
+    color: #ffffff !important;
+}
+
+.appointment-details p {
+    color: var(--text-muted) !important;
+}
+
+.appointment-time strong {
+    color: var(--primary) !important;
+}
+
+.alert-box {
+    padding: 18px !important;
+    border-radius: 16px !important;
+    margin-bottom: 15px !important;
+}
+
+.critical-alert {
+    background: rgba(239, 68, 68, 0.12) !important;
+    border: 1px solid rgba(239, 68, 68, 0.3) !important;
+    color: #f87171 !important;
+}
+
+.warning-alert {
+    background: rgba(245, 158, 11, 0.12) !important;
+    border: 1px solid rgba(245, 158, 11, 0.3) !important;
+    color: #f59e0b !important;
+}
+
+.info-alert {
+    background: rgba(0, 210, 255, 0.12) !important;
+    border: 1px solid rgba(0, 210, 255, 0.3) !important;
+    color: #38bdf8 !important;
+}
+
+/* =========================================
+   MODALS
+========================================= */
+.modal-overlay {
+    background: rgba(2, 6, 18, 0.85) !important;
+    backdrop-filter: blur(14px) !important;
+    -webkit-backdrop-filter: blur(14px) !important;
+}
+
+.modal, .modal-card, .modal-content {
+    background: rgba(13, 22, 41, 0.96) !important;
+    border: 1px solid rgba(255, 255, 255, 0.12) !important;
+    border-radius: 24px !important;
+    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.9), 0 0 40px rgba(0, 229, 153, 0.1) !important;
+    backdrop-filter: blur(20px) !important;
+    color: #ffffff !important;
+}
+
+.modal-header {
+    border-bottom: 1px solid var(--border-color) !important;
+}
+
+.modal-header h2, .modal-header h3 {
+    color: #ffffff !important;
+    font-weight: 800 !important;
+}
+
+.close-btn, .close-button, .close-modal-btn {
+    border: 1px solid var(--border-color) !important;
+    background: rgba(255, 255, 255, 0.05) !important;
+    color: var(--text-muted) !important;
+    border-radius: 10px !important;
+    transition: all 0.2s ease !important;
+}
+
+.close-btn:hover, .close-button:hover, .close-modal-btn:hover {
+    background: rgba(255, 255, 255, 0.12) !important;
+    color: #ffffff !important;
+}
+
+/* =========================================
+   SCROLLBAR
+========================================= */
+::-webkit-scrollbar {
+    width: 7px !important;
+    height: 7px !important;
+}
+::-webkit-scrollbar-track {
+    background: rgba(5, 10, 20, 0.5) !important;
+}
+::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.15) !important;
+    border-radius: 4px !important;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(0, 229, 153, 0.4) !important;
+}
