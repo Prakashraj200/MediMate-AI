@@ -1,0 +1,652 @@
+/* ==========================================================================
+   MediMate AI - Admin Dark Glassmorphic Theme (Based on admin-login.html)
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+:root {
+    --bg-base: #050a14;
+    --bg-surface: rgba(13, 22, 41, 0.85);
+    --bg-surface-elevated: rgba(18, 30, 56, 0.9);
+    --bg-input: rgba(5, 10, 20, 0.75);
+    --sidebar-bg: rgba(10, 18, 36, 0.95);
+    --topbar-bg: rgba(10, 18, 36, 0.85);
+    --border-color: rgba(255, 255, 255, 0.08);
+    --border-highlight: rgba(0, 229, 153, 0.35);
+    --primary: #00e599;
+    --primary-glow: rgba(0, 229, 153, 0.35);
+    --accent-amber: #f59e0b;
+    --accent-blue: #3b82f6;
+    --accent-red: #ef4444;
+    --accent-pink: #ec4899;
+    --text-main: #f8fafc;
+    --text-muted: #94a3b8;
+    --text-dim: #64748b;
+    --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+}
+
+/* =========================================
+   GLOBAL RESET & BASE
+========================================= */
+* {
+    box-sizing: border-box;
+    font-family: var(--font-sans) !important;
+}
+
+body {
+    min-height: 100vh !important;
+    background-color: var(--bg-base) !important;
+    background-image:
+        radial-gradient(circle at 10% 20%, rgba(245, 158, 11, 0.08), transparent 40%),
+        radial-gradient(circle at 90% 80%, rgba(0, 229, 153, 0.08), transparent 40%) !important;
+    background-attachment: fixed !important;
+    color: var(--text-main) !important;
+    -webkit-font-smoothing: antialiased !important;
+    margin: 0 !important;
+}
+
+/* =========================================
+   SIDEBAR
+========================================= */
+.sidebar {
+    width: 270px !important;
+    background: var(--sidebar-bg) !important;
+    border-right: 1px solid var(--border-color) !important;
+    color: var(--text-main) !important;
+    backdrop-filter: blur(20px) !important;
+    -webkit-backdrop-filter: blur(20px) !important;
+}
+
+.logo, .brand {
+    border-bottom: 1px solid var(--border-color) !important;
+    background: transparent !important;
+}
+
+.logo-icon, .brand-logo {
+    background: linear-gradient(135deg, #00e599 0%, #059669 100%) !important;
+    color: #050a14 !important;
+    box-shadow: 0 0 20px rgba(0, 229, 153, 0.4) !important;
+    border-radius: 12px !important;
+    font-weight: 800 !important;
+}
+
+.logo h2, .brand-text h2 {
+    color: #ffffff !important;
+    letter-spacing: -0.3px !important;
+}
+
+.logo h2 span, .brand-text p, .logo p {
+    color: var(--primary) !important;
+}
+
+.menu-title {
+    color: var(--text-dim) !important;
+    font-size: 11px !important;
+    font-weight: 700 !important;
+    letter-spacing: 1.2px !important;
+    text-transform: uppercase !important;
+}
+
+.menu a, .nav-link {
+    color: var(--text-muted) !important;
+    border: 1px solid transparent !important;
+    border-radius: 12px !important;
+    background: transparent !important;
+    font-weight: 500 !important;
+    transition: all 0.25s ease !important;
+}
+
+.menu a:hover, .nav-link:hover {
+    background: rgba(255, 255, 255, 0.05) !important;
+    color: #ffffff !important;
+    transform: translateX(4px) !important;
+}
+
+.menu a.active, .nav-link.active {
+    background: linear-gradient(135deg, rgba(0, 229, 153, 0.16) 0%, rgba(0, 229, 153, 0.04) 100%) !important;
+    color: var(--primary) !important;
+    border: 1px solid var(--border-highlight) !important;
+    box-shadow: 0 4px 20px rgba(0, 229, 153, 0.15) !important;
+    font-weight: 600 !important;
+}
+
+/* =========================================
+   MAIN & TOPBAR
+========================================= */
+.main, .main-content {
+    background: transparent !important;
+}
+
+.topbar, .header {
+    background: var(--topbar-bg) !important;
+    border-bottom: 1px solid var(--border-color) !important;
+    backdrop-filter: blur(20px) !important;
+    -webkit-backdrop-filter: blur(20px) !important;
+}
+
+.welcome h1, .header-title h1, .page-heading h2, .header h1 {
+    color: #ffffff !important;
+    font-weight: 800 !important;
+    letter-spacing: -0.3px !important;
+}
+
+.welcome p, .header-title p, .page-heading p, .header p {
+    color: var(--text-muted) !important;
+}
+
+.notification, .notification-btn {
+    background: rgba(255, 255, 255, 0.04) !important;
+    border: 1px solid var(--border-color) !important;
+    color: #ffffff !important;
+    border-radius: 12px !important;
+    transition: all 0.2s ease !important;
+}
+
+.notification:hover, .notification-btn:hover {
+    background: rgba(255, 255, 255, 0.08) !important;
+    border-color: rgba(255, 255, 255, 0.16) !important;
+}
+
+.profile, .profile-btn, .admin-profile, .lab-profile, .user-card {
+    background: var(--bg-surface) !important;
+    border: 1px solid var(--border-color) !important;
+    color: #ffffff !important;
+    border-radius: 14px !important;
+}
+
+.profile-icon, .profile-circle, .profile-avatar, .user-avatar {
+    background: linear-gradient(135deg, #00e599, #059669) !important;
+    color: #050a14 !important;
+    box-shadow: 0 0 15px rgba(0, 229, 153, 0.3) !important;
+    font-weight: 800 !important;
+}
+
+.profile-details h4, .profile-text strong {
+    color: #ffffff !important;
+}
+
+.profile-details p, .profile-text span {
+    color: var(--primary) !important;
+}
+
+.profile-menu, .profile-dropdown {
+    background: rgba(13, 22, 41, 0.96) !important;
+    border: 1px solid rgba(255, 255, 255, 0.12) !important;
+    border-radius: 16px !important;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8), 0 0 30px rgba(0, 229, 153, 0.1) !important;
+    backdrop-filter: blur(20px) !important;
+}
+
+.profile-menu button, .profile-dropdown button {
+    color: #cbd5e1 !important;
+}
+
+.profile-menu button:hover, .profile-dropdown button:hover {
+    background: rgba(255, 255, 255, 0.08) !important;
+    color: var(--primary) !important;
+}
+
+/* =========================================
+   STAT CARDS & SUMMARY
+========================================= */
+.summary-grid, .stats-grid, .stats {
+    gap: 20px !important;
+}
+
+.summary-card, .stat-card {
+    background: var(--bg-surface) !important;
+    border: 1px solid var(--border-color) !important;
+    border-left: 1px solid var(--border-color) !important;
+    border-radius: 18px !important;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4) !important;
+    backdrop-filter: blur(16px) !important;
+    -webkit-backdrop-filter: blur(16px) !important;
+    transition: all 0.3s ease !important;
+    color: #ffffff !important;
+}
+
+.summary-card:hover, .stat-card:hover {
+    border-color: rgba(0, 229, 153, 0.3) !important;
+    transform: translateY(-3px) !important;
+    box-shadow: 0 14px 35px rgba(0, 229, 153, 0.12) !important;
+}
+
+.summary-icon, .stat-icon {
+    width: 52px !important;
+    height: 52px !important;
+    border-radius: 14px !important;
+    background: rgba(0, 229, 153, 0.12) !important;
+    color: var(--primary) !important;
+    border: 1px solid rgba(0, 229, 153, 0.25) !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    font-size: 24px !important;
+}
+
+.summary-card:nth-child(2) .summary-icon,
+.stat-card:nth-child(2) .stat-icon {
+    background: rgba(16, 185, 129, 0.15) !important;
+    color: #10b981 !important;
+    border-color: rgba(16, 185, 129, 0.3) !important;
+}
+
+.summary-card:nth-child(3) .summary-icon,
+.stat-card:nth-child(3) .stat-icon {
+    background: rgba(245, 158, 11, 0.15) !important;
+    color: #f59e0b !important;
+    border-color: rgba(245, 158, 11, 0.3) !important;
+}
+
+.summary-card h3, .stat-card h3, .stat-info strong {
+    color: #ffffff !important;
+    font-size: 30px !important;
+    font-weight: 800 !important;
+    letter-spacing: -0.5px !important;
+}
+
+.summary-card p, .stat-card p, .stat-info span {
+    color: var(--text-muted) !important;
+    font-size: 13px !important;
+    font-weight: 500 !important;
+}
+
+/* =========================================
+   PANELS & TABLES
+========================================= */
+.panel, .card, .table-card {
+    background: var(--bg-surface) !important;
+    border: 1px solid var(--border-color) !important;
+    border-radius: 22px !important;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5) !important;
+    backdrop-filter: blur(20px) !important;
+    -webkit-backdrop-filter: blur(20px) !important;
+    overflow: hidden !important;
+    color: var(--text-main) !important;
+}
+
+.panel-top, .panel-header, .table-header {
+    border-bottom: 1px solid var(--border-color) !important;
+    background: transparent !important;
+}
+
+.panel-top h3, .panel-header h2, .panel-header h3 {
+    color: #ffffff !important;
+    font-weight: 800 !important;
+    letter-spacing: -0.3px !important;
+}
+
+.search, .search-box input, input[type="text"], input[type="search"], input[type="email"], input[type="password"], input[type="tel"], input[type="number"], input[type="date"], select, .status-filter {
+    background: var(--bg-input) !important;
+    border: 1px solid var(--border-color) !important;
+    border-radius: 12px !important;
+    color: #ffffff !important;
+    outline: none !important;
+    transition: all 0.25s ease !important;
+    font-size: 13.5px !important;
+}
+
+.search:focus, .search-box input:focus, input:focus, select:focus, textarea:focus {
+    border-color: var(--primary) !important;
+    box-shadow: 0 0 0 3px rgba(0, 229, 153, 0.18) !important;
+    background: rgba(5, 10, 20, 0.95) !important;
+}
+
+select option {
+    background: #0a1428 !important;
+    color: #ffffff !important;
+}
+
+table {
+    width: 100% !important;
+    border-collapse: collapse !important;
+}
+
+thead, th {
+    background: rgba(5, 10, 20, 0.55) !important;
+    color: var(--text-muted) !important;
+    font-size: 11px !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.8px !important;
+    font-weight: 700 !important;
+    border-bottom: 1px solid var(--border-color) !important;
+    padding: 16px 20px !important;
+}
+
+td {
+    padding: 18px 20px !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.05) !important;
+    border-bottom: none !important;
+    font-size: 13.5px !important;
+    color: #cbd5e1 !important;
+    vertical-align: middle !important;
+}
+
+tbody tr {
+    transition: all 0.2s ease !important;
+}
+
+tbody tr:hover {
+    background: rgba(0, 229, 153, 0.03) !important;
+}
+
+/* =========================================
+   BUTTONS
+========================================= */
+.add-btn, .add-button, .btn-primary, .save-btn, .btn-save, button.primary {
+    background: linear-gradient(135deg, #00e599 0%, #059669 100%) !important;
+    color: #050a14 !important;
+    border: none !important;
+    border-radius: 12px !important;
+    font-size: 14px !important;
+    font-weight: 800 !important;
+    cursor: pointer !important;
+    box-shadow: 0 8px 25px rgba(0, 229, 153, 0.35) !important;
+    transition: all 0.25s ease !important;
+}
+
+.add-btn:hover, .add-button:hover, .btn-primary:hover, .save-btn:hover, .btn-save:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 12px 30px rgba(0, 229, 153, 0.5) !important;
+    filter: brightness(1.05) !important;
+}
+
+.cancel-btn, .cancel-button, .btn-cancel, .btn-secondary {
+    background: rgba(255, 255, 255, 0.06) !important;
+    border: 1px solid var(--border-color) !important;
+    color: var(--text-muted) !important;
+    border-radius: 11px !important;
+    cursor: pointer !important;
+    font-weight: 700 !important;
+    transition: all 0.2s ease !important;
+}
+
+.cancel-btn:hover, .cancel-button:hover, .btn-cancel:hover, .btn-secondary:hover {
+    background: rgba(255, 255, 255, 0.12) !important;
+    color: #ffffff !important;
+}
+
+/* QUICK BUTTONS & TILES */
+.quick-btn, .quick-tile {
+    background: rgba(255, 255, 255, 0.03) !important;
+    border: 1px solid var(--border-color) !important;
+    color: var(--text-main) !important;
+    border-radius: 14px !important;
+    transition: all 0.25s ease !important;
+}
+
+.quick-btn:hover, .quick-tile:hover {
+    background: rgba(0, 229, 153, 0.1) !important;
+    border-color: rgba(0, 229, 153, 0.35) !important;
+    transform: translateY(-3px) !important;
+    color: #ffffff !important;
+}
+
+.view-all {
+    color: var(--primary) !important;
+    font-weight: 700 !important;
+}
+
+/* =========================================
+   BADGES & STATUS
+========================================= */
+.status, .badge {
+    display: inline-block !important;
+    padding: 5px 12px !important;
+    border-radius: 20px !important;
+    font-size: 11px !important;
+    font-weight: 700 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
+}
+
+.status.active, .badge.active, .completed, .status.completed, .status-badge.success {
+    background: rgba(0, 229, 153, 0.14) !important;
+    color: #00e599 !important;
+    border: 1px solid rgba(0, 229, 153, 0.35) !important;
+}
+
+.status.inactive, .badge.inactive, .cancelled, .status.cancelled, .status.danger, .status-badge.danger {
+    background: rgba(239, 68, 68, 0.14) !important;
+    color: #f87171 !important;
+    border: 1px solid rgba(239, 68, 68, 0.35) !important;
+}
+
+.status.pending, .badge.pending, .warning, .status.warning, .status-badge.warning {
+    background: rgba(245, 158, 11, 0.14) !important;
+    color: #f59e0b !important;
+    border: 1px solid rgba(245, 158, 11, 0.35) !important;
+}
+
+/* =========================================
+   MODAL
+========================================= */
+.modal-overlay {
+    background: rgba(2, 6, 18, 0.85) !important;
+    backdrop-filter: blur(14px) !important;
+    -webkit-backdrop-filter: blur(14px) !important;
+}
+
+.modal, .modal-card, .modal-content {
+    background: rgba(13, 22, 41, 0.96) !important;
+    border: 1px solid rgba(255, 255, 255, 0.12) !important;
+    border-radius: 24px !important;
+    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.9), 0 0 40px rgba(0, 229, 153, 0.1) !important;
+    backdrop-filter: blur(20px) !important;
+    color: #ffffff !important;
+}
+
+.report-detail, .doctor-note {
+    background: rgba(255, 255, 255, 0.04) !important;
+    border: 1px solid var(--border-color) !important;
+    color: #cbd5e1 !important;
+    border-radius: 12px !important;
+}
+
+.report-detail strong, .doctor-note strong {
+    color: var(--primary) !important;
+}
+
+.modal-close-bottom {
+    background: linear-gradient(135deg, #00e599 0%, #059669 100%) !important;
+    color: #050a14 !important;
+    font-weight: 800 !important;
+    border: none !important;
+    border-radius: 11px !important;
+    cursor: pointer !important;
+}
+
+.modal-header {
+    border-bottom: 1px solid var(--border-color) !important;
+}
+
+.modal-header h2, .modal-header h3 {
+    color: #ffffff !important;
+    font-weight: 800 !important;
+}
+
+/* =========================================
+   ACTION BUTTONS
+========================================= */
+.action-btn, .action-button, .edit-btn, .delete-btn {
+    padding: 7px 14px !important;
+    border-radius: 9px !important;
+    font-size: 12.5px !important;
+    font-weight: 700 !important;
+    cursor: pointer !important;
+    transition: all 0.2s ease !important;
+    border: none !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 6px !important;
+}
+
+.action-btn.edit, .action-button.edit-button, .edit-btn {
+    background: rgba(59, 130, 246, 0.15) !important;
+    border: 1px solid rgba(59, 130, 246, 0.35) !important;
+    color: #60a5fa !important;
+}
+
+.action-btn.edit:hover, .action-button.edit-button:hover, .edit-btn:hover {
+    background: rgba(59, 130, 246, 0.28) !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 4px 14px rgba(59, 130, 246, 0.25) !important;
+}
+
+.action-btn.delete, .action-button.delete-button, .delete-btn {
+    background: rgba(239, 68, 68, 0.15) !important;
+    border: 1px solid rgba(239, 68, 68, 0.35) !important;
+    color: #f87171 !important;
+}
+
+.action-btn.delete:hover, .action-button.delete-button:hover, .delete-btn:hover {
+    background: rgba(239, 68, 68, 0.28) !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 4px 14px rgba(239, 68, 68, 0.25) !important;
+}
+
+/* SCROLLBAR */
+::-webkit-scrollbar {
+    width: 7px !important;
+    height: 7px !important;
+}
+::-webkit-scrollbar-track {
+    background: rgba(5, 10, 20, 0.5) !important;
+}
+::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.15) !important;
+    border-radius: 4px !important;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(0, 229, 153, 0.4) !important;
+}
+
+
+.close-btn, .close-button, .close-modal-btn {
+    border: 1px solid var(--border-color) !important;
+    background: rgba(255, 255, 255, 0.05) !important;
+    color: var(--text-muted) !important;
+    border-radius: 10px !important;
+    transition: all 0.2s ease !important;
+}
+
+.close-btn:hover, .close-button:hover, .close-modal-btn:hover {
+    background: rgba(255, 255, 255, 0.12) !important;
+    color: #ffffff !important;
+}
+
+.form-group label {
+    color: #cbd5e1 !important;
+    font-weight: 700 !important;
+    font-size: 12.5px !important;
+}
+
+/* =========================================
+   DASHBOARD SPECIFIC ELEMENTS
+========================================= */
+.department-icon, .activity-icon {
+    background: rgba(0, 229, 153, 0.12) !important;
+    color: var(--primary) !important;
+    border: 1px solid rgba(0, 229, 153, 0.25) !important;
+    border-radius: 12px !important;
+}
+
+.department-info h4, .activity-content h4 {
+    color: #ffffff !important;
+}
+
+.department-count, .activity-content p, .footer {
+    color: var(--text-dim) !important;
+}
+
+.progress-bar {
+    background: rgba(255, 255, 255, 0.08) !important;
+}
+
+.progress {
+    background: linear-gradient(90deg, #00e599, #059669) !important;
+}
+
+.empty, .empty-state {
+    color: var(--text-muted) !important;
+}
+
+/* TOAST */
+.toast {
+    background: rgba(13, 22, 41, 0.95) !important;
+    border: 1px solid var(--border-highlight) !important;
+    color: var(--primary) !important;
+    box-shadow: 0 14px 35px rgba(0, 0, 0, 0.6), 0 0 25px rgba(0, 229, 153, 0.2) !important;
+    border-radius: 14px !important;
+    backdrop-filter: blur(16px) !important;
+}
+
+/* =========================================
+   DOCTOR PORTAL SPECIFIC STYLES
+========================================= */
+.welcome-box, .ai-box {
+    background: linear-gradient(135deg, rgba(0, 229, 153, 0.12) 0%, rgba(13, 22, 41, 0.85) 100%) !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    border-radius: 20px !important;
+    color: #ffffff !important;
+}
+
+.welcome-box h2, .ai-box h2 {
+    color: #ffffff !important;
+}
+
+.welcome-box p, .ai-box p {
+    color: var(--text-muted) !important;
+}
+
+.patients-table th {
+    background: rgba(5, 10, 20, 0.55) !important;
+    color: var(--text-muted) !important;
+}
+
+.patients-table td {
+    color: #cbd5e1 !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.05) !important;
+}
+
+.view-btn, .ai-btn {
+    background: linear-gradient(135deg, #00e599 0%, #059669 100%) !important;
+    color: #050a14 !important;
+    font-weight: 800 !important;
+    border: none !important;
+    border-radius: 10px !important;
+    cursor: pointer !important;
+}
+
+.view-btn:hover, .ai-btn:hover {
+    box-shadow: 0 4px 15px rgba(0, 229, 153, 0.4) !important;
+    transform: translateY(-2px) !important;
+}
+
+.appointment-details h4 {
+    color: #ffffff !important;
+}
+
+.appointment-details p {
+    color: var(--text-muted) !important;
+}
+
+.appointment-time strong {
+    color: var(--primary) !important;
+}
+
+.patient-avatar, .small-avatar {
+    background: rgba(0, 229, 153, 0.12) !important;
+    color: var(--primary) !important;
+    border: 1px solid rgba(0, 229, 153, 0.25) !important;
+}
+
+.brand-icon {
+    background: linear-gradient(135deg, #00e599 0%, #059669 100%) !important;
+    color: #050a14 !important;
+    border-radius: 14px !important;
+    box-shadow: 0 0 20px rgba(0, 229, 153, 0.35) !important;
+}
+
