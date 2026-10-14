@@ -6,12 +6,12 @@ from config.firebase_config import db
 
 
 DEFAULT_DEPARTMENTS = [
-    {"name": "Cardiology", "head": "Dr. Sarah Jenkins", "icon": "❤️", "room": "Wing B, Level 3", "active": True},
-    {"name": "General Medicine", "head": "Dr. Rajesh Kumar", "icon": "🩺", "room": "Wing A, Level 1", "active": True},
-    {"name": "Dermatology", "head": "Dr. Anita Patel", "icon": "🧴", "room": "Wing A, Level 2", "active": True},
-    {"name": "Orthopedics", "head": "Dr. Vikram Malhotra", "icon": "🦴", "room": "Wing C, Level 2", "active": True},
-    {"name": "Neurology", "head": "Dr. Meenakshi Sundaram", "icon": "🧠", "room": "Wing B, Level 4", "active": True},
-    {"name": "Pediatrics", "head": "Dr. Karthik Raman", "icon": "👶", "room": "Wing D, Level 1", "active": True}
+    {"name": "Cardiology", "head": "Head of Cardiology", "icon": "❤️", "room": "Wing B, Level 3", "active": True},
+    {"name": "General Medicine", "head": "Head of General Medicine", "icon": "🩺", "room": "Wing A, Level 1", "active": True},
+    {"name": "Dermatology", "head": "Head of Dermatology", "icon": "🧴", "room": "Wing A, Level 2", "active": True},
+    {"name": "Orthopedics", "head": "Head of Orthopedics", "icon": "🦴", "room": "Wing C, Level 2", "active": True},
+    {"name": "Neurology", "head": "Head of Neurology", "icon": "🧠", "room": "Wing B, Level 4", "active": True},
+    {"name": "Pediatrics", "head": "Head of Pediatrics", "icon": "👶", "room": "Wing D, Level 1", "active": True}
 ]
 
 

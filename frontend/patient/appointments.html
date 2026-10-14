@@ -629,12 +629,20 @@
       function updateDocOptions(dept) {
         doctorSelect.innerHTML = `<option value="">-- Choose Specialist Doctor --</option>`;
         const filtered = dept ? doctors.filter(d => d.department.toLowerCase() === dept.toLowerCase()) : doctors;
-        filtered.forEach(d => {
+        if (filtered.length === 0) {
           const opt = document.createElement("option");
-          opt.value = d.id;
-          opt.textContent = `${d.name} (${d.qualifications})`;
+          opt.value = "";
+          opt.disabled = true;
+          opt.textContent = "No registered doctor available for this department";
           doctorSelect.appendChild(opt);
-        });
+        } else {
+          filtered.forEach(d => {
+            const opt = document.createElement("option");
+            opt.value = d.id;
+            opt.textContent = `${d.name} (${d.qualifications || d.department})`;
+            doctorSelect.appendChild(opt);
+          });
+        }
       }
 
       updateDocOptions("");
@@ -651,28 +659,28 @@
       document.getElementById("statTotalApts").textContent = apts.length;
       document.getElementById("statUpcomingApts").textContent = apts.filter(a => a.status === "Confirmed").length;
       document.getElementById("statCompletedApts").textContent = apts.filter(a => a.status === "Completed").length;
-      document.getElementById("statVideoApts").textContent = apts.filter(a => a.type.toLowerCase().includes("video")).length;
+      document.getElementById("statVideoApts").textContent = apts.filter(a => (a.type || "").toLowerCase().includes("video")).length;
 
       // Filter list
       let filtered = apts;
       if (currentFilter !== "all") {
-        filtered = filtered.filter(a => a.status.toLowerCase() === currentFilter.toLowerCase());
+        filtered = filtered.filter(a => (a.status || "").toLowerCase() === currentFilter.toLowerCase());
       }
       if (searchQuery) {
         filtered = filtered.filter(a =>
-          a.doctorName.toLowerCase().includes(searchQuery) ||
-          a.department.toLowerCase().includes(searchQuery) ||
+          (a.doctorName || "").toLowerCase().includes(searchQuery) ||
+          (a.department || "").toLowerCase().includes(searchQuery) ||
           (a.reason && a.reason.toLowerCase().includes(searchQuery))
         );
       }
 
       if (filtered.length === 0) {
         container.innerHTML = `
-          <div class="surface-card" style="text-align: center; padding: 48px 20px;">
+          <div class="surface-card" style="text-align: center; padding: 48px 20px; border-radius: 14px; border: 1px dashed var(--border-color);">
             <div style="font-size: 42px; margin-bottom: 12px;">📅</div>
-            <h3 style="color: var(--primary-dark); margin-bottom: 6px;">No appointments match your filter</h3>
+            <h3 style="color: var(--text-main); margin-bottom: 6px;">No appointments found</h3>
             <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 20px;">
-              Try clearing search terms or schedule a new appointment with our doctors.
+              You do not have any scheduled appointments. Book a consultation with our verified hospital doctors.
             </p>
             <button class="btn btn-primary" onclick="document.getElementById('openBookModalBtn').click()">
               Schedule Appointment
@@ -688,7 +696,7 @@
             <div class="doc-avatar">${apt.doctorAvatar || "👨‍⚕️"}</div>
             <div class="apt-details">
               <h3>${apt.doctorName}</h3>
-              <span class="dept-pill">${apt.department} • ${apt.type}</span>
+              <span class="dept-pill">${apt.department || "General"} • ${apt.type || "In-Person"}</span>
               <div class="apt-meta-row">
                 <span class="apt-meta-item">🗓️ <strong>${apt.date}</strong></span>
                 <span class="apt-meta-item">⏰ <strong>${apt.time}</strong></span>
@@ -700,12 +708,12 @@
           </div>
 
           <div class="apt-status-actions">
-            <span class="status-badge ${apt.status.toLowerCase()}">${apt.status}</span>
+            <span class="status-badge ${(apt.status || 'confirmed').toLowerCase()}">${apt.status || 'Confirmed'}</span>
             <div class="action-btn-row">
               <button class="btn btn-outline btn-sm view-slip-btn" data-id="${apt.id}">
                 🧾 Slip
               </button>
-              ${apt.type.toLowerCase().includes("video") && apt.status === "Confirmed" ? `
+              ${(apt.type || "").toLowerCase().includes("video") && apt.status === "Confirmed" ? `
                 <button class="btn btn-primary btn-sm join-video-btn" data-id="${apt.id}" data-doc="${apt.doctorName}">
                   📹 Join Call
                 </button>
@@ -715,6 +723,9 @@
                   Cancel
                 </button>
               ` : ''}
+              <button class="btn btn-danger btn-sm delete-apt-btn" data-id="${apt.id}" title="Permanently delete appointment" style="background: rgba(239, 68, 68, 0.15); border: 1px solid #ef4444; color: #f87171;">
+                🗑️ Delete
+              </button>
             </div>
           </div>
         </div>
@@ -742,6 +753,17 @@
           if (confirm("Are you sure you want to cancel this appointment?")) {
             PatientStore.updateAppointmentStatus(id, "Cancelled");
             showToast("Appointment has been cancelled.", "info");
+            renderAppointments();
+          }
+        });
+      });
+
+      document.querySelectorAll(".delete-apt-btn").forEach(btn => {
+        btn.addEventListener("click", function () {
+          const id = this.getAttribute("data-id");
+          if (confirm("Are you sure you want to permanently delete this appointment?")) {
+            PatientStore.deleteAppointment(id);
+            showToast("Appointment deleted successfully.", "success");
             renderAppointments();
           }
         });

@@ -55,7 +55,7 @@ const DEFAULT_MEDICINES = [
         timing: ["Morning"],
         scheduleDescription: "1 tablet daily after breakfast",
         purpose: "Blood Pressure control",
-        prescribedBy: "Dr. Sarah Jenkins",
+        prescribedBy: "Attending Physician",
         startDate: "2026-08-01",
         duration: "90 Days",
         remainingPills: 28,
@@ -77,7 +77,7 @@ const DEFAULT_MEDICINES = [
         timing: ["Night"],
         scheduleDescription: "1 tablet before bedtime",
         purpose: "Cholesterol management",
-        prescribedBy: "Dr. Rajesh Kumar",
+        prescribedBy: "Attending Physician",
         startDate: "2026-09-01",
         duration: "60 Days",
         remainingPills: 14,
@@ -99,7 +99,7 @@ const DEFAULT_MEDICINES = [
         timing: ["Morning"],
         scheduleDescription: "1 capsule once weekly on Sundays",
         purpose: "Bone & Immune Health",
-        prescribedBy: "Dr. Rajesh Kumar",
+        prescribedBy: "Attending Physician",
         startDate: "2026-09-10",
         duration: "8 Weeks",
         remainingPills: 4,
@@ -121,7 +121,7 @@ const DEFAULT_MEDICINES = [
         timing: ["Afternoon"],
         scheduleDescription: "1 softgel daily after lunch",
         purpose: "Cardiovascular wellness",
-        prescribedBy: "Dr. Sarah Jenkins",
+        prescribedBy: "Attending Physician",
         startDate: "2026-08-15",
         duration: "120 Days",
         remainingPills: 52,
@@ -184,53 +184,7 @@ const DEFAULT_VITALS = {
     }
 };
 
-const DEFAULT_PRESCRIPTIONS = [
-    {
-        id: "RX-2026-8841",
-        date: "2026-09-01",
-        doctorName: "Dr. Sarah Jenkins",
-        doctorDepartment: "Department of Cardiology",
-        doctorReg: "MCI-48192-TN",
-        diagnosis: "Stage 1 Essential Hypertension (Well Controlled)",
-        medicines: [
-            { name: "Telmisartan", dosage: "40 mg", frequency: "1-0-0", duration: "90 Days", instructions: "After breakfast" },
-            { name: "Omega-3 Marine Lipid", dosage: "1000 mg", frequency: "0-1-0", duration: "90 Days", instructions: "After lunch" }
-        ],
-        advice: "Low sodium diet (<2.3g/day). 30 minutes brisk walking 5 days a week. Keep daily blood pressure log.",
-        nextVisit: "2026-12-01",
-        status: "Active"
-    },
-    {
-        id: "RX-2026-7215",
-        date: "2026-08-10",
-        doctorName: "Dr. Rajesh Kumar",
-        doctorDepartment: "Internal Medicine",
-        doctorReg: "MCI-31094-TN",
-        diagnosis: "Mild Dyslipidemia & Vitamin D Insufficiency",
-        medicines: [
-            { name: "Atorvastatin", dosage: "10 mg", frequency: "0-0-1", duration: "60 Days", instructions: "Bedtime" },
-            { name: "Cholecalciferol D3", dosage: "60,000 IU", frequency: "Once Weekly", duration: "8 Weeks", instructions: "Sundays after meal" }
-        ],
-        advice: "Limit fried foods and refined sugar. Recheck Lipid Profile in 8 weeks.",
-        nextVisit: "2026-10-22",
-        status: "Active"
-    },
-    {
-        id: "RX-2026-5540",
-        date: "2026-05-14",
-        doctorName: "Dr. Anita Patel",
-        doctorDepartment: "Department of Dermatology",
-        doctorReg: "MCI-55219-TN",
-        diagnosis: "Contact Dermatitis / Xerosis",
-        medicines: [
-            { name: "Hydrocortisone Cream 1%", dosage: "Apply thin layer", frequency: "0-1-0", duration: "7 Days", instructions: "External use only" },
-            { name: "Cetaphil Restoraderm Lotion", dosage: "Liberal application", frequency: "1-1-1", duration: "30 Days", instructions: "Post shower" }
-        ],
-        advice: "Avoid harsh perfumed soaps. Drink adequate fluids.",
-        nextVisit: "Completed",
-        status: "Completed"
-    }
-];
+const DEFAULT_PRESCRIPTIONS = [];
 
 const DEFAULT_LAB_REPORTS = [
     {
@@ -238,7 +192,7 @@ const DEFAULT_LAB_REPORTS = [
         testName: "Lipid Profile Comprehensive",
         category: "Biochemistry",
         date: "2026-10-02",
-        labTechnician: "S. Murugan, Senior Biochemist",
+        labTechnician: "Senior Biochemist",
         status: "Completed",
         flag: "Borderline",
         summary: "Total cholesterol mildly elevated. Triglycerides and HDL within optimal targets.",
@@ -255,7 +209,7 @@ const DEFAULT_LAB_REPORTS = [
         testName: "Complete Blood Count (CBC) with ESR",
         category: "Hematology",
         date: "2026-09-12",
-        labTechnician: "R. Kavitha, Lab Technologist",
+        labTechnician: "Lab Technologist",
         status: "Completed",
         flag: "Normal",
         summary: "All red cell, white cell and platelet indices within normal physiological limits.",
@@ -272,7 +226,7 @@ const DEFAULT_LAB_REPORTS = [
         testName: "Glycated Hemoglobin (HbA1c)",
         category: "Endocrinology",
         date: "2026-09-12",
-        labTechnician: "S. Murugan, Senior Biochemist",
+        labTechnician: "Senior Biochemist",
         status: "Completed",
         flag: "Normal",
         summary: "Non-diabetic range with excellent glucose regulation over past 90 days.",
@@ -286,7 +240,7 @@ const DEFAULT_LAB_REPORTS = [
         testName: "Thyroid Stimulating Hormone (TSH)",
         category: "Immunoassay",
         date: "2026-08-01",
-        labTechnician: "R. Kavitha, Lab Technologist",
+        labTechnician: "Lab Technologist",
         status: "Completed",
         flag: "Normal",
         summary: "Thyroid function within euthyroid reference range.",
@@ -299,7 +253,7 @@ const DEFAULT_LAB_REPORTS = [
         testName: "Electrocardiogram (12-Lead ECG)",
         category: "Cardiology Diagnostic",
         date: "2026-07-15",
-        labTechnician: "Dr. Sarah Jenkins",
+        labTechnician: "Clinical Diagnostics Dept",
         status: "Completed",
         flag: "Normal",
         summary: "Normal sinus rhythm, heart rate 72 bpm. No ST-T changes or arrhythmias noted.",
@@ -312,92 +266,7 @@ const DEFAULT_LAB_REPORTS = [
     }
 ];
 
-const DEFAULT_DOCTORS = [
-    {
-        id: "DOC-01",
-        name: "Dr. Sarah Jenkins",
-        department: "Cardiology",
-        qualifications: "MBBS, MD (Cardiology), DM, FACC",
-        experience: "15+ Years",
-        rating: 4.9,
-        reviewsCount: 342,
-        fee: "₹800",
-        avatar: "👩‍⚕️",
-        availableDays: "Mon, Wed, Fri",
-        nextSlot: "Tomorrow, 10:30 AM",
-        bio: "Specialist in non-invasive cardiology, preventive coronary health, and clinical hypertension management."
-    },
-    {
-        id: "DOC-02",
-        name: "Dr. Rajesh Kumar",
-        department: "General Medicine",
-        qualifications: "MBBS, MD (Internal Medicine)",
-        experience: "18+ Years",
-        rating: 4.8,
-        reviewsCount: 512,
-        fee: "₹500",
-        avatar: "👨‍⚕️",
-        availableDays: "Mon to Sat",
-        nextSlot: "Today, 04:30 PM",
-        bio: "Expert internal medicine physician focusing on adult chronic disease management, diabetes, and preventive checkups."
-    },
-    {
-        id: "DOC-03",
-        name: "Dr. Anita Patel",
-        department: "Dermatology",
-        qualifications: "MBBS, MD (Dermatology, Venereology & Leprosy)",
-        experience: "11+ Years",
-        rating: 4.9,
-        reviewsCount: 280,
-        fee: "₹650",
-        avatar: "👩‍⚕️",
-        availableDays: "Tue, Thu, Sat",
-        nextSlot: "Thursday, 11:00 AM",
-        bio: "Consultant dermatologist specializing in allergic skin disorders, clinical cosmetics, and scalp health."
-    },
-    {
-        id: "DOC-04",
-        name: "Dr. Vikram Malhotra",
-        department: "Orthopedics",
-        qualifications: "MBBS, MS (Orthopedics), M.Ch (Joint Replacement)",
-        experience: "14+ Years",
-        rating: 4.7,
-        reviewsCount: 219,
-        fee: "₹900",
-        avatar: "👨‍⚕️",
-        availableDays: "Mon, Tue, Thu",
-        nextSlot: "Friday, 02:00 PM",
-        bio: "Orthopedic surgeon specializing in sports medicine, arthroscopy, and joint preservation treatments."
-    },
-    {
-        id: "DOC-05",
-        name: "Dr. Meenakshi Sundaram",
-        department: "Neurology",
-        qualifications: "MBBS, MD, DM (Neurology)",
-        experience: "20+ Years",
-        rating: 5.0,
-        reviewsCount: 194,
-        fee: "₹1,000",
-        avatar: "👩‍⚕️",
-        availableDays: "Wed, Fri, Sat",
-        nextSlot: "Saturday, 09:30 AM",
-        bio: "Senior consultant neurologist treating migraine, neuropathies, sleep disorders, and stroke rehabilitation."
-    },
-    {
-        id: "DOC-06",
-        name: "Dr. Karthik Raman",
-        department: "Pediatrics",
-        qualifications: "MBBS, DCH, DNB (Pediatrics)",
-        experience: "12+ Years",
-        rating: 4.8,
-        reviewsCount: 388,
-        fee: "₹600",
-        avatar: "👨‍⚕️",
-        availableDays: "Mon to Fri",
-        nextSlot: "Tomorrow, 03:00 PM",
-        bio: "Pediatric care specialist focusing on childhood immunization, growth tracking, and adolescent health."
-    }
-];
+const DEFAULT_DOCTORS = [];
 
 const DEFAULT_NOTIFICATIONS = [
     {
@@ -447,12 +316,86 @@ const DEFAULT_NOTIFICATIONS = [
 // ============================================================================
 
 export class PatientStore {
+    static purgeDummyData() {
+        const dummyNames = [
+            "sarah jenkins",
+            "rajesh kumar",
+            "anita patel",
+            "vikram malhotra",
+            "meenakshi sundaram",
+            "karthik raman"
+        ];
+        
+        // 1. Purge patient_appointments
+        try {
+            const rawApts = JSON.parse(localStorage.getItem("patient_appointments") || "[]");
+            if (Array.isArray(rawApts)) {
+                const cleanedApts = rawApts.filter(apt => {
+                    if (!apt || !apt.doctorName) return false;
+                    const doc = apt.doctorName.toLowerCase();
+                    return !dummyNames.some(d => doc.includes(d));
+                });
+                localStorage.setItem("patient_appointments", JSON.stringify(cleanedApts));
+            }
+        } catch (e) {
+            localStorage.setItem("patient_appointments", JSON.stringify([]));
+        }
+
+        // 2. Purge patient_doctors
+        try {
+            const rawDocs = JSON.parse(localStorage.getItem("patient_doctors") || "[]");
+            if (Array.isArray(rawDocs)) {
+                const cleanedDocs = rawDocs.filter(doc => {
+                    if (!doc || !doc.name) return false;
+                    const docName = doc.name.toLowerCase();
+                    return !dummyNames.some(d => docName.includes(d));
+                });
+                localStorage.setItem("patient_doctors", JSON.stringify(cleanedDocs));
+            }
+        } catch (e) {
+            localStorage.setItem("patient_doctors", JSON.stringify([]));
+        }
+
+        // 3. Purge patient_prescriptions
+        try {
+            const rawRx = JSON.parse(localStorage.getItem("patient_prescriptions") || "[]");
+            if (Array.isArray(rawRx)) {
+                const cleanedRx = rawRx.filter(rx => {
+                    if (!rx || !rx.doctorName) return false;
+                    const docName = rx.doctorName.toLowerCase();
+                    return !dummyNames.some(d => docName.includes(d));
+                });
+                localStorage.setItem("patient_prescriptions", JSON.stringify(cleanedRx));
+            }
+        } catch (e) {
+            localStorage.setItem("patient_prescriptions", JSON.stringify([]));
+        }
+
+        // 4. Sanitize patient_medicines prescribedBy
+        try {
+            const rawMeds = JSON.parse(localStorage.getItem("patient_medicines") || "[]");
+            if (Array.isArray(rawMeds)) {
+                let changed = false;
+                rawMeds.forEach(m => {
+                    if (m && m.prescribedBy && dummyNames.some(d => m.prescribedBy.toLowerCase().includes(d))) {
+                        m.prescribedBy = "Attending Physician";
+                        changed = true;
+                    }
+                });
+                if (changed) {
+                    localStorage.setItem("patient_medicines", JSON.stringify(rawMeds));
+                }
+            }
+        } catch (e) {}
+    }
+
     static init() {
+        this.purgeDummyData();
         if (!localStorage.getItem("patient_profile")) {
             localStorage.setItem("patient_profile", JSON.stringify(DEFAULT_PATIENT_PROFILE));
         }
         if (!localStorage.getItem("patient_appointments")) {
-            localStorage.setItem("patient_appointments", JSON.stringify(DEFAULT_APPOINTMENTS));
+            localStorage.setItem("patient_appointments", JSON.stringify([]));
         }
         if (!localStorage.getItem("patient_medicines")) {
             localStorage.setItem("patient_medicines", JSON.stringify(DEFAULT_MEDICINES));
@@ -461,13 +404,13 @@ export class PatientStore {
             localStorage.setItem("patient_vitals", JSON.stringify(DEFAULT_VITALS));
         }
         if (!localStorage.getItem("patient_prescriptions")) {
-            localStorage.setItem("patient_prescriptions", JSON.stringify(DEFAULT_PRESCRIPTIONS));
+            localStorage.setItem("patient_prescriptions", JSON.stringify([]));
         }
         if (!localStorage.getItem("patient_lab_reports")) {
             localStorage.setItem("patient_lab_reports", JSON.stringify(DEFAULT_LAB_REPORTS));
         }
         if (!localStorage.getItem("patient_doctors")) {
-            localStorage.setItem("patient_doctors", JSON.stringify(DEFAULT_DOCTORS));
+            localStorage.setItem("patient_doctors", JSON.stringify([]));
         }
         if (!localStorage.getItem("patient_notifications")) {
             localStorage.setItem("patient_notifications", JSON.stringify(DEFAULT_NOTIFICATIONS));
@@ -521,10 +464,20 @@ export class PatientStore {
     // Appointments
     static getAppointments() {
         this.init();
+        this.purgeDummyData();
         try {
-            return JSON.parse(localStorage.getItem("patient_appointments")) || DEFAULT_APPOINTMENTS;
+            const raw = JSON.parse(localStorage.getItem("patient_appointments")) || [];
+            const dummyNames = [
+                "sarah jenkins",
+                "rajesh kumar",
+                "anita patel",
+                "vikram malhotra",
+                "meenakshi sundaram",
+                "karthik raman"
+            ];
+            return raw.filter(a => a && a.doctorName && !dummyNames.some(d => a.doctorName.toLowerCase().includes(d)));
         } catch {
-            return DEFAULT_APPOINTMENTS;
+            return [];
         }
     }
 
@@ -561,6 +514,18 @@ export class PatientStore {
             return true;
         }
         return false;
+    }
+
+    static deleteAppointment(id) {
+        this.init();
+        try {
+            let apts = this.getAppointments();
+            apts = apts.filter(a => a.id !== id);
+            localStorage.setItem("patient_appointments", JSON.stringify(apts));
+            return true;
+        } catch (e) {
+            return false;
+        }
     }
 
     // Medicines
@@ -676,7 +641,9 @@ export class PatientStore {
     // Doctors
     static getDoctors() {
         this.init();
+        this.purgeDummyData();
         try {
+            const dummyNames = ["sarah jenkins", "rajesh kumar", "anita patel", "vikram malhotra", "meenakshi sundaram", "karthik raman"];
             // Check real registered doctors first from medimateDoctors and medimateUsers
             const medimateDocs = JSON.parse(localStorage.getItem("medimateDoctors") || "[]");
             const allUsers = JSON.parse(localStorage.getItem("medimateUsers") || "[]");
@@ -687,9 +654,11 @@ export class PatientStore {
 
             [...medimateDocs, ...userDocs].forEach(d => {
                 const em = (d.email || d.id || "").toLowerCase();
+                const rawName = (d.name || d.fullName || "Doctor").trim();
+                if (dummyNames.some(dn => rawName.toLowerCase().includes(dn))) return;
+
                 if (em && !seen.has(em)) {
                     seen.add(em);
-                    const rawName = (d.name || d.fullName || "Doctor").trim();
                     const docName = rawName.toLowerCase().startsWith("dr.") ? rawName : ("Dr. " + rawName);
                     registry.push({
                         id: d.id || ("DOC-" + Math.floor(1000 + Math.random() * 9000)),
@@ -709,11 +678,6 @@ export class PatientStore {
                     });
                 }
             });
-
-            // If real doctors are registered, ONLY return real registered doctors!
-            if (registry.length > 0) {
-                return registry;
-            }
 
             return registry;
         } catch {

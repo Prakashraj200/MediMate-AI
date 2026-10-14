@@ -5,7 +5,7 @@
 const DoctorController = {
   getConsultationQueue() {
     return [
-      { id: 'APT-101', patient: 'Sarah Jenkins', mrn: 'MRN-8429', time: '09:30 AM', mode: 'Telehealth', status: 'Confirmed' },
+      { id: 'APT-101', patient: 'Meera Sharma', mrn: 'MRN-8429', time: '09:30 AM', mode: 'Telehealth', status: 'Confirmed' },
       { id: 'APT-102', patient: 'Robert Chen', mrn: 'MRN-3312', time: '10:15 AM', mode: 'In-Clinic', status: 'Checked In' },
       { id: 'APT-103', patient: 'Amelia Rodriguez', mrn: 'MRN-9104', time: '11:00 AM', mode: 'In-Clinic', status: 'Waiting' }
     ];
