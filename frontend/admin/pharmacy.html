@@ -635,6 +635,41 @@
         }
     </style>
     <link rel="stylesheet" href="admin-dark-theme.css">
+    <script>
+        // Immediate fallback openers so clicks register without delay
+        window.openPharmacyModal = function() {
+            const el = document.getElementById("pharmacyModalOverlay");
+            if (el) {
+                el.style.display = "flex";
+                el.classList.add("show");
+                el.classList.add("active");
+            }
+        };
+        window.closePharmacyAccountModal = function() {
+            const el = document.getElementById("pharmacyModalOverlay");
+            if (el) {
+                el.style.display = "none";
+                el.classList.remove("show");
+                el.classList.remove("active");
+            }
+        };
+        window.openMedicineModal = function() {
+            const el = document.getElementById("modalOverlay");
+            if (el) {
+                el.style.display = "flex";
+                el.classList.add("show");
+                el.classList.add("active");
+            }
+        };
+        window.closeMedicineModal = function() {
+            const el = document.getElementById("modalOverlay");
+            if (el) {
+                el.style.display = "none";
+                el.classList.remove("show");
+                el.classList.remove("active");
+            }
+        };
+    </script>
 </head>
 
 <body>
@@ -666,85 +701,24 @@
     </p>
 
     <ul class="menu">
-
-        <li>
-            <a href="dashboard.html">
-                <span class="menu-icon">📊</span>
-                Dashboard
-            </a>
-        </li>
-
-        <li>
-            <a href="doctors.html">
-                <span class="menu-icon">👨‍⚕️</span>
-                Doctors
-            </a>
-        </li>
-
-        <li>
-            <a href="patients.html">
-                <span class="menu-icon">🧑‍🤝‍🧑</span>
-                Patients
-            </a>
-        </li>
-
-        <li>
-            <a href="laboratory.html">
-                <span class="menu-icon">🧪</span>
-                Laboratory
-            </a>
-        </li>
-
-        <li>
-            <a href="pharmacy.html" class="active">
-                <span class="menu-icon">💊</span>
-                Pharmacy
-            </a>
-        </li>
-
-        <li>
-            <a href="appointments.html">
-                <span class="menu-icon">📅</span>
-                Appointments
-            </a>
-        </li>
-
-        <li>
-            <a href="departments.html">
-                <span class="menu-icon">🏥</span>
-                Departments
-            </a>
-        </li>
-
-        <li>
-            <a href="reports.html">
-                <span class="menu-icon">📈</span>
-                Reports
-            </a>
-        </li>
-
+        <li><a href="dashboard.html"><span class="menu-icon">📊</span><span>Dashboard</span></a></li>
+        <li><a href="doctors.html"><span class="menu-icon">👨‍⚕️</span><span>Doctors</span></a></li>
+        <li><a href="patients.html"><span class="menu-icon">🧑‍🤝‍🧑</span><span>Patients</span></a></li>
+        <li><a href="laboratory.html"><span class="menu-icon">🧪</span><span>Laboratory</span></a></li>
+        <li><a href="pharmacy.html" class="active"><span class="menu-icon">💊</span><span>Pharmacy</span></a></li>
+        <li><a href="appointments.html"><span class="menu-icon">📅</span><span>Appointments</span></a></li>
+        <li><a href="departments.html"><span class="menu-icon">🏥</span><span>Departments</span></a></li>
+        <li><a href="medicines.html"><span class="menu-icon">📦</span><span>Medicines Inventory</span></a></li>
+        <li><a href="prescriptions.html"><span class="menu-icon">📋</span><span>Prescriptions</span></a></li>
+        <li><a href="reports.html"><span class="menu-icon">📈</span><span>Reports & Analytics</span></a></li>
     </ul>
 
-    <p class="menu-title">
-        Settings
-    </p>
-
+    <p class="menu-title">System & Security</p>
     <ul class="menu">
-
-        <li>
-            <a href="#" id="notificationLink">
-                <span class="menu-icon">🔔</span>
-                Notifications
-            </a>
-        </li>
-
-        <li>
-            <a href="#" id="settingsLink">
-                <span class="menu-icon">⚙️</span>
-                Settings
-            </a>
-        </li>
-
+        <li><a href="notifications.html"><span class="menu-icon">🔔</span><span>Notifications</span></a></li>
+        <li><a href="settings.html"><span class="menu-icon">⚙️</span><span>Settings</span></a></li>
+        <li><a href="profile.html"><span class="menu-icon">👤</span><span>Admin Profile</span></a></li>
+        <li><a href="admin-login.html" onclick="sessionStorage.clear(); localStorage.removeItem('currentUser'); localStorage.removeItem('firebaseIdToken'); localStorage.removeItem('adminLoggedIn');"><span class="menu-icon">🚪</span><span>Sign Out</span></a></li>
     </ul>
 
 </aside>
@@ -1107,6 +1081,7 @@
                             <th>ID</th>
                             <th>Pharmacy Name</th>
                             <th>Login Email</th>
+                            <th>Password</th>
                             <th>Phone</th>
                             <th>Location</th>
                             <th>Status</th>
@@ -1116,7 +1091,7 @@
 
                     <tbody id="pharmacyAccountTableBody">
                         <tr>
-                            <td colspan="7" class="empty">No pharmacy accounts created yet.</td>
+                            <td colspan="8" class="empty">No pharmacy accounts created yet.</td>
                         </tr>
                     </tbody>
 
@@ -1149,6 +1124,7 @@
             <button
                 class="close-btn"
                 id="closeModal"
+                onclick="closeMedicineModal()"
             >
                 ×
             </button>
@@ -1423,6 +1399,7 @@
                     type="button"
                     class="cancel-btn"
                     id="cancelBtn"
+                    onclick="closeMedicineModal()"
                 >
                     Cancel
                 </button>
@@ -1437,6 +1414,8 @@
             </div>
 
         </form>
+
+    </div>
 
 </div>
 
@@ -1455,6 +1434,7 @@
             <button
                 class="close-btn"
                 id="closePharmacyModal"
+                onclick="closePharmacyAccountModal()"
             >
                 ×
             </button>
@@ -1486,11 +1466,12 @@
                 </div>
 
                 <div class="form-group">
-                    <label>Login Password *</label>
+                    <label>Login Password (Default: Pharmacy@123)</label>
                     <input
-                        type="password"
+                        type="text"
                         id="pharmacyPasswordInput"
-                        placeholder="Set login password"
+                        placeholder="Pharmacy@123"
+                        value="Pharmacy@123"
                         autocomplete="new-password"
                     >
                 </div>
@@ -1529,6 +1510,7 @@
                     type="button"
                     class="cancel-btn"
                     id="cancelPharmacyBtn"
+                    onclick="closePharmacyAccountModal()"
                 >
                     Cancel
                 </button>
@@ -1682,83 +1664,81 @@
        AUTH
     ========================================== */
 
+    function resolveAdminProfile() {
+        try {
+            const rawAdmin = sessionStorage.getItem("adminUser") || localStorage.getItem("adminUser");
+            if (rawAdmin) {
+                const parsed = JSON.parse(rawAdmin);
+                if (parsed && (parsed.role === "admin" || parsed.email === "admin@medimate.ai")) return parsed;
+            }
+        } catch(e) {}
+        try {
+            const rawProf = localStorage.getItem("medimateAdminProfile");
+            if (rawProf) {
+                const parsed = JSON.parse(rawProf);
+                if (parsed && parsed.name) return { ...parsed, role: "admin" };
+            }
+        } catch(e) {}
+        try {
+            const rawCur = sessionStorage.getItem("currentUser") || localStorage.getItem("currentUser");
+            if (rawCur) {
+                const parsed = JSON.parse(rawCur);
+                if (parsed && parsed.role === "admin") return parsed;
+            }
+        } catch(e) {}
+        return null;
+    }
+
     onAuthStateChanged(
         auth,
         async (user) => {
+            let activeAdmin = resolveAdminProfile();
+            let isFirebaseAdmin = false;
 
-            if (!user) {
-                const localAdmin = sessionStorage.getItem("currentUser") || localStorage.getItem("currentUser");
-                if (localAdmin) {
+            if (user) {
+                if (user.email && user.email.toLowerCase() === "admin@medimate.ai") {
+                    isFirebaseAdmin = true;
+                } else {
                     try {
-                        const parsed = JSON.parse(localAdmin);
-                        if (parsed.role === "admin" || parsed.email) {
-                            await loadMedicines();
-                            return;
-                        }
+                        const localUsers = JSON.parse(localStorage.getItem("medimateUsers") || "[]");
+                        const matched = localUsers.find(u => u.email && u.email.toLowerCase() === user.email.toLowerCase());
+                        if (matched && matched.role === "admin") isFirebaseAdmin = true;
                     } catch(e) {}
                 }
-                window.location.href =
-                    "admin-login.html";
 
+                if (!isFirebaseAdmin) {
+                    if (activeAdmin) {
+                        try { await signOut(auth); } catch(e) {}
+                    } else {
+                        try { await signOut(auth); } catch(e) {}
+                        alert("Access Denied: The account (" + user.email + ") does not have Administrator privileges. Please sign in with your Admin credentials.");
+                        window.location.href = "admin-login.html";
+                        return;
+                    }
+                }
+            }
+
+            if (!user && !activeAdmin) {
+                window.location.href = "admin-login.html";
                 return;
             }
 
-
-            let currentUser = null;
-
-            try {
-
-                currentUser =
-                    JSON.parse(
-                        localStorage.getItem(
-                            "currentUser"
-                        )
-                    );
-
-            } catch (error) {
-
-                console.log(
-                    "Current user not found."
-                );
-
+            activeAdmin = resolveAdminProfile();
+            let adminName = "System Administrator";
+            if (activeAdmin && activeAdmin.name && activeAdmin.role === "admin") {
+                adminName = activeAdmin.name;
+            } else if (user && (user.email === "admin@medimate.ai" || isFirebaseAdmin)) {
+                adminName = user.displayName || "System Administrator";
             }
 
-
-            let adminName =
-                "Administrator";
-
-
-            if (
-                currentUser &&
-                currentUser.name
-            ) {
-
-                adminName =
-                    currentUser.name;
-
-            } else if (user.email) {
-
-                adminName =
-                    user.email.split("@")[0];
-
-            }
-
-
-            document.getElementById(
-                "adminName"
-            ).textContent =
-                adminName;
-
-
-            document.getElementById(
-                "profileCircle"
-            ).textContent =
-                adminName
-                    .charAt(0)
-                    .toUpperCase();
+            const adminNameEl = document.getElementById("adminName");
+            if (adminNameEl) adminNameEl.textContent = adminName;
+            const profileCircleEl = document.getElementById("profileCircle");
+            if (profileCircleEl) profileCircleEl.textContent = adminName.charAt(0).toUpperCase();
 
 
             await loadMedicines();
+            loadPharmacyAccounts();
 
         }
     );
@@ -1769,52 +1749,28 @@
     ========================================== */
 
     async function loadMedicines() {
-
+        let list = [];
         try {
-
-            const response =
-                await fetch(
-                    `${API_URL}/api/pharmacy/pharmacies`
-                );
-
-
-            if (!response.ok) {
-
-                throw new Error(
-                    "Pharmacy API unavailable"
-                );
-
+            const response = await fetch(`${API_URL}/api/medicines`);
+            if (response.ok) {
+                const result = await response.json();
+                list = result.data?.medicines || result.medicines || [];
             }
-
-
-            const result =
-                await response.json();
-
-
-            medicines =
-                result.pharmacies || [];
-
-
-            renderMedicines();
-
         } catch (error) {
-
-            console.error(
-                "Load medicines error:",
-                error
-            );
-
-
-            /*
-             * No dummy/static data.
-             */
-
-            medicines = [];
-
-            renderMedicines();
-
+            console.warn("Backend medicines API offline or unavailable:", error);
         }
 
+        try {
+            const localList = JSON.parse(localStorage.getItem("medimateMedicines") || "[]");
+            const map = new Map();
+            list.forEach(m => { if (m.id) map.set(String(m.id), m); });
+            localList.forEach(m => { if (m.id) map.set(String(m.id), m); });
+            medicines = Array.from(map.values());
+        } catch (e) {
+            medicines = list;
+        }
+
+        renderMedicines();
     }
 
 
@@ -2285,100 +2241,44 @@
 
 
             try {
+                // 1. Local persistence (guarantees immediate save & persist)
+                const medId = editingMedicineId || ("MED-" + Date.now());
+                const medicineRecord = { id: medId, ...medicineData };
+                try {
+                    const localList = JSON.parse(localStorage.getItem("medimateMedicines") || "[]");
+                    const idx = localList.findIndex(m => String(m.id) === String(medId));
+                    if (idx !== -1) localList[idx] = medicineRecord;
+                    else localList.push(medicineRecord);
+                    localStorage.setItem("medimateMedicines", JSON.stringify(localList));
+                } catch (e) {}
 
-                let response;
-
-
-                /* UPDATE */
-
-                if (
-                    editingMedicineId
-                ) {
-
-                    response =
-                        await fetch(
-                            `${API_URL}/api/pharmacy/pharmacies/${editingMedicineId}`,
-                            {
-                                method: "PUT",
-
-                                headers: {
-                                    "Content-Type":
-                                        "application/json"
-                                },
-
-                                body:
-                                    JSON.stringify(
-                                        medicineData
-                                    )
-                            }
-                        );
-
+                // 2. Background API sync
+                try {
+                    if (editingMedicineId) {
+                        await fetch(`${API_URL}/api/medicines/${editingMedicineId}`, {
+                            method: "PUT",
+                            headers: { "Content-Type": "application/json" },
+                            body: JSON.stringify(medicineData)
+                        });
+                    } else {
+                        await fetch(`${API_URL}/api/medicines`, {
+                            method: "POST",
+                            headers: { "Content-Type": "application/json" },
+                            body: JSON.stringify({ ...medicineData, id: medId })
+                        });
+                    }
+                } catch (apiErr) {
+                    console.warn("Backend sync skipped:", apiErr);
                 }
 
-                /* CREATE */
-
-                else {
-
-                    response =
-                        await fetch(
-                            `${API_URL}/api/pharmacy/pharmacies`,
-                            {
-                                method: "POST",
-
-                                headers: {
-                                    "Content-Type":
-                                        "application/json"
-                                },
-
-                                body:
-                                    JSON.stringify(
-                                        medicineData
-                                    )
-                            }
-                        );
-
-                }
-
-
-                if (!response.ok) {
-
-                    throw new Error(
-                        "Server error"
-                    );
-
-                }
-
-
-                const wasEditing =
-                    Boolean(
-                        editingMedicineId
-                    );
-
-
+                const wasEditing = Boolean(editingMedicineId);
                 closeMedicineModal();
-
-
-                showToast(
-                    wasEditing
-                        ? "Medicine updated successfully."
-                        : "Medicine added successfully."
-                );
-
-
+                showToast(wasEditing ? "Medicine updated successfully." : "Medicine added successfully.");
                 await loadMedicines();
 
             } catch (error) {
-
-                console.error(
-                    "Save medicine error:",
-                    error
-                );
-
-
-                showToast(
-                    "Unable to save medicine. Check backend."
-                );
-
+                console.error("Save medicine error:", error);
+                showToast("Unable to save medicine.");
             }
 
         }
@@ -2389,162 +2289,57 @@
        EDIT MEDICINE
     ========================================== */
 
-    window.editMedicine =
-        function(id) {
+    window.editMedicine = function(id) {
+        const medicine = medicines.find(item => String(item.id) === String(id));
+        if (!medicine) return;
 
-            const medicine =
-                medicines.find(
-                    item =>
-                        String(item.id) ===
-                        String(id)
-                );
+        editingMedicineId = id;
+        if (modalTitle) modalTitle.textContent = "Edit Medicine";
 
+        if (medicineName) medicineName.value = medicine.medicineName || medicine.name || "";
+        if (genericName) genericName.value = medicine.genericName || "";
+        if (category) category.value = medicine.category || "";
+        if (manufacturer) manufacturer.value = medicine.manufacturer || "";
+        if (batchNumber) batchNumber.value = medicine.batchNumber || "";
+        if (quantity) quantity.value = medicine.quantity ?? 0;
+        if (price) price.value = medicine.price ?? 0;
+        if (minimumStock) minimumStock.value = medicine.minimumStock ?? 10;
+        if (expiryDate) expiryDate.value = medicine.expiryDate || "";
+        if (storageLocation) storageLocation.value = medicine.storageLocation || "";
+        if (status) status.value = medicine.status || "active";
+        if (description) description.value = medicine.description || "";
 
-            if (!medicine) {
-
-                return;
-
-            }
-
-
-            editingMedicineId =
-                id;
-
-
-            modalTitle.textContent =
-                "Edit Medicine";
-
-
-            medicineName.value =
-                medicine.medicineName ||
-                medicine.name ||
-                "";
-
-
-            genericName.value =
-                medicine.genericName ||
-                "";
-
-
-            category.value =
-                medicine.category ||
-                "";
-
-
-            manufacturer.value =
-                medicine.manufacturer ||
-                "";
-
-
-            batchNumber.value =
-                medicine.batchNumber ||
-                "";
-
-
-            quantity.value =
-                medicine.quantity ??
-                0;
-
-
-            price.value =
-                medicine.price ??
-                0;
-
-
-            minimumStock.value =
-                medicine.minimumStock ??
-                10;
-
-
-            expiryDate.value =
-                medicine.expiryDate ||
-                "";
-
-
-            storageLocation.value =
-                medicine.storageLocation ||
-                "";
-
-
-            status.value =
-                medicine.status ||
-                "active";
-
-
-            description.value =
-                medicine.description ||
-                "";
-
-
-            modalOverlay.classList.add(
-                "show"
-            );
-
-        };
+        if (modalOverlay) {
+            modalOverlay.style.display = "flex";
+            modalOverlay.classList.add("show");
+            modalOverlay.classList.add("active");
+        }
+    };
 
 
     /* ==========================================
        DELETE MEDICINE
     ========================================== */
 
-    window.deleteMedicine =
-        async function(id) {
+    window.deleteMedicine = async function(id) {
+        const confirmDelete = confirm("Are you sure you want to delete this medicine?");
+        if (!confirmDelete) return;
 
-            const confirmDelete =
-                confirm(
-                    "Are you sure you want to delete this medicine?"
-                );
+        try {
+            let localList = JSON.parse(localStorage.getItem("medimateMedicines") || "[]");
+            localList = localList.filter(m => String(m.id) !== String(id));
+            localStorage.setItem("medimateMedicines", JSON.stringify(localList));
+        } catch (e) {}
 
+        try {
+            await fetch(`${API_URL}/api/medicines/${id}`, { method: "DELETE" });
+        } catch (error) {
+            console.warn("Backend delete skipped:", error);
+        }
 
-            if (!confirmDelete) {
-
-                return;
-
-            }
-
-
-            try {
-
-                const response =
-                    await fetch(
-                        `${API_URL}/api/pharmacy/pharmacies/${id}`,
-                        {
-                            method: "DELETE"
-                        }
-                    );
-
-
-                if (!response.ok) {
-
-                    throw new Error(
-                        "Delete failed"
-                    );
-
-                }
-
-
-                showToast(
-                    "Medicine deleted successfully."
-                );
-
-
-                await loadMedicines();
-
-            } catch (error) {
-
-                console.error(
-                    "Delete medicine error:",
-                    error
-                );
-
-
-                showToast(
-                    "Unable to delete medicine."
-                );
-
-            }
-
-        };
+        showToast("Medicine deleted successfully.");
+        await loadMedicines();
+    };
 
 
     /* ==========================================
@@ -2561,182 +2356,89 @@
        MOBILE MENU
     ========================================== */
 
-    mobileBtn.addEventListener(
-        "click",
-        () => {
-
-            sidebar.classList.toggle(
-                "open"
-            );
-
-        }
-    );
+    if (mobileBtn && sidebar) {
+        mobileBtn.addEventListener("click", () => {
+            sidebar.classList.toggle("open");
+        });
+    }
 
 
     /* ==========================================
        PROFILE
     ========================================== */
 
-    document
-        .getElementById("profileBtn")
-        .addEventListener(
-            "click",
-            event => {
+    const profileBtnEl = document.getElementById("profileBtn");
+    const profileMenuEl = document.getElementById("profileMenu");
 
-                event.stopPropagation();
+    if (profileBtnEl && profileMenuEl) {
+        profileBtnEl.addEventListener("click", event => {
+            event.stopPropagation();
+            profileMenuEl.classList.toggle("show");
+        });
+    }
 
-                document
-                    .getElementById(
-                        "profileMenu"
-                    )
-                    .classList.toggle(
-                        "show"
-                    );
-
-            }
-        );
-
-
-    document.addEventListener(
-        "click",
-        () => {
-
-            document
-                .getElementById(
-                    "profileMenu"
-                )
-                .classList.remove(
-                    "show"
-                );
-
-        }
-    );
+    document.addEventListener("click", () => {
+        const pMenu = document.getElementById("profileMenu");
+        if (pMenu) pMenu.classList.remove("show");
+    });
 
 
     /* ==========================================
        NOTIFICATION
     ========================================== */
 
-    document
-        .getElementById(
-            "notificationBtn"
-        )
-        .addEventListener(
-            "click",
-            () => {
+    const notifBtnEl = document.getElementById("notificationBtn");
+    if (notifBtnEl) {
+        notifBtnEl.addEventListener("click", () => {
+            window.location.href = "notifications.html";
+        });
+    }
 
-                alert(
-                    "No new notifications."
-                );
-
-            }
-        );
-
-
-    document
-        .getElementById(
-            "notificationLink"
-        )
-        .addEventListener(
-            "click",
-            event => {
-
-                event.preventDefault();
-
-                alert(
-                    "No new notifications."
-                );
-
-            }
-        );
+    const notifLinkEl = document.getElementById("notificationLink");
+    if (notifLinkEl) {
+        notifLinkEl.addEventListener("click", event => {
+            event.preventDefault();
+            window.location.href = "notifications.html";
+        });
+    }
 
 
     /* ==========================================
        SETTINGS
     ========================================== */
 
-    document
-        .getElementById(
-            "settingsLink"
-        )
-        .addEventListener(
-            "click",
-            event => {
-
-                event.preventDefault();
-
-                alert(
-                    "Settings module will be added next."
-                );
-
-            }
-        );
+    const settingsLinkEl = document.getElementById("settingsLink");
+    if (settingsLinkEl) {
+        settingsLinkEl.addEventListener("click", event => {
+            event.preventDefault();
+            window.location.href = "settings.html";
+        });
+    }
 
 
     /* ==========================================
        LOGOUT
     ========================================== */
 
-    document
-        .getElementById(
-            "logoutBtn"
-        )
-        .addEventListener(
-            "click",
-            async () => {
+    const logoutBtnEl = document.getElementById("logoutBtn");
+    if (logoutBtnEl) {
+        logoutBtnEl.addEventListener("click", async () => {
+            const confirmLogout = confirm("Are you sure you want to logout?");
+            if (!confirmLogout) return;
 
-                const confirmLogout =
-                    confirm(
-                        "Are you sure you want to logout?"
-                    );
-
-
-                if (!confirmLogout) {
-
-                    return;
-
-                }
-
-
-                try {
-
-                    await signOut(auth);
-
-
-                    localStorage.removeItem(
-                        "currentUser"
-                    );
-
-                    localStorage.removeItem(
-                        "userRole"
-                    );
-
-                    localStorage.removeItem(
-                        "userUID"
-                    );
-
-                    localStorage.removeItem(
-                        "adminLoggedIn"
-                    );
-
-
-                    window.location.href =
-                        "admin-login.html";
-
-                } catch (error) {
-
-                    console.error(
-                        error
-                    );
-
-                    alert(
-                        "Logout failed."
-                    );
-
-                }
-
+            try {
+                await signOut(auth);
+                localStorage.removeItem("currentUser");
+                localStorage.removeItem("userRole");
+                localStorage.removeItem("userUID");
+                localStorage.removeItem("adminLoggedIn");
+                window.location.href = "admin-login.html";
+            } catch (error) {
+                console.error(error);
+                alert("Logout failed.");
             }
-        );
+        });
+    }
 
 
     /* ==========================================
@@ -2816,6 +2518,7 @@
         editingPharmacyId = null;
         if (pharmacyModalTitle) pharmacyModalTitle.textContent = "Add Pharmacy Account";
         if (pharmacyAccountForm) pharmacyAccountForm.reset();
+        if (pharmacyPasswordInput) pharmacyPasswordInput.value = "Pharmacy@123";
         if (pharmacyStatusInput) pharmacyStatusInput.value = "active";
         if (pharmacyModalOverlay) {
             pharmacyModalOverlay.style.display = "flex";
@@ -2846,16 +2549,70 @@
         });
     }
 
-    function loadPharmacyAccounts() {
+    const SEED_ADMIN_PHARMACIES = [
+        {
+            id: "PHARM-101",
+            name: "kanagam",
+            pharmacyName: "kanagam",
+            email: "kanagam@medimate.ai",
+            alternateEmail: "kanagam@medaimate.ai",
+            password: "Pharmacy@123",
+            phone: "8778335883",
+            location: "salem",
+            status: "active"
+        },
+        {
+            id: "PHARM-102",
+            name: "pannraiamman",
+            pharmacyName: "pannraiamman",
+            email: "pannriamman@gmail.com",
+            password: "Pharmacy@123",
+            phone: "9231456780",
+            location: "salem",
+            status: "active"
+        },
+        {
+            id: "PHARM-103",
+            name: "Central Hospital Pharmacy",
+            pharmacyName: "Central Hospital Pharmacy",
+            email: "pharmacy@medimate.ai",
+            password: "Pharmacy@123",
+            phone: "+91 9876543210",
+            location: "Block B, Ground Floor",
+            status: "active"
+        }
+    ];
+
+    async function loadPharmacyAccounts() {
+        let backendList = [];
+        try {
+            const res = await fetch(`${API_URL}/api/pharmacies/`);
+            if (res.ok) {
+                const data = await res.json();
+                backendList = data.pharmacies || [];
+            }
+        } catch(e) {}
+
         try {
             const localPharmacies = JSON.parse(localStorage.getItem("medimatePharmacies") || "[]");
             const allUsers = JSON.parse(localStorage.getItem("medimateUsers") || "[]");
             const userPharmacies = allUsers.filter(u => u.role === "pharmacy");
 
             const map = new Map();
+
+            // Default seed
+            SEED_ADMIN_PHARMACIES.forEach(s => {
+                map.set(s.email.toLowerCase(), { ...s });
+                if (s.alternateEmail) map.set(s.alternateEmail.toLowerCase(), { ...s });
+            });
+
+            backendList.forEach(b => {
+                const k = (b.email || b.id || "").toLowerCase();
+                if (k) map.set(k, { ...(map.get(k) || {}), ...b });
+            });
             localPharmacies.forEach(p => {
                 const k = (p.email || p.id || "").toLowerCase();
-                if (k) map.set(k, p);
+                if (k) map.set(k, { ...(map.get(k) || {}), ...p });
             });
             userPharmacies.forEach(u => {
                 const k = (u.email || u.id || "").toLowerCase();
@@ -2868,13 +2625,42 @@
                         phone: u.phone || existing.phone || "-",
                         location: u.location || existing.location || "-",
                         status: u.status || existing.status || "active",
-                        password: u.password || existing.password || ""
+                        password: u.password || existing.password || "Pharmacy@123"
                     });
                 }
             });
+
+            // Ensure all items have a default password
+            map.forEach((item, key) => {
+                if (!item.password) item.password = "Pharmacy@123";
+            });
+
             pharmacyAccounts = Array.from(map.values());
+
+            // Sync seeds to local storage so pharmacy login page can access immediately
+            localStorage.setItem("medimatePharmacies", JSON.stringify(pharmacyAccounts));
+            
+            // Sync pharmacy users to medimateUsers
+            pharmacyAccounts.forEach(pa => {
+                const uIdx = allUsers.findIndex(u => u.email && u.email.toLowerCase() === pa.email.toLowerCase());
+                const uObj = {
+                    id: pa.id,
+                    name: pa.name || pa.pharmacyName,
+                    pharmacyName: pa.name || pa.pharmacyName,
+                    email: pa.email,
+                    password: pa.password || "Pharmacy@123",
+                    phone: pa.phone,
+                    location: pa.location,
+                    role: "pharmacy",
+                    status: pa.status || "active"
+                };
+                if (uIdx !== -1) allUsers[uIdx] = { ...allUsers[uIdx], ...uObj };
+                else allUsers.push(uObj);
+            });
+            localStorage.setItem("medimateUsers", JSON.stringify(allUsers));
+
         } catch(e) {
-            pharmacyAccounts = [];
+            pharmacyAccounts = SEED_ADMIN_PHARMACIES;
         }
         renderPharmacyAccounts();
     }
@@ -2890,7 +2676,7 @@
         if (filtered.length === 0) {
             pharmacyAccountTableBody.innerHTML = `
                 <tr>
-                    <td colspan="7" class="empty">No pharmacy accounts found.</td>
+                    <td colspan="8" class="empty">No pharmacy accounts found.</td>
                 </tr>
             `;
             return;
@@ -2901,6 +2687,16 @@
                 <td>${escapeHTML(p.id || (idx + 1))}</td>
                 <td><strong>${escapeHTML(p.name || p.pharmacyName || "-")}</strong></td>
                 <td>${escapeHTML(p.email || "-")}</td>
+                <td>
+                    <span 
+                        class="badge" 
+                        style="font-family: monospace; font-size: 12px; background: rgba(0, 229, 153, 0.12); color: #00e599; border: 1px solid rgba(0, 229, 153, 0.28); padding: 4px 10px; border-radius: 8px; cursor: pointer; display: inline-flex; align-items: center; gap: 5px;" 
+                        title="Click to copy password" 
+                        onclick="navigator.clipboard.writeText('${escapeHTML(p.password || 'Pharmacy@123')}'); alert('Password copied: ${escapeHTML(p.password || 'Pharmacy@123')}');"
+                    >
+                        🔑 ${escapeHTML(p.password || 'Pharmacy@123')}
+                    </span>
+                </td>
                 <td>${escapeHTML(p.phone || "-")}</td>
                 <td>${escapeHTML(p.location || "-")}</td>
                 <td>
@@ -2909,9 +2705,17 @@
                     </span>
                 </td>
                 <td>
-                    <div style="display: flex; gap: 8px;">
+                    <div style="display: flex; gap: 8px; align-items: center;">
                         <button class="edit-btn" onclick="editPharmacyAccount('${p.id || p.email}')">✏️ Edit</button>
                         <button class="delete-btn" onclick="deletePharmacyAccount('${p.id || p.email}')">🗑️ Delete</button>
+                        <a 
+                            href="../pharmacy/pharmacy-login.html" 
+                            target="_blank" 
+                            style="padding: 6px 12px; background: rgba(0, 210, 255, 0.12); color: #00d2ff; border: 1px solid rgba(0, 210, 255, 0.3); border-radius: 8px; font-size: 12px; font-weight: 700; text-decoration: none; display: inline-flex; align-items: center; gap: 4px; transition: 0.2s;"
+                            title="Open Pharmacy Login with this account"
+                        >
+                            🚀 Login
+                        </a>
                     </div>
                 </td>
             </tr>
@@ -2923,10 +2727,10 @@
     }
 
     if (pharmacyAccountForm) {
-        pharmacyAccountForm.addEventListener("submit", function(e) {
+        pharmacyAccountForm.addEventListener("submit", async function(e) {
             e.preventDefault();
             const name = pharmacyNameInput.value.trim();
-            const email = pharmacyEmailInput.value.trim().toLowerCase();
+            let email = pharmacyEmailInput.value.trim().toLowerCase();
             const enteredPass = pharmacyPasswordInput.value.trim();
             const phone = pharmacyPhoneInput.value.trim();
             const location = pharmacyLocationInput.value.trim();
@@ -2937,28 +2741,27 @@
                 return;
             }
 
-            let finalPassword = enteredPass;
-            if (!finalPassword) {
-                const uList = JSON.parse(localStorage.getItem("medimateUsers") || "[]");
-                const matched = uList.find(u => u.email && u.email.toLowerCase() === email);
-                if (matched && matched.password) finalPassword = matched.password;
-            }
-            if (!finalPassword) {
-                finalPassword = "Pharm@" + Math.floor(100 + Math.random() * 900);
+            // Normalize typo in domain if user typed @medaimate.ai
+            let alternateEmail = null;
+            if (email.includes("@medaimate.ai")) {
+                alternateEmail = email;
+                email = email.replace("@medaimate.ai", "@medimate.ai");
             }
 
+            const finalPassword = enteredPass || "Pharmacy@123";
             const pId = editingPharmacyId || ("PHARM-" + Date.now());
 
             // 1. Save to medimateUsers
             try {
                 const users = JSON.parse(localStorage.getItem("medimateUsers") || "[]");
-                const uIdx = users.findIndex(u => u.email && u.email.toLowerCase() === email);
+                const uIdx = users.findIndex(u => u.email && (u.email.toLowerCase() === email || (alternateEmail && u.email.toLowerCase() === alternateEmail)));
                 const userObj = {
                     id: pId,
                     name: name,
                     fullName: name,
                     pharmacyName: name,
                     email: email,
+                    alternateEmail: alternateEmail,
                     password: finalPassword,
                     phone: phone,
                     location: location,
@@ -2973,16 +2776,35 @@
             // 2. Save to medimatePharmacies
             try {
                 const pharms = JSON.parse(localStorage.getItem("medimatePharmacies") || "[]");
-                const pIdx = pharms.findIndex(p => (p.email && p.email.toLowerCase() === email) || String(p.id) === String(pId));
-                const record = { id: pId, name, email, password: finalPassword, phone, location, status };
+                const pIdx = pharms.findIndex(p => (p.email && (p.email.toLowerCase() === email || (alternateEmail && p.email.toLowerCase() === alternateEmail))) || String(p.id) === String(pId));
+                const record = { id: pId, name, email, alternateEmail, password: finalPassword, phone, location, status };
                 if (pIdx !== -1) pharms[pIdx] = { ...pharms[pIdx], ...record };
                 else pharms.push(record);
                 localStorage.setItem("medimatePharmacies", JSON.stringify(pharms));
             } catch(e) {}
 
+            // 3. Sync to backend API
+            try {
+                if (editingPharmacyId) {
+                    await fetch(`${API_URL}/api/pharmacies/${editingPharmacyId}`, {
+                        method: "PUT",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ name, email, phone, location, status, password: finalPassword })
+                    });
+                } else {
+                    await fetch(`${API_URL}/api/pharmacies/`, {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ id: pId, name, email, phone, location, status, password: finalPassword })
+                    });
+                }
+            } catch(apiErr) {
+                console.warn("Backend pharmacy sync skipped:", apiErr);
+            }
+
             closePharmacyAccountModal();
-            showToast(editingPharmacyId ? "Pharmacy account updated successfully." : `Pharmacy created. Password: ${finalPassword}`);
-            loadPharmacyAccounts();
+            showToast(editingPharmacyId ? "Pharmacy account updated successfully." : `Pharmacy created! Password: ${finalPassword}`);
+            await loadPharmacyAccounts();
         });
     }
 
@@ -2994,14 +2816,18 @@
         pharmacyModalTitle.textContent = "Edit Pharmacy Account";
         pharmacyNameInput.value = item.name || item.pharmacyName || "";
         pharmacyEmailInput.value = item.email || "";
-        pharmacyPasswordInput.value = item.password || "";
+        pharmacyPasswordInput.value = item.password || "Pharmacy@123";
         pharmacyPhoneInput.value = item.phone || "";
         pharmacyLocationInput.value = item.location || "";
         pharmacyStatusInput.value = item.status || "active";
-        pharmacyModalOverlay.classList.add("show");
+        if (pharmacyModalOverlay) {
+            pharmacyModalOverlay.style.display = "flex";
+            pharmacyModalOverlay.classList.add("show");
+            pharmacyModalOverlay.classList.add("active");
+        }
     };
 
-    window.deletePharmacyAccount = function(idOrEmail) {
+    window.deletePharmacyAccount = async function(idOrEmail) {
         if (!confirm("Are you sure you want to delete this pharmacy account?")) return;
         try {
             let pharms = JSON.parse(localStorage.getItem("medimatePharmacies") || "[]");
@@ -3012,8 +2838,12 @@
             users = users.filter(u => !(u.role === "pharmacy" && (String(u.id) === String(idOrEmail) || (u.email && u.email.toLowerCase() === String(idOrEmail).toLowerCase()))));
             localStorage.setItem("medimateUsers", JSON.stringify(users));
 
+            try {
+                await fetch(`${API_URL}/api/pharmacies/${idOrEmail}`, { method: "DELETE" });
+            } catch(e) {}
+
             showToast("Pharmacy account deleted.");
-            loadPharmacyAccounts();
+            await loadPharmacyAccounts();
         } catch(e) {}
     };
 

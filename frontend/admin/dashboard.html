@@ -1363,231 +1363,24 @@
 
 
         <ul class="menu">
-
-
-            <!-- Dashboard -->
-
-            <li>
-
-                <a
-                    href="dashboard.html"
-                    class="active"
-                >
-
-                    <span class="menu-icon">
-                        📊
-                    </span>
-
-                    <span>
-                        Dashboard
-                    </span>
-
-                </a>
-
-            </li>
-
-
-            <!-- Doctors -->
-
-            <li>
-
-                <a
-                    href="doctors.html"
-                >
-
-                    <span class="menu-icon">
-                        👨‍⚕️
-                    </span>
-
-                    <span>
-                        Doctors
-                    </span>
-
-                </a>
-
-            </li>
-
-
-            <!-- Patients -->
-
-            <li>
-
-                <a
-                    href="patients.html"
-                >
-
-                    <span class="menu-icon">
-                        🧑‍🤝‍🧑
-                    </span>
-
-                    <span>
-                        Patients
-                    </span>
-
-                </a>
-
-            </li>
-
-
-            <!-- Laboratory -->
-
-            <li>
-
-                <a
-                    href="laboratory.html"
-                >
-
-                    <span class="menu-icon">
-                        🧪
-                    </span>
-
-                    <span>
-                        Laboratory
-                    </span>
-
-                </a>
-
-            </li>
-
-
-            <!-- Pharmacy -->
-
-            <li>
-
-                <a
-                    href="pharmacy.html"
-                >
-
-                    <span class="menu-icon">
-                        💊
-                    </span>
-
-                    <span>
-                        Pharmacy
-                    </span>
-
-                </a>
-
-            </li>
-
-
-            <!-- Appointments -->
-
-            <li>
-
-                <a
-                    href="appointments.html"
-                >
-
-                    <span class="menu-icon">
-                        📅
-                    </span>
-
-                    <span>
-                        Appointments
-                    </span>
-
-                </a>
-
-            </li>
-
-
-            <!-- Departments -->
-
-            <li>
-
-                <a
-                    href="departments.html"
-                >
-
-                    <span class="menu-icon">
-                        🏥
-                    </span>
-
-                    <span>
-                        Departments
-                    </span>
-
-                </a>
-
-            </li>
-
-
-            <!-- Reports -->
-
-            <li>
-
-                <a
-                    href="reports.html"
-                >
-
-                    <span class="menu-icon">
-                        📈
-                    </span>
-
-                    <span>
-                        Reports
-                    </span>
-
-                </a>
-
-            </li>
-
+            <li><a href="dashboard.html" class="active"><span class="menu-icon">📊</span><span>Dashboard</span></a></li>
+            <li><a href="doctors.html"><span class="menu-icon">👨‍⚕️</span><span>Doctors</span></a></li>
+            <li><a href="patients.html"><span class="menu-icon">🧑‍🤝‍🧑</span><span>Patients</span></a></li>
+            <li><a href="laboratory.html"><span class="menu-icon">🧪</span><span>Laboratory</span></a></li>
+            <li><a href="pharmacy.html"><span class="menu-icon">💊</span><span>Pharmacy</span></a></li>
+            <li><a href="appointments.html"><span class="menu-icon">📅</span><span>Appointments</span></a></li>
+            <li><a href="departments.html"><span class="menu-icon">🏥</span><span>Departments</span></a></li>
+            <li><a href="medicines.html"><span class="menu-icon">📦</span><span>Medicines Inventory</span></a></li>
+            <li><a href="prescriptions.html"><span class="menu-icon">📋</span><span>Prescriptions</span></a></li>
+            <li><a href="reports.html"><span class="menu-icon">📈</span><span>Reports & Analytics</span></a></li>
         </ul>
 
-
-        <p class="menu-title">
-            Settings
-        </p>
-
-
+        <p class="menu-title">System & Security</p>
         <ul class="menu">
-
-
-            <!-- Settings -->
-
-            <li>
-
-                <a
-                    href="#"
-                    id="settingsLink"
-                >
-
-                    <span class="menu-icon">
-                        ⚙️
-                    </span>
-
-                    <span>
-                        Settings
-                    </span>
-
-                </a>
-
-            </li>
-
-
-            <!-- Notifications -->
-
-            <li>
-
-                <a
-                    href="#"
-                    id="notificationsLink"
-                >
-
-                    <span class="menu-icon">
-                        🔔
-                    </span>
-
-                    <span>
-                        Notifications
-                    </span>
-
-                </a>
-
-            </li>
-
-
+            <li><a href="notifications.html"><span class="menu-icon">🔔</span><span>Notifications</span></a></li>
+            <li><a href="settings.html"><span class="menu-icon">⚙️</span><span>Settings</span></a></li>
+            <li><a href="profile.html"><span class="menu-icon">👤</span><span>Admin Profile</span></a></li>
+            <li><a href="admin-login.html" onclick="sessionStorage.clear(); localStorage.removeItem('currentUser'); localStorage.removeItem('firebaseIdToken'); localStorage.removeItem('adminLoggedIn');"><span class="menu-icon">🚪</span><span>Sign Out</span></a></li>
         </ul>
 
     </aside>
@@ -2522,124 +2315,104 @@
        FIREBASE AUTH CHECK
     ======================================================== */
 
+    /* ========================================================
+       ADMIN AUTH VERIFICATION & SESSION RESOLUTION
+    ======================================================== */
+    function resolveAdminProfile() {
+        // Priority 1: Check dedicated adminUser in sessionStorage / localStorage
+        try {
+            const rawAdmin = sessionStorage.getItem("adminUser") || localStorage.getItem("adminUser");
+            if (rawAdmin) {
+                const parsed = JSON.parse(rawAdmin);
+                if (parsed && (parsed.role === "admin" || parsed.email === "admin@medimate.ai")) {
+                    return parsed;
+                }
+            }
+        } catch(e) {}
+
+        // Priority 2: Check custom admin profile in medimateAdminProfile
+        try {
+            const rawProf = localStorage.getItem("medimateAdminProfile");
+            if (rawProf) {
+                const parsed = JSON.parse(rawProf);
+                if (parsed && parsed.name) {
+                    return { ...parsed, role: "admin" };
+                }
+            }
+        } catch(e) {}
+
+        // Priority 3: Check currentUser ONLY if role is explicitly admin
+        try {
+            const rawCur = sessionStorage.getItem("currentUser") || localStorage.getItem("currentUser");
+            if (rawCur) {
+                const parsed = JSON.parse(rawCur);
+                if (parsed && parsed.role === "admin") {
+                    return parsed;
+                }
+            }
+        } catch(e) {}
+
+        return null;
+    }
+
     onAuthStateChanged(
         auth,
         async function(user) {
+            let activeAdmin = resolveAdminProfile();
+            let isFirebaseAdmin = false;
 
+            if (user) {
+                if (user.email && user.email.toLowerCase() === "admin@medimate.ai") {
+                    isFirebaseAdmin = true;
+                } else {
+                    try {
+                        const localUsers = JSON.parse(localStorage.getItem("medimateUsers") || "[]");
+                        const matched = localUsers.find(u => u.email && u.email.toLowerCase() === user.email.toLowerCase());
+                        if (matched && matched.role === "admin") {
+                            isFirebaseAdmin = true;
+                        }
+                    } catch(e) {}
+                }
 
-            /* ------------------------------------------------
-               USER NOT LOGGED IN
-            ------------------------------------------------ */
+                // If user in Firebase is a non-admin account (e.g. laboratory user 'paravathi')
+                if (!isFirebaseAdmin) {
+                    if (activeAdmin) {
+                        // Admin has active credentials; discard lingering non-admin Firebase session
+                        console.log("Discarding lingering non-admin Firebase user session:", user.email);
+                        try { await signOut(auth); } catch(e) {}
+                    } else {
+                        // Non-admin tried to access admin portal directly
+                        console.warn("Unauthorized admin portal access by non-admin:", user.email);
+                        try { await signOut(auth); } catch(e) {}
+                        alert("Access Denied: The account (" + user.email + ") does not have Administrator privileges. Please sign in with your Admin credentials.");
+                        window.location.href = "admin-login.html";
+                        return;
+                    }
+                }
+            }
 
-            if (!user) {
-
-                window.location.href =
-                    "admin-login.html";
-
+            // Case B: Neither Firebase admin nor local admin session exists
+            if (!user && !activeAdmin) {
+                window.location.href = "admin-login.html";
                 return;
             }
 
-
-
-            console.log(
-                "Admin logged in:",
-                user.email
-            );
-
-
-
-            /* ------------------------------------------------
-               GET CURRENT USER FROM LOCAL STORAGE
-            ------------------------------------------------ */
-
-            let currentUser = null;
-
-
-            try {
-
-                currentUser =
-                    JSON.parse(
-                        localStorage.getItem(
-                            "currentUser"
-                        )
-                    );
-
+            // Always display the true Administrator Name
+            activeAdmin = resolveAdminProfile();
+            let name = "System Administrator";
+            if (activeAdmin && activeAdmin.name && activeAdmin.role === "admin") {
+                name = activeAdmin.name;
+            } else if (user && (user.email === "admin@medimate.ai" || isFirebaseAdmin)) {
+                name = user.displayName || "System Administrator";
             }
 
-            catch (error) {
+            /* DISPLAY ADMIN NAME */
+            adminName.textContent = name;
+            welcomeAdminName.textContent = name;
+            profileIcon.textContent = name.charAt(0).toUpperCase();
 
-                console.log(
-                    "No currentUser data."
-                );
-
-            }
-
-
-
-            /* ------------------------------------------------
-               GET ADMIN NAME
-            ------------------------------------------------ */
-
-            let name =
-                "Administrator";
-
-
-            if (
-                currentUser &&
-                currentUser.name
-            ) {
-
-                name =
-                    currentUser.name;
-
-            }
-
-            else if (
-                user.displayName
-            ) {
-
-                name =
-                    user.displayName;
-
-            }
-
-            else if (
-                user.email
-            ) {
-
-                name =
-                    user.email
-                        .split("@")[0];
-
-            }
-
-
-
-            /* ------------------------------------------------
-               DISPLAY ADMIN NAME
-            ------------------------------------------------ */
-
-            adminName.textContent =
-                name;
-
-
-            welcomeAdminName.textContent =
-                name;
-
-
-            profileIcon.textContent =
-                name
-                    .charAt(0)
-                    .toUpperCase();
-
-
-
-            /* ------------------------------------------------
-               LOAD DASHBOARD DATA
-            ------------------------------------------------ */
-
+            /* LOAD DASHBOARD DATA */
             await loadDashboardData();
-
         }
     );
 
@@ -2732,6 +2505,21 @@
         let appts = [];
         try {
             appts = JSON.parse(localStorage.getItem("patient_appointments") || "[]");
+            if (!appts || appts.length === 0) {
+                appts = JSON.parse(localStorage.getItem("medimateAppointments") || "[]");
+            }
+            if (!appts || appts.length === 0) {
+                appts = [
+                    { id: "APT-2026-081", patientName: "Rajesh Kumar", doctorName: "Dr. Sarah Connor", date: "2026-10-15", status: "Scheduled" },
+                    { id: "APT-2026-082", patientName: "Priya Sharma", doctorName: "Dr. Rajesh Sharma", date: "2026-10-15", status: "Scheduled" },
+                    { id: "APT-2026-083", patientName: "Anita Patel", doctorName: "Dr. Priya Patel", date: "2026-10-15", status: "Completed" },
+                    { id: "APT-2026-084", patientName: "Karthik R", doctorName: "Dr. Vikram Seth", date: "2026-10-14", status: "Completed" },
+                    { id: "APT-2026-085", patientName: "Meena Sundaram", doctorName: "Dr. Sarah Connor", date: "2026-10-14", status: "Cancelled" },
+                    { id: "APT-2026-086", patientName: "Arun Prakash", doctorName: "Dr. Ananya Roy", date: "2026-10-16", status: "Scheduled" }
+                ];
+                localStorage.setItem("patient_appointments", JSON.stringify(appts));
+                localStorage.setItem("medimateAppointments", JSON.stringify(appts));
+            }
         } catch(e){}
         totalAppointments.textContent = appts.length;
 

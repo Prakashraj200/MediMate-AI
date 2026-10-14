@@ -42,7 +42,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     alert(`Registration successful! You may now sign in as ${role.toUpperCase()}.`);
-    const targetUrl = `/frontend/${role}/${role === 'laboratory' ? 'lab' : role}-login.html`;
+    const targetUrl = `/${role}/${role === 'laboratory' ? 'lab' : role}-login.html`;
     window.location.href = targetUrl;
   });
 });

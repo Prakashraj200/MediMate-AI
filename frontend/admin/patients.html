@@ -635,83 +635,24 @@
         <p class="menu-title">Main Menu</p>
 
         <ul class="menu">
-
-            <li>
-                <a href="dashboard.html">
-                    <span class="menu-icon">📊</span>
-                    Dashboard
-                </a>
-            </li>
-
-            <li>
-                <a href="doctors.html">
-                    <span class="menu-icon">👨‍⚕️</span>
-                    Doctors
-                </a>
-            </li>
-
-            <li>
-                <a href="patients.html" class="active">
-                    <span class="menu-icon">🧑‍🤝‍🧑</span>
-                    Patients
-                </a>
-            </li>
-
-            <li>
-                <a href="laboratory.html">
-                    <span class="menu-icon">🧪</span>
-                    Laboratory
-                </a>
-            </li>
-
-            <li>
-                <a href="pharmacy.html">
-                    <span class="menu-icon">💊</span>
-                    Pharmacy
-                </a>
-            </li>
-
-            <li>
-                <a href="appointments.html">
-                    <span class="menu-icon">📅</span>
-                    Appointments
-                </a>
-            </li>
-
-            <li>
-                <a href="departments.html">
-                    <span class="menu-icon">🏥</span>
-                    Departments
-                </a>
-            </li>
-
-            <li>
-                <a href="reports.html">
-                    <span class="menu-icon">📈</span>
-                    Reports
-                </a>
-            </li>
-
+            <li><a href="dashboard.html"><span class="menu-icon">📊</span><span>Dashboard</span></a></li>
+            <li><a href="doctors.html"><span class="menu-icon">👨‍⚕️</span><span>Doctors</span></a></li>
+            <li><a href="patients.html" class="active"><span class="menu-icon">🧑‍🤝‍🧑</span><span>Patients</span></a></li>
+            <li><a href="laboratory.html"><span class="menu-icon">🧪</span><span>Laboratory</span></a></li>
+            <li><a href="pharmacy.html"><span class="menu-icon">💊</span><span>Pharmacy</span></a></li>
+            <li><a href="appointments.html"><span class="menu-icon">📅</span><span>Appointments</span></a></li>
+            <li><a href="departments.html"><span class="menu-icon">🏥</span><span>Departments</span></a></li>
+            <li><a href="medicines.html"><span class="menu-icon">📦</span><span>Medicines Inventory</span></a></li>
+            <li><a href="prescriptions.html"><span class="menu-icon">📋</span><span>Prescriptions</span></a></li>
+            <li><a href="reports.html"><span class="menu-icon">📈</span><span>Reports & Analytics</span></a></li>
         </ul>
 
-        <p class="menu-title">Settings</p>
-
+        <p class="menu-title">System & Security</p>
         <ul class="menu">
-
-            <li>
-                <a href="#" id="settingsLink">
-                    <span class="menu-icon">⚙️</span>
-                    Settings
-                </a>
-            </li>
-
-            <li>
-                <a href="#" id="notificationLink">
-                    <span class="menu-icon">🔔</span>
-                    Notifications
-                </a>
-            </li>
-
+            <li><a href="notifications.html"><span class="menu-icon">🔔</span><span>Notifications</span></a></li>
+            <li><a href="settings.html"><span class="menu-icon">⚙️</span><span>Settings</span></a></li>
+            <li><a href="profile.html"><span class="menu-icon">👤</span><span>Admin Profile</span></a></li>
+            <li><a href="admin-login.html" onclick="sessionStorage.clear(); localStorage.removeItem('currentUser'); localStorage.removeItem('firebaseIdToken'); localStorage.removeItem('adminLoggedIn');"><span class="menu-icon">🚪</span><span>Sign Out</span></a></li>
         </ul>
 
     </aside>
@@ -1323,80 +1264,75 @@
            AUTH CHECK
         ====================================================== */
 
+        function resolveAdminProfile() {
+            try {
+                const rawAdmin = sessionStorage.getItem("adminUser") || localStorage.getItem("adminUser");
+                if (rawAdmin) {
+                    const parsed = JSON.parse(rawAdmin);
+                    if (parsed && (parsed.role === "admin" || parsed.email === "admin@medimate.ai")) return parsed;
+                }
+            } catch(e) {}
+            try {
+                const rawProf = localStorage.getItem("medimateAdminProfile");
+                if (rawProf) {
+                    const parsed = JSON.parse(rawProf);
+                    if (parsed && parsed.name) return { ...parsed, role: "admin" };
+                }
+            } catch(e) {}
+            try {
+                const rawCur = sessionStorage.getItem("currentUser") || localStorage.getItem("currentUser");
+                if (rawCur) {
+                    const parsed = JSON.parse(rawCur);
+                    if (parsed && parsed.role === "admin") return parsed;
+                }
+            } catch(e) {}
+            return null;
+        }
+
         onAuthStateChanged(
             auth,
             async (user) => {
+                let activeAdmin = resolveAdminProfile();
+                let isFirebaseAdmin = false;
 
-                if (!user) {
-                    const localAdmin = sessionStorage.getItem("currentUser") || localStorage.getItem("currentUser");
-                    if (localAdmin) {
+                if (user) {
+                    if (user.email && user.email.toLowerCase() === "admin@medimate.ai") {
+                        isFirebaseAdmin = true;
+                    } else {
                         try {
-                            const parsed = JSON.parse(localAdmin);
-                            if (parsed.role === "admin" || parsed.email) {
-                                await loadPatients();
-                                return;
-                            }
+                            const localUsers = JSON.parse(localStorage.getItem("medimateUsers") || "[]");
+                            const matched = localUsers.find(u => u.email && u.email.toLowerCase() === user.email.toLowerCase());
+                            if (matched && matched.role === "admin") isFirebaseAdmin = true;
                         } catch(e) {}
                     }
-                    window.location.href =
-                        "admin-login.html";
 
+                    if (!isFirebaseAdmin) {
+                        if (activeAdmin) {
+                            try { await signOut(auth); } catch(e) {}
+                        } else {
+                            try { await signOut(auth); } catch(e) {}
+                            alert("Access Denied: The account (" + user.email + ") does not have Administrator privileges. Please sign in with your Admin credentials.");
+                            window.location.href = "admin-login.html";
+                            return;
+                        }
+                    }
+                }
+
+                if (!user && !activeAdmin) {
+                    window.location.href = "admin-login.html";
                     return;
                 }
 
-
-                let currentUser = null;
-
-                try {
-
-                    currentUser =
-                        JSON.parse(
-                            localStorage.getItem(
-                                "currentUser"
-                            )
-                        );
-
-                } catch (error) {
-
-                    console.log(
-                        "No current user data"
-                    );
-
+                activeAdmin = resolveAdminProfile();
+                let adminName = "System Administrator";
+                if (activeAdmin && activeAdmin.name && activeAdmin.role === "admin") {
+                    adminName = activeAdmin.name;
+                } else if (user && (user.email === "admin@medimate.ai" || isFirebaseAdmin)) {
+                    adminName = user.displayName || "System Administrator";
                 }
 
-
-                let adminName =
-                    "Administrator";
-
-
-                if (
-                    currentUser &&
-                    currentUser.name
-                ) {
-
-                    adminName =
-                        currentUser.name;
-
-                } else if (user.email) {
-
-                    adminName =
-                        user.email.split("@")[0];
-
-                }
-
-
-                document.getElementById(
-                    "adminName"
-                ).textContent =
-                    adminName;
-
-
-                document.getElementById(
-                    "profileCircle"
-                ).textContent =
-                    adminName
-                        .charAt(0)
-                        .toUpperCase();
+                document.getElementById("adminName").textContent = adminName;
+                document.getElementById("profileCircle").textContent = adminName.charAt(0).toUpperCase();
 
 
                 await loadPatients();
@@ -2024,11 +1960,7 @@
             .addEventListener(
                 "click",
                 () => {
-
-                    alert(
-                        "No new notifications."
-                    );
-
+                    window.location.href = "notifications.html";
                 }
             );
 
@@ -2038,13 +1970,8 @@
             .addEventListener(
                 "click",
                 event => {
-
                     event.preventDefault();
-
-                    alert(
-                        "No new notifications."
-                    );
-
+                    window.location.href = "notifications.html";
                 }
             );
 
@@ -2058,13 +1985,8 @@
             .addEventListener(
                 "click",
                 event => {
-
                     event.preventDefault();
-
-                    alert(
-                        "Settings module will be added next."
-                    );
-
+                    window.location.href = "settings.html";
                 }
             );
 

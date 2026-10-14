@@ -1372,14 +1372,28 @@
                     messageBox.className = "message success";
                     messageBox.textContent = "Admin credentials verified. Opening dashboard...";
 
+                    try { await signOut(auth); } catch(e) {}
+
+                    let adminDisplayName = "System Administrator";
+                    try {
+                        const savedProf = JSON.parse(localStorage.getItem("medimateAdminProfile") || "null");
+                        if (savedProf && savedProf.name) adminDisplayName = savedProf.name;
+                    } catch(e) {}
+
                     const adminUserObj = {
                         uid: "admin-root-01",
-                        name: "System Administrator",
+                        name: adminDisplayName,
                         email: "admin@medimate.ai",
                         role: "admin"
                     };
+                    sessionStorage.setItem("adminUser", JSON.stringify(adminUserObj));
                     sessionStorage.setItem("currentUser", JSON.stringify(adminUserObj));
+                    sessionStorage.setItem("adminLoggedIn", "true");
                     sessionStorage.setItem("firebaseIdToken", "local-admin-root-token");
+                    localStorage.setItem("adminUser", JSON.stringify(adminUserObj));
+                    localStorage.setItem("currentUser", JSON.stringify(adminUserObj));
+                    localStorage.setItem("adminLoggedIn", "true");
+                    localStorage.setItem("userRole", "admin");
                     if (rememberMe.checked) {
                         localStorage.setItem("rememberAdmin", "true");
                     } else {
@@ -1489,17 +1503,41 @@
 
 
 
-                    // =========================
-                    // STORE CURRENT USER
-                    // =========================
+                    const adminProfileObj = {
+                        uid: firebaseUser.uid,
+                        name: userProfile.name || firebaseUser.displayName || "System Administrator",
+                        email: userProfile.email || firebaseUser.email,
+                        role: "admin"
+                    };
 
                     sessionStorage.setItem(
                         "currentUser",
-                        JSON.stringify(
-                            result.user
-                        )
+                        JSON.stringify(adminProfileObj)
                     );
-
+                    sessionStorage.setItem(
+                        "adminUser",
+                        JSON.stringify(adminProfileObj)
+                    );
+                    sessionStorage.setItem(
+                        "adminLoggedIn",
+                        "true"
+                    );
+                    localStorage.setItem(
+                        "currentUser",
+                        JSON.stringify(adminProfileObj)
+                    );
+                    localStorage.setItem(
+                        "adminUser",
+                        JSON.stringify(adminProfileObj)
+                    );
+                    localStorage.setItem(
+                        "adminLoggedIn",
+                        "true"
+                    );
+                    localStorage.setItem(
+                        "userRole",
+                        "admin"
+                    );
 
                     sessionStorage.setItem(
                         "firebaseIdToken",
@@ -1580,14 +1618,27 @@
                     } catch (e) {}
 
                     if ((email === "admin@medimate.ai" && (password === "admin123" || password === "admin@123" || isMasterAdminPass)) || localMatched) {
+                        try { await signOut(auth); } catch(e) {}
+                        let adminDisplayName = (localMatched && matchedUser && matchedUser.name) ? matchedUser.name : "System Administrator";
+                        try {
+                            const savedProf = JSON.parse(localStorage.getItem("medimateAdminProfile") || "null");
+                            if (savedProf && savedProf.name && !localMatched) adminDisplayName = savedProf.name;
+                        } catch(e) {}
+
                         const adminUserObj = {
                             uid: "admin-root-01",
-                            name: "System Administrator",
+                            name: adminDisplayName,
                             email: email,
                             role: "admin"
                         };
+                        sessionStorage.setItem("adminUser", JSON.stringify(adminUserObj));
                         sessionStorage.setItem("currentUser", JSON.stringify(adminUserObj));
+                        sessionStorage.setItem("adminLoggedIn", "true");
                         sessionStorage.setItem("firebaseIdToken", "local-admin-root-token");
+                        localStorage.setItem("adminUser", JSON.stringify(adminUserObj));
+                        localStorage.setItem("currentUser", JSON.stringify(adminUserObj));
+                        localStorage.setItem("adminLoggedIn", "true");
+                        localStorage.setItem("userRole", "admin");
                         if (rememberMe.checked) {
                             localStorage.setItem("rememberAdmin", "true");
                         } else {

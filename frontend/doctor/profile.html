@@ -220,7 +220,7 @@
         <ul class="nav-menu">
             <li><a href="notifications.html"><span class="nav-icon">🔔</span><span>Notifications</span></a></li>
             <li><a href="profile.html" class="active"><span class="nav-icon">👤</span><span>My Profile</span></a></li>
-            <li><a href="doctor-login.html" onclick="localStorage.clear();"><span class="nav-icon">🚪</span><span>Sign Out</span></a></li>
+            <li><a href="doctor-login.html" onclick="localStorage.removeItem('currentUser'); localStorage.removeItem('doctorLoggedIn'); sessionStorage.clear();"><span class="nav-icon">🚪</span><span>Sign Out</span></a></li>
         </ul>
     </aside>
 

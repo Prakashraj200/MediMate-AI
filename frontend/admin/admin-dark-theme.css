@@ -675,3 +675,92 @@ tbody tr:hover {
     box-shadow: 0 0 20px rgba(0, 229, 153, 0.35) !important;
 }
 
+/* =========================================
+   ADMIN PROFILE & AUDIT LOG
+========================================= */
+.profile-card {
+    background: var(--bg-surface) !important;
+    border: 1px solid var(--border-color) !important;
+    border-radius: 24px !important;
+    padding: 32px !important;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), 0 0 30px rgba(0, 229, 153, 0.05) !important;
+    margin-bottom: 24px !important;
+    backdrop-filter: blur(20px) !important;
+    -webkit-backdrop-filter: blur(20px) !important;
+    color: var(--text-main) !important;
+}
+
+.profile-card h2, .profile-card h3 {
+    color: #ffffff !important;
+}
+
+.profile-banner {
+    border-bottom: 1px solid var(--border-color) !important;
+}
+
+.avatar-box {
+    background: linear-gradient(135deg, #00e599 0%, #059669 100%) !important;
+    color: #050a14 !important;
+    box-shadow: 0 0 25px rgba(0, 229, 153, 0.4) !important;
+    border-radius: 20px !important;
+    font-weight: 800 !important;
+}
+
+.profile-card .form-group label {
+    color: var(--text-muted) !important;
+    font-size: 13px !important;
+    font-weight: 600 !important;
+}
+
+.profile-card .form-group input {
+    background: var(--bg-input) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    color: #f8fafc !important;
+    border-radius: 12px !important;
+    padding: 12px 16px !important;
+    font-size: 14px !important;
+    outline: none !important;
+    transition: all 0.25s ease !important;
+}
+
+.profile-card .form-group input:focus {
+    border-color: var(--primary) !important;
+    box-shadow: 0 0 0 3px rgba(0, 229, 153, 0.15) !important;
+    background: rgba(10, 18, 36, 0.9) !important;
+}
+
+.audit-item {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    padding: 16px 20px !important;
+    margin-bottom: 12px !important;
+    border-radius: 14px !important;
+    background: var(--bg-surface-elevated) !important;
+    border: 1px solid var(--border-color) !important;
+    color: var(--text-main) !important;
+    transition: all 0.2s ease !important;
+}
+
+.audit-item:hover {
+    border-color: rgba(0, 229, 153, 0.25) !important;
+    transform: translateX(4px) !important;
+}
+
+.audit-item strong {
+    color: #ffffff !important;
+    font-size: 14.5px !important;
+}
+
+.audit-item p {
+    color: var(--text-muted) !important;
+    font-size: 13px !important;
+    margin-top: 4px !important;
+}
+
+.audit-item span {
+    color: var(--text-dim) !important;
+    font-size: 12px !important;
+    font-weight: 600 !important;
+}
+

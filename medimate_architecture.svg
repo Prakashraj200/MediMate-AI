@@ -1,0 +1,106 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 650" width="100%" height="100%" style="background-color: #f8fafc; font-family: 'Segoe UI', Arial, sans-serif;">
+  <defs>
+    <!-- Drop Shadow Filter -->
+    <filter id="shadow" x="-5%" y="-5%" width="115%" height="115%" filterUnits="userSpaceOnUse">
+      <feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#0f172a" flood-opacity="0.1"/>
+    </filter>
+    
+    <!-- Arrow Marker -->
+    <marker id="arrow" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#0284c7" />
+    </marker>
+    <marker id="arrow-up" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#0284c7" />
+    </marker>
+  </defs>
+
+  <!-- Title Header -->
+  <rect x="50" y="25" width="900" height="55" rx="8" fill="#1e3a8a" filter="url(#shadow)"/>
+  <text x="500" y="60" text-anchor="middle" fill="#ffffff" font-size="22" font-weight="bold" letter-spacing="1">
+    MEDIMATE-AI: SYSTEM ARCHITECTURE
+  </text>
+
+  <!-- ================= TIER 1: CLIENT PORTALS ================= -->
+  <rect x="50" y="110" width="900" height="115" rx="12" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5" filter="url(#shadow)"/>
+  <rect x="70" y="98" width="280" height="24" rx="6" fill="#0284c7"/>
+  <text x="210" y="115" text-anchor="middle" fill="#ffffff" font-size="12" font-weight="bold">
+    TIER 1: USER PRESENTATION LAYER
+  </text>
+
+  <!-- Portal 1: Patient -->
+  <rect x="70" y="135" width="160" height="70" rx="8" fill="#eff6ff" stroke="#93c5fd" stroke-width="1.5"/>
+  <text x="150" y="162" text-anchor="middle" fill="#1e3a8a" font-size="14" font-weight="bold">🧑‍🤝‍🧑 Patient</text>
+  <text x="150" y="184" text-anchor="middle" fill="#475569" font-size="11">Vitals &amp; Telehealth</text>
+
+  <!-- Portal 2: Doctor -->
+  <rect x="250" y="135" width="160" height="70" rx="8" fill="#eff6ff" stroke="#93c5fd" stroke-width="1.5"/>
+  <text x="330" y="162" text-anchor="middle" fill="#1e3a8a" font-size="14" font-weight="bold">👨‍⚕️ Doctor</text>
+  <text x="330" y="184" text-anchor="middle" fill="#475569" font-size="11">EHR &amp; e-Prescriptions</text>
+
+  <!-- Portal 3: Laboratory -->
+  <rect x="430" y="135" width="160" height="70" rx="8" fill="#eff6ff" stroke="#93c5fd" stroke-width="1.5"/>
+  <text x="510" y="162" text-anchor="middle" fill="#1e3a8a" font-size="14" font-weight="bold">🧪 Laboratory</text>
+  <text x="510" y="184" text-anchor="middle" fill="#475569" font-size="11">Specimen &amp; Reports</text>
+
+  <!-- Portal 4: Pharmacy -->
+  <rect x="610" y="135" width="160" height="70" rx="8" fill="#eff6ff" stroke="#93c5fd" stroke-width="1.5"/>
+  <text x="690" y="162" text-anchor="middle" fill="#1e3a8a" font-size="14" font-weight="bold">💊 Pharmacy</text>
+  <text x="690" y="184" text-anchor="middle" fill="#475569" font-size="11">Dispensing &amp; Stock</text>
+
+  <!-- Portal 5: Admin -->
+  <rect x="790" y="135" width="140" height="70" rx="8" fill="#eff6ff" stroke="#93c5fd" stroke-width="1.5"/>
+  <text x="860" y="162" text-anchor="middle" fill="#1e3a8a" font-size="14" font-weight="bold">🛡️ Admin</text>
+  <text x="860" y="184" text-anchor="middle" fill="#475569" font-size="11">Staff &amp; Analytics</text>
+
+  <!-- Bidirectional Arrows (Tier 1 <-> Tier 2) -->
+  <line x1="500" y1="225" x2="500" y2="280" stroke="#0284c7" stroke-width="3" marker-end="url(#arrow)"/>
+  <line x1="510" y1="280" x2="510" y2="235" stroke="#0284c7" stroke-width="3" marker-end="url(#arrow-up)"/>
+  <text x="560" y="258" fill="#0369a1" font-size="12" font-weight="600">HTTP / JSON</text>
+
+  <!-- ================= TIER 2: APPLICATION & AI ENGINE ================= -->
+  <rect x="50" y="285" width="900" height="155" rx="12" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5" filter="url(#shadow)"/>
+  <rect x="70" y="273" width="310" height="24" rx="6" fill="#0284c7"/>
+  <text x="225" y="290" text-anchor="middle" fill="#ffffff" font-size="12" font-weight="bold">
+    TIER 2: APPLICATION &amp; AI ENGINE (FLASK)
+  </text>
+
+  <!-- Sub-block 1: Flask Web Server -->
+  <rect x="75" y="315" width="260" height="105" rx="8" fill="#f0fdf4" stroke="#86efac" stroke-width="1.5"/>
+  <text x="205" y="345" text-anchor="middle" fill="#15803d" font-size="15" font-weight="bold">🌐 Flask REST Gateway</text>
+  <text x="205" y="372" text-anchor="middle" fill="#334155" font-size="12">• 15 Modular Blueprints</text>
+  <text x="205" y="395" text-anchor="middle" fill="#334155" font-size="12">• CORS &amp; API Security</text>
+
+  <!-- Sub-block 2: Preethi AI -->
+  <rect x="360" y="315" width="270" height="105" rx="8" fill="#fefce8" stroke="#fde047" stroke-width="1.5"/>
+  <text x="495" y="345" text-anchor="middle" fill="#a16207" font-size="15" font-weight="bold">🤖 Preethi AI Engine</text>
+  <text x="495" y="372" text-anchor="middle" fill="#334155" font-size="12">• NLP Clinical Symptom Parser</text>
+  <text x="495" y="395" text-anchor="middle" fill="#dc2626" font-size="12" font-weight="bold">🚨 Instant 108/ER Alert</text>
+
+  <!-- Sub-block 3: Machine Learning Model -->
+  <rect x="655" y="315" width="275" height="105" rx="8" fill="#faf5ff" stroke="#d8b4fe" stroke-width="1.5"/>
+  <text x="792" y="345" text-anchor="middle" fill="#7e22ce" font-size="15" font-weight="bold">📊 ML Risk Classifier</text>
+  <text x="792" y="372" text-anchor="middle" fill="#334155" font-size="12">• Random Forest (100 Trees)</text>
+  <text x="792" y="395" text-anchor="middle" fill="#334155" font-size="12">• Low / Mod / High Risk Triage</text>
+
+  <!-- Bidirectional Arrows (Tier 2 <-> Tier 3) -->
+  <line x1="500" y1="440" x2="500" y2="495" stroke="#0284c7" stroke-width="3" marker-end="url(#arrow)"/>
+  <line x1="510" y1="495" x2="510" y2="450" stroke="#0284c7" stroke-width="3" marker-end="url(#arrow-up)"/>
+  <text x="575" y="473" fill="#0369a1" font-size="12" font-weight="600">Read / Write</text>
+
+  <!-- ================= TIER 3: DATA & CLOUD LAYER ================= -->
+  <rect x="50" y="500" width="900" height="120" rx="12" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5" filter="url(#shadow)"/>
+  <rect x="70" y="488" width="290" height="24" rx="6" fill="#0284c7"/>
+  <text x="215" y="505" text-anchor="middle" fill="#ffffff" font-size="12" font-weight="bold">
+    TIER 3: PERSISTENCE &amp; CLOUD STORAGE
+  </text>
+
+  <!-- Database Box 1: Firebase Auth -->
+  <rect x="120" y="530" width="340" height="70" rx="8" fill="#eff6ff" stroke="#93c5fd" stroke-width="1.5"/>
+  <text x="290" y="557" text-anchor="middle" fill="#1e3a8a" font-size="15" font-weight="bold">🔐 Firebase Authentication</text>
+  <text x="290" y="580" text-anchor="middle" fill="#475569" font-size="12">Role-Based Access Control (RBAC) &amp; JWT Tokens</text>
+
+  <!-- Database Box 2: Firestore Database -->
+  <rect x="530" y="530" width="350" height="70" rx="8" fill="#eff6ff" stroke="#93c5fd" stroke-width="1.5"/>
+  <text x="705" y="557" text-anchor="middle" fill="#1e3a8a" font-size="15" font-weight="bold">☁️ Google Cloud Firestore</text>
+  <text x="705" y="580" text-anchor="middle" fill="#475569" font-size="12">Real-Time EHR, e-Prescriptions &amp; Lab Reports</text>
+</svg>

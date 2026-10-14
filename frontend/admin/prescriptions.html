@@ -319,7 +319,7 @@
             <li><a href="notifications.html"><span class="menu-icon">🔔</span><span>Notifications</span></a></li>
             <li><a href="settings.html"><span class="menu-icon">⚙️</span><span>Settings</span></a></li>
             <li><a href="profile.html"><span class="menu-icon">👤</span><span>Admin Profile</span></a></li>
-            <li><a href="admin-login.html" onclick="localStorage.clear();"><span class="menu-icon">🚪</span><span>Sign Out</span></a></li>
+            <li><a href="admin-login.html" onclick="sessionStorage.clear(); localStorage.removeItem('currentUser'); localStorage.removeItem('firebaseIdToken'); localStorage.removeItem('adminLoggedIn');"><span class="menu-icon">🚪</span><span>Sign Out</span></a></li>
         </ul>
     </aside>
 

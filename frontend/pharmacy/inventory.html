@@ -103,7 +103,7 @@
         </ul>
 
         <div style="padding-top:14px; border-top:1px solid rgba(255,255,255,0.2);">
-            <a href="pharmacy-login.html" onclick="localStorage.clear();" style="color:white; text-decoration:none; display:flex; align-items:center; gap:10px; font-size:13.5px;">
+            <a href="pharmacy-login.html" onclick="localStorage.removeItem('currentUser'); localStorage.removeItem('pharmacyLoggedIn'); sessionStorage.clear();" style="color:white; text-decoration:none; display:flex; align-items:center; gap:10px; font-size:13.5px;">
                 <i class="fa-solid fa-right-from-bracket"></i> Sign Out
             </a>
         </div>

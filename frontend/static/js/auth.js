@@ -27,22 +27,29 @@ const AuthManager = {
   requireRole(expectedRole) {
     const user = this.getCurrentUser();
     if (!user) {
-      window.location.href = `/frontend/${expectedRole}/${expectedRole}-login.html`;
+      window.location.href = `/${expectedRole}/${expectedRole}-login.html`;
       return false;
     }
     if (user.role && user.role.toLowerCase() !== expectedRole.toLowerCase() && user.role.toLowerCase() !== 'admin') {
       alert(`Access Restricted: This view requires ${expectedRole.toUpperCase()} credentials.`);
-      window.location.href = `/frontend/${user.role}/${user.role}-login.html`;
+      window.location.href = `/${user.role}/${user.role}-login.html`;
       return false;
     }
     return true;
   },
 
-  logout(redirectUrl = '/frontend/index.html') {
+  logout(redirectUrl = '/index.html') {
     localStorage.removeItem('currentUser');
     localStorage.removeItem('medimateActiveUser');
     localStorage.removeItem('medimateToken');
     localStorage.removeItem('userRole');
+    localStorage.removeItem('doctorLoggedIn');
+    localStorage.removeItem('adminLoggedIn');
+    localStorage.removeItem('patientLoggedIn');
+    localStorage.removeItem('pharmacyLoggedIn');
+    localStorage.removeItem('labLoggedIn');
+    localStorage.removeItem('firebaseIdToken');
+    sessionStorage.clear();
 
     if (typeof firebase !== 'undefined' && firebase.auth) {
       try { firebase.auth().signOut(); } catch (e) {}

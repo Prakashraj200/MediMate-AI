@@ -1624,82 +1624,75 @@
        AUTH CHECK
     ========================================== */
 
+    function resolveAdminProfile() {
+        try {
+            const rawAdmin = sessionStorage.getItem("adminUser") || localStorage.getItem("adminUser");
+            if (rawAdmin) {
+                const parsed = JSON.parse(rawAdmin);
+                if (parsed && (parsed.role === "admin" || parsed.email === "admin@medimate.ai")) return parsed;
+            }
+        } catch(e) {}
+        try {
+            const rawProf = localStorage.getItem("medimateAdminProfile");
+            if (rawProf) {
+                const parsed = JSON.parse(rawProf);
+                if (parsed && parsed.name) return { ...parsed, role: "admin" };
+            }
+        } catch(e) {}
+        try {
+            const rawCur = sessionStorage.getItem("currentUser") || localStorage.getItem("currentUser");
+            if (rawCur) {
+                const parsed = JSON.parse(rawCur);
+                if (parsed && parsed.role === "admin") return parsed;
+            }
+        } catch(e) {}
+        return null;
+    }
+
     onAuthStateChanged(
         auth,
         async (user) => {
+            let activeAdmin = resolveAdminProfile();
+            let isFirebaseAdmin = false;
 
-            if (!user) {
-                const localAdmin = sessionStorage.getItem("currentUser") || localStorage.getItem("currentUser");
-                if (localAdmin) {
+            if (user) {
+                if (user.email && user.email.toLowerCase() === "admin@medimate.ai") {
+                    isFirebaseAdmin = true;
+                } else {
                     try {
-                        const parsed = JSON.parse(localAdmin);
-                        if (parsed.role === "admin" || parsed.email) {
-                            await loadAppointments();
-                            return;
-                        }
+                        const localUsers = JSON.parse(localStorage.getItem("medimateUsers") || "[]");
+                        const matched = localUsers.find(u => u.email && u.email.toLowerCase() === user.email.toLowerCase());
+                        if (matched && matched.role === "admin") isFirebaseAdmin = true;
                     } catch(e) {}
                 }
-                window.location.href =
-                    "admin-login.html";
 
+                if (!isFirebaseAdmin) {
+                    if (activeAdmin) {
+                        try { await signOut(auth); } catch(e) {}
+                    } else {
+                        try { await signOut(auth); } catch(e) {}
+                        alert("Access Denied: The account (" + user.email + ") does not have Administrator privileges. Please sign in with your Admin credentials.");
+                        window.location.href = "admin-login.html";
+                        return;
+                    }
+                }
+            }
+
+            if (!user && !activeAdmin) {
+                window.location.href = "admin-login.html";
                 return;
             }
 
-
-            let currentUser = null;
-
-
-            try {
-
-                currentUser =
-                    JSON.parse(
-                        localStorage.getItem(
-                            "currentUser"
-                        )
-                    );
-
-            } catch (error) {
-
-                console.log(
-                    "Current user not found."
-                );
-
+            activeAdmin = resolveAdminProfile();
+            let adminName = "System Administrator";
+            if (activeAdmin && activeAdmin.name && activeAdmin.role === "admin") {
+                adminName = activeAdmin.name;
+            } else if (user && (user.email === "admin@medimate.ai" || isFirebaseAdmin)) {
+                adminName = user.displayName || "System Administrator";
             }
 
-
-            let adminName =
-                "Administrator";
-
-
-            if (
-                currentUser &&
-                currentUser.name
-            ) {
-
-                adminName =
-                    currentUser.name;
-
-            } else if (user.email) {
-
-                adminName =
-                    user.email.split("@")[0];
-
-            }
-
-
-            document.getElementById(
-                "adminName"
-            ).textContent =
-                adminName;
-
-
-            document.getElementById(
-                "profileCircle"
-            ).textContent =
-                adminName
-                    .charAt(0)
-                    .toUpperCase();
-
+            document.getElementById("adminName").textContent = adminName;
+            document.getElementById("profileCircle").textContent = adminName.charAt(0).toUpperCase();
 
             await loadAppointments();
 
