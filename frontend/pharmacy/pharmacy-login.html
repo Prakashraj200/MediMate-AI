@@ -233,8 +233,8 @@
     </form>
 
     <p class="register-text">
-      New pharmacy user?
-      <a href="../register.html">Register here</a>
+      Need hospital access?
+      <span style="color:#00e599; font-weight:700;">Account issued by Hospital Admin</span>
     </p>
 
     <a href="../index.html" class="back-link">
@@ -265,14 +265,35 @@
 
       const users =
         JSON.parse(localStorage.getItem("medimateUsers")) || [];
+      const pharmacies =
+        JSON.parse(localStorage.getItem("medimatePharmacies")) || [];
 
-      const pharmacyUser = users.find(function (user) {
+      // 1. Check in medimateUsers
+      let pharmacyUser = users.find(function (user) {
         return (
           String(user.email || "").trim().toLowerCase() === email &&
           String(user.password || "") === password &&
-          String(user.role || "").trim().toLowerCase() === "pharmacy"
+          (String(user.role || "").trim().toLowerCase() === "pharmacy" || String(user.role || "").trim().toLowerCase() === "pharma")
         );
       });
+
+      // 2. Fallback check in medimatePharmacies (from admin portal)
+      if (!pharmacyUser) {
+        const phMatch = pharmacies.find(function(ph) {
+          return String(ph.email || "").trim().toLowerCase() === email &&
+            String(ph.password || "") === password;
+        });
+        if (phMatch) {
+          pharmacyUser = {
+            id: phMatch.id || ("PHARM-" + Date.now()),
+            name: phMatch.name || phMatch.pharmacyName || "Pharmacy",
+            email: phMatch.email,
+            phone: phMatch.phone,
+            location: phMatch.location,
+            role: "pharmacy"
+          };
+        }
+      }
 
       if (pharmacyUser) {
         if (rememberMe.checked) {
@@ -292,19 +313,19 @@
         sessionStorage.setItem("userRole", "pharmacy");
         sessionStorage.setItem(
           "userName",
-          pharmacyUser.name || "Pharmacy User"
+          pharmacyUser.name || "Pharmacy Staff"
         );
 
-        message.style.color = "green";
-        message.textContent = "Login successful!";
+        message.style.color = "#00e599";
+        message.textContent = "Login successful! Redirecting to pharmacy dashboard...";
 
         setTimeout(function () {
           window.location.href = "dashboard.html";
-        }, 800);
+        }, 700);
       } else {
-        message.style.color = "red";
+        message.style.color = "#ef4444";
         message.textContent =
-          "Invalid registered pharmacy email or password. Please register first.";
+          "Invalid email or password. Please use credentials provisioned by Hospital Administration.";
       }
     });
   </script>
