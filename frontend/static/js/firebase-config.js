@@ -8,6 +8,10 @@ import { getAuth } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-aut
 import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-analytics.js";
 
 
+// Firebase Firestore
+import { getFirestore } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
+
+
 // ===============================
 // FIREBASE CONFIGURATION
 // ===============================
@@ -38,10 +42,27 @@ const auth = getAuth(app);
 
 
 // ===============================
+// INITIALIZE FIRESTORE
+// ===============================
+
+let db = null;
+try {
+    db = getFirestore(app);
+} catch (e) {
+    console.warn("Firestore initialization error:", e);
+}
+
+
+// ===============================
 // INITIALIZE ANALYTICS
 // ===============================
 
-const analytics = getAnalytics(app);
+let analytics = null;
+try {
+    analytics = getAnalytics(app);
+} catch (e) {
+    console.warn("Analytics initialization skipped:", e);
+}
 
 
 // ===============================
@@ -51,5 +72,6 @@ const analytics = getAnalytics(app);
 export {
     app,
     auth,
-    analytics
+    analytics,
+    db
 };

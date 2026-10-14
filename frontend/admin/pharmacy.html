@@ -877,6 +877,7 @@
                 <button
                     class="add-btn"
                     id="addPharmacyAccountBtn"
+                    onclick="openPharmacyModal()"
                     style="background: #0284c7;"
                 >
                     + Add Pharmacy Account
@@ -885,6 +886,7 @@
                 <button
                     class="add-btn"
                     id="addMedicineBtn"
+                    onclick="openMedicineModal()"
                 >
                     + Add Medicine
                 </button>
@@ -1685,7 +1687,16 @@
         async (user) => {
 
             if (!user) {
-
+                const localAdmin = sessionStorage.getItem("currentUser") || localStorage.getItem("currentUser");
+                if (localAdmin) {
+                    try {
+                        const parsed = JSON.parse(localAdmin);
+                        if (parsed.role === "admin" || parsed.email) {
+                            await loadMedicines();
+                            return;
+                        }
+                    } catch(e) {}
+                }
                 window.location.href =
                     "admin-login.html";
 
@@ -2138,35 +2149,23 @@
        OPEN ADD MODAL
     ========================================== */
 
-    addMedicineBtn.addEventListener(
-        "click",
-        () => {
-
-            editingMedicineId =
-                null;
-
-
-            modalTitle.textContent =
-                "Add Medicine";
-
-
-            medicineForm.reset();
-
-
-            minimumStock.value =
-                10;
-
-
-            status.value =
-                "active";
-
-
-            modalOverlay.classList.add(
-                "show"
-            );
-
+    function openMedicineModal() {
+        editingMedicineId = null;
+        if (modalTitle) modalTitle.textContent = "Add Medicine";
+        if (medicineForm) medicineForm.reset();
+        if (minimumStock) minimumStock.value = 10;
+        if (status) status.value = "active";
+        if (modalOverlay) {
+            modalOverlay.style.display = "flex";
+            modalOverlay.classList.add("show");
+            modalOverlay.classList.add("active");
         }
-    );
+    }
+    window.openMedicineModal = openMedicineModal;
+
+    if (addMedicineBtn) {
+        addMedicineBtn.addEventListener("click", openMedicineModal);
+    }
 
 
     /* ==========================================
@@ -2174,31 +2173,23 @@
     ========================================== */
 
     function closeMedicineModal() {
+        if (modalOverlay) {
+            modalOverlay.style.display = "none";
+            modalOverlay.classList.remove("show");
+            modalOverlay.classList.remove("active");
+        }
+        if (medicineForm) medicineForm.reset();
+        editingMedicineId = null;
+    }
+    window.closeMedicineModal = closeMedicineModal;
 
-        modalOverlay.classList.remove(
-            "show"
-        );
-
-
-        medicineForm.reset();
-
-
-        editingMedicineId =
-            null;
-
+    if (closeModal) {
+        closeModal.addEventListener("click", closeMedicineModal);
     }
 
-
-    closeModal.addEventListener(
-        "click",
-        closeMedicineModal
-    );
-
-
-    cancelBtn.addEventListener(
-        "click",
-        closeMedicineModal
-    );
+    if (cancelBtn) {
+        cancelBtn.addEventListener("click", closeMedicineModal);
+    }
 
 
     modalOverlay.addEventListener(
@@ -2823,17 +2814,27 @@
 
     function openPharmacyModal() {
         editingPharmacyId = null;
-        pharmacyModalTitle.textContent = "Add Pharmacy Account";
-        pharmacyAccountForm.reset();
-        pharmacyStatusInput.value = "active";
-        pharmacyModalOverlay.classList.add("show");
+        if (pharmacyModalTitle) pharmacyModalTitle.textContent = "Add Pharmacy Account";
+        if (pharmacyAccountForm) pharmacyAccountForm.reset();
+        if (pharmacyStatusInput) pharmacyStatusInput.value = "active";
+        if (pharmacyModalOverlay) {
+            pharmacyModalOverlay.style.display = "flex";
+            pharmacyModalOverlay.classList.add("show");
+            pharmacyModalOverlay.classList.add("active");
+        }
     }
+    window.openPharmacyModal = openPharmacyModal;
 
     function closePharmacyAccountModal() {
-        pharmacyModalOverlay.classList.remove("show");
-        pharmacyAccountForm.reset();
+        if (pharmacyModalOverlay) {
+            pharmacyModalOverlay.style.display = "none";
+            pharmacyModalOverlay.classList.remove("show");
+            pharmacyModalOverlay.classList.remove("active");
+        }
+        if (pharmacyAccountForm) pharmacyAccountForm.reset();
         editingPharmacyId = null;
     }
+    window.closePharmacyAccountModal = closePharmacyAccountModal;
 
     if (addPharmacyAccountBtn) addPharmacyAccountBtn.addEventListener("click", openPharmacyModal);
     if (closePharmacyModal) closePharmacyModal.addEventListener("click", closePharmacyAccountModal);

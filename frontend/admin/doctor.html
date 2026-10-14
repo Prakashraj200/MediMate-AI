@@ -1099,6 +1099,7 @@
                 <button
                     class="add-button"
                     id="addDoctorButton"
+                    onclick="openDoctorModal()"
                 >
 
                     ＋ Add Doctor
@@ -1543,7 +1544,7 @@
         onSnapshot,
         serverTimestamp
     } from
-    "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+    "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
 
 
     import {
@@ -1680,11 +1681,14 @@
        FIRESTORE COLLECTION
     ========================================== */
 
-    const doctorsCollection =
-        collection(
-            db,
-            "doctors"
-        );
+    let doctorsCollection = null;
+    if (db) {
+        try {
+            doctorsCollection = collection(db, "doctors");
+        } catch(e) {
+            console.warn("Firestore doctors collection init error:", e);
+        }
+    }
 
 
     /* =========================================
@@ -1692,21 +1696,13 @@
     ========================================== */
 
     function showToast(message) {
-
-        toast.textContent =
-            message;
-
-        toast.classList.add(
-            "show"
-        );
+        if (!toast) return;
+        toast.textContent = message;
+        toast.classList.add("show");
 
         setTimeout(
             function () {
-
-                toast.classList.remove(
-                    "show"
-                );
-
+                toast.classList.remove("show");
             },
             2500
         );
@@ -1717,31 +1713,24 @@
        OPEN ADD MODAL
     ========================================== */
 
-    addDoctorButton.addEventListener(
-        "click",
-        function () {
-
-            editingDoctorId =
-                null;
-
-            modalTitle.textContent =
-                "Add Doctor";
-
-            saveButton.textContent =
-                "Save Doctor";
-
-            doctorForm.reset();
-            if (doctorPassword) doctorPassword.value = "";
-
-            doctorStatus.value =
-                "active";
-
-            modal.classList.add(
-                "show"
-            );
-
+    function openDoctorModal() {
+        editingDoctorId = null;
+        if (modalTitle) modalTitle.textContent = "Add Doctor";
+        if (saveButton) saveButton.textContent = "Save Doctor";
+        if (doctorForm) doctorForm.reset();
+        if (doctorPassword) doctorPassword.value = "";
+        if (doctorStatus) doctorStatus.value = "active";
+        if (modal) {
+            modal.style.display = "flex";
+            modal.classList.add("show");
+            modal.classList.add("active");
         }
-    );
+    }
+    window.openDoctorModal = openDoctorModal;
+
+    if (addDoctorButton) {
+        addDoctorButton.addEventListener("click", openDoctorModal);
+    }
 
 
     /* =========================================
@@ -1749,17 +1738,16 @@
     ========================================== */
 
     function closeDoctorModal() {
-
-        modal.classList.remove(
-            "show"
-        );
-
-        doctorForm.reset();
+        if (modal) {
+            modal.style.display = "none";
+            modal.classList.remove("show");
+            modal.classList.remove("active");
+        }
+        if (doctorForm) doctorForm.reset();
         if (doctorPassword) doctorPassword.value = "";
-
-        editingDoctorId =
-            null;
+        editingDoctorId = null;
     }
+    window.closeDoctorModal = closeDoctorModal;
 
 
     closeModal.addEventListener(
@@ -1931,14 +1919,16 @@
 
                 // Background Firestore sync
                 try {
-                    if (editingDoctorId) {
-                        const doctorRef = doc(db, "doctors", editingDoctorId);
-                        await updateDoc(doctorRef, doctorData);
-                    } else {
-                        await addDoc(doctorsCollection, {
-                            ...doctorData,
-                            createdAt: serverTimestamp()
-                        });
+                    if (doctorsCollection && db) {
+                        if (editingDoctorId) {
+                            const doctorRef = doc(db, "doctors", editingDoctorId);
+                            await updateDoc(doctorRef, doctorData);
+                        } else {
+                            await addDoc(doctorsCollection, {
+                                ...doctorData,
+                                createdAt: serverTimestamp()
+                            });
+                        }
                     }
                 } catch (fbErr) {
                     console.log("Firestore background sync:", fbErr);
@@ -2479,26 +2469,28 @@
        FIRESTORE REAL-TIME LISTENER & HYBRID SYNC
     ========================================== */
 
-    try {
-        onSnapshot(
-            doctorsCollection,
-            function (snapshot) {
-                const fsDocs = snapshot.docs.map(function (document) {
-                    return {
-                        id: document.id,
-                        ...document.data()
-                    };
-                });
-                loadAllDoctors(fsDocs);
-            },
-            function (error) {
-                console.warn("Firestore listener fallback to local:", error);
-                loadAllDoctors([]);
-            }
-        );
-    } catch (err) {
-        console.warn("Firestore init fallback:", err);
-        loadAllDoctors([]);
+    if (doctorsCollection) {
+        try {
+            onSnapshot(
+                doctorsCollection,
+                function (snapshot) {
+                    const fsDocs = snapshot.docs.map(function (document) {
+                        return {
+                            id: document.id,
+                            ...document.data()
+                        };
+                    });
+                    loadAllDoctors(fsDocs);
+                },
+                function (error) {
+                    console.warn("Firestore listener fallback to local:", error);
+                    loadAllDoctors([]);
+                }
+            );
+        } catch (err) {
+            console.warn("Firestore init fallback:", err);
+            loadAllDoctors([]);
+        }
     }
 
     // Initial load immediately

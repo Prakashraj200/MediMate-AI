@@ -920,6 +920,7 @@
             <button
                 class="add-btn"
                 id="addAppointmentBtn"
+                onclick="openAppointmentModal()"
             >
                 + Add Appointment
             </button>
@@ -1628,7 +1629,16 @@
         async (user) => {
 
             if (!user) {
-
+                const localAdmin = sessionStorage.getItem("currentUser") || localStorage.getItem("currentUser");
+                if (localAdmin) {
+                    try {
+                        const parsed = JSON.parse(localAdmin);
+                        if (parsed.role === "admin" || parsed.email) {
+                            await loadAppointments();
+                            return;
+                        }
+                    } catch(e) {}
+                }
                 window.location.href =
                     "admin-login.html";
 
@@ -2097,31 +2107,22 @@
        OPEN ADD
     ========================================== */
 
-    addAppointmentBtn.addEventListener(
-        "click",
-        () => {
-
-            editingAppointmentId =
-                null;
-
-
-            modalTitle.textContent =
-                "Add Appointment";
-
-
-            appointmentForm.reset();
-
-
-            status.value =
-                "scheduled";
-
-
-            modalOverlay.classList.add(
-                "show"
-            );
-
+    function openAppointmentModal() {
+        editingAppointmentId = null;
+        if (modalTitle) modalTitle.textContent = "Add Appointment";
+        if (appointmentForm) appointmentForm.reset();
+        if (status) status.value = "scheduled";
+        if (modalOverlay) {
+            modalOverlay.style.display = "flex";
+            modalOverlay.classList.add("show");
+            modalOverlay.classList.add("active");
         }
-    );
+    }
+    window.openAppointmentModal = openAppointmentModal;
+
+    if (addAppointmentBtn) {
+        addAppointmentBtn.addEventListener("click", openAppointmentModal);
+    }
 
 
     /* ==========================================
@@ -2129,19 +2130,15 @@
     ========================================== */
 
     function closeAppointmentModal() {
-
-        modalOverlay.classList.remove(
-            "show"
-        );
-
-
-        appointmentForm.reset();
-
-
-        editingAppointmentId =
-            null;
-
+        if (modalOverlay) {
+            modalOverlay.style.display = "none";
+            modalOverlay.classList.remove("show");
+            modalOverlay.classList.remove("active");
+        }
+        if (appointmentForm) appointmentForm.reset();
+        editingAppointmentId = null;
     }
+    window.closeAppointmentModal = closeAppointmentModal;
 
 
     closeModal.addEventListener(

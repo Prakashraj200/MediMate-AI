@@ -916,6 +916,7 @@
             <button
                 class="add-btn"
                 id="addLaboratoryBtn"
+                onclick="openLaboratoryModal()"
             >
                 + Add Laboratory
             </button>
@@ -1524,7 +1525,16 @@
         async (user) => {
 
             if (!user) {
-
+                const localAdmin = sessionStorage.getItem("currentUser") || localStorage.getItem("currentUser");
+                if (localAdmin) {
+                    try {
+                        const parsed = JSON.parse(localAdmin);
+                        if (parsed.role === "admin" || parsed.email) {
+                            await loadLaboratories();
+                            return;
+                        }
+                    } catch(e) {}
+                }
                 window.location.href =
                     "admin-login.html";
 
@@ -1929,31 +1939,22 @@
        OPEN ADD MODAL
     ===================================================== */
 
-    addLaboratoryBtn.addEventListener(
-        "click",
-        () => {
-
-            editingLaboratoryId =
-                null;
-
-
-            modalTitle.textContent =
-                "Add Laboratory";
-
-
-            laboratoryForm.reset();
-
-
-            statusInput.value =
-                "active";
-
-
-            modalOverlay.classList.add(
-                "show"
-            );
-
+    function openLaboratoryModal() {
+        editingLaboratoryId = null;
+        if (modalTitle) modalTitle.textContent = "Add Laboratory";
+        if (laboratoryForm) laboratoryForm.reset();
+        if (statusInput) statusInput.value = "active";
+        if (modalOverlay) {
+            modalOverlay.style.display = "flex";
+            modalOverlay.classList.add("show");
+            modalOverlay.classList.add("active");
         }
-    );
+    }
+    window.openLaboratoryModal = openLaboratoryModal;
+
+    if (addLaboratoryBtn) {
+        addLaboratoryBtn.addEventListener("click", openLaboratoryModal);
+    }
 
 
     /* =====================================================
@@ -1961,20 +1962,16 @@
     ===================================================== */
 
     function closeLaboratoryModal() {
-
-        modalOverlay.classList.remove(
-            "show"
-        );
-
-
-        laboratoryForm.reset();
+        if (modalOverlay) {
+            modalOverlay.style.display = "none";
+            modalOverlay.classList.remove("show");
+            modalOverlay.classList.remove("active");
+        }
+        if (laboratoryForm) laboratoryForm.reset();
         if (labPasswordInput) labPasswordInput.value = "";
-
-
-        editingLaboratoryId =
-            null;
-
+        editingLaboratoryId = null;
     }
+    window.closeLaboratoryModal = closeLaboratoryModal;
 
 
     closeModal.addEventListener(
