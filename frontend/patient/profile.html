@@ -7,15 +7,15 @@
   <link rel="stylesheet" href="patient-style.css">
   <style>
     .profile-hero-card {
-      background: white;
-      border: 1px solid var(--border-color);
+      background: rgba(13, 22, 41, 0.85);
+      border: 1px solid rgba(255, 255, 255, 0.08);
       border-radius: var(--radius-lg);
       padding: 28px;
       margin-bottom: 28px;
       display: flex;
       align-items: center;
       gap: 24px;
-      box-shadow: var(--shadow-sm);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35);
       flex-wrap: wrap;
     }
 
@@ -31,7 +31,7 @@
       font-size: 38px;
       font-weight: 700;
       box-shadow: 0 6px 18px rgba(8, 127, 91, 0.25);
-      border: 3px solid white;
+      border: 2px solid rgba(0, 229, 153, 0.3);
     }
 
     .profile-hero-meta {
@@ -228,11 +228,11 @@
         <div class="profile-big-avatar" id="heroAvatar">P</div>
         <div class="profile-hero-meta">
           <h2>
-            <span id="heroName">Prakash Raj</span>
+            <span id="heroName">Patient Profile</span>
             <span class="status-badge optimal" style="font-size: 11px;">Verified Account</span>
           </h2>
           <p>
-            Patient ID: <strong id="heroPatientId">MM-PAT-2026-9042</strong> • Primary Doctor: <strong>Dr. Sarah Jenkins</strong>
+            Patient ID: <strong id="heroPatientId">--</strong> • Primary Doctor: <strong id="heroDoctorName">Registered Clinician</strong>
           </p>
           <div class="meta-badges-row">
             <span class="status-badge optimal">Blood Group: O+</span>
@@ -409,19 +409,19 @@
           </div>
 
           <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; font-size: 13px; margin-bottom: 14px;">
-            <div><strong>Patient:</strong> <span id="emPatientName">Prakash Raj</span></div>
+            <div><strong>Patient:</strong> <span id="emPatientName">Patient</span></div>
             <div><strong>DOB:</strong> <span id="emDob">15 Jun 1994</span></div>
             <div><strong>Height / Weight:</strong> 174 cm / 68 kg</div>
             <div><strong>Organ Donor:</strong> Yes (Opted-in)</div>
           </div>
 
-          <div style="background: white; border: 1px solid #ffc9c9; padding: 10px; border-radius: 6px; font-size: 13px; margin-bottom: 12px;">
-            <strong style="color: #c92a2a;">Severe Allergies:</strong><br>
+          <div style="background: rgba(244, 63, 94, 0.12); border: 1px solid rgba(244, 63, 94, 0.3); padding: 12px; border-radius: 8px; font-size: 13px; margin-bottom: 12px; color: #f8fafc;">
+            <strong style="color: #fb7185;">Severe Allergies:</strong><br>
             Penicillin (Anaphylaxis Risk), Peanuts
           </div>
 
-          <div style="background: white; border: 1px solid #ffc9c9; padding: 10px; border-radius: 6px; font-size: 13px;">
-            <strong style="color: #c92a2a;">Emergency Contact Person:</strong><br>
+          <div style="background: rgba(244, 63, 94, 0.12); border: 1px solid rgba(244, 63, 94, 0.3); padding: 12px; border-radius: 8px; font-size: 13px; color: #f8fafc;">
+            <strong style="color: #fb7185;">Emergency Contact Person:</strong><br>
             <span id="emNameAndPhone">Priya Raj (Spouse) - +91 98765 43211</span>
           </div>
         </div>

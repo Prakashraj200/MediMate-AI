@@ -288,48 +288,7 @@
                         </thead>
                         <tbody id="apptTbody">
                             <tr>
-                                <td><strong>09:30 AM</strong></td>
-                                <td><strong>Sarah Jenkins</strong><br><span style="font-size:12px; color:#64748b;">Female, 34 yrs</span></td>
-                                <td><code>MRN-8429</code></td>
-                                <td>Recurring Migraines & Photophobia</td>
-                                <td><span style="font-size:12px; color:#0369a1;"><i class="fa-solid fa-video"></i> Telehealth</span></td>
-                                <td><span class="badge badge-confirmed">Confirmed</span></td>
-                                <td>
-                                    <button class="btn btn-primary" style="padding:5px 10px; font-size:12px;" onclick="startCall('Sarah Jenkins')"><i class="fa-solid fa-play"></i> Start Consult</button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><strong>10:15 AM</strong></td>
-                                <td><strong>Robert Chen</strong><br><span style="font-size:12px; color:#64748b;">Male, 58 yrs</span></td>
-                                <td><code>MRN-3312</code></td>
-                                <td>Hypertension Follow-up & ECG Review</td>
-                                <td><span style="font-size:12px; color:#087743;"><i class="fa-solid fa-hospital-user"></i> In-Clinic</span></td>
-                                <td><span class="badge badge-confirmed">Checked In</span></td>
-                                <td>
-                                    <button class="btn btn-primary" style="padding:5px 10px; font-size:12px;" onclick="openRecords('MRN-3312')"><i class="fa-solid fa-stethoscope"></i> Attend Patient</button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><strong>11:00 AM</strong></td>
-                                <td><strong>Amelia Rodriguez</strong><br><span style="font-size:12px; color:#64748b;">Female, 42 yrs</span></td>
-                                <td><code>MRN-9104</code></td>
-                                <td>Post-operative Wound Inspection</td>
-                                <td><span style="font-size:12px; color:#087743;"><i class="fa-solid fa-hospital-user"></i> In-Clinic</span></td>
-                                <td><span class="badge badge-pending">Waiting Room</span></td>
-                                <td>
-                                    <button class="btn btn-secondary" style="padding:5px 10px; font-size:12px;" onclick="alert('Notification sent to triage nurse.')"><i class="fa-solid fa-bell"></i> Call In</button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><strong>11:45 AM</strong></td>
-                                <td><strong>David Kim</strong><br><span style="font-size:12px; color:#64748b;">Male, 29 yrs</span></td>
-                                <td><code>MRN-7821</code></td>
-                                <td>Acute Bronchitis & Wheezing</td>
-                                <td><span style="font-size:12px; color:#0369a1;"><i class="fa-solid fa-video"></i> Telehealth</span></td>
-                                <td><span class="badge badge-confirmed">Ready in Call Room</span></td>
-                                <td>
-                                    <button class="btn btn-primary" style="padding:5px 10px; font-size:12px;" onclick="startCall('David Kim')"><i class="fa-solid fa-video"></i> Join Call</button>
-                                </td>
+                                <td colspan="7" style="text-align:center; padding: 25px; color:#64748b;">Loading appointments...</td>
                             </tr>
                         </tbody>
                     </table>
@@ -340,6 +299,75 @@
 </div>
 
 <script>
+    function escapeHTML(str) {
+        return String(str || "").replace(/[&<>"']/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' })[m]);
+    }
+
+    function loadDoctorAppointments() {
+        let appts = [];
+        try {
+            const stored = JSON.parse(localStorage.getItem("patient_appointments") || "[]");
+            const allUsers = JSON.parse(localStorage.getItem("medimateUsers") || "[]");
+            const patients = allUsers.filter(u => u.role === "patient");
+
+            if (stored.length > 0) {
+                appts = stored.map(a => ({
+                    time: a.time || "10:00 AM",
+                    patientName: a.patientName || (patients.length ? patients[0].name : "Registered Patient"),
+                    patientAgeGender: a.patientMeta || "Patient",
+                    mrn: a.mrn || a.id || "MRN-1001",
+                    reason: a.reason || "Consultation and Health Evaluation",
+                    mode: (a.type && a.type.toLowerCase().includes("video")) ? "Telehealth" : "In-Clinic",
+                    status: a.status || "Confirmed"
+                }));
+            } else if (patients.length > 0) {
+                appts = patients.map((p, idx) => ({
+                    time: `${9 + idx}:30 AM`,
+                    patientName: p.name || p.fullName || "Registered Patient",
+                    patientAgeGender: (p.age ? p.age + " yrs" : "Adult") + (p.gender ? ", " + p.gender : ""),
+                    mrn: p.id || ("MRN-" + (1000 + idx)),
+                    reason: "Initial Clinical Assessment",
+                    mode: idx % 2 === 0 ? "In-Clinic" : "Telehealth",
+                    status: "Confirmed"
+                }));
+            }
+        } catch(e) {}
+
+        const tbody = document.getElementById("apptTbody");
+        if (!tbody) return;
+
+        if (appts.length === 0) {
+            tbody.innerHTML = `
+                <tr>
+                    <td colspan="7" style="text-align: center; padding: 30px; color: #64748b;">
+                        No appointments scheduled yet. Registered appointments will appear here automatically.
+                    </td>
+                </tr>
+            `;
+            return;
+        }
+
+        tbody.innerHTML = appts.map(a => `
+            <tr>
+                <td><strong>${escapeHTML(a.time)}</strong></td>
+                <td><strong>${escapeHTML(a.patientName)}</strong><br><span style="font-size:12px; color:#64748b;">${escapeHTML(a.patientAgeGender)}</span></td>
+                <td><code>${escapeHTML(a.mrn)}</code></td>
+                <td>${escapeHTML(a.reason)}</td>
+                <td>
+                    <span style="font-size:12px; color:${a.mode === 'Telehealth' ? '#0369a1' : '#087743'};">
+                        <i class="fa-solid ${a.mode === 'Telehealth' ? 'fa-video' : 'fa-hospital-user'}"></i> ${escapeHTML(a.mode)}
+                    </span>
+                </td>
+                <td><span class="badge ${a.status.toLowerCase() === 'confirmed' ? 'badge-confirmed' : 'badge-pending'}">${escapeHTML(a.status)}</span></td>
+                <td>
+                    <button class="btn btn-primary" style="padding:5px 10px; font-size:12px;" onclick="startCall('${escapeHTML(a.patientName)}')">
+                        <i class="fa-solid ${a.mode === 'Telehealth' ? 'fa-video' : 'fa-stethoscope'}"></i> Attend
+                    </button>
+                </td>
+            </tr>
+        `).join("");
+    }
+
     function startCall(patient) {
         alert(`Launching encrypted WebRTC telehealth video room with ${patient}...`);
     }
@@ -355,6 +383,9 @@
             r.style.display = r.innerText.toLowerCase().includes(query) ? '' : 'none';
         });
     }
+
+    document.addEventListener("DOMContentLoaded", loadDoctorAppointments);
+    loadDoctorAppointments();
 </script>
 </body>
 </html>

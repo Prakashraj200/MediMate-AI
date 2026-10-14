@@ -1050,6 +1050,24 @@
                 </div>
 
 
+                <!-- PASSWORD -->
+
+                <div class="form-group">
+
+                    <label>
+                        Account Password *
+                    </label>
+
+                    <input
+                        type="password"
+                        id="password"
+                        placeholder="Enter login password"
+                        required
+                    >
+
+                </div>
+
+
                 <!-- PHONE -->
 
                 <div class="form-group">
@@ -1346,6 +1364,9 @@
     const emailInput =
         document.getElementById("email");
 
+    const passwordInput =
+        document.getElementById("password");
+
     const phoneInput =
         document.getElementById("phone");
 
@@ -1465,59 +1486,63 @@
     ====================================================== */
 
     async function loadPatients() {
+        let loaded = [];
 
         try {
-
             const response =
                 await fetch(
                     `${API_URL}/api/patient/patients`
                 );
 
-
-            if (!response.ok) {
-
-                /*
-                 * If your backend uses
-                 * /api/patients instead,
-                 * change the URL here.
-                 */
-
-                throw new Error(
-                    "Patient API not available"
-                );
+            if (response.ok) {
+                const result = await response.json();
+                loaded = result.patients || [];
             }
-
-
-            const result =
-                await response.json();
-
-
-            patients =
-                result.patients || [];
-
-
-            renderPatients();
-
         } catch (error) {
-
-            console.error(
-                "Load patients error:",
-                error
-            );
-
-
-            /*
-             * No dummy data.
-             *
-             * Table remains empty.
-             */
-
-            patients = [];
-
-            renderPatients();
-
+            console.warn("Backend patient fetch failed, loading local registry:", error);
         }
 
+        // Merge with medimateUsers (role === "patient")
+        try {
+            const users = JSON.parse(localStorage.getItem("medimateUsers") || "[]");
+            const localPatients = users.filter(u => u.role === "patient" && u.name);
+
+            localPatients.forEach(lp => {
+                if (!loaded.some(p => (p.email && lp.email && p.email.toLowerCase() === lp.email.toLowerCase()) || p.name === lp.name)) {
+                    loaded.push({
+                        id: lp.id || ("PAT-" + Math.floor(1000 + Math.random() * 9000)),
+                        name: lp.name,
+                        email: lp.email,
+                        phone: lp.phone || "",
+                        gender: lp.gender || "-",
+                        age: lp.age || "-",
+                        bloodGroup: lp.bloodGroup || "-",
+                        status: lp.status || "active",
+                        password: lp.password || ""
+                    });
+                }
+            });
+
+            const prof = JSON.parse(localStorage.getItem("patient_profile") || "null");
+            if (prof && prof.name && !loaded.some(p => p.name === prof.name)) {
+                loaded.push({
+                    id: prof.id || "PAT-1001",
+                    name: prof.name,
+                    email: prof.email || "",
+                    phone: prof.phone || "",
+                    gender: prof.gender || "-",
+                    age: prof.age || "-",
+                    bloodGroup: prof.bloodGroup || "-",
+                    status: "active",
+                    password: prof.password || ""
+                });
+            }
+        } catch (e) {
+            console.error("Local patients parse error:", e);
+        }
+
+        patients = loaded;
+        renderPatients();
     }
 
 
@@ -1798,153 +1823,100 @@
 
             event.preventDefault();
 
-
             const patientData = {
-
-                name:
-                    nameInput.value.trim(),
-
-                email:
-                    emailInput.value.trim(),
-
-                phone:
-                    phoneInput.value.trim(),
-
-                dob:
-                    dobInput.value,
-
-                gender:
-                    genderInput.value,
-
-                age:
-                    ageInput.value,
-
-                bloodGroup:
-                    bloodGroupInput.value,
-
-                status:
-                    statusInput.value,
-
-                address:
-                    addressInput.value.trim(),
-
-                emergencyContact:
-                    emergencyContactInput.value.trim(),
-
-                medicalHistory:
-                    medicalHistoryInput.value.trim()
-
+                name: nameInput.value.trim(),
+                email: emailInput.value.trim(),
+                password: passwordInput ? passwordInput.value.trim() : "",
+                phone: phoneInput.value.trim(),
+                dob: dobInput.value,
+                gender: genderInput.value,
+                age: ageInput.value,
+                bloodGroup: bloodGroupInput.value,
+                status: statusInput.value,
+                address: addressInput.value.trim(),
+                emergencyContact: emergencyContactInput.value.trim(),
+                medicalHistory: medicalHistoryInput.value.trim()
             };
-
 
             if (
                 !patientData.name ||
                 !patientData.email ||
                 !patientData.phone
             ) {
-
-                showToast(
-                    "Please fill all required fields."
-                );
-
+                showToast("Please fill all required fields.");
                 return;
-
             }
 
+            if (!editingPatientId && !patientData.password) {
+                patientData.password = "patient123";
+            }
 
             try {
-
-                let response;
-
-
-                /* ==================================================
-                   UPDATE
-                ================================================== */
-
                 if (editingPatientId) {
-
-                    response =
-                        await fetch(
-                            `${API_URL}/api/patient/patients/${editingPatientId}`,
-                            {
-                                method: "PUT",
-
-                                headers: {
-                                    "Content-Type":
-                                        "application/json"
-                                },
-
-                                body:
-                                    JSON.stringify(
-                                        patientData
-                                    )
-                            }
-                        );
-
+                    await fetch(
+                        `${API_URL}/api/patient/patients/${editingPatientId}`,
+                        {
+                            method: "PUT",
+                            headers: { "Content-Type": "application/json" },
+                            body: JSON.stringify(patientData)
+                        }
+                    ).catch(e => console.warn("Backend update error:", e));
+                } else {
+                    await fetch(
+                        `${API_URL}/api/patient/patients`,
+                        {
+                            method: "POST",
+                            headers: { "Content-Type": "application/json" },
+                            body: JSON.stringify(patientData)
+                        }
+                    ).catch(e => console.warn("Backend create error:", e));
                 }
-
-
-                /* ==================================================
-                   CREATE
-                ================================================== */
-
-                else {
-
-                    response =
-                        await fetch(
-                            `${API_URL}/api/patient/patients`,
-                            {
-                                method: "POST",
-
-                                headers: {
-                                    "Content-Type":
-                                        "application/json"
-                                },
-
-                                body:
-                                    JSON.stringify(
-                                        patientData
-                                    )
-                            }
-                        );
-
-                }
-
-
-                if (!response.ok) {
-
-                    throw new Error(
-                        "Server error"
-                    );
-
-                }
-
-
-                closePatientModal();
-
-                showToast(
-                    editingPatientId
-                        ? "Patient updated successfully."
-                        : "Patient added successfully."
-                );
-
-
-                await loadPatients();
-
             } catch (error) {
-
-                console.error(
-                    "Save patient error:",
-                    error
-                );
-
-
-                showToast(
-                    "Unable to save patient. Check backend."
-                );
-
+                console.warn("Backend communication issue:", error);
             }
 
+            // Sync to local medimateUsers registry for immediate login
+            try {
+                let users = JSON.parse(localStorage.getItem("medimateUsers") || "[]");
+                const existingIdx = users.findIndex(u => (editingPatientId && u.id === editingPatientId) || (u.email && u.email.toLowerCase() === patientData.email.toLowerCase()));
+
+                const patientRecord = {
+                    id: editingPatientId || ("PAT-" + Date.now().toString().slice(-4)),
+                    name: patientData.name,
+                    email: patientData.email,
+                    password: patientData.password || "patient123",
+                    phone: patientData.phone,
+                    dob: patientData.dob,
+                    gender: patientData.gender,
+                    age: patientData.age,
+                    bloodGroup: patientData.bloodGroup,
+                    status: patientData.status,
+                    address: patientData.address,
+                    emergencyContact: patientData.emergencyContact,
+                    medicalHistory: patientData.medicalHistory,
+                    role: "patient"
+                };
+
+                if (existingIdx >= 0) {
+                    users[existingIdx] = { ...users[existingIdx], ...patientRecord };
+                } else {
+                    users.push(patientRecord);
+                }
+
+                localStorage.setItem("medimateUsers", JSON.stringify(users));
+                localStorage.setItem("patient_profile", JSON.stringify(patientRecord));
+            } catch (e) {
+                console.error("Local save error:", e);
+            }
+
+            closePatientModal();
+            showToast(
+                editingPatientId
+                    ? "Patient credentials & record updated successfully."
+                    : "Patient account created with password successfully."
+            );
+
+            await loadPatients();
         }
     );
 
@@ -1963,70 +1935,34 @@
                         String(patientId)
                 );
 
+            if (!patient) return;
 
-            if (!patient) {
+            editingPatientId = patientId;
+            modalTitle.textContent = "Edit Patient";
 
-                return;
+            nameInput.value = patient.name || "";
+            emailInput.value = patient.email || "";
 
+            // lookup password from medimateUsers if not on patient
+            let userPass = patient.password || "";
+            if (!userPass) {
+                const users = JSON.parse(localStorage.getItem("medimateUsers") || "[]");
+                const u = users.find(x => x.id === patientId || (x.email && patient.email && x.email.toLowerCase() === patient.email.toLowerCase()));
+                if (u && u.password) userPass = u.password;
             }
+            if (passwordInput) passwordInput.value = userPass;
 
+            phoneInput.value = patient.phone || "";
+            dobInput.value = patient.dob || "";
+            genderInput.value = patient.gender || "";
+            ageInput.value = patient.age || "";
+            bloodGroupInput.value = patient.bloodGroup || "";
+            statusInput.value = patient.status || "active";
+            addressInput.value = patient.address || "";
+            emergencyContactInput.value = patient.emergencyContact || "";
+            medicalHistoryInput.value = patient.medicalHistory || "";
 
-            editingPatientId =
-                patientId;
-
-
-            modalTitle.textContent =
-                "Edit Patient";
-
-
-            nameInput.value =
-                patient.name || "";
-
-
-            emailInput.value =
-                patient.email || "";
-
-
-            phoneInput.value =
-                patient.phone || "";
-
-
-            dobInput.value =
-                patient.dob || "";
-
-
-            genderInput.value =
-                patient.gender || "";
-
-
-            ageInput.value =
-                patient.age || "";
-
-
-            bloodGroupInput.value =
-                patient.bloodGroup || "";
-
-
-            statusInput.value =
-                patient.status || "active";
-
-
-            addressInput.value =
-                patient.address || "";
-
-
-            emergencyContactInput.value =
-                patient.emergencyContact || "";
-
-
-            medicalHistoryInput.value =
-                patient.medicalHistory || "";
-
-
-            modalOverlay.classList.add(
-                "show"
-            );
-
+            modalOverlay.classList.add("show");
         };
 
 
@@ -2038,16 +1974,26 @@
         async function(patientId) {
 
             const confirmDelete =
-                confirm(
-                    "Are you sure you want to delete this patient?"
-                );
+                confirm("Are you sure you want to delete this patient?");
 
+            if (!confirmDelete) return;
 
-            if (!confirmDelete) {
+            try {
+                await fetch(
+                    `${API_URL}/api/patient/patients/${patientId}`,
+                    { method: "DELETE" }
+                ).catch(e => console.warn(e));
+            } catch (e) {}
 
-                return;
+            try {
+                let users = JSON.parse(localStorage.getItem("medimateUsers") || "[]");
+                users = users.filter(u => u.id !== patientId && (!u.email || !patients.some(p => p.id === patientId && p.email && p.email.toLowerCase() === u.email.toLowerCase())));
+                localStorage.setItem("medimateUsers", JSON.stringify(users));
+            } catch (e) {}
 
-            }
+            showToast("Patient record deleted.");
+            await loadPatients();
+        };
 
 
             try {

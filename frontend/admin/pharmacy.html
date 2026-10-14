@@ -872,12 +872,22 @@
 
             </div>
 
-            <button
-                class="add-btn"
-                id="addMedicineBtn"
-            >
-                + Add Medicine
-            </button>
+            <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                <button
+                    class="add-btn"
+                    id="addPharmacyAccountBtn"
+                    style="background: #0284c7;"
+                >
+                    + Add Pharmacy Account
+                </button>
+
+                <button
+                    class="add-btn"
+                    id="addMedicineBtn"
+                >
+                    + Add Medicine
+                </button>
+            </div>
 
         </div>
 
@@ -1057,6 +1067,54 @@
 
                         </tr>
 
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+
+        <!-- PHARMACY ACCOUNTS PANEL -->
+        <div class="panel" style="margin-top: 30px;">
+
+            <div class="panel-top">
+
+                <div>
+                    <h3>Pharmacy Accounts</h3>
+                    <p style="font-size: 13px; color: #64748b; margin-top: 4px;">Registered pharmacy credentials for login access.</p>
+                </div>
+
+                <input
+                    type="text"
+                    id="pharmacySearchInput"
+                    class="search"
+                    placeholder="Search pharmacy accounts..."
+                >
+
+            </div>
+
+            <div class="table-wrap">
+
+                <table>
+
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Pharmacy Name</th>
+                            <th>Login Email</th>
+                            <th>Phone</th>
+                            <th>Location</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="pharmacyAccountTableBody">
+                        <tr>
+                            <td colspan="7" class="empty">No pharmacy accounts created yet.</td>
+                        </tr>
                     </tbody>
 
                 </table>
@@ -1371,6 +1429,114 @@
                     class="save-btn"
                 >
                     Save Medicine
+                </button>
+
+            </div>
+
+        </form>
+
+</div>
+
+
+<!-- ADD / EDIT PHARMACY ACCOUNT MODAL -->
+<div class="modal-overlay" id="pharmacyModalOverlay">
+
+    <div class="modal">
+
+        <div class="modal-header">
+
+            <h2 id="pharmacyModalTitle">
+                Add Pharmacy Account
+            </h2>
+
+            <button
+                class="close-btn"
+                id="closePharmacyModal"
+            >
+                ×
+            </button>
+
+        </div>
+
+        <form id="pharmacyAccountForm">
+
+            <div class="form-grid">
+
+                <div class="form-group full">
+                    <label>Pharmacy / Pharmacist Name *</label>
+                    <input
+                        type="text"
+                        id="pharmacyNameInput"
+                        placeholder="e.g. City Care Pharmacy"
+                        required
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label>Login Email *</label>
+                    <input
+                        type="email"
+                        id="pharmacyEmailInput"
+                        placeholder="pharmacy@medimate.ai"
+                        required
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label>Login Password *</label>
+                    <input
+                        type="password"
+                        id="pharmacyPasswordInput"
+                        placeholder="Set login password"
+                        autocomplete="new-password"
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label>Phone Number</label>
+                    <input
+                        type="tel"
+                        id="pharmacyPhoneInput"
+                        placeholder="+91 9876543210"
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label>Location / Branch</label>
+                    <input
+                        type="text"
+                        id="pharmacyLocationInput"
+                        placeholder="Main Block, Ground Floor"
+                    >
+                </div>
+
+                <div class="form-group full">
+                    <label>Status</label>
+                    <select id="pharmacyStatusInput">
+                        <option value="active">Active</option>
+                        <option value="inactive">Inactive</option>
+                    </select>
+                </div>
+
+            </div>
+
+            <div class="modal-actions">
+
+                <button
+                    type="button"
+                    class="cancel-btn"
+                    id="cancelPharmacyBtn"
+                >
+                    Cancel
+                </button>
+
+                <button
+                    type="submit"
+                    class="save-btn"
+                    id="savePharmacyBtn"
+                    style="background: #0284c7;"
+                >
+                    Save Pharmacy Account
                 </button>
 
             </div>
@@ -2630,6 +2796,227 @@
             .replaceAll("'", "&#039;");
 
     }
+
+    /* ==========================================
+       PHARMACY ACCOUNTS MANAGEMENT
+    ========================================== */
+
+    let pharmacyAccounts = [];
+    let editingPharmacyId = null;
+
+    const pharmacyModalOverlay = document.getElementById("pharmacyModalOverlay");
+    const addPharmacyAccountBtn = document.getElementById("addPharmacyAccountBtn");
+    const closePharmacyModal = document.getElementById("closePharmacyModal");
+    const cancelPharmacyBtn = document.getElementById("cancelPharmacyBtn");
+    const pharmacyAccountForm = document.getElementById("pharmacyAccountForm");
+    const pharmacyAccountTableBody = document.getElementById("pharmacyAccountTableBody");
+    const pharmacySearchInput = document.getElementById("pharmacySearchInput");
+
+    const pharmacyModalTitle = document.getElementById("pharmacyModalTitle");
+    const pharmacyNameInput = document.getElementById("pharmacyNameInput");
+    const pharmacyEmailInput = document.getElementById("pharmacyEmailInput");
+    const pharmacyPasswordInput = document.getElementById("pharmacyPasswordInput");
+    const pharmacyPhoneInput = document.getElementById("pharmacyPhoneInput");
+    const pharmacyLocationInput = document.getElementById("pharmacyLocationInput");
+    const pharmacyStatusInput = document.getElementById("pharmacyStatusInput");
+
+    function openPharmacyModal() {
+        editingPharmacyId = null;
+        pharmacyModalTitle.textContent = "Add Pharmacy Account";
+        pharmacyAccountForm.reset();
+        pharmacyStatusInput.value = "active";
+        pharmacyModalOverlay.classList.add("show");
+    }
+
+    function closePharmacyAccountModal() {
+        pharmacyModalOverlay.classList.remove("show");
+        pharmacyAccountForm.reset();
+        editingPharmacyId = null;
+    }
+
+    if (addPharmacyAccountBtn) addPharmacyAccountBtn.addEventListener("click", openPharmacyModal);
+    if (closePharmacyModal) closePharmacyModal.addEventListener("click", closePharmacyAccountModal);
+    if (cancelPharmacyBtn) cancelPharmacyBtn.addEventListener("click", closePharmacyAccountModal);
+
+    if (pharmacyModalOverlay) {
+        pharmacyModalOverlay.addEventListener("click", e => {
+            if (e.target === pharmacyModalOverlay) closePharmacyAccountModal();
+        });
+    }
+
+    function loadPharmacyAccounts() {
+        try {
+            const localPharmacies = JSON.parse(localStorage.getItem("medimatePharmacies") || "[]");
+            const allUsers = JSON.parse(localStorage.getItem("medimateUsers") || "[]");
+            const userPharmacies = allUsers.filter(u => u.role === "pharmacy");
+
+            const map = new Map();
+            localPharmacies.forEach(p => {
+                const k = (p.email || p.id || "").toLowerCase();
+                if (k) map.set(k, p);
+            });
+            userPharmacies.forEach(u => {
+                const k = (u.email || u.id || "").toLowerCase();
+                if (k) {
+                    const existing = map.get(k) || {};
+                    map.set(k, {
+                        id: u.id || existing.id || ("PHARM-" + Date.now()),
+                        name: u.name || u.pharmacyName || existing.name || "Pharmacy Account",
+                        email: u.email,
+                        phone: u.phone || existing.phone || "-",
+                        location: u.location || existing.location || "-",
+                        status: u.status || existing.status || "active",
+                        password: u.password || existing.password || ""
+                    });
+                }
+            });
+            pharmacyAccounts = Array.from(map.values());
+        } catch(e) {
+            pharmacyAccounts = [];
+        }
+        renderPharmacyAccounts();
+    }
+
+    function renderPharmacyAccounts() {
+        if (!pharmacyAccountTableBody) return;
+        const q = pharmacySearchInput ? pharmacySearchInput.value.trim().toLowerCase() : "";
+        const filtered = pharmacyAccounts.filter(p => {
+            const txt = `${p.name || ""} ${p.email || ""} ${p.phone || ""} ${p.location || ""}`.toLowerCase();
+            return txt.includes(q);
+        });
+
+        if (filtered.length === 0) {
+            pharmacyAccountTableBody.innerHTML = `
+                <tr>
+                    <td colspan="7" class="empty">No pharmacy accounts found.</td>
+                </tr>
+            `;
+            return;
+        }
+
+        pharmacyAccountTableBody.innerHTML = filtered.map((p, idx) => `
+            <tr>
+                <td>${escapeHTML(p.id || (idx + 1))}</td>
+                <td><strong>${escapeHTML(p.name || p.pharmacyName || "-")}</strong></td>
+                <td>${escapeHTML(p.email || "-")}</td>
+                <td>${escapeHTML(p.phone || "-")}</td>
+                <td>${escapeHTML(p.location || "-")}</td>
+                <td>
+                    <span class="badge ${String(p.status).toLowerCase() === 'active' ? 'active' : 'inactive'}">
+                        ${escapeHTML(p.status || "active")}
+                    </span>
+                </td>
+                <td>
+                    <div style="display: flex; gap: 8px;">
+                        <button class="edit-btn" onclick="editPharmacyAccount('${p.id || p.email}')">✏️ Edit</button>
+                        <button class="delete-btn" onclick="deletePharmacyAccount('${p.id || p.email}')">🗑️ Delete</button>
+                    </div>
+                </td>
+            </tr>
+        `).join("");
+    }
+
+    if (pharmacySearchInput) {
+        pharmacySearchInput.addEventListener("input", renderPharmacyAccounts);
+    }
+
+    if (pharmacyAccountForm) {
+        pharmacyAccountForm.addEventListener("submit", function(e) {
+            e.preventDefault();
+            const name = pharmacyNameInput.value.trim();
+            const email = pharmacyEmailInput.value.trim().toLowerCase();
+            const enteredPass = pharmacyPasswordInput.value.trim();
+            const phone = pharmacyPhoneInput.value.trim();
+            const location = pharmacyLocationInput.value.trim();
+            const status = pharmacyStatusInput.value;
+
+            if (!name || !email) {
+                showToast("Please fill all required fields.");
+                return;
+            }
+
+            let finalPassword = enteredPass;
+            if (!finalPassword) {
+                const uList = JSON.parse(localStorage.getItem("medimateUsers") || "[]");
+                const matched = uList.find(u => u.email && u.email.toLowerCase() === email);
+                if (matched && matched.password) finalPassword = matched.password;
+            }
+            if (!finalPassword) {
+                finalPassword = "Pharm@" + Math.floor(100 + Math.random() * 900);
+            }
+
+            const pId = editingPharmacyId || ("PHARM-" + Date.now());
+
+            // 1. Save to medimateUsers
+            try {
+                const users = JSON.parse(localStorage.getItem("medimateUsers") || "[]");
+                const uIdx = users.findIndex(u => u.email && u.email.toLowerCase() === email);
+                const userObj = {
+                    id: pId,
+                    name: name,
+                    fullName: name,
+                    pharmacyName: name,
+                    email: email,
+                    password: finalPassword,
+                    phone: phone,
+                    location: location,
+                    role: "pharmacy",
+                    status: status
+                };
+                if (uIdx !== -1) users[uIdx] = { ...users[uIdx], ...userObj };
+                else users.push(userObj);
+                localStorage.setItem("medimateUsers", JSON.stringify(users));
+            } catch(e) {}
+
+            // 2. Save to medimatePharmacies
+            try {
+                const pharms = JSON.parse(localStorage.getItem("medimatePharmacies") || "[]");
+                const pIdx = pharms.findIndex(p => (p.email && p.email.toLowerCase() === email) || String(p.id) === String(pId));
+                const record = { id: pId, name, email, password: finalPassword, phone, location, status };
+                if (pIdx !== -1) pharms[pIdx] = { ...pharms[pIdx], ...record };
+                else pharms.push(record);
+                localStorage.setItem("medimatePharmacies", JSON.stringify(pharms));
+            } catch(e) {}
+
+            closePharmacyAccountModal();
+            showToast(editingPharmacyId ? "Pharmacy account updated successfully." : `Pharmacy created. Password: ${finalPassword}`);
+            loadPharmacyAccounts();
+        });
+    }
+
+    window.editPharmacyAccount = function(idOrEmail) {
+        const item = pharmacyAccounts.find(p => String(p.id) === String(idOrEmail) || (p.email && p.email.toLowerCase() === String(idOrEmail).toLowerCase()));
+        if (!item) return;
+
+        editingPharmacyId = item.id || idOrEmail;
+        pharmacyModalTitle.textContent = "Edit Pharmacy Account";
+        pharmacyNameInput.value = item.name || item.pharmacyName || "";
+        pharmacyEmailInput.value = item.email || "";
+        pharmacyPasswordInput.value = item.password || "";
+        pharmacyPhoneInput.value = item.phone || "";
+        pharmacyLocationInput.value = item.location || "";
+        pharmacyStatusInput.value = item.status || "active";
+        pharmacyModalOverlay.classList.add("show");
+    };
+
+    window.deletePharmacyAccount = function(idOrEmail) {
+        if (!confirm("Are you sure you want to delete this pharmacy account?")) return;
+        try {
+            let pharms = JSON.parse(localStorage.getItem("medimatePharmacies") || "[]");
+            pharms = pharms.filter(p => String(p.id) !== String(idOrEmail) && (!p.email || p.email.toLowerCase() !== String(idOrEmail).toLowerCase()));
+            localStorage.setItem("medimatePharmacies", JSON.stringify(pharms));
+
+            let users = JSON.parse(localStorage.getItem("medimateUsers") || "[]");
+            users = users.filter(u => !(u.role === "pharmacy" && (String(u.id) === String(idOrEmail) || (u.email && u.email.toLowerCase() === String(idOrEmail).toLowerCase()))));
+            localStorage.setItem("medimateUsers", JSON.stringify(users));
+
+            showToast("Pharmacy account deleted.");
+            loadPharmacyAccounts();
+        } catch(e) {}
+    };
+
+    // Load pharmacy accounts on page load
+    loadPharmacyAccounts();
 
 </script>
 

@@ -7,19 +7,19 @@
   <link rel="stylesheet" href="patient-style.css">
   <style>
     .prescription-card {
-      background: white;
-      border: 1px solid var(--border-color);
+      background: rgba(13, 22, 41, 0.85);
+      border: 1px solid rgba(255, 255, 255, 0.08);
       border-radius: var(--radius-md);
       padding: 24px;
       margin-bottom: 18px;
       transition: all 0.2s ease;
-      box-shadow: var(--shadow-sm);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35);
     }
 
     .prescription-card:hover {
-      border-color: var(--primary);
+      border-color: rgba(0, 229, 153, 0.4);
       transform: translateY(-2px);
-      box-shadow: var(--shadow-md);
+      box-shadow: 0 8px 30px rgba(0, 229, 153, 0.15);
     }
 
     .rx-header-row {
@@ -81,14 +81,14 @@
     }
 
     .rx-pill-item {
-      background: white;
-      border: 1px solid var(--border-color);
+      background: rgba(10, 18, 36, 0.95);
+      border: 1px solid rgba(255, 255, 255, 0.08);
       border-radius: var(--radius-sm);
       padding: 10px 14px;
     }
 
     .rx-pill-item strong {
-      color: var(--primary-dark);
+      color: #00e599;
       font-size: 14px;
       display: block;
     }
@@ -110,11 +110,12 @@
 
     /* Full Digital Rx Slip Modal */
     .digital-rx-paper {
-      background: white;
+      background: rgba(13, 22, 41, 0.95);
       border: 2px solid var(--primary);
       border-radius: var(--radius-md);
       padding: 28px;
       font-family: inherit;
+      color: #f8fafc;
     }
 
     .hospital-rx-head {
@@ -284,7 +285,7 @@
           <h2>Digital Rx Repository</h2>
           <p>Access your complete history of doctor-authorized prescriptions, view exact drug schedules, or print official slips for pharmacy fulfillment.</p>
         </div>
-        <a href="medicines.html" class="btn btn-primary" style="background: white; color: var(--primary);">
+        <a href="medicines.html" class="btn btn-primary">
           <span>💊</span>
           <span>View Daily Medicine Schedule</span>
         </a>
@@ -561,8 +562,8 @@
             </table>
           </div>
 
-          <div style="background: white; border: 1px solid var(--border-color); padding: 14px; border-radius: 8px; font-size: 13px; margin-bottom: 20px; line-height: 1.5;">
-            <strong style="color: var(--primary-dark);">Special Doctor Instructions & Lifestyle Advice:</strong><br>
+          <div style="background: rgba(10, 18, 36, 0.95); border: 1px solid rgba(255, 255, 255, 0.1); padding: 14px; border-radius: 8px; font-size: 13px; margin-bottom: 20px; line-height: 1.6; color: #cbd5e1;">
+            <strong style="color: #00e599;">Special Doctor Instructions & Lifestyle Advice:</strong><br>
             ${rx.advice}
           </div>
 

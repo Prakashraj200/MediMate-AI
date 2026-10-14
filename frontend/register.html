@@ -567,132 +567,57 @@
     <!-- =====================================================
          RIGHT REGISTRATION FORM PANEL
          ===================================================== -->
-    <div class="form-panel">
+    <div class="form-panel" style="padding: 45px 40px; display: flex; flex-direction: column; justify-content: center;">
 
-      <div class="form-header">
-        <h2>Create an Account</h2>
-        <p>Choose your portal role and get started in seconds.</p>
+      <div class="form-header" style="margin-bottom: 24px;">
+        <div style="display:inline-flex; align-items:center; gap:8px; background:rgba(239, 68, 68, 0.15); color:#f87171; border:1px solid rgba(239, 68, 68, 0.3); padding:6px 14px; border-radius:30px; font-size:12.5px; font-weight:700; margin-bottom:14px;">
+          <span>🔒</span> Public Registration Disabled
+        </div>
+        <h2 style="font-size: 26px; font-weight: 800; color: #fff; margin-bottom: 8px;">Hospital Admin Provisioning Only</h2>
+        <p style="color: #94a3b8; font-size: 14px; line-height: 1.6;">
+          All Doctor, Patient, Laboratory, and Pharmacy accounts are provisioned exclusively by Hospital Administration. Self-registration is strictly closed.
+        </p>
       </div>
 
-      <form id="registerForm" novalidate>
-
-        <!-- Role Selector Cards -->
-        <div class="role-selection-group">
-          <label>Select Your Hospital Role</label>
-          <div class="roles-grid" id="rolesGrid">
-            <div class="role-card active" data-role="patient">
-              <span class="role-emoji">🧑‍🤝‍🧑</span>
-              <span class="role-title">Patient</span>
-            </div>
-            <div class="role-card" data-role="doctor">
-              <span class="role-emoji">👨‍⚕️</span>
-              <span class="role-title">Doctor</span>
-            </div>
-            <div class="role-card" data-role="admin">
-              <span class="role-emoji">🛡️</span>
-              <span class="role-title">Admin</span>
-            </div>
-            <div class="role-card" data-role="laboratory">
-              <span class="role-emoji">🧪</span>
-              <span class="role-title">Lab</span>
-            </div>
-            <div class="role-card" data-role="pharmacy">
-              <span class="role-emoji">💊</span>
-              <span class="role-title">Pharmacy</span>
-            </div>
-          </div>
-          <!-- Hidden input for selected role -->
-          <input type="hidden" id="selectedRole" value="patient">
-        </div>
-
-        <!-- Full Name -->
-        <div class="input-field">
-          <label for="fullname">Full Name</label>
-          <div class="input-wrapper">
-            <span class="input-icon">👤</span>
-            <input
-              type="text"
-              id="fullname"
-              placeholder="e.g. Prakash Raj"
-              autocomplete="name"
-              required
-            />
-          </div>
-        </div>
-
-        <!-- Email Address -->
-        <div class="input-field">
-          <label for="email">Email Address</label>
-          <div class="input-wrapper">
-            <span class="input-icon">✉️</span>
-            <input
-              type="email"
-              id="email"
-              placeholder="name@example.com"
-              autocomplete="email"
-              required
-            />
-          </div>
-        </div>
-
-        <!-- Passwords Row -->
-        <div class="form-row-2">
-          <!-- Password -->
-          <div class="input-field">
-            <label for="password">Create Password</label>
-            <div class="input-wrapper">
-              <span class="input-icon">🔒</span>
-              <input
-                type="password"
-                id="password"
-                placeholder="At least 6 characters"
-                autocomplete="new-password"
-                required
-              />
-              <button type="button" class="toggle-pass-btn" id="togglePass1" title="Show/Hide Password">👁️</button>
-            </div>
-            <div class="strength-meter">
-              <div class="strength-bar" id="strengthBar"></div>
-            </div>
-            <div class="strength-text" id="strengthText">Min 6 characters</div>
-          </div>
-
-          <!-- Confirm Password -->
-          <div class="input-field">
-            <label for="confirmPassword">Confirm Password</label>
-            <div class="input-wrapper">
-              <span class="input-icon">🔒</span>
-              <input
-                type="password"
-                id="confirmPassword"
-                placeholder="Re-type password"
-                autocomplete="new-password"
-                required
-              />
-              <button type="button" class="toggle-pass-btn" id="togglePass2" title="Show/Hide Password">👁️</button>
-            </div>
-          </div>
-        </div>
-
-        <!-- Submit Button -->
-        <button type="submit" class="submit-btn" id="submitBtn">
-          <span>Create Account</span>
-          <span>➔</span>
-        </button>
-
-        <!-- Dynamic Status Message -->
-        <div class="status-msg" id="statusMessage"></div>
-
-      </form>
-
-      <!-- Switch to Login -->
-      <div class="login-prompt">
-        Already registered?
-        <a href="patient/patient-login.html" id="dynamicLoginLink">Sign in to your portal</a>
+      <div style="background: rgba(15, 23, 42, 0.6); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 16px; padding: 20px; margin-bottom: 24px;">
+        <h3 style="font-size: 14.5px; color: #00e599; font-weight: 700; margin-bottom: 8px; display: flex; align-items: center; gap: 8px;">
+          <span>📋</span> Access Instructions
+        </h3>
+        <p style="font-size: 13.5px; color: #cbd5e1; line-height: 1.6; margin: 0;">
+          Please use the official <strong>Email ID</strong> and <strong>Password</strong> provided to you by the Hospital Admin to access your respective portal.
+        </p>
       </div>
 
-      <div style="text-align: center;">
-        <a href="index.html" class="back-home">← Back to MediMate Home</a>
+      <!-- PORTAL LOGIN ROUTE SELECTOR -->
+      <div style="display: flex; flex-direction: column; gap: 12px; margin-bottom: 25px;">
+        <a href="doctor/doctor-login.html" style="display: flex; align-items: center; justify-content: space-between; padding: 14px 18px; background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.09); border-radius: 12px; color: white; text-decoration: none; font-weight: 600; font-size: 14px; transition: all 0.2s;" onmouseover="this.style.background='rgba(0, 229, 153, 0.12)'; this.style.borderColor='#00e599';" onmouseout="this.style.background='rgba(255, 255, 255, 0.04)'; this.style.borderColor='rgba(255, 255, 255, 0.09)';">
+          <span style="display: flex; align-items: center; gap: 12px;"><span style="font-size: 20px;">👨‍⚕️</span> Doctor Portal Login</span>
+          <span style="color: #00e599;">➔</span>
+        </a>
+
+        <a href="patient/patient-login.html" style="display: flex; align-items: center; justify-content: space-between; padding: 14px 18px; background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.09); border-radius: 12px; color: white; text-decoration: none; font-weight: 600; font-size: 14px; transition: all 0.2s;" onmouseover="this.style.background='rgba(0, 229, 153, 0.12)'; this.style.borderColor='#00e599';" onmouseout="this.style.background='rgba(255, 255, 255, 0.04)'; this.style.borderColor='rgba(255, 255, 255, 0.09)';">
+          <span style="display: flex; align-items: center; gap: 12px;"><span style="font-size: 20px;">🧑‍🤝‍🧑</span> Patient Portal Login</span>
+          <span style="color: #00e599;">➔</span>
+        </a>
+
+        <a href="laboratory/lab-login.html" style="display: flex; align-items: center; justify-content: space-between; padding: 14px 18px; background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.09); border-radius: 12px; color: white; text-decoration: none; font-weight: 600; font-size: 14px; transition: all 0.2s;" onmouseover="this.style.background='rgba(0, 229, 153, 0.12)'; this.style.borderColor='#00e599';" onmouseout="this.style.background='rgba(255, 255, 255, 0.04)'; this.style.borderColor='rgba(255, 255, 255, 0.09)';">
+          <span style="display: flex; align-items: center; gap: 12px;"><span style="font-size: 20px;">🧪</span> Laboratory Portal Login</span>
+          <span style="color: #00e599;">➔</span>
+        </a>
+
+        <a href="pharmacy/pharmacy-login.html" style="display: flex; align-items: center; justify-content: space-between; padding: 14px 18px; background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.09); border-radius: 12px; color: white; text-decoration: none; font-weight: 600; font-size: 14px; transition: all 0.2s;" onmouseover="this.style.background='rgba(0, 229, 153, 0.12)'; this.style.borderColor='#00e599';" onmouseout="this.style.background='rgba(255, 255, 255, 0.04)'; this.style.borderColor='rgba(255, 255, 255, 0.09)';">
+          <span style="display: flex; align-items: center; gap: 12px;"><span style="font-size: 20px;">💊</span> Pharmacy Portal Login</span>
+          <span style="color: #00e599;">➔</span>
+        </a>
+
+        <a href="admin/admin-login.html" style="display: flex; align-items: center; justify-content: space-between; padding: 14px 18px; background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.09); border-radius: 12px; color: white; text-decoration: none; font-weight: 600; font-size: 14px; transition: all 0.2s;" onmouseover="this.style.background='rgba(0, 229, 153, 0.12)'; this.style.borderColor='#00e599';" onmouseout="this.style.background='rgba(255, 255, 255, 0.04)'; this.style.borderColor='rgba(255, 255, 255, 0.09)';">
+          <span style="display: flex; align-items: center; gap: 12px;"><span style="font-size: 20px;">🛡️</span> Hospital Administrator Portal</span>
+          <span style="color: #00e599;">➔</span>
+        </a>
+      </div>
+
+      <div style="text-align: center; margin-top: 10px;">
+        <a href="index.html" class="back-home" style="color: #94a3b8; font-size: 13.5px; text-decoration: none;">← Back to MediMate Home</a>
       </div>
 
     </div>
@@ -905,7 +830,7 @@
         sessionStorage.setItem("medimateUser", email);
         sessionStorage.setItem("medimateUid", firebaseUid);
 
-        // Pre-seed patient profile if role is patient
+        // Role-specific registries sync
         if (role === "patient") {
           let patProfile = JSON.parse(localStorage.getItem("patient_profile") || "null");
           if (!patProfile) {
@@ -923,6 +848,70 @@
             patProfile.email = email;
           }
           localStorage.setItem("patient_profile", JSON.stringify(patProfile));
+        } else if (role === "doctor") {
+          const formattedDocName = name.toLowerCase().startsWith("dr.") ? name : ("Dr. " + name);
+          const docId = "DOC-" + Date.now();
+          const docObj = {
+            id: docId,
+            name: formattedDocName,
+            fullName: name,
+            email: email,
+            password: password,
+            specialization: "General Medicine",
+            department: "General Medicine",
+            status: "active"
+          };
+          const docs = JSON.parse(localStorage.getItem("medimateDoctors") || "[]");
+          if (!docs.find(d => d.email && d.email.toLowerCase() === email.toLowerCase())) {
+            docs.push(docObj);
+            localStorage.setItem("medimateDoctors", JSON.stringify(docs));
+          }
+          const patientDocs = JSON.parse(localStorage.getItem("patient_doctors") || "[]");
+          if (!patientDocs.find(d => d.email && d.email.toLowerCase() === email.toLowerCase())) {
+            patientDocs.push({
+              id: docId,
+              name: formattedDocName,
+              department: "General Medicine",
+              qualifications: "MBBS, MD",
+              experience: "10+ Years",
+              rating: 5.0,
+              reviewsCount: 1,
+              fee: "₹500",
+              avatar: "👨‍⚕️",
+              availableDays: "Mon to Sat",
+              nextSlot: "Today, 10:00 AM",
+              bio: `Registered Clinician: ${formattedDocName}`,
+              email: email
+            });
+            localStorage.setItem("patient_doctors", JSON.stringify(patientDocs));
+          }
+        } else if (role === "laboratory") {
+          const labs = JSON.parse(localStorage.getItem("medimateLaboratories") || "[]");
+          if (!labs.find(l => l.email && l.email.toLowerCase() === email.toLowerCase())) {
+            labs.push({
+              id: "LAB-" + Date.now(),
+              name: name,
+              labName: name,
+              email: email,
+              password: password,
+              status: "active",
+              type: "General"
+            });
+            localStorage.setItem("medimateLaboratories", JSON.stringify(labs));
+          }
+        } else if (role === "pharmacy") {
+          const pharms = JSON.parse(localStorage.getItem("medimatePharmacies") || "[]");
+          if (!pharms.find(p => p.email && p.email.toLowerCase() === email.toLowerCase())) {
+            pharms.push({
+              id: "PHARM-" + Date.now(),
+              name: name,
+              pharmacyName: name,
+              email: email,
+              password: password,
+              status: "active"
+            });
+            localStorage.setItem("medimatePharmacies", JSON.stringify(pharms));
+          }
         }
 
         // SUCCESS DISPLAY

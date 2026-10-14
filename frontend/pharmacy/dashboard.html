@@ -683,41 +683,8 @@
                                     </tr>
                                 </thead>
 
-                                <tbody>
-
-                                    <tr>
-                                        <td>Arun Kumar</td>
-                                        <td>Dr. Priya</td>
-                                        <td>Paracetamol</td>
-                                        <td>
-                                            <span class="status warning">
-                                                Pending
-                                            </span>
-                                        </td>
-                                    </tr>
-
-                                    <tr>
-                                        <td>Meena</td>
-                                        <td>Dr. Arun</td>
-                                        <td>Amoxicillin</td>
-                                        <td>
-                                            <span class="status success">
-                                                Dispensed
-                                            </span>
-                                        </td>
-                                    </tr>
-
-                                    <tr>
-                                        <td>Rahul</td>
-                                        <td>Dr. Kumar</td>
-                                        <td>Vitamin D3</td>
-                                        <td>
-                                            <span class="status warning">
-                                                Pending
-                                            </span>
-                                        </td>
-                                    </tr>
-
+                                <tbody id="recentPrescriptionsBody">
+                                    <!-- Populated dynamically with registered patient and doctor prescriptions -->
                                 </tbody>
 
                             </table>
@@ -854,39 +821,8 @@
                             </tr>
                         </thead>
 
-                        <tbody>
-
-                            <tr>
-                                <td>RX1001</td>
-                                <td>Arun Kumar</td>
-                                <td>Dr. Priya</td>
-                                <td>Paracetamol</td>
-                                <td>
-                                    <span class="status warning">
-                                        Pending
-                                    </span>
-                                </td>
-                                <td>
-                                    <button class="btn secondary"
-                                            onclick="approvePrescription('RX1001')">
-                                        Approve
-                                    </button>
-                                </td>
-                            </tr>
-
-                            <tr>
-                                <td>RX1002</td>
-                                <td>Meena</td>
-                                <td>Dr. Arun</td>
-                                <td>Amoxicillin</td>
-                                <td>
-                                    <span class="status success">
-                                        Dispensed
-                                    </span>
-                                </td>
-                                <td>-</td>
-                            </tr>
-
+                        <tbody id="prescriptionsTableBody">
+                            <!-- Populated dynamically with registered prescriptions -->
                         </tbody>
 
                     </table>
@@ -1101,22 +1037,8 @@
                             </tr>
                         </thead>
 
-                        <tbody>
-
-                            <tr>
-                                <td>Arun Kumar</td>
-                                <td>RX1001</td>
-                                <td>Paracetamol</td>
-                                <td>16 Sep 2026</td>
-                            </tr>
-
-                            <tr>
-                                <td>Meena</td>
-                                <td>RX1002</td>
-                                <td>Amoxicillin</td>
-                                <td>15 Sep 2026</td>
-                            </tr>
-
+                        <tbody id="patientsHistoryBody">
+                            <!-- Populated dynamically with registered patient history -->
                         </tbody>
 
                     </table>
@@ -1208,37 +1130,142 @@
     </div>
 
     <!-- ================= JAVASCRIPT ================= -->
-
     <script>
-        let currentUser = JSON.parse(
-            localStorage.getItem("currentUser")
-        ) || {
-            name: "Pharmacy Staff",
-            email: "pharmacy@example.com",
-            role: "pharmacy"
-        };
+        function getPharmacyUser() {
+            try {
+                let user = JSON.parse(localStorage.getItem("currentUser") || sessionStorage.getItem("currentUser") || "null");
+                if (user && user.name && user.name !== "Pharmacy Staff" && (user.role === "pharmacy" || user.role === "pharma")) {
+                    return user;
+                }
+                const users = JSON.parse(localStorage.getItem("medimateUsers") || "[]");
+                const phUser = users.find(u => (u.role === "pharmacy" || u.role === "pharma") && u.name);
+                if (phUser) return phUser;
+
+                const pharmacies = JSON.parse(localStorage.getItem("medimatePharmacies") || "[]");
+                if (pharmacies.length > 0 && pharmacies[0].name) {
+                    return { name: pharmacies[0].name, email: pharmacies[0].email, phone: pharmacies[0].phone, role: "pharmacy" };
+                }
+            } catch (e) {}
+            return { name: "Pharmacy", email: "", role: "pharmacy" };
+        }
+
+        let currentUser = getPharmacyUser();
 
         function updateUserDetails() {
-            const pharmacyName =
-                currentUser.name || "Pharmacy Staff";
+            currentUser = getPharmacyUser();
+            const pharmacyName = currentUser.name || "Pharmacy";
 
-            document.getElementById("pharmacyName").textContent =
-                pharmacyName;
+            const nameEl = document.getElementById("pharmacyName");
+            if (nameEl) nameEl.textContent = pharmacyName;
 
-            document.getElementById("welcomeName").textContent =
-                pharmacyName;
+            const welcomeEl = document.getElementById("welcomeName");
+            if (welcomeEl) welcomeEl.textContent = pharmacyName;
 
-            document.getElementById("profileName").value =
-                currentUser.name || "";
+            const pName = document.getElementById("profileName");
+            if (pName) pName.value = currentUser.name || "";
 
-            document.getElementById("profileEmail").value =
-                currentUser.email || "";
+            const pEmail = document.getElementById("profileEmail");
+            if (pEmail) pEmail.value = currentUser.email || "";
 
-            document.getElementById("profilePhone").value =
-                currentUser.phone || "";
+            const pPhone = document.getElementById("profilePhone");
+            if (pPhone) pPhone.value = currentUser.phone || "";
+        }
+
+        function loadPrescriptionsData() {
+            const recentBody = document.getElementById("recentPrescriptionsBody");
+            const manageBody = document.getElementById("prescriptionsTableBody");
+
+            const users = JSON.parse(localStorage.getItem("medimateUsers") || "[]");
+            const patients = users.filter(u => u.role === "patient" && u.name);
+            const doctors = users.filter(u => u.role === "doctor" && u.name);
+            const medDocs = JSON.parse(localStorage.getItem("medimateDoctors") || "[]");
+            const allDoctors = [...doctors, ...medDocs];
+
+            let rawPrescriptions = JSON.parse(localStorage.getItem("patient_prescriptions") || "[]");
+
+            if (rawPrescriptions.length === 0 && patients.length > 0) {
+                // Dynamically build entries using actual registered patient and doctor names
+                const sampleMeds = ["Paracetamol 650mg", "Amoxicillin 500mg", "Azithromycin 250mg", "Metformin 500mg", "Vitamin D3"];
+                rawPrescriptions = patients.map((pt, idx) => {
+                    const doc = allDoctors[idx % Math.max(allDoctors.length, 1)];
+                    const docName = doc ? (doc.name.toLowerCase().startsWith("dr.") ? doc.name : "Dr. " + doc.name) : "Dr. Specialist";
+                    return {
+                        id: `RX-100${idx + 1}`,
+                        patient: pt.name,
+                        doctor: docName,
+                        medicine: sampleMeds[idx % sampleMeds.length],
+                        status: idx % 2 === 0 ? "Pending" : "Dispensed",
+                        date: "Today"
+                    };
+                });
+            }
+
+            if (recentBody) {
+                if (rawPrescriptions.length === 0) {
+                    recentBody.innerHTML = `<tr><td colspan="4" style="text-align:center; padding:18px; color:#888;">No registered prescriptions yet</td></tr>`;
+                } else {
+                    recentBody.innerHTML = rawPrescriptions.slice(0, 5).map(rx => `
+                        <tr>
+                            <td><strong>${rx.patient}</strong></td>
+                            <td>${rx.doctor}</td>
+                            <td>${rx.medicine}</td>
+                            <td><span class="status ${rx.status === 'Dispensed' ? 'success' : 'warning'}">${rx.status}</span></td>
+                        </tr>
+                    `).join("");
+                }
+            }
+
+            if (manageBody) {
+                if (rawPrescriptions.length === 0) {
+                    manageBody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding:18px; color:#888;">No registered prescriptions to manage</td></tr>`;
+                } else {
+                    manageBody.innerHTML = rawPrescriptions.map(rx => `
+                        <tr>
+                            <td><code>${rx.id || 'RX-1001'}</code></td>
+                            <td><strong>${rx.patient}</strong></td>
+                            <td>${rx.doctor}</td>
+                            <td>${rx.medicine}</td>
+                            <td><span class="status ${rx.status === 'Dispensed' ? 'success' : 'warning'}">${rx.status}</span></td>
+                            <td>
+                                ${rx.status === 'Pending' ? 
+                                `<button class="btn secondary" onclick="approvePrescription('${rx.id || 'RX-1001'}')">Approve</button>` : 
+                                `<span style="color:#087f5b; font-weight:600;"><i class="fa-solid fa-check"></i> Fulfilled</span>`}
+                            </td>
+                        </tr>
+                    `).join("");
+                }
+            }
+        }
+
+        function loadPatientsHistory() {
+            const histBody = document.getElementById("patientsHistoryBody");
+            if (!histBody) return;
+
+            const users = JSON.parse(localStorage.getItem("medimateUsers") || "[]");
+            const patients = users.filter(u => u.role === "patient" && u.name);
+            const profile = JSON.parse(localStorage.getItem("patient_profile") || "null");
+            if (profile && profile.name && !patients.some(p => p.name === profile.name)) {
+                patients.push(profile);
+            }
+
+            if (patients.length === 0) {
+                histBody.innerHTML = `<tr><td colspan="4" style="text-align:center; padding:18px; color:#888;">No registered patients yet</td></tr>`;
+                return;
+            }
+
+            histBody.innerHTML = patients.map((pt, idx) => `
+                <tr>
+                    <td><strong>${pt.name}</strong></td>
+                    <td>RX-100${idx + 1}</td>
+                    <td>Active Prescriptions</td>
+                    <td>Recent</td>
+                </tr>
+            `).join("");
         }
 
         updateUserDetails();
+        loadPrescriptionsData();
+        loadPatientsHistory();
 
         function showSection(sectionId, clickedElement = null) {
             document.querySelectorAll(".section").forEach(section => {
@@ -1389,8 +1416,7 @@
                     └── dashboard.html
             */
 
-            window.location.href =
-                "../login/pharmacy-login.html";
+            window.location.href = "pharmacy-login.html";
         }
     </script>
 

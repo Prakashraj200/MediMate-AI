@@ -38,74 +38,13 @@ const DEFAULT_PATIENT_PROFILE = {
         validTill: "2027-03-31",
         coverageLimit: "₹10,00,000"
     },
-    primaryPhysician: "Dr. Sarah Jenkins",
+    primaryPhysician: "",
     allergies: ["Penicillin", "Peanuts", "Dust Mites"],
     chronicConditions: ["Mild Hypertension"],
     joinedDate: "January 2024"
 };
 
-const DEFAULT_APPOINTMENTS = [
-    {
-        id: "APT-1001",
-        doctorName: "Dr. Sarah Jenkins",
-        doctorRole: "Senior Cardiologist",
-        doctorAvatar: "👩‍⚕️",
-        department: "Cardiology",
-        date: "2026-10-15",
-        time: "10:30 AM",
-        type: "In-Person Consultation",
-        room: "OPD Room 302, Wing B",
-        status: "Confirmed",
-        reason: "Quarterly cardiac review and blood pressure assessment.",
-        fee: "₹800",
-        notes: "Please bring recent blood pressure logs and current medication pack."
-    },
-    {
-        id: "APT-1002",
-        doctorName: "Dr. Rajesh Kumar",
-        doctorRole: "General Physician & Internist",
-        doctorAvatar: "👨‍⚕️",
-        department: "General Medicine",
-        date: "2026-10-22",
-        time: "03:00 PM",
-        type: "Video Call",
-        room: "Telehealth Room #4",
-        status: "Confirmed",
-        reason: "Review of latest Lipid Profile and routine wellness assessment.",
-        fee: "₹500",
-        notes: "Virtual video consultation link will activate 10 minutes prior."
-    },
-    {
-        id: "APT-1003",
-        doctorName: "Dr. Anita Patel",
-        doctorRole: "Consultant Dermatologist",
-        doctorAvatar: "👩‍⚕️",
-        department: "Dermatology",
-        date: "2026-09-18",
-        time: "11:15 AM",
-        type: "In-Person Consultation",
-        room: "Room 108, Wing A",
-        status: "Completed",
-        reason: "Seasonal dry skin rash on forearms.",
-        fee: "₹650",
-        notes: "Prescribed topical moisturizer and mild hydrocortisone lotion. Condition resolved."
-    },
-    {
-        id: "APT-1004",
-        doctorName: "Dr. Vikram Malhotra",
-        doctorRole: "Senior Orthopedic Surgeon",
-        doctorAvatar: "👨‍⚕️",
-        department: "Orthopedics",
-        date: "2026-08-04",
-        time: "02:00 PM",
-        type: "In-Person Consultation",
-        room: "Room 205, Wing C",
-        status: "Completed",
-        reason: "Right knee strain after badminton game.",
-        fee: "₹900",
-        notes: "X-ray clear. Recommended physiotherapy and knee brace for 2 weeks."
-    }
-];
+const DEFAULT_APPOINTMENTS = [];
 
 const DEFAULT_MEDICINES = [
     {
@@ -464,8 +403,8 @@ const DEFAULT_NOTIFICATIONS = [
     {
         id: "NOTIF-01",
         category: "appointment",
-        title: "Upcoming Appointment Reminder",
-        message: "You have a confirmed appointment with Dr. Sarah Jenkins (Cardiology) on Oct 15 at 10:30 AM in OPD Room 302.",
+        title: "Welcome to MediMate AI",
+        message: "Welcome to MediMate AI! Manage your health records, view assigned prescriptions, and connect with clinical departments.",
         time: "1 hour ago",
         read: false,
         icon: "📅",
@@ -533,13 +472,37 @@ export class PatientStore {
         if (!localStorage.getItem("patient_notifications")) {
             localStorage.setItem("patient_notifications", JSON.stringify(DEFAULT_NOTIFICATIONS));
         }
+        if (!localStorage.getItem("patient_health_documents")) {
+            localStorage.setItem("patient_health_documents", JSON.stringify([]));
+        }
     }
 
     // Profile
     static getProfile() {
         this.init();
         try {
-            return JSON.parse(localStorage.getItem("patient_profile")) || DEFAULT_PATIENT_PROFILE;
+            let prof = JSON.parse(localStorage.getItem("patient_profile")) || {};
+            // Priority: logged-in currentUser
+            let curUser = null;
+            try {
+                curUser = JSON.parse(localStorage.getItem("currentUser") || sessionStorage.getItem("currentUser") || "null");
+            } catch(e) {}
+            if (!curUser) {
+                try {
+                    const sessionEmail = sessionStorage.getItem("medimateUser");
+                    const allUsers = JSON.parse(localStorage.getItem("medimateUsers") || "[]");
+                    if (sessionEmail && allUsers.length) {
+                        curUser = allUsers.find(u => u.email && u.email.toLowerCase() === sessionEmail.toLowerCase());
+                    }
+                } catch(e) {}
+            }
+            if (curUser && (curUser.name || curUser.fullName)) {
+                const realName = (curUser.name || curUser.fullName).trim();
+                prof.name = realName;
+                if (curUser.email) prof.email = curUser.email;
+                if (curUser.phone) prof.phone = curUser.phone;
+            }
+            return { ...DEFAULT_PATIENT_PROFILE, ...prof };
         } catch {
             return DEFAULT_PATIENT_PROFILE;
         }
@@ -714,9 +677,47 @@ export class PatientStore {
     static getDoctors() {
         this.init();
         try {
-            return JSON.parse(localStorage.getItem("patient_doctors")) || DEFAULT_DOCTORS;
+            // Check real registered doctors first from medimateDoctors and medimateUsers
+            const medimateDocs = JSON.parse(localStorage.getItem("medimateDoctors") || "[]");
+            const allUsers = JSON.parse(localStorage.getItem("medimateUsers") || "[]");
+            const userDocs = allUsers.filter(u => u.role === "doctor");
+
+            const registry = [];
+            const seen = new Set();
+
+            [...medimateDocs, ...userDocs].forEach(d => {
+                const em = (d.email || d.id || "").toLowerCase();
+                if (em && !seen.has(em)) {
+                    seen.add(em);
+                    const rawName = (d.name || d.fullName || "Doctor").trim();
+                    const docName = rawName.toLowerCase().startsWith("dr.") ? rawName : ("Dr. " + rawName);
+                    registry.push({
+                        id: d.id || ("DOC-" + Math.floor(1000 + Math.random() * 9000)),
+                        name: docName,
+                        department: d.department || d.specialization || "General Medicine",
+                        qualifications: d.qualifications || "MBBS, MD",
+                        experience: d.experience || "10+ Years",
+                        rating: d.rating || 5.0,
+                        reviewsCount: d.reviewsCount || 1,
+                        fee: d.fee || "₹500",
+                        avatar: "👨‍⚕️",
+                        availableDays: d.availableDays || "Mon to Sat",
+                        nextSlot: d.nextSlot || "Today, 10:00 AM",
+                        bio: d.bio || `Specialist in ${d.department || d.specialization || "General Medicine"}.`,
+                        email: d.email,
+                        phone: d.phone
+                    });
+                }
+            });
+
+            // If real doctors are registered, ONLY return real registered doctors!
+            if (registry.length > 0) {
+                return registry;
+            }
+
+            return registry;
         } catch {
-            return DEFAULT_DOCTORS;
+            return [];
         }
     }
 
@@ -745,6 +746,46 @@ export class PatientStore {
         const notifs = this.getNotifications();
         notifs.forEach(n => n.read = true);
         localStorage.setItem("patient_notifications", JSON.stringify(notifs));
+    }
+
+    // Health Documents / PDF Uploads
+    static getHealthDocuments() {
+        this.init();
+        try {
+            return JSON.parse(localStorage.getItem("patient_health_documents")) || [];
+        } catch {
+            return [];
+        }
+    }
+
+    static saveHealthDocument(doc) {
+        const docs = this.getHealthDocuments();
+        const newDoc = {
+            id: "DOC-PDF-" + Date.now(),
+            uploadedAt: new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' }),
+            ...doc
+        };
+        docs.unshift(newDoc);
+        localStorage.setItem("patient_health_documents", JSON.stringify(docs));
+
+        this.addNotification({
+            category: "record",
+            title: "Medical PDF Uploaded",
+            message: `Document "${newDoc.title}" has been securely attached to your health records.`,
+            time: "Just now",
+            read: false,
+            icon: "📄",
+            link: "health-records.html"
+        });
+
+        return newDoc;
+    }
+
+    static deleteHealthDocument(id) {
+        let docs = this.getHealthDocuments();
+        docs = docs.filter(d => d.id !== id);
+        localStorage.setItem("patient_health_documents", JSON.stringify(docs));
+        return true;
     }
 }
 

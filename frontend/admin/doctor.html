@@ -1814,6 +1814,23 @@
 
                 <div class="form-group">
 
+                    <label for="doctorPassword">
+                        Login Password *
+                    </label>
+
+                    <input
+                        type="password"
+                        id="doctorPassword"
+                        placeholder="Set doctor login password"
+                        autocomplete="new-password"
+                    >
+
+                </div>
+
+
+
+                <div class="form-group">
+
                     <label for="doctorSpecialization">
                         Specialization *
                     </label>
@@ -2060,6 +2077,11 @@
             "doctorPhone"
         );
 
+    const doctorPassword =
+        document.getElementById(
+            "doctorPassword"
+        );
+
     const doctorSpecialization =
         document.getElementById(
             "doctorSpecialization"
@@ -2140,6 +2162,7 @@
                 "Save Doctor";
 
             doctorForm.reset();
+            if (doctorPassword) doctorPassword.value = "";
 
             doctorStatus.value =
                 "active";
@@ -2163,6 +2186,7 @@
         );
 
         doctorForm.reset();
+        if (doctorPassword) doctorPassword.value = "";
 
         editingDoctorId =
             null;
@@ -2207,6 +2231,8 @@
 
             event.preventDefault();
 
+
+            const enteredPassword = doctorPassword ? doctorPassword.value.trim() : "";
 
             const doctorData = {
 
@@ -2256,15 +2282,30 @@
                     "Saving...";
 
 
+                // Resolve final password for doctor credentials
+                let finalPassword = enteredPassword;
+                if (!finalPassword) {
+                    try {
+                        const existingUsers = JSON.parse(localStorage.getItem("medimateUsers") || "[]");
+                        const matchedU = existingUsers.find(u => u.email && u.email.toLowerCase() === doctorData.email.toLowerCase());
+                        if (matchedU && matchedU.password) {
+                            finalPassword = matchedU.password;
+                        }
+                    } catch(e) {}
+                }
+                if (!finalPassword) {
+                    finalPassword = "Doctor@" + Math.floor(100 + Math.random() * 900);
+                }
+
                 // Local persistence first (guarantees doctor shows up and persists)
                 const docId = editingDoctorId || ("DOC-" + Date.now());
-                const docObj = { id: docId, ...doctorData, createdAt: new Date().toISOString() };
+                const docObj = { id: docId, ...doctorData, password: finalPassword, createdAt: new Date().toISOString() };
 
                 try {
                     const localDocs = JSON.parse(localStorage.getItem("medimateDoctors") || "[]");
                     if (editingDoctorId) {
                         const idx = localDocs.findIndex(d => d.id === editingDoctorId);
-                        if (idx !== -1) localDocs[idx] = docObj;
+                        if (idx !== -1) localDocs[idx] = { ...localDocs[idx], ...docObj };
                         else localDocs.push(docObj);
                     } else {
                         localDocs.push(docObj);
@@ -2280,15 +2321,43 @@
                         name: doctorData.name,
                         fullName: doctorData.name,
                         email: doctorData.email,
+                        password: finalPassword,
                         phone: doctorData.phone,
                         role: "doctor",
                         specialization: doctorData.specialization,
                         department: doctorData.department,
+                        status: doctorData.status,
                         id: docId
                     };
                     if (uIdx !== -1) users[uIdx] = { ...users[uIdx], ...userObj };
                     else users.push(userObj);
                     localStorage.setItem("medimateUsers", JSON.stringify(users));
+                } catch (e) {}
+
+                // Sync to patient_doctors so patient appointment booking shows registered doctor
+                try {
+                    const patientDocs = JSON.parse(localStorage.getItem("patient_doctors") || "[]");
+                    const pIdx = patientDocs.findIndex(d => (d.email && d.email.toLowerCase() === doctorData.email.toLowerCase()) || d.id === docId);
+                    const formattedDocName = doctorData.name.toLowerCase().startsWith("dr.") ? doctorData.name : ("Dr. " + doctorData.name);
+                    const pDocObj = {
+                        id: docId,
+                        name: formattedDocName,
+                        department: doctorData.department || doctorData.specialization || "General Medicine",
+                        qualifications: "MBBS, MD",
+                        experience: "10+ Years",
+                        rating: 5.0,
+                        reviewsCount: 1,
+                        fee: "₹500",
+                        avatar: "👨‍⚕️",
+                        availableDays: "Mon to Sat",
+                        nextSlot: "Today, 10:00 AM",
+                        bio: `Specialist in ${doctorData.specialization || "General Medicine"}.`,
+                        email: doctorData.email,
+                        phone: doctorData.phone
+                    };
+                    if (pIdx !== -1) patientDocs[pIdx] = { ...patientDocs[pIdx], ...pDocObj };
+                    else patientDocs.push(pDocObj);
+                    localStorage.setItem("patient_doctors", JSON.stringify(patientDocs));
                 } catch (e) {}
 
                 // Background Firestore sync
@@ -2306,7 +2375,7 @@
                     console.log("Firestore background sync:", fbErr);
                 }
 
-                showToast(editingDoctorId ? "Doctor updated successfully." : "Doctor added successfully.");
+                showToast(editingDoctorId ? "Doctor updated successfully." : `Doctor added successfully. Password: ${finalPassword}`);
                 closeDoctorModal();
                 loadAllDoctors();
 
@@ -2386,6 +2455,16 @@
 
             doctorPhone.value =
                 doctor.phone || "";
+
+            let docPass = doctor.password || "";
+            if (!docPass) {
+                try {
+                    const uList = JSON.parse(localStorage.getItem("medimateUsers") || "[]");
+                    const matchedU = uList.find(u => u.email && u.email.toLowerCase() === (doctor.email || "").toLowerCase());
+                    if (matchedU && matchedU.password) docPass = matchedU.password;
+                } catch(e) {}
+            }
+            if (doctorPassword) doctorPassword.value = docPass;
 
             doctorSpecialization.value =
                 doctor.specialization || "";

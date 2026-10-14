@@ -169,7 +169,7 @@ a {
   gap: 12px;
   padding: 11px 14px;
   border-radius: var(--radius-md);
-  color: var(--text-muted);
+  color: #e2e8f0;
   font-size: 14px;
   font-weight: 600;
   transition: all 0.2s ease;
@@ -503,7 +503,7 @@ a {
 .card-header-flex h3 {
   font-size: 18px;
   font-weight: 700;
-  color: var(--primary-dark);
+  color: #00e599;
   display: flex;
   align-items: center;
   gap: 10px;
@@ -548,24 +548,28 @@ a {
 }
 
 .btn-outline {
-  background: white;
-  color: var(--text-main);
-  border: 1px solid var(--border-color);
+  background: rgba(255, 255, 255, 0.06);
+  color: #f8fafc;
+  border: 1px solid rgba(255, 255, 255, 0.16);
 }
 
 .btn-outline:hover {
   border-color: var(--primary);
   color: var(--primary);
-  background: var(--bg-surface-alt);
+  background: rgba(0, 229, 153, 0.12);
+  transform: translateY(-1px);
 }
 
 .btn-danger {
-  background: var(--status-danger-bg);
-  color: var(--status-danger-text);
+  background: rgba(244, 63, 94, 0.15);
+  color: #fb7185;
+  border: 1px solid rgba(244, 63, 94, 0.3);
 }
 
 .btn-danger:hover {
-  background: #ffc9c9;
+  background: rgba(244, 63, 94, 0.3);
+  color: #ffffff;
+  transform: translateY(-1px);
 }
 
 .btn-sm {
@@ -639,17 +643,22 @@ a {
 .search-box input {
   width: 100%;
   padding: 10px 14px 10px 38px;
-  border: 1px solid var(--border-color);
+  border: 1px solid rgba(255, 255, 255, 0.14);
   border-radius: var(--radius-sm);
-  background: white;
+  background: rgba(10, 18, 36, 0.85);
   font-size: 14px;
-  color: var(--text-main);
+  color: #ffffff;
   outline: none;
-  transition: border-color 0.2s ease;
+  transition: all 0.2s ease;
+}
+
+.search-box input::placeholder {
+  color: #94a3b8;
 }
 
 .search-box input:focus {
   border-color: var(--primary);
+  background: rgba(13, 22, 41, 0.95);
   box-shadow: 0 0 0 3px var(--primary-glow);
 }
 
@@ -670,26 +679,28 @@ a {
 }
 
 .filter-btn {
-  padding: 8px 14px;
+  padding: 8px 16px;
   border-radius: var(--radius-full);
-  background: white;
-  border: 1px solid var(--border-color);
-  color: var(--text-muted);
+  background: rgba(13, 22, 41, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #cbd5e1;
   font-size: 13px;
-  font-weight: 500;
+  font-weight: 600;
   transition: all 0.2s ease;
 }
 
 .filter-btn:hover {
   border-color: var(--primary);
-  color: var(--primary);
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.08);
 }
 
 .filter-btn.active {
   background: var(--primary);
   border-color: var(--primary);
-  color: white;
-  font-weight: 600;
+  color: #050a14;
+  font-weight: 700;
+  box-shadow: 0 0 15px rgba(0, 229, 153, 0.35);
 }
 
 /* ============================================================================
@@ -701,7 +712,7 @@ a {
   overflow-x: auto;
   border-radius: var(--radius-md);
   border: 1px solid var(--border-color);
-  background: white;
+  background: var(--bg-surface);
 }
 
 .data-table {
@@ -712,9 +723,9 @@ a {
 }
 
 .data-table th {
-  background: var(--bg-surface-alt);
-  color: var(--primary-dark);
-  font-weight: 600;
+  background: rgba(10, 18, 36, 0.95);
+  color: var(--primary);
+  font-weight: 700;
   padding: 14px 18px;
   border-bottom: 1px solid var(--border-color);
   white-space: nowrap;
@@ -723,7 +734,7 @@ a {
 .data-table td {
   padding: 14px 18px;
   border-bottom: 1px solid var(--border-color);
-  color: var(--text-main);
+  color: #f8fafc;
   vertical-align: middle;
 }
 
@@ -732,7 +743,7 @@ a {
 }
 
 .data-table tr:hover td {
-  background: var(--primary-subtle);
+  background: rgba(0, 229, 153, 0.08);
 }
 
 /* ============================================================================
@@ -742,8 +753,9 @@ a {
 .modal-backdrop {
   position: fixed;
   inset: 0;
-  background: rgba(8, 30, 20, 0.55);
-  backdrop-filter: blur(4px);
+  background: rgba(3, 7, 18, 0.8);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -760,16 +772,18 @@ a {
 }
 
 .modal-dialog {
-  background: white;
+  background: #0d1629;
+  border: 1px solid rgba(0, 229, 153, 0.3);
   border-radius: var(--radius-lg);
   width: 100%;
   max-width: 580px;
   max-height: 90vh;
   overflow-y: auto;
-  box-shadow: var(--shadow-lg);
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.9), 0 0 35px rgba(0, 229, 153, 0.15);
   transform: translateY(20px) scale(0.98);
   transition: all 0.25s ease;
   position: relative;
+  color: #f8fafc;
 }
 
 .modal-backdrop.active .modal-dialog {
@@ -778,24 +792,25 @@ a {
 
 .modal-header {
   padding: 20px 24px;
-  border-bottom: 1px solid var(--border-color);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
 
 .modal-header h3 {
-  font-size: 18px;
-  font-weight: 700;
-  color: var(--primary-dark);
+  font-size: 19px;
+  font-weight: 800;
+  color: #00e599;
+  letter-spacing: -0.2px;
 }
 
 .modal-close {
   background: transparent;
-  color: var(--text-subtle);
-  font-size: 22px;
-  width: 32px;
-  height: 32px;
+  color: var(--text-muted);
+  font-size: 24px;
+  width: 34px;
+  height: 34px;
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -810,51 +825,67 @@ a {
 
 .modal-body {
   padding: 24px;
+  color: #f8fafc;
 }
 
 .modal-footer {
   padding: 16px 24px;
-  border-top: 1px solid var(--border-color);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
   display: flex;
   justify-content: flex-end;
   gap: 12px;
-  background: var(--bg-surface-alt);
+  background: rgba(10, 18, 36, 0.95);
   border-bottom-left-radius: var(--radius-lg);
   border-bottom-right-radius: var(--radius-lg);
 }
 
 /* Form Groups */
 .form-group {
-  margin-bottom: 18px;
+  margin-bottom: 20px;
 }
 
 .form-group label {
   display: block;
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--text-main);
-  margin-bottom: 6px;
+  font-size: 13.5px;
+  font-weight: 700;
+  color: #f8fafc;
+  margin-bottom: 8px;
+  letter-spacing: 0.2px;
 }
 
 .form-group input,
 .form-group select,
 .form-group textarea {
   width: 100%;
-  padding: 11px 14px;
-  border: 1px solid var(--border-color);
+  padding: 12px 14px;
+  border: 1.5px solid rgba(255, 255, 255, 0.16) !important;
   border-radius: var(--radius-sm);
-  background: white;
+  background: #060c18 !important;
   font-size: 14px;
-  color: var(--text-main);
+  font-weight: 500;
+  color: #ffffff !important;
   outline: none;
-  transition: border-color 0.2s ease;
+  transition: all 0.2s ease;
+  color-scheme: dark;
+}
+
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+  color: #94a3b8;
+}
+
+.form-group select option {
+  background-color: #0d1629;
+  color: #ffffff;
+  padding: 12px;
 }
 
 .form-group input:focus,
 .form-group select:focus,
 .form-group textarea:focus {
-  border-color: var(--primary);
-  box-shadow: 0 0 0 3px var(--primary-glow);
+  border-color: #00e599 !important;
+  box-shadow: 0 0 0 3px rgba(0, 229, 153, 0.25) !important;
+  background: #081122 !important;
 }
 
 .form-row {

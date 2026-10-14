@@ -210,45 +210,53 @@
         </header>
 
         <main class="content">
-            <div class="panel">
-                <div class="noti-item">
-                    <div class="noti-icon" style="background:#fee2e2; color:#dc2626;"><i class="fa-solid fa-heart-pulse"></i></div>
-                    <div style="flex:1;">
-                        <div style="display:flex; justify-content:space-between;">
-                            <strong style="font-size:14px; color:#991b1b;">High-Risk Telemetry Alert: Robert Chen</strong>
-                            <span style="font-size:12px; color:#94a3b8;">15m ago</span>
-                        </div>
-                        <p style="font-size:13px; color:#475569; margin:4px 0 8px;">Automated BP telemetry recorded 168/104 mmHg. Review recommended immediately.</p>
-                        <a href="health-monitoring.html" style="font-size:12.5px; color:#087743; font-weight:600; text-decoration:none;"><i class="fa-solid fa-arrow-right"></i> Open Telemetry Stream</a>
-                    </div>
-                </div>
-
-                <div class="noti-item">
-                    <div class="noti-icon" style="background:#e0f2fe; color:#0284c7;"><i class="fa-solid fa-flask-vial"></i></div>
-                    <div style="flex:1;">
-                        <div style="display:flex; justify-content:space-between;">
-                            <strong style="font-size:14px;">Lab Diagnostic Results Ready: Sarah Jenkins</strong>
-                            <span style="font-size:12px; color:#94a3b8;">1h ago</span>
-                        </div>
-                        <p style="font-size:13px; color:#475569; margin:4px 0 8px;">Complete Blood Count and Serum Ferritin report published by Central Diagnostic Lab.</p>
-                        <a href="patient-records.html?mrn=MRN-8429" style="font-size:12.5px; color:#087743; font-weight:600; text-decoration:none;"><i class="fa-solid fa-arrow-right"></i> Review Lab Findings</a>
-                    </div>
-                </div>
-
-                <div class="noti-item">
-                    <div class="noti-icon" style="background:#ecfdf5; color:#059669;"><i class="fa-solid fa-calendar-check"></i></div>
-                    <div style="flex:1;">
-                        <div style="display:flex; justify-content:space-between;">
-                            <strong style="font-size:14px;">Telehealth Consultation Booked</strong>
-                            <span style="font-size:12px; color:#94a3b8;">2h ago</span>
-                        </div>
-                        <p style="font-size:13px; color:#475569; margin:4px 0 8px;">David Kim confirmed for 11:45 AM Telehealth session (Acute Bronchitis).</p>
-                        <a href="appointments.html" style="font-size:12.5px; color:#087743; font-weight:600; text-decoration:none;"><i class="fa-solid fa-arrow-right"></i> View Appointment Schedule</a>
-                    </div>
-                </div>
+            <div class="panel" id="doctorNotificationsList">
+                <!-- Dynamically populated -->
             </div>
         </main>
     </div>
 </div>
-</body>
+
+<script>
+    function escapeHTML(str) {
+        return String(str || "").replace(/[&<>"']/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' })[m]);
+    }
+
+    function loadDoctorNotifications() {
+        const list = document.getElementById("doctorNotificationsList");
+        if (!list) return;
+
+        let patients = [];
+        try {
+            const allUsers = JSON.parse(localStorage.getItem("medimateUsers") || "[]");
+            patients = allUsers.filter(u => u.role === "patient");
+        } catch(e){}
+
+        if (patients.length > 0) {
+            list.innerHTML = patients.map((p, idx) => `
+                <div class="noti-item">
+                    <div class="noti-icon" style="background:#e0f2fe; color:#0284c7;"><i class="fa-solid fa-file-medical"></i></div>
+                    <div style="flex:1;">
+                        <div style="display:flex; justify-content:space-between;">
+                            <strong style="font-size:14px;">EHR Health Telemetry Synchronized: ${escapeHTML(p.name)}</strong>
+                            <span style="font-size:12px; color:#94a3b8;">Recent</span>
+                        </div>
+                        <p style="font-size:13px; color:#475569; margin:4px 0 8px;">Continuous physiological record and digital health passport updated for ${escapeHTML(p.name)}.</p>
+                        <a href="patient-records.html?patient=${encodeURIComponent(p.name)}" style="font-size:12.5px; color:#087743; font-weight:600; text-decoration:none;"><i class="fa-solid fa-arrow-right"></i> Open Patient Record</a>
+                    </div>
+                </div>
+            `).join("");
+        } else {
+            list.innerHTML = `
+                <div style="text-align:center; padding:36px; color:#64748b; font-size:13px;">
+                    <i class="fa-solid fa-bell-slash" style="font-size:32px; color:#cbd5e1; margin-bottom:10px; display:block;"></i>
+                    No notifications yet. Alerts and appointment notifications for registered patients will appear here.
+                </div>
+            `;
+        }
+    }
+
+    document.addEventListener("DOMContentLoaded", loadDoctorNotifications);
+    loadDoctorNotifications();
+</script>
 </html>

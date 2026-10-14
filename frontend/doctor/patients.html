@@ -285,52 +285,7 @@
                         </thead>
                         <tbody id="patientTbody">
                             <tr>
-                                <td><strong>John Doe</strong></td>
-                                <td><code>MRN-1001</code></td>
-                                <td>45 / Male</td>
-                                <td>Hypertension Stage 2</td>
-                                <td>Oct 10, 2026</td>
-                                <td><span class="risk-badge risk-mod">Moderate</span></td>
-                                <td>
-                                    <button class="btn btn-secondary" style="padding:4px 8px; font-size:12px;" onclick="location.href='patient-records.html?mrn=MRN-1001'"><i class="fa-solid fa-file-waveform"></i> EHR</button>
-                                    <button class="btn btn-primary" style="padding:4px 8px; font-size:12px;" onclick="location.href='prescriptions.html?patient=John+Doe'"><i class="fa-solid fa-prescription"></i> Rx</button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><strong>Sarah Jenkins</strong></td>
-                                <td><code>MRN-8429</code></td>
-                                <td>34 / Female</td>
-                                <td>Chronic Migraine</td>
-                                <td>Oct 12, 2026</td>
-                                <td><span class="risk-badge risk-low">Low Risk</span></td>
-                                <td>
-                                    <button class="btn btn-secondary" style="padding:4px 8px; font-size:12px;" onclick="location.href='patient-records.html?mrn=MRN-8429'"><i class="fa-solid fa-file-waveform"></i> EHR</button>
-                                    <button class="btn btn-primary" style="padding:4px 8px; font-size:12px;" onclick="location.href='prescriptions.html?patient=Sarah+Jenkins'"><i class="fa-solid fa-prescription"></i> Rx</button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><strong>Robert Chen</strong></td>
-                                <td><code>MRN-3312</code></td>
-                                <td>58 / Male</td>
-                                <td>Coronary Artery Disease</td>
-                                <td>Oct 08, 2026</td>
-                                <td><span class="risk-badge risk-high">High Alert</span></td>
-                                <td>
-                                    <button class="btn btn-secondary" style="padding:4px 8px; font-size:12px;" onclick="location.href='patient-records.html?mrn=MRN-3312'"><i class="fa-solid fa-file-waveform"></i> EHR</button>
-                                    <button class="btn btn-primary" style="padding:4px 8px; font-size:12px;" onclick="location.href='health-monitoring.html?patient=Robert+Chen'"><i class="fa-solid fa-heart-pulse"></i> Vitals</button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><strong>Elena Gilbert</strong></td>
-                                <td><code>MRN-2290</code></td>
-                                <td>28 / Female</td>
-                                <td>Asthma & Allergic Rhinitis</td>
-                                <td>Oct 04, 2026</td>
-                                <td><span class="risk-badge risk-low">Low Risk</span></td>
-                                <td>
-                                    <button class="btn btn-secondary" style="padding:4px 8px; font-size:12px;" onclick="location.href='patient-records.html?mrn=MRN-2290'"><i class="fa-solid fa-file-waveform"></i> EHR</button>
-                                    <button class="btn btn-primary" style="padding:4px 8px; font-size:12px;" onclick="location.href='prescriptions.html?patient=Elena+Gilbert'"><i class="fa-solid fa-prescription"></i> Rx</button>
-                                </td>
+                                <td colspan="7" style="text-align:center; padding: 25px; color:#64748b;">Loading registered patients...</td>
                             </tr>
                         </tbody>
                     </table>
@@ -341,6 +296,82 @@
 </div>
 
 <script>
+    function escapeHTML(str) {
+        return String(str || "").replace(/[&<>"']/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' })[m]);
+    }
+
+    function loadPatients() {
+        let patients = [];
+        try {
+            const allUsers = JSON.parse(localStorage.getItem("medimateUsers") || "[]");
+            const userPatients = allUsers.filter(u => u.role === "patient");
+            const seen = new Set();
+
+            userPatients.forEach(u => {
+                const em = (u.email || u.id || "").toLowerCase();
+                if (em && !seen.has(em)) {
+                    seen.add(em);
+                    patients.push({
+                        name: u.name || u.fullName || "Registered Patient",
+                        mrn: u.id || ("MRN-" + Math.floor(1000 + Math.random() * 9000)),
+                        ageGender: (u.age ? u.age + " / " : "30 / ") + (u.gender || "Patient"),
+                        diagnosis: u.diagnosis || "General Consultation",
+                        lastDate: "Today",
+                        risk: "Low Risk",
+                        riskClass: "risk-low"
+                    });
+                }
+            });
+
+            // Also include patient_profile if available
+            const pProfile = JSON.parse(localStorage.getItem("patient_profile") || "null");
+            if (pProfile && pProfile.name) {
+                const em = (pProfile.email || pProfile.id || "").toLowerCase();
+                if (em && !seen.has(em)) {
+                    seen.add(em);
+                    patients.push({
+                        name: pProfile.name,
+                        mrn: pProfile.id || "MRN-9042",
+                        ageGender: (pProfile.age || 32) + " / " + (pProfile.gender || "Male"),
+                        diagnosis: (pProfile.chronicConditions && pProfile.chronicConditions[0]) || "Clinical Health Check",
+                        lastDate: "Oct 13, 2026",
+                        risk: "Moderate",
+                        riskClass: "risk-mod"
+                    });
+                }
+            }
+        } catch(e) {}
+
+        const tbody = document.getElementById("patientTbody");
+        if (!tbody) return;
+
+        if (patients.length === 0) {
+            tbody.innerHTML = `
+                <tr>
+                    <td colspan="7" style="text-align: center; padding: 30px; color: #64748b;">
+                        No registered patients found yet. Registered patients will appear here automatically.
+                    </td>
+                </tr>
+            `;
+            return;
+        }
+
+        tbody.innerHTML = patients.map(p => `
+            <tr>
+                <td><strong>${escapeHTML(p.name)}</strong></td>
+                <td><code>${escapeHTML(p.mrn)}</code></td>
+                <td>${escapeHTML(p.ageGender)}</td>
+                <td>${escapeHTML(p.diagnosis)}</td>
+                <td>${escapeHTML(p.lastDate)}</td>
+                <td><span class="risk-badge ${p.riskClass}">${escapeHTML(p.risk)}</span></td>
+                <td>
+                    <button class="btn btn-secondary" style="padding:4px 8px; font-size:12px;" onclick="location.href='patient-records.html?mrn=${encodeURIComponent(p.mrn)}'"><i class="fa-solid fa-file-waveform"></i> EHR</button>
+                    <button class="btn btn-primary" style="padding:4px 8px; font-size:12px;" onclick="location.href='prescriptions.html?patient=${encodeURIComponent(p.name)}'"><i class="fa-solid fa-prescription"></i> Rx</button>
+                </td>
+            </tr>
+        `).join("");
+    }
+
     function filterPatientTable() {
         const query = document.getElementById('patientFilter').value.toLowerCase();
         const rows = document.querySelectorAll('#patientTbody tr');
@@ -348,6 +379,9 @@
             r.style.display = r.innerText.toLowerCase().includes(query) ? '' : 'none';
         });
     }
+
+    document.addEventListener("DOMContentLoaded", loadPatients);
+    loadPatients();
 </script>
 </body>
 </html>

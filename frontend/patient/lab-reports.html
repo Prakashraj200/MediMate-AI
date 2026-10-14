@@ -7,8 +7,8 @@
   <link rel="stylesheet" href="patient-style.css">
   <style>
     .report-card {
-      background: white;
-      border: 1px solid var(--border-color);
+      background: rgba(13, 22, 41, 0.85);
+      border: 1px solid rgba(255, 255, 255, 0.08);
       border-radius: var(--radius-md);
       padding: 22px;
       margin-bottom: 16px;
@@ -16,13 +16,13 @@
       justify-content: space-between;
       align-items: center;
       transition: all 0.2s ease;
-      box-shadow: var(--shadow-sm);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35);
     }
 
     .report-card:hover {
-      border-color: var(--primary);
+      border-color: rgba(0, 229, 153, 0.4);
       transform: translateY(-2px);
-      box-shadow: var(--shadow-md);
+      box-shadow: 0 8px 30px rgba(0, 229, 153, 0.15);
     }
 
     .report-main {
@@ -239,7 +239,7 @@
           <h2>Diagnostic Results Portal</h2>
           <p>Review comprehensive diagnostic findings, understand biological marker ranges, and download verified digital pathology reports.</p>
         </div>
-        <button class="btn btn-primary" id="openBookTestBtn" style="background: white; color: var(--primary);">
+        <button class="btn btn-primary" id="openBookTestBtn">
           <span>🧪</span>
           <span>Schedule Lab Test</span>
         </button>
@@ -557,8 +557,8 @@
           `).join('')}
         </div>
 
-        <div style="background: white; border: 1px solid var(--border-color); padding: 14px; border-radius: 8px; font-size: 13px; line-height: 1.5;">
-          <strong style="color: var(--primary-dark);">Diagnostic Conclusion & Remarks:</strong><br>
+        <div style="background: rgba(10, 18, 36, 0.95); border: 1px solid rgba(255, 255, 255, 0.1); padding: 14px; border-radius: 8px; font-size: 13px; color: #cbd5e1; line-height: 1.6;">
+          <strong style="color: #00e599;">Diagnostic Conclusion & Remarks:</strong><br>
           ${report.summary}
         </div>
       `;

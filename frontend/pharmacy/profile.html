@@ -92,7 +92,7 @@
         </ul>
 
         <div style="padding-top:14px; border-top:1px solid rgba(255,255,255,0.2);">
-            <a href="pharmacy-login.html" onclick="localStorage.clear();" style="color:white; text-decoration:none; display:flex; align-items:center; gap:10px; font-size:13.5px;">
+            <a href="pharmacy-login.html" onclick="localStorage.removeItem('currentUser'); sessionStorage.clear();" style="color:white; text-decoration:none; display:flex; align-items:center; gap:10px; font-size:13.5px;">
                 <i class="fa-solid fa-right-from-bracket"></i> Sign Out
             </a>
         </div>
@@ -101,10 +101,10 @@
     <div class="main-content">
         <header class="topbar">
             <div>
-                <h1 style="font-size:22px; color:#087f5b; font-weight:700;">Chief Pharmacist Credentials & License</h1>
+                <h1 style="font-size:22px; color:#087f5b; font-weight:700;">Pharmacy Profile & Credentials</h1>
                 <p style="font-size:13px; color:#64748b;">Licensed dispensing pharmacist authority and dispensary registration.</p>
             </div>
-            <button class="btn btn-primary" onclick="alert('Pharmacist profile updated successfully!')"><i class="fa-solid fa-check"></i> Save Details</button>
+            <button class="btn btn-primary" onclick="savePharmacyProfile()"><i class="fa-solid fa-check"></i> Save Details</button>
         </header>
 
         <main class="content">
@@ -114,36 +114,115 @@
                         💊
                     </div>
                     <div>
-                        <h2 style="font-size:20px; font-weight:700; color:#123d2b;">Pharm. David Miller, PharmD, RPh</h2>
-                        <p style="font-size:13px; color:#64748b;">Chief Clinical Pharmacist &bull; Dispensary Manager</p>
+                        <h2 id="dispPharmaName" style="font-size:20px; font-weight:700; color:#123d2b;">Pharmacy Dispensary</h2>
+                        <p id="dispPharmaRole" style="font-size:13px; color:#64748b;">Clinical Pharmacist &bull; Dispensary Manager</p>
                         <div style="margin-top:6px; display:flex; gap:8px;">
-                            <span style="background:#ecfdf5; color:#065f46; font-size:12px; font-weight:600; padding:2px 8px; border-radius:6px;">License: RPH-89104-CA</span>
-                            <span style="background:#e0f2fe; color:#0369a1; font-size:12px; font-weight:600; padding:2px 8px; border-radius:6px;">Controlled Substance Authorization Active</span>
+                            <span id="dispPharmaLicense" style="background:#ecfdf5; color:#065f46; font-size:12px; font-weight:600; padding:2px 8px; border-radius:6px;">License: RPH-89104-CA</span>
+                            <span style="background:#e0f2fe; color:#0369a1; font-size:12px; font-weight:600; padding:2px 8px; border-radius:6px;">Dispensing Authorization Active</span>
                         </div>
                     </div>
                 </div>
 
                 <div class="form-grid">
                     <div class="form-group">
-                        <label>Lead Pharmacist Name</label>
-                        <input type="text" value="David Miller">
+                        <label>Lead Pharmacist / Pharmacy Name</label>
+                        <input type="text" id="profPharmaName" placeholder="Enter pharmacy name">
                     </div>
                     <div class="form-group">
                         <label>Pharmacy Registration License</label>
-                        <input type="text" value="HOSP-PHARM-2026-99">
+                        <input type="text" id="profPharmaLicense" placeholder="e.g. HOSP-PHARM-2026-99">
                     </div>
                     <div class="form-group">
                         <label>Pharmacy Counter Direct Line</label>
-                        <input type="text" value="+1 (555) 890-4122">
+                        <input type="text" id="profPharmaPhone" placeholder="Enter contact number">
                     </div>
                     <div class="form-group">
                         <label>Official Pharmacy Email</label>
-                        <input type="email" value="pharmacy@medimate.ai">
+                        <input type="email" id="profPharmaEmail" placeholder="Enter email address">
                     </div>
                 </div>
             </div>
         </main>
     </div>
 </div>
+
+<script>
+    function loadPharmaProfile() {
+        let user = null;
+        try {
+            user = JSON.parse(localStorage.getItem("currentUser") || sessionStorage.getItem("currentUser") || "null");
+        } catch (e) {}
+
+        if (!user || !user.name || user.name === "Pharmacy Staff") {
+            const users = JSON.parse(localStorage.getItem("medimateUsers") || "[]");
+            const phUser = users.find(u => (u.role === "pharmacy" || u.role === "pharma") && u.name);
+            if (phUser) {
+                user = phUser;
+            } else {
+                const pharmList = JSON.parse(localStorage.getItem("medimatePharmacies") || "[]");
+                if (pharmList.length > 0) user = pharmList[0];
+            }
+        }
+
+        const name = (user && user.name) ? user.name : "Registered Pharmacy";
+        const email = (user && user.email) ? user.email : "";
+        const phone = (user && user.phone) ? user.phone : "";
+        const license = (user && (user.license || user.code)) ? (user.license || user.code) : "LIC-PHARM-" + (user && user.id ? user.id : "2026");
+
+        document.getElementById("dispPharmaName").textContent = name;
+        document.getElementById("dispPharmaLicense").textContent = "License: " + license;
+        document.getElementById("profPharmaName").value = name;
+        document.getElementById("profPharmaEmail").value = email;
+        document.getElementById("profPharmaPhone").value = phone;
+        document.getElementById("profPharmaLicense").value = license;
+    }
+
+    function savePharmacyProfile() {
+        const name = document.getElementById("profPharmaName").value.trim();
+        const email = document.getElementById("profPharmaEmail").value.trim();
+        const phone = document.getElementById("profPharmaPhone").value.trim();
+        const license = document.getElementById("profPharmaLicense").value.trim();
+
+        if (!name) {
+            alert("Please enter a valid pharmacy or pharmacist name.");
+            return;
+        }
+
+        let user = JSON.parse(localStorage.getItem("currentUser") || "{}");
+        user.name = name;
+        user.email = email;
+        user.phone = phone;
+        user.license = license;
+        user.role = "pharmacy";
+
+        localStorage.setItem("currentUser", JSON.stringify(user));
+
+        // Sync with medimateUsers
+        let users = JSON.parse(localStorage.getItem("medimateUsers") || "[]");
+        const idx = users.findIndex(u => (u.email && email && u.email.toLowerCase() === email.toLowerCase()) || u.role === "pharmacy");
+        if (idx >= 0) {
+            users[idx] = { ...users[idx], name, email, phone, license };
+        } else {
+            users.push(user);
+        }
+        localStorage.setItem("medimateUsers", JSON.stringify(users));
+
+        // Sync with medimatePharmacies
+        let pharmacies = JSON.parse(localStorage.getItem("medimatePharmacies") || "[]");
+        const pIdx = pharmacies.findIndex(p => (p.email && email && p.email.toLowerCase() === email.toLowerCase()) || p.name === name);
+        if (pIdx >= 0) {
+            pharmacies[pIdx] = { ...pharmacies[pIdx], name, email, phone, license };
+        } else {
+            pharmacies.push({ id: "PH-" + Date.now().toString().slice(-4), name, email, phone, license, status: "Active" });
+        }
+        localStorage.setItem("medimatePharmacies", JSON.stringify(pharmacies));
+
+        alert("Pharmacy profile saved successfully!");
+        loadPharmaProfile();
+    }
+
+    document.addEventListener("DOMContentLoaded", loadPharmaProfile);
+    loadPharmaProfile();
+</script>
 </body>
 </html>

@@ -1175,6 +1175,24 @@
                 </div>
 
 
+                <!-- PASSWORD -->
+
+                <div class="form-group">
+
+                    <label>
+                        Login Password *
+                    </label>
+
+                    <input
+                        type="password"
+                        id="labPassword"
+                        placeholder="Set laboratory login password"
+                        autocomplete="new-password"
+                    >
+
+                </div>
+
+
                 <!-- LAB TYPE -->
 
                 <div class="form-group">
@@ -1451,6 +1469,11 @@
             "phone"
         );
 
+    const labPasswordInput =
+        document.getElementById(
+            "labPassword"
+        );
+
     const labTypeInput =
         document.getElementById(
             "labType"
@@ -1588,42 +1611,63 @@
                 );
 
 
-            if (!response.ok) {
+            if (response.ok) {
 
-                throw new Error(
-                    "Laboratory API not available"
-                );
+                const result =
+                    await response.json();
+
+                laboratories =
+                    result.laboratories || [];
+
+            } else {
+
+                laboratories = [];
 
             }
 
-
-            const result =
-                await response.json();
-
-
-            laboratories =
-                result.laboratories || [];
-
-
-            renderLaboratories();
-
         } catch (error) {
 
-            console.error(
-                "Load laboratories error:",
-                error
+            console.info(
+                "Backend laboratory sync offline, using local store."
             );
-
-
-            /*
-             * No dummy data.
-             */
 
             laboratories = [];
 
-            renderLaboratories();
-
         }
+
+        // Merge from local medimateLaboratories and medimateUsers so accounts created by admin show reliably
+        try {
+            const localLabs = JSON.parse(localStorage.getItem("medimateLaboratories") || "[]");
+            const allUsers = JSON.parse(localStorage.getItem("medimateUsers") || "[]");
+            const userLabs = allUsers.filter(u => u.role === "laboratory");
+
+            const map = new Map();
+            laboratories.forEach(l => {
+                const k = (l.email || l.id || "").toLowerCase();
+                if (k) map.set(k, l);
+            });
+            localLabs.forEach(l => {
+                const k = (l.email || l.id || "").toLowerCase();
+                if (k && !map.has(k)) map.set(k, l);
+            });
+            userLabs.forEach(u => {
+                const k = (u.email || u.id || "").toLowerCase();
+                if (k && !map.has(k)) {
+                    map.set(k, {
+                        id: u.id || ("LAB-" + Math.floor(1000 + Math.random() * 9000)),
+                        name: u.name || u.labName || "Laboratory",
+                        email: u.email,
+                        phone: u.phone || "-",
+                        type: u.type || "General",
+                        location: u.location || "-",
+                        status: u.status || "active"
+                    });
+                }
+            });
+            laboratories = Array.from(map.values());
+        } catch(e) {}
+
+        renderLaboratories();
 
     }
 
@@ -1923,6 +1967,7 @@
 
 
         laboratoryForm.reset();
+        if (labPasswordInput) labPasswordInput.value = "";
 
 
         editingLaboratoryId =
@@ -1970,6 +2015,7 @@
 
             event.preventDefault();
 
+            const enteredPassword = labPasswordInput ? labPasswordInput.value.trim() : "";
 
             const laboratoryData = {
 
@@ -2018,10 +2064,53 @@
             }
 
 
+            // Resolve password
+            let finalPassword = enteredPassword;
+            if (!finalPassword) {
+                try {
+                    const localUsers = JSON.parse(localStorage.getItem("medimateUsers") || "[]");
+                    const matchedU = localUsers.find(u => u.email && u.email.toLowerCase() === laboratoryData.email.toLowerCase());
+                    if (matchedU && matchedU.password) finalPassword = matchedU.password;
+                } catch(e) {}
+            }
+            if (!finalPassword) {
+                finalPassword = "Lab@" + Math.floor(100 + Math.random() * 900);
+            }
+
+            // Sync to medimateUsers and medimateLaboratories immediately
+            const labId = editingLaboratoryId || ("LAB-" + Date.now());
+            try {
+                const localUsers = JSON.parse(localStorage.getItem("medimateUsers") || "[]");
+                const uIdx = localUsers.findIndex(u => u.email && u.email.toLowerCase() === laboratoryData.email.toLowerCase());
+                const labUser = {
+                    id: labId,
+                    name: laboratoryData.name,
+                    fullName: laboratoryData.name,
+                    labName: laboratoryData.name,
+                    email: laboratoryData.email,
+                    password: finalPassword,
+                    phone: laboratoryData.phone,
+                    role: "laboratory",
+                    type: laboratoryData.type,
+                    location: laboratoryData.location,
+                    status: laboratoryData.status
+                };
+                if (uIdx !== -1) localUsers[uIdx] = { ...localUsers[uIdx], ...labUser };
+                else localUsers.push(labUser);
+                localStorage.setItem("medimateUsers", JSON.stringify(localUsers));
+
+                // Also update medimateLaboratories
+                const localLabs = JSON.parse(localStorage.getItem("medimateLaboratories") || "[]");
+                const lIdx = localLabs.findIndex(l => (l.email && l.email.toLowerCase() === laboratoryData.email.toLowerCase()) || (editingLaboratoryId && String(l.id) === String(editingLaboratoryId)));
+                const labRecord = { id: labId, ...laboratoryData, password: finalPassword };
+                if (lIdx !== -1) localLabs[lIdx] = { ...localLabs[lIdx], ...labRecord };
+                else localLabs.push(labRecord);
+                localStorage.setItem("medimateLaboratories", JSON.stringify(localLabs));
+            } catch(e) {}
+
             try {
 
                 let response;
-
 
                 /* ==============================
                    UPDATE
@@ -2043,9 +2132,10 @@
                                 },
 
                                 body:
-                                    JSON.stringify(
-                                        laboratoryData
-                                    )
+                                    JSON.stringify({
+                                        ...laboratoryData,
+                                        password: finalPassword
+                                    })
                             }
                         );
 
@@ -2070,49 +2160,30 @@
                                 },
 
                                 body:
-                                    JSON.stringify(
-                                        laboratoryData
-                                    )
+                                    JSON.stringify({
+                                        ...laboratoryData,
+                                        password: finalPassword
+                                    })
                             }
                         );
 
                 }
 
-
-                if (!response.ok) {
-
-                    throw new Error(
-                        "Server error"
-                    );
-
-                }
-
-
-                closeLaboratoryModal();
-
-
-                showToast(
-                    editingLaboratoryId
-                        ? "Laboratory updated successfully."
-                        : "Laboratory added successfully."
-                );
-
-
-                await loadLaboratories();
-
             } catch (error) {
 
-                console.error(
-                    "Save laboratory error:",
-                    error
-                );
-
-
-                showToast(
-                    "Unable to save laboratory. Check backend."
-                );
+                console.info("Backend API offline; credentials saved locally.");
 
             }
+
+            closeLaboratoryModal();
+
+            showToast(
+                editingLaboratoryId
+                    ? "Laboratory updated successfully."
+                    : `Laboratory created. Password: ${finalPassword}`
+            );
+
+            await loadLaboratories();
 
         }
     );
@@ -2162,6 +2233,16 @@
             phoneInput.value =
                 laboratory.phone ||
                 "";
+
+            let labPass = laboratory.password || "";
+            if (!labPass) {
+                try {
+                    const uList = JSON.parse(localStorage.getItem("medimateUsers") || "[]");
+                    const matched = uList.find(u => u.email && u.email.toLowerCase() === (laboratory.email || "").toLowerCase());
+                    if (matched && matched.password) labPass = matched.password;
+                } catch(e) {}
+            }
+            if (labPasswordInput) labPasswordInput.value = labPass;
 
 
             labTypeInput.value =

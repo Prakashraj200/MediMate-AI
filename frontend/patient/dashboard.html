@@ -73,31 +73,34 @@
     .action-tile {
       padding: 18px 14px;
       text-align: center;
-      border: 1px solid var(--border-color);
+      border: 1px solid rgba(255, 255, 255, 0.08);
       border-radius: var(--radius-md);
-      background: white;
+      background: rgba(13, 22, 41, 0.85);
       transition: all 0.2s ease;
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 8px;
+      gap: 10px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
     }
 
     .action-tile:hover {
-      background: var(--primary-subtle);
-      border-color: var(--primary);
+      background: rgba(0, 229, 153, 0.12);
+      border-color: #00e599;
       transform: translateY(-3px);
-      box-shadow: var(--shadow-sm);
+      box-shadow: 0 8px 25px rgba(0, 229, 153, 0.2);
     }
 
     .action-tile .action-icon {
-      font-size: 28px;
+      font-size: 32px;
+      filter: drop-shadow(0 2px 8px rgba(0, 229, 153, 0.25));
     }
 
     .action-tile span {
-      font-size: 13px;
-      font-weight: 600;
-      color: var(--text-main);
+      font-size: 14px;
+      font-weight: 700;
+      color: #ffffff;
+      letter-spacing: 0.2px;
     }
 
     .vitals-preview-strip {
@@ -293,7 +296,7 @@
           <h2>Welcome back, <span id="welcomeName">Patient</span>! 👋</h2>
           <p>Manage your health, upcoming appointments, prescriptions and diagnostic records in one secure, unified portal.</p>
         </div>
-        <a href="appointments.html" class="btn btn-primary" style="background: white; color: var(--primary);">
+        <a href="appointments.html" class="btn btn-primary">
           <span>📅</span>
           <span>Book Appointment</span>
         </a>
@@ -457,7 +460,7 @@
             <div>
               <h4>Have Symptoms or Questions?</h4>
               <p>Consult with Preethi AI, your 24/7 intelligent clinical wellness guide.</p>
-              <a href="preethi-ai.html" class="btn btn-primary" style="background: white; color: #094833;">
+              <a href="preethi-ai.html" class="btn btn-primary" style="background: #ffffff; color: #050a14; font-weight: 700;">
                 <span>💬</span>
                 <span>Chat with Preethi AI</span>
               </a>

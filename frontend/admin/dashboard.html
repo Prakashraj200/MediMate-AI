@@ -1651,8 +1651,12 @@
 
             <div class="topbar-right">
 
-
-                <!-- Notification -->
+                <button
+                    onclick="openProvisionModal()"
+                    style="background: #087f5b; color: white; border: none; padding: 10px 18px; border-radius: 11px; font-weight: 700; font-size: 13.5px; cursor: pointer; display: flex; align-items: center; gap: 8px; box-shadow: 0 4px 14px rgba(8,127,91,0.25);"
+                >
+                    <span>➕</span> Provision Account
+                </button>
 
                 <button
                     class="notification-btn"
@@ -1939,117 +1943,8 @@
                             </thead>
 
 
-                            <tbody>
-
-
-                                <tr>
-
-                                    <td>
-                                        Arun Kumar
-                                    </td>
-
-                                    <td>
-                                        Dr. Priya
-                                    </td>
-
-                                    <td>
-                                        Today, 10:00 AM
-                                    </td>
-
-                                    <td>
-
-                                        <span
-                                            class="status completed"
-                                        >
-                                            Completed
-                                        </span>
-
-                                    </td>
-
-                                </tr>
-
-
-                                <tr>
-
-                                    <td>
-                                        Divya Sri
-                                    </td>
-
-                                    <td>
-                                        Dr. Rajesh
-                                    </td>
-
-                                    <td>
-                                        Today, 11:30 AM
-                                    </td>
-
-                                    <td>
-
-                                        <span
-                                            class="status pending"
-                                        >
-                                            Pending
-                                        </span>
-
-                                    </td>
-
-                                </tr>
-
-
-                                <tr>
-
-                                    <td>
-                                        Karthik M
-                                    </td>
-
-                                    <td>
-                                        Dr. Anitha
-                                    </td>
-
-                                    <td>
-                                        Today, 02:00 PM
-                                    </td>
-
-                                    <td>
-
-                                        <span
-                                            class="status pending"
-                                        >
-                                            Pending
-                                        </span>
-
-                                    </td>
-
-                                </tr>
-
-
-                                <tr>
-
-                                    <td>
-                                        Meena S
-                                    </td>
-
-                                    <td>
-                                        Dr. Kumar
-                                    </td>
-
-                                    <td>
-                                        Tomorrow, 09:00 AM
-                                    </td>
-
-                                    <td>
-
-                                        <span
-                                            class="status cancelled"
-                                        >
-                                            Cancelled
-                                        </span>
-
-                                    </td>
-
-                                </tr>
-
-
+                            <tbody id="adminAppointmentsBody">
+                                <!-- Populated dynamically with registered patient and doctor appointments -->
                             </tbody>
 
                         </table>
@@ -2169,6 +2064,21 @@
                             </span>
 
                             Pharmacy
+
+                        </button>
+
+
+                        <button
+                            class="quick-btn"
+                            style="background: #e6fcf5; border: 1.5px solid #087f5b; color: #087f5b; font-weight: bold;"
+                            onclick="openProvisionModal()"
+                        >
+
+                            <span>
+                                ➕
+                            </span>
+
+                            Provision Account
 
                         </button>
 
@@ -2466,7 +2376,66 @@
 
 </div>
 
+<!-- =========================================================
+     PROVISION HOSPITAL ACCOUNT MODAL
+========================================================= -->
+<div class="modal-overlay" id="provisionModalOverlay" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); z-index:99999; align-items:center; justify-content:center; backdrop-filter:blur(5px); padding:20px; box-sizing:border-box;">
+    <div style="background:white; border-radius:20px; width:100%; max-width:540px; box-shadow:0 25px 60px rgba(0,0,0,0.25); overflow:hidden;">
+        <div style="background:linear-gradient(135deg, #087f5b, #05533c); color:white; padding:22px 28px; display:flex; justify-content:space-between; align-items:center;">
+            <div>
+                <h3 style="font-size:18px; font-weight:700; color:white; margin:0;">Provision Hospital Account</h3>
+                <p style="font-size:12.5px; opacity:0.85; margin:3px 0 0 0; color:#e0f7ec;">Issue login credentials for Doctor, Patient, Laboratory or Pharmacy</p>
+            </div>
+            <button type="button" onclick="closeProvisionModal()" style="background:none; border:none; color:white; font-size:26px; cursor:pointer; line-height:1;">&times;</button>
+        </div>
 
+        <form id="provisionForm" onsubmit="handleProvisionSubmit(event)" style="padding:24px 28px; display:flex; flex-direction:column; gap:16px;">
+            <div>
+                <label style="display:block; font-size:13px; font-weight:700; color:#174b35; margin-bottom:6px;">Select Role *</label>
+                <select id="provRole" onchange="onRoleChange(this.value)" required style="width:100%; padding:11px 14px; border:1px solid #cce3d6; border-radius:10px; font-size:14px; outline:none; background:#f8fcfa;">
+                    <option value="doctor">👨‍⚕️ Doctor</option>
+                    <option value="patient">🧑‍🤝‍🧑 Patient</option>
+                    <option value="laboratory">🧪 Laboratory</option>
+                    <option value="pharmacy">💊 Pharmacy</option>
+                </select>
+            </div>
+
+            <div>
+                <label id="provNameLabel" style="display:block; font-size:13px; font-weight:700; color:#174b35; margin-bottom:6px;">Doctor Full Name *</label>
+                <input type="text" id="provName" placeholder="e.g. Dr. Ramesh Kumar" required style="width:100%; padding:11px 14px; border:1px solid #cce3d6; border-radius:10px; font-size:14px; outline:none; box-sizing:border-box;">
+            </div>
+
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:14px;">
+                <div>
+                    <label style="display:block; font-size:13px; font-weight:700; color:#174b35; margin-bottom:6px;">Hospital Email ID *</label>
+                    <input type="email" id="provEmail" placeholder="doctor@hospital.com" required style="width:100%; padding:11px 14px; border:1px solid #cce3d6; border-radius:10px; font-size:14px; outline:none; box-sizing:border-box;">
+                </div>
+                <div>
+                    <label style="display:block; font-size:13px; font-weight:700; color:#174b35; margin-bottom:6px;">Login Password *</label>
+                    <input type="text" id="provPassword" placeholder="e.g. Doctor@123" required style="width:100%; padding:11px 14px; border:1px solid #cce3d6; border-radius:10px; font-size:14px; outline:none; box-sizing:border-box;">
+                </div>
+            </div>
+
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:14px;">
+                <div>
+                    <label style="display:block; font-size:13px; font-weight:700; color:#174b35; margin-bottom:6px;">Phone Number</label>
+                    <input type="tel" id="provPhone" placeholder="+91 98765 43210" style="width:100%; padding:11px 14px; border:1px solid #cce3d6; border-radius:10px; font-size:14px; outline:none; box-sizing:border-box;">
+                </div>
+                <div>
+                    <label id="provDetailLabel" style="display:block; font-size:13px; font-weight:700; color:#174b35; margin-bottom:6px;">Specialization / Department</label>
+                    <input type="text" id="provDetail" placeholder="e.g. Cardiology" style="width:100%; padding:11px 14px; border:1px solid #cce3d6; border-radius:10px; font-size:14px; outline:none; box-sizing:border-box;">
+                </div>
+            </div>
+
+            <div style="display:flex; justify-content:flex-end; gap:12px; margin-top:10px;">
+                <button type="button" onclick="closeProvisionModal()" style="padding:11px 20px; border:1px solid #dceed8; background:#f0faf4; color:#3b5a4b; border-radius:10px; font-weight:600; cursor:pointer;">Cancel</button>
+                <button type="submit" style="padding:11px 24px; border:none; background:#087f5b; color:white; border-radius:10px; font-weight:700; cursor:pointer; display:flex; align-items:center; gap:8px;">
+                    <span>✔</span> Create & Provision Account
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
 
 <!-- =========================================================
      JAVASCRIPT
@@ -2678,185 +2647,286 @@
 
     /* ========================================================
        LOAD DASHBOARD DATA
+    function escapeHTML(str) {
+        return String(str || "").replace(/[&<>"']/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' })[m]);
+    }
+
+    /* ========================================================
+       LOAD DASHBOARD DATA
     ======================================================== */
 
     async function loadDashboardData() {
-
+        let localUsers = [];
+        try { localUsers = JSON.parse(localStorage.getItem("medimateUsers")) || []; } catch(e){}
+        let localDocs = [];
+        try { localDocs = JSON.parse(localStorage.getItem("medimateDoctors")) || []; } catch(e){}
+        let localPatients = [];
+        try { localPatients = JSON.parse(localStorage.getItem("medimatePatients")) || []; } catch(e){}
 
         /* ----------------------------------------------------
            USERS
         ---------------------------------------------------- */
-
+        let allUserEmails = new Set(localUsers.map(u => (u.email || "").toLowerCase()));
         try {
-
-            const response =
-                await fetch(
-                    `${API_URL}/api/admin/users`
-                );
-
-
-            if (
-                response.ok
-            ) {
-
-                const result =
-                    await response.json();
-
-
-                const users =
-                    result.users || [];
-
-
-                totalUsers.textContent =
-                    users.length;
-
+            const response = await fetch(`${API_URL}/api/admin/users`);
+            if (response.ok) {
+                const result = await response.json();
+                (result.users || []).forEach(u => {
+                    if (u.email) allUserEmails.add(u.email.toLowerCase());
+                });
             }
-
-            else {
-
-                totalUsers.textContent =
-                    "0";
-
-            }
-
+        } catch (error) {
+            console.warn("Users API fetch notice:", error);
         }
-
-        catch (error) {
-
-            console.error(
-                "Users API error:",
-                error
-            );
-
-            totalUsers.textContent =
-                "0";
-
-        }
-
-
+        totalUsers.textContent = allUserEmails.size;
 
         /* ----------------------------------------------------
            DOCTORS
         ---------------------------------------------------- */
-
+        let allDoctorEmails = new Set();
+        localUsers.filter(u => u.role === "doctor").forEach(u => {
+            if (u.email) allDoctorEmails.add(u.email.toLowerCase());
+        });
+        localDocs.forEach(d => {
+            if (d.email) allDoctorEmails.add(d.email.toLowerCase());
+        });
         try {
-
-            const response =
-                await fetch(
-                    `${API_URL}/api/doctors`
-                );
-
-
-            if (
-                response.ok
-            ) {
-
-                const result =
-                    await response.json();
-
-
-                const doctors =
-                    result.doctors || [];
-
-
-                totalDoctors.textContent =
-                    doctors.length;
-
+            const response = await fetch(`${API_URL}/api/doctors`);
+            if (response.ok) {
+                const result = await response.json();
+                (result.doctors || []).forEach(d => {
+                    if (d.email) allDoctorEmails.add(d.email.toLowerCase());
+                });
             }
-
-            else {
-
-                totalDoctors.textContent =
-                    "0";
-
-            }
-
+        } catch (error) {
+            console.warn("Doctors API fetch notice:", error);
         }
-
-        catch (error) {
-
-            console.error(
-                "Doctors API error:",
-                error
-            );
-
-            totalDoctors.textContent =
-                "0";
-
-        }
-
-
+        totalDoctors.textContent = allDoctorEmails.size;
 
         /* ----------------------------------------------------
            PATIENTS
         ---------------------------------------------------- */
-
+        let allPatientEmails = new Set();
+        localUsers.filter(u => u.role === "patient").forEach(u => {
+            if (u.email) allPatientEmails.add(u.email.toLowerCase());
+        });
+        localPatients.forEach(p => {
+            if (p.email) allPatientEmails.add(p.email.toLowerCase());
+        });
         try {
-
-            const response =
-                await fetch(
-                    `${API_URL}/api/patients`
-                );
-
-
-            if (
-                response.ok
-            ) {
-
-                const result =
-                    await response.json();
-
-
-                const patients =
-                    result.patients || [];
-
-
-                totalPatients.textContent =
-                    patients.length;
-
+            const response = await fetch(`${API_URL}/api/patients`);
+            if (response.ok) {
+                const result = await response.json();
+                (result.patients || []).forEach(p => {
+                    if (p.email) allPatientEmails.add(p.email.toLowerCase());
+                });
             }
-
-            else {
-
-                totalPatients.textContent =
-                    "0";
-
-            }
-
+        } catch (error) {
+            console.warn("Patients API fetch notice:", error);
         }
-
-        catch (error) {
-
-            console.error(
-                "Patients API error:",
-                error
-            );
-
-            totalPatients.textContent =
-                "0";
-
-        }
-
-
+        totalPatients.textContent = allPatientEmails.size;
 
         /* ----------------------------------------------------
            APPOINTMENTS
         ---------------------------------------------------- */
+        let appts = [];
+        try {
+            appts = JSON.parse(localStorage.getItem("patient_appointments") || "[]");
+        } catch(e){}
+        totalAppointments.textContent = appts.length;
 
-        /*
-            Appointment backend module is not yet
-            connected to dashboard.
-
-            So currently showing 0.
-
-            Once appointments module is completed,
-            this value will come from Firebase.
-        */
-
-        totalAppointments.textContent =
-            "0";
-
+        const tbody = document.getElementById("adminAppointmentsBody");
+        if (tbody) {
+            if (appts.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="4" style="text-align:center; padding:25px; color:#6b7280; font-size:13px;">
+                            No appointments scheduled yet. Provisioned patient appointments will appear here.
+                        </td>
+                    </tr>
+                `;
+            } else {
+                tbody.innerHTML = appts.map(a => `
+                    <tr>
+                        <td><strong>${escapeHTML(a.patientName || a.patient || "Patient")}</strong></td>
+                        <td>${escapeHTML(a.doctorName || a.doctor || "Assigned Doctor")}</td>
+                        <td>${escapeHTML(a.date || a.appointmentDate || "Scheduled")}</td>
+                        <td><span class="badge ${a.status === 'Completed' ? 'badge-success' : 'badge-warning'}">${escapeHTML(a.status || 'Confirmed')}</span></td>
+                    </tr>
+                `).join("");
+            }
+        }
     }
+
+    /* ========================================================
+       PROVISION ACCOUNT MODAL HANDLERS
+    ======================================================== */
+
+    window.openProvisionModal = function(defaultRole = 'doctor') {
+        const modal = document.getElementById("provisionModalOverlay");
+        if (modal) {
+            modal.style.display = "flex";
+            if (defaultRole) {
+                const roleSelect = document.getElementById("provRole");
+                if (roleSelect) {
+                    roleSelect.value = defaultRole;
+                    window.onRoleChange(defaultRole);
+                }
+            }
+        }
+    };
+
+    window.closeProvisionModal = function() {
+        const modal = document.getElementById("provisionModalOverlay");
+        if (modal) {
+            modal.style.display = "none";
+        }
+        const form = document.getElementById("provisionForm");
+        if (form) form.reset();
+    };
+
+    window.onRoleChange = function(role) {
+        const nameLabel = document.getElementById("provNameLabel");
+        const nameInput = document.getElementById("provName");
+        const detailLabel = document.getElementById("provDetailLabel");
+        const detailInput = document.getElementById("provDetail");
+        
+        if (role === 'doctor') {
+            nameLabel.textContent = "Doctor Full Name *";
+            nameInput.placeholder = "e.g. Dr. Ramesh Kumar";
+            detailLabel.textContent = "Specialization / Department";
+            detailInput.placeholder = "e.g. Cardiology";
+        } else if (role === 'patient') {
+            nameLabel.textContent = "Patient Full Name *";
+            nameInput.placeholder = "e.g. Anitha Kumar";
+            detailLabel.textContent = "Medical History / Blood Group";
+            detailInput.placeholder = "e.g. O+ve / Annual Checkup";
+        } else if (role === 'laboratory') {
+            nameLabel.textContent = "Laboratory / Lab In-Charge Name *";
+            nameInput.placeholder = "e.g. Central Diagnostic Lab";
+            detailLabel.textContent = "Accreditation / License No.";
+            detailInput.placeholder = "e.g. NABL-2024-890";
+        } else if (role === 'pharmacy') {
+            nameLabel.textContent = "Pharmacy / Pharmacist Name *";
+            nameInput.placeholder = "e.g. Apollo Pharmacy Hospital Wing";
+            detailLabel.textContent = "Location / License Details";
+            detailInput.placeholder = "e.g. Ground Floor, Wing B";
+        }
+    };
+
+    window.handleProvisionSubmit = async function(event) {
+        event.preventDefault();
+        const role = document.getElementById("provRole").value;
+        const name = document.getElementById("provName").value.trim();
+        const email = document.getElementById("provEmail").value.trim().toLowerCase();
+        const password = document.getElementById("provPassword").value;
+        const phone = document.getElementById("provPhone").value.trim();
+        const detail = document.getElementById("provDetail").value.trim();
+
+        if (!name || !email || !password) {
+            alert("Please fill in all required fields (Name, Email, Password).");
+            return;
+        }
+
+        // 1. Save to medimateUsers
+        let users = [];
+        try { users = JSON.parse(localStorage.getItem("medimateUsers")) || []; } catch(e){}
+        const existingIdx = users.findIndex(u => (u.email || "").toLowerCase() === email);
+        const userObj = {
+            id: existingIdx >= 0 && users[existingIdx].id ? users[existingIdx].id : "usr_" + Date.now(),
+            name: name,
+            email: email,
+            password: password,
+            role: role,
+            phone: phone,
+            detail: detail,
+            createdAt: new Date().toISOString()
+        };
+        if (existingIdx >= 0) {
+            users[existingIdx] = { ...users[existingIdx], ...userObj };
+        } else {
+            users.push(userObj);
+        }
+        localStorage.setItem("medimateUsers", JSON.stringify(users));
+
+        // 2. Role-specific local storage sync
+        if (role === 'doctor') {
+            let docs = [];
+            try { docs = JSON.parse(localStorage.getItem("medimateDoctors")) || []; } catch(e){}
+            const docName = name.startsWith("Dr.") ? name : `Dr. ${name}`;
+            const docIdx = docs.findIndex(d => (d.email || "").toLowerCase() === email);
+            const docRecord = {
+                id: docIdx >= 0 && docs[docIdx].id ? docs[docIdx].id : "DOC" + Date.now(),
+                name: docName,
+                email: email,
+                password: password,
+                specialization: detail || "General Medicine",
+                department: detail || "General Medicine",
+                phone: phone || "9876543210",
+                experience: "5+ Years",
+                status: "Active",
+                rating: "5.0"
+            };
+            if (docIdx >= 0) docs[docIdx] = { ...docs[docIdx], ...docRecord };
+            else docs.push(docRecord);
+            localStorage.setItem("medimateDoctors", JSON.stringify(docs));
+            localStorage.setItem("patient_doctors", JSON.stringify(docs));
+        } else if (role === 'patient') {
+            let patients = [];
+            try { patients = JSON.parse(localStorage.getItem("medimatePatients")) || []; } catch(e){}
+            const patIdx = patients.findIndex(p => (p.email || "").toLowerCase() === email);
+            const patRecord = {
+                id: patIdx >= 0 && patients[patIdx].id ? patients[patIdx].id : "PAT-" + Math.floor(1000 + Math.random() * 9000),
+                name: name,
+                email: email,
+                password: password,
+                phone: phone || "9876543210",
+                medicalHistory: detail || "General Checkup",
+                status: "Active",
+                registeredAt: new Date().toLocaleDateString()
+            };
+            if (patIdx >= 0) patients[patIdx] = { ...patients[patIdx], ...patRecord };
+            else patients.push(patRecord);
+            localStorage.setItem("medimatePatients", JSON.stringify(patients));
+        } else if (role === 'laboratory') {
+            let labs = [];
+            try { labs = JSON.parse(localStorage.getItem("medimateLaboratories")) || []; } catch(e){}
+            const labIdx = labs.findIndex(l => (l.email || "").toLowerCase() === email);
+            const labRecord = {
+                id: labIdx >= 0 && labs[labIdx].id ? labs[labIdx].id : "LAB" + Date.now(),
+                name: name,
+                email: email,
+                password: password,
+                phone: phone,
+                license: detail || "NABL Certified",
+                testsOffered: "Blood, Urine, Imaging",
+                status: "Active"
+            };
+            if (labIdx >= 0) labs[labIdx] = { ...labs[labIdx], ...labRecord };
+            else labs.push(labRecord);
+            localStorage.setItem("medimateLaboratories", JSON.stringify(labs));
+        } else if (role === 'pharmacy') {
+            let pharms = [];
+            try { pharms = JSON.parse(localStorage.getItem("medimatePharmacies")) || []; } catch(e){}
+            const pharmIdx = pharms.findIndex(p => (p.email || "").toLowerCase() === email);
+            const pharmRecord = {
+                id: pharmIdx >= 0 && pharms[pharmIdx].id ? pharms[pharmIdx].id : "PHARM" + Date.now(),
+                name: name,
+                email: email,
+                password: password,
+                phone: phone,
+                address: detail || "Main Hospital Pharmacy Wing",
+                status: "Active"
+            };
+            if (pharmIdx >= 0) pharms[pharmIdx] = { ...pharms[pharmIdx], ...pharmRecord };
+            else pharms.push(pharmRecord);
+            localStorage.setItem("medimatePharmacies", JSON.stringify(pharms));
+        }
+
+        alert(`Account successfully provisioned for ${name} (${role.toUpperCase()})!\n\nEmail: ${email}\nPassword: ${password}\n\nUser can now directly log in at their respective hospital portal.`);
+        window.closeProvisionModal();
+        await loadDashboardData();
+    };
 
 
 

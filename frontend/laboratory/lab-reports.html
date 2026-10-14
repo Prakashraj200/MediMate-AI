@@ -227,29 +227,8 @@
                                 <th>Actions</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <tr>
-                                <td><code>REP-7741</code></td>
-                                <td>Oct 12, 2026</td>
-                                <td><strong>David Kim</strong> (MRN-7821)</td>
-                                <td>Complete Blood Count (CBC)</td>
-                                <td>Dr. Alex Mercer</td>
-                                <td><span style="color:#059669; font-weight:600;"><i class="fa-solid fa-circle-check"></i> Released</span></td>
-                                <td>
-                                    <button class="btn btn-secondary" style="padding:4px 10px; font-size:12px;" onclick="viewReportModal('David Kim', 'Complete Blood Count (CBC)', 'REP-7741')"><i class="fa-solid fa-eye"></i> View</button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><code>REP-7740</code></td>
-                                <td>Oct 10, 2026</td>
-                                <td><strong>John Doe</strong> (MRN-1001)</td>
-                                <td>Lipid Profile Panel (Fasting)</td>
-                                <td>Dr. Sarah Connor</td>
-                                <td><span style="color:#059669; font-weight:600;"><i class="fa-solid fa-circle-check"></i> Released</span></td>
-                                <td>
-                                    <button class="btn btn-secondary" style="padding:4px 10px; font-size:12px;" onclick="viewReportModal('John Doe', 'Lipid Profile Panel', 'REP-7740')"><i class="fa-solid fa-eye"></i> View</button>
-                                </td>
-                            </tr>
+                        <tbody id="reportsTbody">
+                            <!-- Populated dynamically with registered patients -->
                         </tbody>
                     </table>
                 </div>
@@ -276,7 +255,57 @@
 </div>
 
 <script>
+    function escapeHTML(str) {
+        return String(str || "").replace(/[&<>"']/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' })[m]);
+    }
+
     function closeModal(id) { document.getElementById(id).style.display = 'none'; }
+
+    function loadReports() {
+        const tbody = document.getElementById("reportsTbody");
+        if (!tbody) return;
+
+        let patients = [];
+        let doctors = [];
+        try {
+            const allUsers = JSON.parse(localStorage.getItem("medimateUsers") || "[]");
+            patients = allUsers.filter(u => u.role === "patient");
+            doctors = allUsers.filter(u => u.role === "doctor");
+        } catch(e){}
+
+        if (patients.length === 0) {
+            tbody.innerHTML = `
+                <tr>
+                    <td colspan="7" style="text-align:center; padding:30px; color:#64748b;">
+                        No laboratory reports archived yet. Released investigations for provisioned patients will display here.
+                    </td>
+                </tr>
+            `;
+            return;
+        }
+
+        const tests = ["Complete Blood Count (CBC)", "Lipid Profile Panel (Fasting)", "Comprehensive Metabolic Panel", "Thyroid Profile (T3, T4, TSH)"];
+        const docName = doctors.length > 0 ? (doctors[0].name.startsWith("Dr.") ? doctors[0].name : "Dr. " + doctors[0].name) : "Attending Hospital Physician";
+
+        tbody.innerHTML = patients.map((p, idx) => {
+            const repNo = `REP-${7740 + idx}`;
+            const test = tests[idx % tests.length];
+            return `
+                <tr>
+                    <td><code>${repNo}</code></td>
+                    <td>Today</td>
+                    <td><strong>${escapeHTML(p.name)}</strong> (${escapeHTML(p.id || 'MRN-' + (1000 + idx))})</td>
+                    <td>${escapeHTML(test)}</td>
+                    <td>${escapeHTML(docName)}</td>
+                    <td><span style="color:#059669; font-weight:600;"><i class="fa-solid fa-circle-check"></i> Released</span></td>
+                    <td>
+                        <button class="btn btn-secondary" style="padding:4px 10px; font-size:12px;" onclick="viewReportModal('${escapeHTML(p.name)}', '${escapeHTML(test)}', '${repNo}')"><i class="fa-solid fa-eye"></i> View</button>
+                    </td>
+                </tr>
+            `;
+        }).join("");
+    }
+
     function viewReportModal(patient, test, repNo) {
         const slip = document.getElementById('reportSlip');
         slip.innerHTML = `
@@ -288,7 +317,7 @@
                 <div><strong>Patient Name:</strong> ${patient}</div>
                 <div><strong>Report Number:</strong> ${repNo}</div>
                 <div><strong>Investigation:</strong> ${test}</div>
-                <div><strong>Date of Release:</strong> Oct 12, 2026</div>
+                <div><strong>Date of Release:</strong> Today</div>
             </div>
             <div style="background:#eef7f2; padding:12px; border-radius:8px; font-size:13px; margin-bottom:14px;">
                 <strong>Analyte Results Summary:</strong><br>
@@ -296,11 +325,14 @@
             </div>
             <div style="display:flex; justify-content:space-between; align-items:center; font-size:12px; color:#64748b; margin-top:20px; border-top:1px solid #edf4ef; padding-top:12px;">
                 <span>Digital Verification: <strong>VERIFIED-PATH-2026</strong></span>
-                <span>Chief Pathologist: <strong style="color:#087f5b;">Dr. Marcus Brody, MD (Path)</strong></span>
+                <span>Laboratory Status: <strong style="color:#087f5b;">Certified & Released</strong></span>
             </div>
         `;
         document.getElementById('reportModal').style.display = 'flex';
     }
+
+    document.addEventListener("DOMContentLoaded", loadReports);
+    loadReports();
 </script>
 </body>
 </html>

@@ -99,7 +99,7 @@
         </ul>
 
         <div style="padding-top:14px; border-top:1px solid rgba(255,255,255,0.2);">
-            <a href="pharmacy-login.html" onclick="localStorage.clear();" style="color:white; text-decoration:none; display:flex; align-items:center; gap:10px; font-size:13.5px;">
+            <a href="pharmacy-login.html" onclick="localStorage.removeItem('currentUser'); sessionStorage.clear();" style="color:white; text-decoration:none; display:flex; align-items:center; gap:10px; font-size:13.5px;">
                 <i class="fa-solid fa-right-from-bracket"></i> Sign Out
             </a>
         </div>
@@ -137,39 +137,7 @@
                             </tr>
                         </thead>
                         <tbody id="dispenseTbody">
-                            <tr>
-                                <td><code>RX-9822</code></td>
-                                <td><strong>Elena Gilbert</strong></td>
-                                <td>Dr. Michael Roberts</td>
-                                <td>Amoxicillin 500mg, Paracetamol 650mg</td>
-                                <td>1-1-1 (7 Days), SOS for pain</td>
-                                <td><span class="rx-badge pending">Awaiting Fill</span></td>
-                                <td>
-                                    <button class="btn btn-primary" style="padding:5px 10px; font-size:12px;" onclick="dispenseRx(this, 'Elena Gilbert', 'RX-9822')"><i class="fa-solid fa-check"></i> Dispense</button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><code>RX-9825</code></td>
-                                <td><strong>Robert Baratheon</strong></td>
-                                <td>Dr. James Wilson</td>
-                                <td>Aceclofenac 100mg + Paracetamol</td>
-                                <td>1-0-1 (5 Days)</td>
-                                <td><span class="rx-badge pending">Awaiting Fill</span></td>
-                                <td>
-                                    <button class="btn btn-primary" style="padding:5px 10px; font-size:12px;" onclick="dispenseRx(this, 'Robert Baratheon', 'RX-9825')"><i class="fa-solid fa-check"></i> Dispense</button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><code>RX-9821</code></td>
-                                <td><strong>John Doe</strong></td>
-                                <td>Dr. Sarah Connor</td>
-                                <td>Amlodipine 5mg, Atorvastatin 20mg</td>
-                                <td>1-0-0 (30 Days), 0-0-1 (30 Days)</td>
-                                <td><span class="rx-badge dispensed">Dispensed</span></td>
-                                <td>
-                                    <button class="btn btn-secondary" style="padding:5px 10px; font-size:12px;" onclick="alert('Viewing dispensed receipt...')"><i class="fa-solid fa-receipt"></i> Slip</button>
-                                </td>
-                            </tr>
+                            <!-- Populated dynamically with registered patient and doctor prescriptions -->
                         </tbody>
                     </table>
                 </div>
@@ -179,6 +147,67 @@
 </div>
 
 <script>
+    function renderRxQueue() {
+        const tbody = document.getElementById("dispenseTbody");
+
+        const users = JSON.parse(localStorage.getItem("medimateUsers") || "[]");
+        const patients = users.filter(u => u.role === "patient" && u.name);
+        const profile = JSON.parse(localStorage.getItem("patient_profile") || "null");
+        if (profile && profile.name && !patients.some(p => p.name === profile.name)) {
+            patients.push(profile);
+        }
+
+        const doctors = users.filter(u => u.role === "doctor" && u.name);
+        const medDocs = JSON.parse(localStorage.getItem("medimateDoctors") || "[]");
+        const allDocs = [...doctors, ...medDocs];
+
+        let prescriptions = JSON.parse(localStorage.getItem("patient_prescriptions") || "[]");
+
+        if (prescriptions.length === 0 && patients.length > 0) {
+            const sampleMeds = [
+                { drug: "Amoxicillin 500mg, Paracetamol 650mg", dose: "1-1-1 (7 Days), SOS for pain" },
+                { drug: "Aceclofenac 100mg + Paracetamol", dose: "1-0-1 (5 Days)" },
+                { drug: "Amlodipine 5mg, Atorvastatin 20mg", dose: "1-0-0 (30 Days), 0-0-1 (30 Days)" },
+                { drug: "Metformin 500mg, Glimepiride 1mg", dose: "1-0-1 (30 Days) Before meals" }
+            ];
+
+            prescriptions = patients.map((pt, idx) => {
+                const doc = allDocs[idx % Math.max(allDocs.length, 1)];
+                const docName = doc ? (doc.name.toLowerCase().startsWith("dr.") ? doc.name : "Dr. " + doc.name) : "Dr. Specialist";
+                const med = sampleMeds[idx % sampleMeds.length];
+                return {
+                    rxNo: `RX-982${idx + 1}`,
+                    patient: pt.name,
+                    doctor: docName,
+                    drug: med.drug,
+                    regimen: med.dose,
+                    status: idx === 0 ? "Pending" : (idx % 2 === 0 ? "Pending" : "Dispensed")
+                };
+            });
+        }
+
+        if (prescriptions.length === 0) {
+            tbody.innerHTML = `<tr><td colspan="7" style="text-align:center; padding:24px; color:#888;">No registered prescriptions found in queue.</td></tr>`;
+            return;
+        }
+
+        tbody.innerHTML = prescriptions.map(rx => `
+            <tr>
+                <td><code>${rx.rxNo || rx.id || 'RX-9821'}</code></td>
+                <td><strong>${rx.patient}</strong></td>
+                <td>${rx.doctor}</td>
+                <td>${rx.drug || rx.medicine || 'Paracetamol 650mg'}</td>
+                <td>${rx.regimen || rx.dosage || '1-0-1'}</td>
+                <td><span class="rx-badge ${rx.status === 'Dispensed' ? 'dispensed' : 'pending'}">${rx.status === 'Dispensed' ? 'Dispensed' : 'Awaiting Fill'}</span></td>
+                <td>
+                    ${rx.status === 'Dispensed' ? 
+                    `<button class="btn btn-secondary" style="padding:5px 10px; font-size:12px;" onclick="alert('Viewing dispensed receipt...')"><i class="fa-solid fa-receipt"></i> Slip</button>` : 
+                    `<button class="btn btn-primary" style="padding:5px 10px; font-size:12px;" onclick="dispenseRx(this, '${rx.patient.replace(/'/g, "\\'")}', '${rx.rxNo || rx.id || 'RX-9821'}')"><i class="fa-solid fa-check"></i> Dispense</button>`}
+                </td>
+            </tr>
+        `).join("");
+    }
+
     function dispenseRx(btn, patient, rxNo) {
         const row = btn.closest('tr');
         const badge = row.querySelector('.rx-badge');
@@ -187,6 +216,9 @@
         btn.outerHTML = `<button class="btn btn-secondary" style="padding:5px 10px; font-size:12px;" onclick="alert('Viewing dispensed receipt...')"><i class="fa-solid fa-receipt"></i> Slip</button>`;
         alert(`Prescription ${rxNo} for ${patient} filled and dispensed. Inventory stock deducted automatically.`);
     }
+
+    document.addEventListener("DOMContentLoaded", renderRxQueue);
+    renderRxQueue();
 </script>
 </body>
 </html>

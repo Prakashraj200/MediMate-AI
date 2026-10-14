@@ -7,8 +7,8 @@
   <link rel="stylesheet" href="patient-style.css">
   <style>
     .appointment-card {
-      background: white;
-      border: 1px solid var(--border-color);
+      background: rgba(13, 22, 41, 0.85);
+      border: 1px solid rgba(255, 255, 255, 0.08);
       border-radius: var(--radius-md);
       padding: 22px;
       margin-bottom: 16px;
@@ -16,13 +16,13 @@
       justify-content: space-between;
       align-items: center;
       transition: all 0.2s ease;
-      box-shadow: var(--shadow-sm);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35);
     }
 
     .appointment-card:hover {
-      border-color: var(--primary);
+      border-color: rgba(0, 229, 153, 0.4);
       transform: translateY(-2px);
-      box-shadow: var(--shadow-md);
+      box-shadow: 0 8px 30px rgba(0, 229, 153, 0.15);
     }
 
     .apt-info-block {
@@ -41,12 +41,13 @@
       justify-content: center;
       font-size: 30px;
       flex-shrink: 0;
+      border: 1px solid rgba(0, 229, 153, 0.25);
     }
 
     .apt-details h3 {
       font-size: 17px;
       font-weight: 700;
-      color: var(--text-main);
+      color: #ffffff;
       margin-bottom: 4px;
     }
 
@@ -66,7 +67,7 @@
       align-items: center;
       gap: 16px;
       font-size: 13px;
-      color: var(--text-muted);
+      color: #cbd5e1;
       flex-wrap: wrap;
     }
 
@@ -308,7 +309,7 @@
           <h2>Appointment Management</h2>
           <p>Book instant appointments with hospital specialists, attend video consultations, or view prescription visit slips.</p>
         </div>
-        <button class="btn btn-primary" id="openBookModalBtn" style="background: white; color: var(--primary);">
+        <button class="btn btn-primary" id="openBookModalBtn">
           <span>➕</span>
           <span>Book New Appointment</span>
         </button>
@@ -383,13 +384,16 @@
   <div class="modal-backdrop" id="bookModal">
     <div class="modal-dialog">
       <div class="modal-header">
-        <h3>📅 Book a Medical Appointment</h3>
+        <div>
+          <h3>📅 Book a Medical Appointment</h3>
+          <p style="font-size: 12px; color: #94a3b8; margin-top: 3px;">Consult with verified hospital doctors & specialists</p>
+        </div>
         <button class="modal-close" id="closeBookModalBtn">&times;</button>
       </div>
       <form id="bookAppointmentForm">
         <div class="modal-body">
           <div class="form-group">
-            <label for="deptSelect">Select Medical Department</label>
+            <label for="deptSelect">🏥 Select Medical Department</label>
             <select id="deptSelect" required>
               <option value="">-- Choose Department --</option>
               <option value="Cardiology">Cardiology (Heart & Circulation)</option>
@@ -402,47 +406,52 @@
           </div>
 
           <div class="form-group">
-            <label for="doctorSelect">Select Specialist Doctor</label>
+            <label for="doctorSelect">👨‍⚕️ Select Specialist Doctor</label>
             <select id="doctorSelect" required>
               <option value="">-- Choose Doctor --</option>
             </select>
           </div>
 
           <div class="form-group">
-            <label for="consultType">Consultation Mode</label>
+            <label for="consultType">💻 Consultation Mode</label>
             <select id="consultType" required>
-              <option value="In-Person Consultation">In-Person Hospital Visit (OPD)</option>
-              <option value="Video Call">Virtual Video Call (Telehealth)</option>
+              <option value="In-Person Consultation">In-Person Hospital Visit (OPD Room)</option>
+              <option value="Video Call">Virtual Video Call (Telehealth Encrypted)</option>
             </select>
           </div>
 
           <div class="form-row">
             <div class="form-group">
-              <label for="aptDate">Preferred Date</label>
+              <label for="aptDate">📅 Preferred Date</label>
               <input type="date" id="aptDate" required>
             </div>
             <div class="form-group">
-              <label for="aptTime">Preferred Time Slot</label>
+              <label for="aptTime">⏰ Preferred Time Slot</label>
               <select id="aptTime" required>
-                <option value="09:30 AM">09:30 AM (Morning)</option>
-                <option value="10:30 AM">10:30 AM (Morning)</option>
+                <option value="09:30 AM">09:30 AM (Morning Slot)</option>
+                <option value="10:30 AM">10:30 AM (Morning Slot)</option>
                 <option value="11:45 AM">11:45 AM (Late Morning)</option>
-                <option value="02:30 PM">02:30 PM (Afternoon)</option>
-                <option value="03:45 PM">03:45 PM (Afternoon)</option>
-                <option value="05:15 PM">05:15 PM (Evening)</option>
+                <option value="02:30 PM">02:30 PM (Afternoon Slot)</option>
+                <option value="03:45 PM">03:45 PM (Afternoon Slot)</option>
+                <option value="05:15 PM">05:15 PM (Evening Slot)</option>
               </select>
             </div>
           </div>
 
           <div class="form-group">
-            <label for="aptReason">Reason for Visit / Symptoms</label>
+            <label for="aptReason">📝 Reason for Visit / Symptoms</label>
             <textarea id="aptReason" rows="3" placeholder="Briefly describe your symptoms or reason for visit (e.g., routine blood pressure review, headache, joint pain)..." required></textarea>
+          </div>
+
+          <div style="background: rgba(0, 229, 153, 0.08); border: 1px solid rgba(0, 229, 153, 0.2); border-radius: 8px; padding: 12px 14px; font-size: 13px; color: #cbd5e1; display: flex; align-items: center; gap: 10px;">
+            <span style="font-size: 18px;">ℹ️</span>
+            <span>Estimated consultation fee: <strong style="color: #00e599;">₹500 - ₹800</strong> (Instant confirmation & automated OPD token issued)</span>
           </div>
         </div>
 
         <div class="modal-footer">
           <button type="button" class="btn btn-outline" id="cancelBookBtn">Cancel</button>
-          <button type="submit" class="btn btn-primary">Confirm & Book Appointment</button>
+          <button type="submit" class="btn btn-primary" style="font-weight: 700;">Confirm & Book Appointment</button>
         </div>
       </form>
     </div>
@@ -789,8 +798,8 @@
             </div>
           </div>
 
-          <div style="background: white; border: 1px solid var(--border-color); padding: 12px; border-radius: 8px; font-size: 12px; color: var(--text-muted); line-height: 1.5;">
-            <strong>Instructions for Patient:</strong><br>
+          <div style="background: rgba(10, 18, 36, 0.95); border: 1px solid rgba(255, 255, 255, 0.1); padding: 14px; border-radius: 8px; font-size: 13px; color: #cbd5e1; line-height: 1.6;">
+            <strong style="color: #00e599;">Instructions for Patient:</strong><br>
             • Please arrive at OPD 15 minutes prior to your scheduled slot.<br>
             • For video consultations, enter the secure room link 5 minutes before scheduled start time.<br>
             • In case of emergency or severe chest distress, contact our 24/7 ER hotline directly.

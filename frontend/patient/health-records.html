@@ -14,11 +14,11 @@
     }
 
     .vital-tile {
-      background: white;
-      border: 1px solid var(--border-color);
+      background: rgba(13, 22, 41, 0.85);
+      border: 1px solid rgba(255, 255, 255, 0.08);
       border-radius: var(--radius-md);
       padding: 20px;
-      box-shadow: var(--shadow-sm);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35);
       display: flex;
       flex-direction: column;
       justify-content: space-between;
@@ -26,9 +26,9 @@
     }
 
     .vital-tile:hover {
-      border-color: var(--primary);
+      border-color: rgba(0, 229, 153, 0.4);
       transform: translateY(-2px);
-      box-shadow: var(--shadow-md);
+      box-shadow: 0 8px 30px rgba(0, 229, 153, 0.15);
     }
 
     .vital-header {
@@ -172,6 +172,45 @@
         display: none !important;
       }
     }
+
+    /* PDF Medical Records Styles */
+    .pdf-doc-card {
+      background: rgba(15, 23, 42, 0.85);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: var(--radius-md);
+      padding: 18px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: all 0.25s ease;
+      position: relative;
+    }
+    .pdf-doc-card:hover {
+      border-color: #0284c7;
+      transform: translateY(-3px);
+      box-shadow: 0 10px 25px rgba(2, 132, 199, 0.2);
+    }
+    .pdf-badge-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, #ef4444, #b91c1c);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 13px;
+      letter-spacing: 0.5px;
+      flex-shrink: 0;
+      box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+    }
+    .doc-filter-btn.active {
+      background: #0284c7 !important;
+      color: white !important;
+      border-color: #0284c7 !important;
+      font-weight: 700;
+    }
   </style>
 </head>
 <body>
@@ -296,14 +335,53 @@
           <p>Monitor your everyday vital signs, record clinical readings, and export verified digital health summaries for medical consultations.</p>
         </div>
         <div style="display: flex; gap: 10px; flex-wrap: wrap;">
-          <button class="btn btn-primary" id="openLogVitalsBtn" style="background: white; color: var(--primary);">
+          <button class="btn btn-primary" id="openUploadPdfBtn" style="background: linear-gradient(135deg, #0284c7, #0369a1); border:none; display:flex; align-items:center; gap:8px;">
+            <span>📤</span>
+            <span>Upload Medical PDF</span>
+          </button>
+          <button class="btn btn-primary" id="openLogVitalsBtn">
             <span>➕</span>
             <span>Log Current Vitals</span>
           </button>
-          <button class="btn btn-outline" id="exportSummaryBtn" style="background: rgba(255,255,255,0.2); color: white; border-color: rgba(255,255,255,0.4);">
+          <button class="btn btn-outline" id="exportSummaryBtn">
             <span>📄</span>
             <span>Export Health Summary</span>
           </button>
+        </div>
+      </div>
+
+      <!-- ATTACHED PDF MEDICAL RECORDS & DOCUMENTS SECTION -->
+      <div class="surface-card" style="margin-bottom: 28px; border: 1px solid rgba(2, 132, 199, 0.35); background: rgba(13, 22, 41, 0.95); box-shadow: 0 8px 30px rgba(0,0,0,0.4);">
+        <div class="card-header-flex" style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px; flex-wrap: wrap; gap: 12px;">
+          <div>
+            <h3 style="font-size: 19px; color: #38bdf8; font-weight: 700; display:flex; align-items:center; gap:10px;">
+              <span>📁</span> Clinical PDF Documents & Medical Reports
+            </h3>
+            <p style="font-size: 13px; color: var(--text-muted); margin-top: 4px;">
+              Upload and manage your lab test results, doctor prescriptions, scan PDFs, and discharge summaries in electronic format.
+            </p>
+          </div>
+          <div style="display: flex; gap: 10px;">
+            <button class="btn btn-primary" id="uploadPdfSectionBtn" style="background: linear-gradient(135deg, #0284c7, #0369a1); border:none; padding:9px 18px; border-radius:10px; font-weight:600; display:flex; align-items:center; gap:8px;">
+              <span>📤</span> Upload PDF Document
+            </button>
+          </div>
+        </div>
+
+        <!-- Filter bar -->
+        <div style="display:flex; gap:10px; flex-wrap:wrap; margin-bottom:18px; align-items:center; padding-bottom:14px; border-bottom:1px solid rgba(255,255,255,0.08);">
+          <span style="font-size:12.5px; color:var(--text-muted); font-weight:600;">Filter by Category:</span>
+          <button class="btn btn-sm btn-outline doc-filter-btn active" data-filter="all" style="padding:4px 12px; font-size:12px; border-radius:20px;">All PDFs (<span id="countAllDocs">0</span>)</button>
+          <button class="btn btn-sm btn-outline doc-filter-btn" data-filter="Lab Report" style="padding:4px 12px; font-size:12px; border-radius:20px;">Lab Reports</button>
+          <button class="btn btn-sm btn-outline doc-filter-btn" data-filter="Prescription" style="padding:4px 12px; font-size:12px; border-radius:20px;">Prescriptions</button>
+          <button class="btn btn-sm btn-outline doc-filter-btn" data-filter="Diagnostic Scan" style="padding:4px 12px; font-size:12px; border-radius:20px;">Scans / Imaging</button>
+          <button class="btn btn-sm btn-outline doc-filter-btn" data-filter="Discharge Summary" style="padding:4px 12px; font-size:12px; border-radius:20px;">Discharge Summaries</button>
+          <button class="btn btn-sm btn-outline doc-filter-btn" data-filter="Vaccine Record" style="padding:4px 12px; font-size:12px; border-radius:20px;">Vaccines</button>
+        </div>
+
+        <!-- PDF Documents Grid -->
+        <div id="pdfDocumentsContainer" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(310px, 1fr)); gap: 18px;">
+          <!-- Rendered dynamically -->
         </div>
       </div>
 
@@ -634,20 +712,131 @@
     </div>
   </div>
 
+  <!-- ========================================================================
+       MODAL: UPLOAD MEDICAL PDF DOCUMENT
+       ======================================================================== -->
+  <div class="modal-backdrop" id="uploadPdfModal">
+    <div class="modal-dialog" style="max-width: 580px;">
+      <div class="modal-header" style="background: linear-gradient(135deg, #0369a1, #075985); color:white; border-radius: var(--radius-md) var(--radius-md) 0 0; padding:18px 24px;">
+        <h3 style="color:white; display:flex; align-items:center; gap:8px;"><span>📤</span> Upload Medical PDF Document</h3>
+        <button class="modal-close" id="closeUploadPdfModalBtn" style="color:white;">&times;</button>
+      </div>
+      <form id="uploadPdfForm">
+        <div class="modal-body" style="padding:22px 24px; display:flex; flex-direction:column; gap:16px;">
+          <!-- File Drop Area -->
+          <div id="pdfDropZone" style="border: 2px dashed rgba(2, 132, 199, 0.5); border-radius: 12px; padding: 24px 16px; text-align: center; background: rgba(2, 132, 199, 0.05); cursor: pointer; transition: all 0.2s;">
+            <div style="font-size: 38px; margin-bottom: 8px;">📄</div>
+            <div style="font-weight: 700; font-size: 14.5px; color: #38bdf8; margin-bottom: 4px;">Click to browse or drag & drop PDF file</div>
+            <div style="font-size: 12px; color: var(--text-muted);">Strictly accepts PDF files (.pdf)</div>
+            <input type="file" id="pdfFileInput" accept="application/pdf,.pdf" style="display: none;">
+            <div id="selectedPdfInfo" style="display: none; margin-top: 14px; padding: 10px 14px; background: rgba(0, 229, 153, 0.1); border: 1px solid rgba(0, 229, 153, 0.3); border-radius: 8px; font-size: 13px; color: #00e599; font-weight: 600;">
+              <span id="selectedPdfName">document.pdf</span> (<span id="selectedPdfSize">0 KB</span>) ✅
+            </div>
+          </div>
+
+          <!-- Document Title -->
+          <div class="form-group">
+            <label for="pdfDocTitle" style="font-weight:600; font-size:13px; margin-bottom:6px; display:block;">Document Title *</label>
+            <input type="text" id="pdfDocTitle" placeholder="e.g. Complete Blood Count (CBC) Lab Report" required style="width:100%; padding:10px 12px; border-radius:8px; border:1px solid var(--border-color); background:var(--bg-surface-alt); color:var(--text-main); font-size:14px; box-sizing:border-box;">
+          </div>
+
+          <!-- Category & Date Row -->
+          <div class="form-row" style="display:grid; grid-template-columns:1fr 1fr; gap:14px;">
+            <div class="form-group">
+              <label for="pdfDocCategory" style="font-weight:600; font-size:13px; margin-bottom:6px; display:block;">Document Category *</label>
+              <select id="pdfDocCategory" required style="width:100%; padding:10px 12px; border-radius:8px; border:1px solid var(--border-color); background:var(--bg-surface-alt); color:var(--text-main); font-size:13.5px; box-sizing:border-box;">
+                <option value="Lab Report">🧪 Lab Report</option>
+                <option value="Prescription">🩺 Prescription</option>
+                <option value="Diagnostic Scan">🩻 Diagnostic Scan / ECG / X-Ray</option>
+                <option value="Discharge Summary">🏥 Discharge Summary</option>
+                <option value="Vaccine Record">💉 Vaccine Record</option>
+                <option value="Medical Certificate">📋 Medical Certificate</option>
+                <option value="Other">📑 Other Document</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="pdfDocDate" style="font-weight:600; font-size:13px; margin-bottom:6px; display:block;">Document / Report Date *</label>
+              <input type="date" id="pdfDocDate" required style="width:100%; padding:10px 12px; border-radius:8px; border:1px solid var(--border-color); background:var(--bg-surface-alt); color:var(--text-main); font-size:13.5px; box-sizing:border-box;">
+            </div>
+          </div>
+
+          <!-- Doctor / Facility Name -->
+          <div class="form-group">
+            <label for="pdfDocProvider" style="font-weight:600; font-size:13px; margin-bottom:6px; display:block;">Hospital / Doctor / Diagnostic Lab Name</label>
+            <input type="text" id="pdfDocProvider" placeholder="e.g. MediMate Central Diagnostic Lab" style="width:100%; padding:10px 12px; border-radius:8px; border:1px solid var(--border-color); background:var(--bg-surface-alt); color:var(--text-main); font-size:14px; box-sizing:border-box;">
+          </div>
+
+          <!-- Notes / Remarks -->
+          <div class="form-group">
+            <label for="pdfDocNotes" style="font-weight:600; font-size:13px; margin-bottom:6px; display:block;">Clinical Remarks / Summary (Optional)</label>
+            <textarea id="pdfDocNotes" rows="2" placeholder="e.g. Routine checkup results, all vitals in range." style="width:100%; padding:10px 12px; border-radius:8px; border:1px solid var(--border-color); background:var(--bg-surface-alt); color:var(--text-main); font-size:13px; box-sizing:border-box;"></textarea>
+          </div>
+        </div>
+
+        <div class="modal-footer" style="padding:14px 24px; border-top:1px solid var(--border-color); display:flex; justify-content:flex-end; gap:12px;">
+          <button type="button" class="btn btn-outline" id="cancelUploadPdfBtn">Cancel</button>
+          <button type="submit" class="btn btn-primary" id="savePdfBtn" style="background: linear-gradient(135deg, #0284c7, #0369a1); border:none; font-weight:700; display:flex; align-items:center; gap:8px;">
+            <span>💾</span> Save & Attach PDF
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ========================================================================
+       MODAL: PREVIEW / VIEW PDF DOCUMENT
+       ======================================================================== -->
+  <div class="modal-backdrop" id="pdfViewerModal">
+    <div class="modal-dialog" style="max-width: 920px; width: 95%;">
+      <div class="modal-header" style="background: #0f172a; color:white; border-radius: var(--radius-md) var(--radius-md) 0 0; padding:16px 24px; display:flex; justify-content:space-between; align-items:center;">
+        <div style="display:flex; align-items:center; gap:10px;">
+          <span style="font-size:22px;">📄</span>
+          <div>
+            <h3 id="pdfViewerTitle" style="color:white; font-size:16px; margin:0;">Document Preview</h3>
+            <span id="pdfViewerMeta" style="font-size:12px; color:#94a3b8;">PDF Document</span>
+          </div>
+        </div>
+        <div style="display:flex; align-items:center; gap:10px;">
+          <button type="button" class="btn btn-outline btn-sm" id="pdfViewerOpenTabBtn" style="color:white; border-color:#334155; font-size:12px;">↗️ New Tab</button>
+          <button type="button" class="btn btn-primary btn-sm" id="pdfViewerDownloadBtn" style="background:#0284c7; border:none; font-size:12px;">⬇️ Download</button>
+          <button class="modal-close" id="closePdfViewerModalBtn" style="color:white; margin-left:8px;">&times;</button>
+        </div>
+      </div>
+      <div class="modal-body" style="padding:0; background:#1e293b; height:75vh; overflow:hidden;">
+        <iframe id="pdfViewerFrame" style="width:100%; height:100%; border:none; display:block;" src="about:blank"></iframe>
+      </div>
+    </div>
+  </div>
+
   <!-- SCRIPT -->
   <script type="module">
     import { setupPatientAuth, PatientStore, showToast } from "./patient-common.js";
 
     setupPatientAuth("health-records");
 
+    let currentPdfDataUrl = null;
+    let currentPdfFileSize = "0 KB";
+    let activeCategoryFilter = "all";
+    let activeViewingDoc = null;
+
+    function escapeHTML(str) {
+      return String(str || "").replace(/[&<>"']/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' })[m]);
+    }
+
     document.addEventListener("DOMContentLoaded", function () {
       initHealthRecords();
     });
 
     function initHealthRecords() {
-      renderVitalsTelemetry();
+      // Set default date for PDF uploader
+      const today = new Date().toISOString().split("T")[0];
+      const dateInput = document.getElementById("pdfDocDate");
+      if (dateInput) dateInput.value = today;
 
-      // Modal open/close
+      renderVitalsTelemetry();
+      renderPdfDocuments();
+
+      // Modal open/close for Vitals
       const vitalsModal = document.getElementById("vitalsModal");
       document.getElementById("openLogVitalsBtn").addEventListener("click", () => {
         vitalsModal.classList.add("active");
@@ -659,7 +848,136 @@
         vitalsModal.classList.remove("active");
       });
 
-      // Form submit
+      // PDF Upload Modal open/close
+      const uploadPdfModal = document.getElementById("uploadPdfModal");
+      const openPdfModal = () => {
+        uploadPdfModal.classList.add("active");
+      };
+      const closePdfModal = () => {
+        uploadPdfModal.classList.remove("active");
+        document.getElementById("uploadPdfForm").reset();
+        currentPdfDataUrl = null;
+        document.getElementById("selectedPdfInfo").style.display = "none";
+        if (dateInput) dateInput.value = today;
+      };
+
+      document.getElementById("openUploadPdfBtn").addEventListener("click", openPdfModal);
+      const sectionUploadBtn = document.getElementById("uploadPdfSectionBtn");
+      if (sectionUploadBtn) sectionUploadBtn.addEventListener("click", openPdfModal);
+      document.getElementById("closeUploadPdfModalBtn").addEventListener("click", closePdfModal);
+      document.getElementById("cancelUploadPdfBtn").addEventListener("click", closePdfModal);
+
+      // PDF File selection & drag-and-drop
+      const dropZone = document.getElementById("pdfDropZone");
+      const fileInput = document.getElementById("pdfFileInput");
+      dropZone.addEventListener("click", () => fileInput.click());
+
+      dropZone.addEventListener("dragover", (e) => {
+        e.preventDefault();
+        dropZone.style.borderColor = "#00e599";
+        dropZone.style.background = "rgba(0, 229, 153, 0.08)";
+      });
+      dropZone.addEventListener("dragleave", () => {
+        dropZone.style.borderColor = "rgba(2, 132, 199, 0.5)";
+        dropZone.style.background = "rgba(2, 132, 199, 0.05)";
+      });
+      dropZone.addEventListener("drop", (e) => {
+        e.preventDefault();
+        dropZone.style.borderColor = "rgba(2, 132, 199, 0.5)";
+        dropZone.style.background = "rgba(2, 132, 199, 0.05)";
+        if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+          processPdfFile(e.dataTransfer.files[0]);
+        }
+      });
+
+      fileInput.addEventListener("change", (e) => {
+        if (e.target.files && e.target.files[0]) {
+          processPdfFile(e.target.files[0]);
+        }
+      });
+
+      function processPdfFile(file) {
+        if (!file.type.includes("pdf") && !file.name.toLowerCase().endsWith(".pdf")) {
+          alert("Please upload a valid PDF document (.pdf).");
+          return;
+        }
+        const sizeKB = (file.size / 1024).toFixed(1);
+        currentPdfFileSize = sizeKB > 1024 ? (sizeKB / 1024).toFixed(2) + " MB" : sizeKB + " KB";
+        document.getElementById("selectedPdfName").textContent = file.name;
+        document.getElementById("selectedPdfSize").textContent = currentPdfFileSize;
+        document.getElementById("selectedPdfInfo").style.display = "block";
+
+        const titleInput = document.getElementById("pdfDocTitle");
+        if (!titleInput.value) {
+          titleInput.value = file.name.replace(/\.[^/.]+$/, "");
+        }
+
+        const reader = new FileReader();
+        reader.onload = function (evt) {
+          currentPdfDataUrl = evt.target.result;
+        };
+        reader.readAsDataURL(file);
+      }
+
+      // PDF Form Submit
+      document.getElementById("uploadPdfForm").addEventListener("submit", function (e) {
+        e.preventDefault();
+        if (!currentPdfDataUrl) {
+          alert("Please select or drop a PDF file first.");
+          return;
+        }
+        const title = document.getElementById("pdfDocTitle").value.trim();
+        const category = document.getElementById("pdfDocCategory").value;
+        const date = document.getElementById("pdfDocDate").value || today;
+        const provider = document.getElementById("pdfDocProvider").value.trim() || "Hospital Medical Record";
+        const notes = document.getElementById("pdfDocNotes").value.trim();
+
+        PatientStore.saveHealthDocument({
+          title,
+          category,
+          date,
+          provider,
+          notes,
+          fileSize: currentPdfFileSize,
+          pdfDataUrl: currentPdfDataUrl,
+          fileName: document.getElementById("selectedPdfName").textContent
+        });
+
+        showToast(`PDF "${title}" successfully attached to Health Records!`, "success");
+        closePdfModal();
+        renderPdfDocuments();
+      });
+
+      // Filter category buttons
+      document.querySelectorAll(".doc-filter-btn").forEach(btn => {
+        btn.addEventListener("click", () => {
+          document.querySelectorAll(".doc-filter-btn").forEach(b => b.classList.remove("active"));
+          btn.classList.add("active");
+          activeCategoryFilter = btn.getAttribute("data-filter");
+          renderPdfDocuments();
+        });
+      });
+
+      // PDF Viewer Modal close
+      const viewerModal = document.getElementById("pdfViewerModal");
+      document.getElementById("closePdfViewerModalBtn").addEventListener("click", () => {
+        viewerModal.classList.remove("active");
+        document.getElementById("pdfViewerFrame").src = "about:blank";
+        activeViewingDoc = null;
+      });
+
+      document.getElementById("pdfViewerOpenTabBtn").addEventListener("click", () => {
+        if (activeViewingDoc && activeViewingDoc.pdfDataUrl) {
+          const win = window.open();
+          win.document.write(`<iframe src="${activeViewingDoc.pdfDataUrl}" frameborder="0" style="border:0; top:0; left:0; bottom:0; right:0; width:100%; height:100%;" allowfullscreen></iframe>`);
+        }
+      });
+
+      document.getElementById("pdfViewerDownloadBtn").addEventListener("click", () => {
+        if (activeViewingDoc) downloadPdfDocument(activeViewingDoc);
+      });
+
+      // Vitals Form submit
       document.getElementById("vitalsForm").addEventListener("submit", function (e) {
         e.preventDefault();
         const systolic = document.getElementById("systolicInput").value;
@@ -709,6 +1027,133 @@
           renderAllergies();
         }
       });
+    }
+
+    function renderPdfDocuments() {
+      const container = document.getElementById("pdfDocumentsContainer");
+      if (!container) return;
+
+      let docs = PatientStore.getHealthDocuments();
+      const countAllEl = document.getElementById("countAllDocs");
+      if (countAllEl) countAllEl.textContent = docs.length;
+
+      if (activeCategoryFilter !== "all") {
+        docs = docs.filter(d => d.category === activeCategoryFilter);
+      }
+
+      if (docs.length === 0) {
+        container.innerHTML = `
+          <div style="grid-column: 1 / -1; text-align: center; padding: 40px 20px; background: rgba(15, 23, 42, 0.4); border: 1px dashed rgba(255, 255, 255, 0.15); border-radius: 14px;">
+            <div style="font-size: 40px; margin-bottom: 12px;">📁</div>
+            <h4 style="color: var(--text-main); font-size: 16px; margin-bottom: 6px;">No PDF Documents Found</h4>
+            <p style="font-size: 13px; color: var(--text-muted); max-width: 440px; margin: 0 auto 16px;">
+              ${activeCategoryFilter === 'all' 
+                ? "No medical PDF documents attached yet. Click 'Upload Medical PDF' above to upload lab reports, doctor prescriptions, or discharge summaries."
+                : `No documents categorized under "${activeCategoryFilter}".`}
+            </p>
+            <button class="btn btn-primary" id="emptyStateUploadBtn" style="background: linear-gradient(135deg, #0284c7, #0369a1); border:none; padding:8px 18px; border-radius:8px;">
+              <span>📤</span> Upload PDF Document
+            </button>
+          </div>
+        `;
+        const emptyBtn = document.getElementById("emptyStateUploadBtn");
+        if (emptyBtn) emptyBtn.addEventListener("click", () => document.getElementById("uploadPdfModal").classList.add("active"));
+        return;
+      }
+
+      container.innerHTML = docs.map(doc => {
+        let catColor = "#0284c7";
+        let catIcon = "📄";
+        if (doc.category === "Lab Report") { catColor = "#00e599"; catIcon = "🧪"; }
+        else if (doc.category === "Prescription") { catColor = "#38bdf8"; catIcon = "🩺"; }
+        else if (doc.category === "Diagnostic Scan") { catColor = "#f59e0b"; catIcon = "🩻"; }
+        else if (doc.category === "Discharge Summary") { catColor = "#c084fc"; catIcon = "🏥"; }
+        else if (doc.category === "Vaccine Record") { catColor = "#10b981"; catIcon = "💉"; }
+
+        return `
+          <div class="pdf-doc-card">
+            <div>
+              <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:12px;">
+                <div style="display:flex; align-items:center; gap:12px;">
+                  <div class="pdf-badge-icon">PDF</div>
+                  <div>
+                    <span style="font-size:11px; font-weight:700; color:${catColor}; text-transform:uppercase; letter-spacing:0.5px; display:flex; align-items:center; gap:4px;">
+                      ${catIcon} ${escapeHTML(doc.category)}
+                    </span>
+                    <h4 style="font-size:15px; font-weight:700; color:var(--text-main); margin-top:2px; line-height:1.3;">
+                      ${escapeHTML(doc.title)}
+                    </h4>
+                  </div>
+                </div>
+                <button class="btn-delete-doc" data-id="${doc.id}" title="Delete document" style="background:none; border:none; color:var(--text-subtle); cursor:pointer; font-size:14px; padding:4px;">
+                  🗑️
+                </button>
+              </div>
+
+              <div style="font-size:12px; color:var(--text-muted); display:flex; flex-direction:column; gap:4px; margin-bottom:12px; background:rgba(255,255,255,0.03); padding:8px 12px; border-radius:8px;">
+                <div><strong>Facility:</strong> ${escapeHTML(doc.provider || 'Clinical Provider')}</div>
+                <div><strong>Date:</strong> ${escapeHTML(doc.date || 'Recent')} &bull; <strong>Size:</strong> ${escapeHTML(doc.fileSize || 'PDF')}</div>
+                ${doc.notes ? `<div style="font-style:italic; margin-top:2px; color:#cbd5e1;">"${escapeHTML(doc.notes)}"</div>` : ''}
+              </div>
+            </div>
+
+            <div style="display:flex; gap:8px; border-top:1px solid rgba(255,255,255,0.08); padding-top:12px;">
+              <button class="btn btn-primary btn-sm btn-view-doc" data-id="${doc.id}" style="flex:1; background:linear-gradient(135deg, #0284c7, #0369a1); border:none; font-size:12px; font-weight:600; padding:7px 10px; border-radius:8px; display:flex; align-items:center; justify-content:center; gap:6px;">
+                <span>👁️</span> View PDF
+              </button>
+              <button class="btn btn-outline btn-sm btn-download-doc" data-id="${doc.id}" style="font-size:12px; padding:7px 12px; border-radius:8px;" title="Download PDF">
+                <span>⬇️</span>
+              </button>
+            </div>
+          </div>
+        `;
+      }).join("");
+
+      container.querySelectorAll(".btn-view-doc").forEach(btn => {
+        btn.addEventListener("click", () => {
+          const docId = btn.getAttribute("data-id");
+          const target = PatientStore.getHealthDocuments().find(d => d.id === docId);
+          if (target) viewPdfDocument(target);
+        });
+      });
+
+      container.querySelectorAll(".btn-download-doc").forEach(btn => {
+        btn.addEventListener("click", () => {
+          const docId = btn.getAttribute("data-id");
+          const target = PatientStore.getHealthDocuments().find(d => d.id === docId);
+          if (target) downloadPdfDocument(target);
+        });
+      });
+
+      container.querySelectorAll(".btn-delete-doc").forEach(btn => {
+        btn.addEventListener("click", () => {
+          const docId = btn.getAttribute("data-id");
+          if (confirm("Are you sure you want to remove this PDF document from your health records?")) {
+            PatientStore.deleteHealthDocument(docId);
+            showToast("Document deleted successfully.", "info");
+            renderPdfDocuments();
+          }
+        });
+      });
+    }
+
+    function viewPdfDocument(doc) {
+      activeViewingDoc = doc;
+      document.getElementById("pdfViewerTitle").textContent = doc.title;
+      document.getElementById("pdfViewerMeta").textContent = `${doc.category} • ${doc.date} • ${doc.fileSize || ''}`;
+      const frame = document.getElementById("pdfViewerFrame");
+      frame.src = doc.pdfDataUrl || "about:blank";
+      document.getElementById("pdfViewerModal").classList.add("active");
+    }
+
+    function downloadPdfDocument(doc) {
+      if (!doc.pdfDataUrl) return;
+      const a = document.createElement("a");
+      a.href = doc.pdfDataUrl;
+      a.download = doc.fileName || (doc.title.replace(/\s+/g, "_") + ".pdf");
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
     }
 
     function renderVitalsTelemetry() {
@@ -778,7 +1223,7 @@
       const content = document.getElementById("summaryModalContent");
 
       content.innerHTML = `
-        <div style="border: 2px solid var(--primary); border-radius: 12px; padding: 24px; background: white;">
+        <div style="border: 2px solid var(--primary); border-radius: 12px; padding: 24px; background: rgba(13, 22, 41, 0.95); color: #f8fafc;">
           <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--primary); padding-bottom: 12px; margin-bottom: 16px;">
             <div>
               <h2 style="color: var(--primary); font-size: 22px;">MediMate AI Health Network</h2>
@@ -794,7 +1239,7 @@
             <div><strong>Patient Name:</strong> ${profile.name}</div>
             <div><strong>Age / Gender:</strong> ${profile.age || 32} / ${profile.gender || 'Male'}</div>
             <div><strong>Blood Group:</strong> ${profile.bloodGroup || 'O+'}</div>
-            <div><strong>Emergency Contact:</strong> ${profile.emergencyContact?.name || 'Priya Raj'} (${profile.emergencyContact?.phone || '+91 98765 43211'})</div>
+            <div><strong>Emergency Contact:</strong> ${profile.emergencyContact?.name || 'Primary Contact'} (${profile.emergencyContact?.phone || '+91 98765 43210'})</div>
           </div>
 
           <h4 style="color: var(--primary-dark); font-size: 14px; margin-bottom: 8px;">Active Vitals Profile</h4>

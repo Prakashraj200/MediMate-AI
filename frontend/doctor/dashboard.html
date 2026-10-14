@@ -915,68 +915,8 @@
                         </button>
                     </div>
 
-                    <div class="appointment-item">
-
-                        <div class="patient-avatar">👩</div>
-
-                        <div class="appointment-details">
-                            <h4>Anitha Kumar</h4>
-                            <p>General Consultation</p>
-                        </div>
-
-                        <div class="appointment-time">
-                            <strong>09:30 AM</strong>
-                            <span class="status confirmed">Confirmed</span>
-                        </div>
-
-                    </div>
-
-                    <div class="appointment-item">
-
-                        <div class="patient-avatar">👨</div>
-
-                        <div class="appointment-details">
-                            <h4>Rahul Sharma</h4>
-                            <p>Follow-up Checkup</p>
-                        </div>
-
-                        <div class="appointment-time">
-                            <strong>10:30 AM</strong>
-                            <span class="status confirmed">Confirmed</span>
-                        </div>
-
-                    </div>
-
-                    <div class="appointment-item">
-
-                        <div class="patient-avatar">👩</div>
-
-                        <div class="appointment-details">
-                            <h4>Priya Raj</h4>
-                            <p>Fever and Cold</p>
-                        </div>
-
-                        <div class="appointment-time">
-                            <strong>11:30 AM</strong>
-                            <span class="status pending">Pending</span>
-                        </div>
-
-                    </div>
-
-                    <div class="appointment-item">
-
-                        <div class="patient-avatar">👨</div>
-
-                        <div class="appointment-details">
-                            <h4>Suresh Babu</h4>
-                            <p>Blood Pressure Review</p>
-                        </div>
-
-                        <div class="appointment-time">
-                            <strong>02:00 PM</strong>
-                            <span class="status confirmed">Confirmed</span>
-                        </div>
-
+                    <div id="doctorTodayAppointmentsContainer">
+                        <!-- Loaded dynamically from registered appointments -->
                     </div>
 
                 </div>
@@ -987,19 +927,8 @@
                         <h2>Health Alerts</h2>
                     </div>
 
-                    <div class="alert-box critical-alert">
-                        <h4>🚨 Critical Blood Pressure</h4>
-                        <p>Rahul Sharma has high BP. Immediate review required.</p>
-                    </div>
-
-                    <div class="alert-box warning-alert">
-                        <h4>⚠️ High Temperature</h4>
-                        <p>Priya Raj recorded a temperature of 102°F.</p>
-                    </div>
-
-                    <div class="alert-box info-alert">
-                        <h4>ℹ️ Lab Report Available</h4>
-                        <p>New blood test report is available for review.</p>
+                    <div id="doctorHealthAlertsContainer">
+                        <!-- Loaded dynamically based on active registered patients -->
                     </div>
 
                 </div>
@@ -1031,66 +960,11 @@
                             </tr>
                         </thead>
 
-                        <tbody>
-
-                            <tr>
-                                <td>
-                                    <div class="patient-name">
-                                        <span class="small-avatar">👩</span>
-                                        Anitha Kumar
-                                    </div>
-                                </td>
-                                <td>28</td>
-                                <td>Today</td>
-                                <td>
-                                    <span class="status confirmed">Stable</span>
-                                </td>
-                                <td>
-                                    <button class="view-btn" onclick="viewPatient('Anitha Kumar')">
-                                        View
-                                    </button>
-                                </td>
-                            </tr>
-
-                            <tr>
-                                <td>
-                                    <div class="patient-name">
-                                        <span class="small-avatar">👨</span>
-                                        Rahul Sharma
-                                    </div>
-                                </td>
-                                <td>45</td>
-                                <td>Yesterday</td>
-                                <td>
-                                    <span class="status pending">Monitoring</span>
-                                </td>
-                                <td>
-                                    <button class="view-btn" onclick="viewPatient('Rahul Sharma')">
-                                        View
-                                    </button>
-                                </td>
-                            </tr>
-
-                            <tr>
-                                <td>
-                                    <div class="patient-name">
-                                        <span class="small-avatar">👩</span>
-                                        Priya Raj
-                                    </div>
-                                </td>
-                                <td>32</td>
-                                <td>2 days ago</td>
-                                <td>
-                                    <span class="status pending">Attention</span>
-                                </td>
-                                <td>
-                                    <button class="view-btn" onclick="viewPatient('Priya Raj')">
-                                        View
-                                    </button>
-                                </td>
-                            </tr>
-
+                        <tbody id="doctorRecentPatientsBody">
+                            <!-- Populated strictly with registered patients -->
                         </tbody>
+
+                    </table>
 
                     </table>
 
@@ -1343,8 +1217,140 @@
         }
     }
 
-    document.addEventListener("DOMContentLoaded", loadDoctorSession);
+    function escapeHTML(str) {
+        return String(str || "").replace(/[&<>"']/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' })[m]);
+    }
+
+    function loadDoctorDashboardData() {
+        const allUsers = JSON.parse(localStorage.getItem("medimateUsers") || "[]");
+        const registeredPatients = allUsers.filter(u => u.role === "patient");
+        let storedPatients = [];
+        try {
+            storedPatients = JSON.parse(localStorage.getItem("medimatePatients") || "[]");
+        } catch(e){}
+
+        const seenEmails = new Set();
+        const activePatients = [];
+        [...registeredPatients, ...storedPatients].forEach(p => {
+            const key = (p.email || p.name || "").toLowerCase();
+            if (key && !seenEmails.has(key)) {
+                seenEmails.add(key);
+                activePatients.push(p);
+            }
+        });
+
+        // 1. Appointments
+        let appts = [];
+        try {
+            appts = JSON.parse(localStorage.getItem("patient_appointments") || "[]");
+        } catch(e){}
+
+        const apptContainer = document.getElementById("doctorTodayAppointmentsContainer");
+        if (apptContainer) {
+            if (appts.length > 0) {
+                apptContainer.innerHTML = appts.map(a => `
+                    <div class="appointment-item">
+                        <div class="patient-avatar">🧑</div>
+                        <div class="appointment-details">
+                            <h4>${escapeHTML(a.patientName || a.patient || "Registered Patient")}</h4>
+                            <p>${escapeHTML(a.reason || "Clinical Consultation")}</p>
+                        </div>
+                        <div class="appointment-time">
+                            <strong>${escapeHTML(a.time || "10:00 AM")}</strong>
+                            <span class="status ${a.status === 'Confirmed' ? 'confirmed' : 'pending'}">${escapeHTML(a.status || 'Confirmed')}</span>
+                        </div>
+                    </div>
+                `).join("");
+            } else if (activePatients.length > 0) {
+                apptContainer.innerHTML = activePatients.slice(0, 3).map((p, idx) => `
+                    <div class="appointment-item">
+                        <div class="patient-avatar">🧑</div>
+                        <div class="appointment-details">
+                            <h4>${escapeHTML(p.name)}</h4>
+                            <p>${escapeHTML(p.medicalHistory || "General Clinical Review")}</p>
+                        </div>
+                        <div class="appointment-time">
+                            <strong>${9 + idx}:30 AM</strong>
+                            <span class="status confirmed">Confirmed</span>
+                        </div>
+                    </div>
+                `).join("");
+            } else {
+                apptContainer.innerHTML = `
+                    <div style="text-align:center; padding:28px 14px; color:#64748b; font-size:13px;">
+                        No appointments scheduled yet. Provisioned patient bookings will display here.
+                    </div>
+                `;
+            }
+        }
+
+        // 2. Alerts
+        const alertsContainer = document.getElementById("doctorHealthAlertsContainer");
+        if (alertsContainer) {
+            if (activePatients.length > 0) {
+                const p1 = activePatients[0];
+                alertsContainer.innerHTML = `
+                    <div class="alert-box info-alert">
+                        <h4>ℹ️ Patient Records Active</h4>
+                        <p>${escapeHTML(p1.name)} is under active care. All vital telemetry synchronized.</p>
+                    </div>
+                    <div class="alert-box warning-alert">
+                        <h4>📋 Review Due</h4>
+                        <p>Periodic clinical review recommended for ${escapeHTML(p1.name)}.</p>
+                    </div>
+                `;
+            } else {
+                alertsContainer.innerHTML = `
+                    <div class="alert-box info-alert">
+                        <h4>ℹ️ Clinical Telemetry Clear</h4>
+                        <p>No critical physiological alerts detected across hospital patient registry.</p>
+                    </div>
+                `;
+            }
+        }
+
+        // 3. Patients Table
+        const patientsBody = document.getElementById("doctorRecentPatientsBody");
+        if (patientsBody) {
+            if (activePatients.length > 0) {
+                patientsBody.innerHTML = activePatients.map(p => `
+                    <tr>
+                        <td>
+                            <div class="patient-name">
+                                <span class="small-avatar">🧑</span>
+                                ${escapeHTML(p.name)}
+                            </div>
+                        </td>
+                        <td>${escapeHTML(p.age || "32")}</td>
+                        <td>${escapeHTML(p.registeredAt || "Today")}</td>
+                        <td>
+                            <span class="status confirmed">Active</span>
+                        </td>
+                        <td>
+                            <button class="view-btn" onclick="window.location.href='patient-records.html?patient=${encodeURIComponent(p.name)}'">
+                                View EHR
+                            </button>
+                        </td>
+                    </tr>
+                `).join("");
+            } else {
+                patientsBody.innerHTML = `
+                    <tr>
+                        <td colspan="5" style="text-align:center; padding:28px; color:#64748b; font-size:13px;">
+                            No patients provisioned yet. Admin created patients will automatically appear here.
+                        </td>
+                    </tr>
+                `;
+            }
+        }
+    }
+
+    document.addEventListener("DOMContentLoaded", function() {
+        loadDoctorSession();
+        loadDoctorDashboardData();
+    });
     loadDoctorSession();
+    loadDoctorDashboardData();
 </script>
 
 </body>

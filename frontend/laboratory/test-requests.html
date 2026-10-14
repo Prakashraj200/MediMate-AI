@@ -211,39 +211,7 @@
                             </tr>
                         </thead>
                         <tbody id="reqTbody">
-                            <tr>
-                                <td><code>BAR-9012</code></td>
-                                <td><strong>John Doe</strong> (MRN-1001)</td>
-                                <td>Dr. Sarah Connor (Cardiology)</td>
-                                <td>Lipid Profile Panel + Serum Creatinine</td>
-                                <td>Venous Serum</td>
-                                <td><span class="req-status req-pending">Pending Collection</span></td>
-                                <td>
-                                    <button class="btn btn-primary" style="padding:4px 10px; font-size:12px;" onclick="collectSample(this)"><i class="fa-solid fa-syringe"></i> Draw Sample</button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><code>BAR-9013</code></td>
-                                <td><strong>David Kim</strong> (MRN-7821)</td>
-                                <td>Dr. Alex Mercer (General)</td>
-                                <td>Complete Blood Count (CBC)</td>
-                                <td>EDTA Blood</td>
-                                <td><span class="req-status req-collected">Sample Collected</span></td>
-                                <td>
-                                    <button class="btn btn-secondary" style="padding:4px 10px; font-size:12px;" onclick="location.href='test-results.html?bar=BAR-9013'"><i class="fa-solid fa-microscope"></i> Enter Results</button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><code>BAR-9014</code></td>
-                                <td><strong>Sarah Jenkins</strong> (MRN-8429)</td>
-                                <td>Dr. Michael Roberts</td>
-                                <td>Thyroid Profile (T3, T4, TSH)</td>
-                                <td>Plain Serum</td>
-                                <td><span class="req-status req-processing">In Auto-Analyzer</span></td>
-                                <td>
-                                    <button class="btn btn-secondary" style="padding:4px 10px; font-size:12px;" onclick="location.href='test-results.html?bar=BAR-9014'"><i class="fa-solid fa-square-poll-vertical"></i> View Telemetry</button>
-                                </td>
-                            </tr>
+                            <!-- Populated dynamically with registered patients -->
                         </tbody>
                     </table>
                 </div>
@@ -253,14 +221,70 @@
 </div>
 
 <script>
+    function escapeHTML(str) {
+        return String(str || "").replace(/[&<>"']/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' })[m]);
+    }
+
     function collectSample(btn) {
         const row = btn.closest('tr');
         const badge = row.querySelector('.req-status');
-        badge.className = 'req-status req-collected';
-        badge.innerText = 'Sample Collected';
+        if (badge) {
+            badge.className = 'req-status req-collected';
+            badge.innerText = 'Sample Collected';
+        }
         btn.outerHTML = `<button class="btn btn-secondary" style="padding:4px 10px; font-size:12px;" onclick="location.href='test-results.html'"><i class="fa-solid fa-microscope"></i> Enter Results</button>`;
         alert('Specimen barcode confirmed. Sample registered into laboratory worklist.');
     }
+
+    function loadTestRequests() {
+        const tbody = document.getElementById("reqTbody");
+        if (!tbody) return;
+
+        let patients = [];
+        let doctors = [];
+        try {
+            const allUsers = JSON.parse(localStorage.getItem("medimateUsers") || "[]");
+            patients = allUsers.filter(u => u.role === "patient");
+            doctors = allUsers.filter(u => u.role === "doctor");
+        } catch(e){}
+
+        if (patients.length === 0) {
+            tbody.innerHTML = `
+                <tr>
+                    <td colspan="7" style="text-align:center; padding:30px; color:#64748b;">
+                        No pending test requests. Orders placed for provisioned patients will automatically appear here.
+                    </td>
+                </tr>
+            `;
+            return;
+        }
+
+        const tests = ["Lipid Profile Panel + Serum Creatinine", "Complete Blood Count (CBC)", "Thyroid Profile (T3, T4, TSH)", "HbA1c Glycated Hemoglobin"];
+        const specimens = ["Venous Serum", "EDTA Whole Blood", "Plain Serum", "Plasma"];
+        const docName = doctors.length > 0 ? (doctors[0].name.startsWith("Dr.") ? doctors[0].name : "Dr. " + doctors[0].name) : "Attending Hospital Physician";
+
+        tbody.innerHTML = patients.map((p, idx) => {
+            const barcode = `BAR-${9012 + idx}`;
+            const test = tests[idx % tests.length];
+            const specimen = specimens[idx % specimens.length];
+            return `
+                <tr>
+                    <td><code>${barcode}</code></td>
+                    <td><strong>${escapeHTML(p.name)}</strong> (${escapeHTML(p.id || 'MRN-' + (1000 + idx))})</td>
+                    <td>${escapeHTML(docName)}</td>
+                    <td>${escapeHTML(test)}</td>
+                    <td>${escapeHTML(specimen)}</td>
+                    <td><span class="req-status ${idx % 2 === 0 ? 'req-pending' : 'req-collected'}">${idx % 2 === 0 ? 'Pending Collection' : 'Sample Collected'}</span></td>
+                    <td>
+                        <button class="btn btn-primary" style="padding:4px 10px; font-size:12px;" onclick="collectSample(this)"><i class="fa-solid fa-syringe"></i> Draw Sample</button>
+                    </td>
+                </tr>
+            `;
+        }).join("");
+    }
+
+    document.addEventListener("DOMContentLoaded", loadTestRequests);
+    loadTestRequests();
 </script>
 </body>
 </html>

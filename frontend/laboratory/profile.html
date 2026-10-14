@@ -191,40 +191,114 @@
         <main class="content">
             <div class="profile-card">
                 <div style="display:flex; align-items:center; gap:20px; padding-bottom:20px; border-bottom:1px solid #edf4ef; margin-bottom:20px;">
-                    <div style="width:76px; height:76px; border-radius:20px; background:linear-gradient(135deg, #087f5b, #059669); color:white; display:flex; align-items:center; justify-content:center; font-size:32px;">
+                    <div id="labAvatarIcon" style="width:76px; height:76px; border-radius:20px; background:linear-gradient(135deg, #087f5b, #059669); color:white; display:flex; align-items:center; justify-content:center; font-size:32px;">
                         🔬
                     </div>
                     <div>
-                        <h2 style="font-size:20px; font-weight:700; color:#123d2b;">Central Clinical Pathology & Diagnostic Labs</h2>
-                        <p style="font-size:13px; color:#64748b;">MediMate-AI Hospital Main Campus &bull; Level 2 Pathology Complex</p>
+                        <h2 style="font-size:20px; font-weight:700; color:#123d2b;" id="labProfileTitle">Laboratory Facility</h2>
+                        <p style="font-size:13px; color:#64748b;" id="labProfileSubtitle">MediMate-AI Hospital &bull; Diagnostic Pathology Complex</p>
                         <div style="margin-top:6px; display:flex; gap:8px;">
-                            <span style="background:#ecfdf5; color:#065f46; font-size:12px; font-weight:600; padding:2px 8px; border-radius:6px;">ISO 15189:2022 Certified</span>
-                            <span style="background:#e0f2fe; color:#0369a1; font-size:12px; font-weight:600; padding:2px 8px; border-radius:6px;">License: LAB-NABL-44021</span>
+                            <span style="background:#ecfdf5; color:#065f46; font-size:12px; font-weight:600; padding:2px 8px; border-radius:6px;">ISO 15189 Certified</span>
+                            <span style="background:#e0f2fe; color:#0369a1; font-size:12px; font-weight:600; padding:2px 8px; border-radius:6px;">License: ACTIVE-LAB</span>
                         </div>
                     </div>
                 </div>
 
                 <div class="form-grid">
                     <div class="form-group">
-                        <label>Chief Clinical Pathologist</label>
-                        <input type="text" value="Dr. Marcus Brody, MD (Pathology)">
+                        <label>Laboratory / Pathologist Name</label>
+                        <input type="text" id="labNameField" placeholder="Enter laboratory name">
                     </div>
                     <div class="form-group">
-                        <label>Laboratory Director Registration</label>
-                        <input type="text" value="PATH-DIR-9941-MED">
+                        <label>Laboratory Registration ID</label>
+                        <input type="text" id="labRegId" placeholder="PATH-DIR-9941-MED">
                     </div>
                     <div class="form-group">
-                        <label>Department Hotline</label>
-                        <input type="text" value="+1 (555) 782-9901 Ext: 44">
+                        <label>Contact Phone</label>
+                        <input type="text" id="labPhoneField" placeholder="+91 9876543210">
                     </div>
                     <div class="form-group">
                         <label>Official Lab Email</label>
-                        <input type="email" value="laboratory@medimate.ai">
+                        <input type="email" id="labEmailField" placeholder="laboratory@medimate.ai">
                     </div>
                 </div>
             </div>
         </main>
     </div>
 </div>
+
+<script>
+    function loadLabProfile() {
+        let lab = null;
+        try {
+            const raw = localStorage.getItem("currentUser") || sessionStorage.getItem("currentUser");
+            if (raw) lab = JSON.parse(raw);
+        } catch(e) {}
+
+        if (!lab || !lab.name) {
+            try {
+                const email = sessionStorage.getItem("medimateUser") || localStorage.getItem("laboratoryRememberedEmail");
+                const allUsers = JSON.parse(localStorage.getItem("medimateUsers") || "[]");
+                if (email && allUsers.length) {
+                    const matched = allUsers.find(u => u.email && u.email.toLowerCase() === email.toLowerCase());
+                    if (matched) lab = matched;
+                }
+                if (!lab) {
+                    const found = allUsers.find(u => u.role === "laboratory");
+                    if (found) lab = found;
+                }
+            } catch(e) {}
+        }
+
+        if (lab) {
+            const name = lab.name || lab.labName || "Diagnostic Laboratory";
+            const email = lab.email || "";
+            const phone = lab.phone || "+91 9876543210";
+
+            document.getElementById("labProfileTitle").textContent = name;
+            document.getElementById("labNameField").value = name;
+            document.getElementById("labEmailField").value = email;
+            document.getElementById("labPhoneField").value = phone;
+        }
+    }
+
+    function saveLabProfile() {
+        const name = document.getElementById("labNameField").value.trim();
+        const email = document.getElementById("labEmailField").value.trim();
+        const phone = document.getElementById("labPhoneField").value.trim();
+
+        let lab = {};
+        try {
+            lab = JSON.parse(localStorage.getItem("currentUser") || "{}");
+        } catch(e) {}
+
+        lab.name = name;
+        lab.labName = name;
+        lab.email = email || lab.email;
+        lab.phone = phone;
+        lab.role = "laboratory";
+
+        localStorage.setItem("currentUser", JSON.stringify(lab));
+
+        // Sync to medimateUsers
+        try {
+            const users = JSON.parse(localStorage.getItem("medimateUsers") || "[]");
+            const idx = users.findIndex(u => (lab.email && u.email && u.email.toLowerCase() === lab.email.toLowerCase()) || u.role === "laboratory");
+            if (idx !== -1) users[idx] = { ...users[idx], ...lab };
+            else users.push(lab);
+            localStorage.setItem("medimateUsers", JSON.stringify(users));
+        } catch(e) {}
+
+        loadLabProfile();
+        alert("Laboratory profile updated successfully!");
+    }
+
+    // Attach to Save Details button
+    const saveBtn = document.querySelector(".topbar .btn-primary");
+    if (saveBtn) saveBtn.onclick = saveLabProfile;
+
+    document.addEventListener("DOMContentLoaded", loadLabProfile);
+    loadLabProfile();
+</script>
 </body>
 </html>

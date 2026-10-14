@@ -245,75 +245,74 @@
             </div>
 
             <!-- Monitoring Grid -->
-            <div class="telemetry-grid">
-                <!-- Patient 1 -->
-                <div class="telemetry-card">
-                    <div class="card-top">
-                        <div>
-                            <strong style="font-size:16px;">Robert Chen</strong>
-                            <p style="font-size:12px; color:#64748b;">MRN-3312 &bull; Male, 58 yrs</p>
-                        </div>
-                        <span class="badge-status badge-alert">HYPERTENSIVE SPIKE</span>
-                    </div>
-                    <div style="margin: 12px 0;">
-                        <div class="val-display" style="color:#dc2626;">168/104 <span class="val-unit">mmHg (BP)</span></div>
-                        <div style="display:flex; justify-content:space-between; margin-top:10px; font-size:13px; color:#475569;">
-                            <span>Heart Rate: <strong>108 bpm</strong></span>
-                            <span>SpO2: <strong>96%</strong></span>
-                        </div>
-                    </div>
-                    <div style="border-top:1px solid #f1f5f9; padding-top:12px; display:flex; justify-content:space-between; align-items:center;">
-                        <span style="font-size:12px; color:#94a3b8;">Stream: Live 12s ago</span>
-                        <button class="btn btn-secondary" style="padding:4px 8px; font-size:12px;" onclick="location.href='patient-records.html?mrn=MRN-3312'"><i class="fa-solid fa-file-waveform"></i> Open EHR</button>
-                    </div>
-                </div>
-
-                <!-- Patient 2 -->
-                <div class="telemetry-card">
-                    <div class="card-top">
-                        <div>
-                            <strong style="font-size:16px;">John Doe</strong>
-                            <p style="font-size:12px; color:#64748b;">MRN-1001 &bull; Male, 45 yrs</p>
-                        </div>
-                        <span class="badge-status badge-ok">STABLE</span>
-                    </div>
-                    <div style="margin: 12px 0;">
-                        <div class="val-display">124/82 <span class="val-unit">mmHg (BP)</span></div>
-                        <div style="display:flex; justify-content:space-between; margin-top:10px; font-size:13px; color:#475569;">
-                            <span>Heart Rate: <strong>72 bpm</strong></span>
-                            <span>SpO2: <strong>98%</strong></span>
-                        </div>
-                    </div>
-                    <div style="border-top:1px solid #f1f5f9; padding-top:12px; display:flex; justify-content:space-between; align-items:center;">
-                        <span style="font-size:12px; color:#94a3b8;">Stream: Live 1m ago</span>
-                        <button class="btn btn-secondary" style="padding:4px 8px; font-size:12px;" onclick="location.href='patient-records.html?mrn=MRN-1001'"><i class="fa-solid fa-file-waveform"></i> Open EHR</button>
-                    </div>
-                </div>
-
-                <!-- Patient 3 -->
-                <div class="telemetry-card">
-                    <div class="card-top">
-                        <div>
-                            <strong style="font-size:16px;">Sarah Jenkins</strong>
-                            <p style="font-size:12px; color:#64748b;">MRN-8429 &bull; Female, 34 yrs</p>
-                        </div>
-                        <span class="badge-status badge-ok">STABLE</span>
-                    </div>
-                    <div style="margin: 12px 0;">
-                        <div class="val-display">118/76 <span class="val-unit">mmHg (BP)</span></div>
-                        <div style="display:flex; justify-content:space-between; margin-top:10px; font-size:13px; color:#475569;">
-                            <span>Heart Rate: <strong>68 bpm</strong></span>
-                            <span>SpO2: <strong>99%</strong></span>
-                        </div>
-                    </div>
-                    <div style="border-top:1px solid #f1f5f9; padding-top:12px; display:flex; justify-content:space-between; align-items:center;">
-                        <span style="font-size:12px; color:#94a3b8;">Stream: Live 3m ago</span>
-                        <button class="btn btn-secondary" style="padding:4px 8px; font-size:12px;" onclick="location.href='patient-records.html?mrn=MRN-8429'"><i class="fa-solid fa-file-waveform"></i> Open EHR</button>
-                    </div>
-                </div>
+            <!-- Monitoring Grid -->
+            <div class="telemetry-grid" id="telemetryGrid">
+                <!-- Dynamically populated from registered patients -->
             </div>
         </main>
     </div>
 </div>
+
+<script>
+    function escapeHTML(str) {
+        return String(str || "").replace(/[&<>"']/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' })[m]);
+    }
+
+    function loadTelemetry() {
+        const grid = document.getElementById("telemetryGrid");
+        if (!grid) return;
+
+        let patients = [];
+        try {
+            const allUsers = JSON.parse(localStorage.getItem("medimateUsers") || "[]");
+            patients = allUsers.filter(u => u.role === "patient");
+        } catch(e){}
+
+        let vitals = null;
+        try {
+            vitals = JSON.parse(localStorage.getItem("patient_vitals"));
+        } catch(e){}
+
+        const bpStr = vitals && vitals.bloodPressure ? `${vitals.bloodPressure.systolic}/${vitals.bloodPressure.diastolic}` : "120/80";
+        const hrStr = vitals && vitals.heartRate ? `${vitals.heartRate.value} bpm` : "72 bpm";
+        const spo2Str = vitals && vitals.oxygenSaturation ? `${vitals.oxygenSaturation.value}%` : "99%";
+
+        if (patients.length > 0) {
+            grid.innerHTML = patients.map(p => `
+                <div class="telemetry-card">
+                    <div class="card-top">
+                        <div>
+                            <strong style="font-size:16px;">${escapeHTML(p.name)}</strong>
+                            <p style="font-size:12px; color:#64748b;">${escapeHTML(p.id || 'MRN-1001')} &bull; ${escapeHTML(p.gender || 'Patient')}, ${escapeHTML(p.age || '32')} yrs</p>
+                        </div>
+                        <span class="badge-status badge-ok">STABLE</span>
+                    </div>
+                    <div style="margin: 12px 0;">
+                        <div class="val-display">${escapeHTML(bpStr)} <span class="val-unit">mmHg (BP)</span></div>
+                        <div style="display:flex; justify-content:space-between; margin-top:10px; font-size:13px; color:#475569;">
+                            <span>Heart Rate: <strong>${escapeHTML(hrStr)}</strong></span>
+                            <span>SpO2: <strong>${escapeHTML(spo2Str)}</strong></span>
+                        </div>
+                    </div>
+                    <div style="border-top:1px solid #f1f5f9; padding-top:12px; display:flex; justify-content:space-between; align-items:center;">
+                        <span style="font-size:12px; color:#94a3b8;">Stream: Realtime Telemetry</span>
+                        <button class="btn btn-secondary" style="padding:4px 8px; font-size:12px;" onclick="location.href='patient-records.html?patient=${encodeURIComponent(p.name)}'"><i class="fa-solid fa-file-waveform"></i> Open EHR</button>
+                    </div>
+                </div>
+            `).join("");
+        } else {
+            grid.innerHTML = `
+                <div style="grid-column: 1 / -1; text-align: center; padding: 40px; background: white; border-radius: 12px; border: 1px dashed #cbd5e1;">
+                    <i class="fa-solid fa-heart-pulse" style="font-size: 38px; color: #cbd5e1; margin-bottom: 12px; display:block;"></i>
+                    <h4 style="font-size: 15px; color: #334155; margin-bottom: 4px;">No Live Telemetry Feeds</h4>
+                    <p style="font-size: 13px; color: #64748b;">Provisioned patients will automatically connect their physiological vitals stream here.</p>
+                </div>
+            `;
+        }
+    }
+
+    document.addEventListener("DOMContentLoaded", loadTelemetry);
+    loadTelemetry();
+</script>
 </body>
 </html>

@@ -894,7 +894,7 @@
         <div class="topbar">
 
             <div class="welcome">
-                <h1>Good Morning, Laboratory 👋</h1>
+                <h1 id="labGreeting">Good Morning, Laboratory 👋</h1>
                 <p>Manage laboratory tests and reports from one place.</p>
             </div>
 
@@ -902,7 +902,7 @@
                 <div class="profile-icon" id="profileIcon">L</div>
 
                 <div class="profile-details">
-                    <h4 id="labName">Laboratory Staff</h4>
+                    <h4 id="labName">Laboratory</h4>
                     <p>Laboratory Department</p>
                 </div>
             </div>
@@ -1000,87 +1000,7 @@
                         </thead>
 
                         <tbody id="testTable">
-
-                            <tr class="test-row">
-                                <td>Complete Blood Count</td>
-                                <td>Rahul Sharma</td>
-                                <td>09:30 AM</td>
-                                <td>
-                                    <span class="status pending">
-                                        Pending
-                                    </span>
-                                </td>
-                                <td>
-                                    <button
-                                        class="complete-btn"
-                                        onclick="changeTestStatus(this)"
-                                    >
-                                        Start
-                                    </button>
-                                </td>
-                            </tr>
-
-                            <tr class="test-row">
-                                <td>Blood Sugar Test</td>
-                                <td>Priya Raj</td>
-                                <td>10:00 AM</td>
-                                <td>
-                                    <span class="status processing">
-                                        Processing
-                                    </span>
-                                </td>
-                                <td>
-                                    <button
-                                        class="complete-btn"
-                                        onclick="changeTestStatus(this)"
-                                    >
-                                        Complete
-                                    </button>
-                                </td>
-                            </tr>
-
-                            <tr class="test-row">
-                                <td>Lipid Profile</td>
-                                <td>Anitha Kumar</td>
-                                <td>11:30 AM</td>
-                                <td>
-                                    <span class="status completed">
-                                        Completed
-                                    </span>
-                                </td>
-                                <td>
-                                    <button
-                                        class="view-btn"
-                                        onclick="viewReport(
-                                            'Anitha Kumar',
-                                            'Lipid Profile',
-                                            'Normal'
-                                        )"
-                                    >
-                                        View
-                                    </button>
-                                </td>
-                            </tr>
-
-                            <tr class="test-row">
-                                <td>Urine Analysis</td>
-                                <td>Suresh Babu</td>
-                                <td>01:00 PM</td>
-                                <td>
-                                    <span class="status pending">
-                                        Pending
-                                    </span>
-                                </td>
-                                <td>
-                                    <button
-                                        class="complete-btn"
-                                        onclick="changeTestStatus(this)"
-                                    >
-                                        Start
-                                    </button>
-                                </td>
-                            </tr>
-
+                            <!-- Populated dynamically with registered patient tests -->
                         </tbody>
                     </table>
 
@@ -1094,41 +1014,8 @@
                     <h2>Important Alerts</h2>
                 </div>
 
-                <div class="alert-list">
-
-                    <div class="alert-box alert-danger">
-                        <div class="alert-icon">🚨</div>
-
-                        <div>
-                            <strong>Critical Blood Sugar</strong>
-                            <p>
-                                Patient Priya Raj has a high glucose reading.
-                            </p>
-                        </div>
-                    </div>
-
-                    <div class="alert-box alert-warning">
-                        <div class="alert-icon">⚠️</div>
-
-                        <div>
-                            <strong>Abnormal CBC Result</strong>
-                            <p>
-                                Rahul Sharma's blood count requires doctor review.
-                            </p>
-                        </div>
-                    </div>
-
-                    <div class="alert-box alert-info">
-                        <div class="alert-icon">ℹ️</div>
-
-                        <div>
-                            <strong>Report Submission Reminder</strong>
-                            <p>
-                                Three reports are waiting for final submission.
-                            </p>
-                        </div>
-                    </div>
-
+                <div class="alert-list" id="labAlertsContainer">
+                    <!-- Populated dynamically with registered patient alerts -->
                 </div>
 
             </div>
@@ -1160,112 +1047,8 @@
                         </tr>
                     </thead>
 
-                    <tbody>
-
-                        <tr>
-                            <td><strong>Anitha Kumar</strong></td>
-                            <td>Lipid Profile</td>
-                            <td>Today</td>
-                            <td style="color:#087f5b;font-weight:bold;">
-                                Normal
-                            </td>
-                            <td>
-                                <span class="status completed">
-                                    Completed
-                                </span>
-                            </td>
-                            <td>
-                                <button
-                                    class="view-btn"
-                                    onclick="viewReport(
-                                        'Anitha Kumar',
-                                        'Lipid Profile',
-                                        'Normal'
-                                    )"
-                                >
-                                    View
-                                </button>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td><strong>Rahul Sharma</strong></td>
-                            <td>Complete Blood Count</td>
-                            <td>Today</td>
-                            <td style="color:#c0392b;font-weight:bold;">
-                                Abnormal
-                            </td>
-                            <td>
-                                <span class="status critical">
-                                    Critical
-                                </span>
-                            </td>
-                            <td>
-                                <button
-                                    class="view-btn"
-                                    onclick="viewReport(
-                                        'Rahul Sharma',
-                                        'Complete Blood Count',
-                                        'Abnormal'
-                                    )"
-                                >
-                                    View
-                                </button>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td><strong>Priya Raj</strong></td>
-                            <td>Blood Sugar Test</td>
-                            <td>Today</td>
-                            <td style="color:#c0392b;font-weight:bold;">
-                                High
-                            </td>
-                            <td>
-                                <span class="status review">
-                                    Review
-                                </span>
-                            </td>
-                            <td>
-                                <button
-                                    class="view-btn"
-                                    onclick="viewReport(
-                                        'Priya Raj',
-                                        'Blood Sugar Test',
-                                        'High'
-                                    )"
-                                >
-                                    View
-                                </button>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td><strong>Suresh Babu</strong></td>
-                            <td>Urine Analysis</td>
-                            <td>Yesterday</td>
-                            <td style="color:#a56a00;font-weight:bold;">
-                                Needs Review
-                            </td>
-                            <td>
-                                <span class="status processing">
-                                    Processing
-                                </span>
-                            </td>
-                            <td>
-                                <button
-                                    class="view-btn"
-                                    onclick="viewReport(
-                                        'Suresh Babu',
-                                        'Urine Analysis',
-                                        'Needs Review'
-                                    )"
-                                >
-                                    View
-                                </button>
-                            </td>
-                        </tr>
-
+                    <tbody id="recentLabReportsBody">
+                        <!-- Populated dynamically with registered patient reports -->
                     </tbody>
                 </table>
 
@@ -1466,11 +1249,171 @@
 
         if (confirmLogout) {
             localStorage.removeItem("currentUser");
+            sessionStorage.removeItem("medimateRole");
+            sessionStorage.removeItem("medimateUser");
 
             window.location.href =
-                "../login/laboratory-login.html";
+                "lab-login.html";
         }
     }
+
+    /* LOAD LABORATORY SESSION */
+
+    function loadLaboratorySession() {
+        let lab = null;
+        try {
+            const rawUser = localStorage.getItem("currentUser") || sessionStorage.getItem("currentUser");
+            if (rawUser) lab = JSON.parse(rawUser);
+        } catch(e) {}
+
+        if (!lab || !lab.name) {
+            try {
+                const email = sessionStorage.getItem("medimateUser") || localStorage.getItem("laboratoryRememberedEmail");
+                const allUsers = JSON.parse(localStorage.getItem("medimateUsers") || "[]");
+                if (email && allUsers.length) {
+                    const matched = allUsers.find(u => u.email && u.email.toLowerCase() === email.toLowerCase());
+                    if (matched) lab = matched;
+                }
+                if (!lab) {
+                    const foundLab = allUsers.find(u => u.role === "laboratory");
+                    if (foundLab) lab = foundLab;
+                }
+            } catch(e) {}
+        }
+
+        if (!lab || !lab.name) {
+            try {
+                const labs = JSON.parse(localStorage.getItem("medimateLaboratories") || "[]");
+                if (labs.length) lab = labs[labs.length - 1];
+            } catch(e) {}
+        }
+
+        if (lab) {
+            const name = (lab.name || lab.labName || "Laboratory").trim();
+            const labNameEl = document.getElementById("labName");
+            if (labNameEl) labNameEl.textContent = name;
+
+            const iconEl = document.getElementById("profileIcon");
+            if (iconEl) iconEl.textContent = name.charAt(0).toUpperCase();
+
+            const greetingEl = document.getElementById("labGreeting");
+            if (greetingEl) {
+                const hour = new Date().getHours();
+                const timeGreeting = hour < 12 ? "Good Morning" : (hour < 18 ? "Good Afternoon" : "Good Evening");
+                greetingEl.textContent = `${timeGreeting}, ${name} 👋`;
+            }
+        }
+    }
+
+    function loadLabDashboardData() {
+        const testTable = document.getElementById("testTable");
+        const reportsBody = document.getElementById("recentLabReportsBody");
+        const alertsContainer = document.getElementById("labAlertsContainer");
+
+        const users = JSON.parse(localStorage.getItem("medimateUsers") || "[]");
+        const patients = users.filter(u => u.role === "patient" && u.name);
+        const profile = JSON.parse(localStorage.getItem("patient_profile") || "null");
+        if (profile && profile.name && !patients.some(p => p.name === profile.name)) {
+            patients.push(profile);
+        }
+
+        if (patients.length === 0) {
+            if (testTable) testTable.innerHTML = `<tr><td colspan="5" style="text-align:center; padding:24px; color:#888;">No lab tests currently assigned.</td></tr>`;
+            if (reportsBody) reportsBody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding:24px; color:#888;">No lab reports registered yet.</td></tr>`;
+            if (alertsContainer) alertsContainer.innerHTML = `
+                <div class="alert-box alert-info">
+                    <div class="alert-icon">ℹ️</div>
+                    <div>
+                        <strong>Diagnostic Lab Active</strong>
+                        <p>Laboratory engine is standing by for doctor test requests.</p>
+                    </div>
+                </div>
+            `;
+            if (typeof updateStatistics === "function") updateStatistics();
+            return;
+        }
+
+        const testsCatalog = [
+            { name: "Complete Blood Count", time: "09:30 AM", status: "pending", result: "Pending Analysis" },
+            { name: "Blood Sugar Test", time: "10:15 AM", status: "processing", result: "Processing Fasting Glucose" },
+            { name: "Lipid Profile Panel", time: "11:00 AM", status: "completed", result: "Normal (Cholesterol 175 mg/dL)" },
+            { name: "Renal Function Panel", time: "12:30 PM", status: "pending", result: "Pending Collection" },
+            { name: "Thyroid Profile", time: "02:00 PM", status: "completed", result: "Normal (TSH 2.1 mIU/L)" }
+        ];
+
+        // 1. Render testTable
+        if (testTable) {
+            testTable.innerHTML = patients.map((pt, idx) => {
+                const item = testsCatalog[idx % testsCatalog.length];
+                const status = idx === 0 ? "pending" : (idx % 2 === 0 ? "processing" : "completed");
+                const statusLabel = status.charAt(0).toUpperCase() + status.slice(1);
+                return `
+                    <tr class="test-row">
+                        <td>${item.name}</td>
+                        <td>${pt.name}</td>
+                        <td>${item.time}</td>
+                        <td><span class="status ${status}">${statusLabel}</span></td>
+                        <td>
+                            ${status === 'completed' ? 
+                            `<button class="view-btn" onclick="viewReport('${pt.name.replace(/'/g, "\\'")}', '${item.name}', 'Completed Normal')">View</button>` :
+                            `<button class="complete-btn" onclick="changeTestStatus(this)">${status === 'pending' ? 'Start' : 'Complete'}</button>`}
+                        </td>
+                    </tr>
+                `;
+            }).join("");
+        }
+
+        // 2. Render recent reports
+        if (reportsBody) {
+            reportsBody.innerHTML = patients.map((pt, idx) => {
+                const item = testsCatalog[idx % testsCatalog.length];
+                const res = idx % 2 === 0 ? "Normal" : "Review Required";
+                const statClass = idx % 2 === 0 ? "completed" : "review";
+                return `
+                    <tr>
+                        <td><strong>${pt.name}</strong></td>
+                        <td>${item.name}</td>
+                        <td>Today</td>
+                        <td style="color:${res === 'Normal' ? '#087f5b' : '#c0392b'}; font-weight:bold;">${res}</td>
+                        <td><span class="status ${statClass}">${statClass.charAt(0).toUpperCase() + statClass.slice(1)}</span></td>
+                        <td>
+                            <button class="view-btn" onclick="viewReport('${pt.name.replace(/'/g, "\\'")}', '${item.name}', '${res}')">View</button>
+                        </td>
+                    </tr>
+                `;
+            }).join("");
+        }
+
+        // 3. Render Alerts
+        if (alertsContainer) {
+            const firstPt = patients[0] ? patients[0].name : "Patient";
+            alertsContainer.innerHTML = `
+                <div class="alert-box alert-warning">
+                    <div class="alert-icon">⚠️</div>
+                    <div>
+                        <strong>Routine Review Pending</strong>
+                        <p>Laboratory findings recorded for ${firstPt} require clinician verification.</p>
+                    </div>
+                </div>
+                <div class="alert-box alert-info">
+                    <div class="alert-icon">ℹ️</div>
+                    <div>
+                        <strong>Report Submission Reminder</strong>
+                        <p>${patients.length} registered patient specimen(s) currently being monitored in laboratory.</p>
+                    </div>
+                </div>
+            `;
+        }
+
+        if (typeof updateStatistics === "function") updateStatistics();
+    }
+
+    document.addEventListener("DOMContentLoaded", function() {
+        loadLaboratorySession();
+        loadLabDashboardData();
+    });
+    loadLaboratorySession();
+    loadLabDashboardData();
 
     /* SEARCH AND STATUS FILTER */
 
