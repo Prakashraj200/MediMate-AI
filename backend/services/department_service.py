@@ -1,17 +1,17 @@
 """
-Department Service - Hospital medical specialties and department administration.
+Department Service - Rehabilitation Divisions & Trauma Recovery Administration.
 """
 
 from config.firebase_config import db
 
 
 DEFAULT_DEPARTMENTS = [
-    {"name": "Cardiology", "head": "Head of Cardiology", "icon": "❤️", "room": "Wing B, Level 3", "active": True},
-    {"name": "General Medicine", "head": "Head of General Medicine", "icon": "🩺", "room": "Wing A, Level 1", "active": True},
-    {"name": "Dermatology", "head": "Head of Dermatology", "icon": "🧴", "room": "Wing A, Level 2", "active": True},
-    {"name": "Orthopedics", "head": "Head of Orthopedics", "icon": "🦴", "room": "Wing C, Level 2", "active": True},
-    {"name": "Neurology", "head": "Head of Neurology", "icon": "🧠", "room": "Wing B, Level 4", "active": True},
-    {"name": "Pediatrics", "head": "Head of Pediatrics", "icon": "👶", "room": "Wing D, Level 1", "active": True}
+    {"name": "Whiplash & Cervical Spine Unit", "head": "Dr. Anand Kumar (Senior PT)", "icon": "🛡️", "room": "Rehab Wing A, Room 101", "active": True},
+    {"name": "Orthopedic Trauma & Fracture Recovery", "head": "Dr. Radhika Menon (MPT)", "icon": "🦴", "room": "Trauma Wing B, Room 204", "active": True},
+    {"name": "Knee Meniscus & ACL Rehab", "head": "Dr. Sanjay Patel (BPT)", "icon": "🦵", "room": "Sports Rehab Wing C, Room 302", "active": True},
+    {"name": "Lumbar Spine & Core Rehabilitation", "head": "Dr. Malini Swaminathan (MPT)", "icon": "🧘", "room": "Rehab Wing A, Room 105", "active": True},
+    {"name": "TENS & Electrotherapy Modality Unit", "head": "Dr. Anand Kumar (Lead Physio)", "icon": "⚡", "room": "Modality Lab, Level 1", "active": True},
+    {"name": "Sports Ligament & Soft Tissue Trauma", "head": "Dr. Sanjay Patel (Sports PT)", "icon": "🏃", "room": "Biomechanics Lab 2", "active": True}
 ]
 
 
@@ -29,7 +29,7 @@ def get_all_departments():
 
 
 def create_department(data):
-    """Add new medical department."""
+    """Add new rehabilitation department."""
     doc_ref = db.collection("departments").document()
     doc_ref.set(data)
     return doc_ref.id

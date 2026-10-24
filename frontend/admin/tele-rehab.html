@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tele-Rehab Consultation Suite | MediMate-AI Admin</title>
+
+    <link rel="stylesheet" href="admin-dark-theme.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* ================= SIDEBAR EXPLICIT BULLETPROOF STYLES ================= */
+        .sidebar {
+            width: 270px !important;
+            min-width: 270px !important;
+            max-width: 270px !important;
+            height: 100vh !important;
+            background: #071224 !important;
+            border-right: 1px solid rgba(255, 255, 255, 0.08) !important;
+            color: #f8fafc !important;
+            position: fixed !important;
+            left: 0 !important;
+            top: 0 !important;
+            bottom: 0 !important;
+            z-index: 1000 !important;
+            display: flex !important;
+            flex-direction: column !important;
+            transform: none !important;
+            padding: 24px 16px !important;
+            box-sizing: border-box !important;
+            overflow-y: auto !important;
+        }
+
+        .brand {
+            display: flex !important;
+            flex-direction: row !important;
+            align-items: center !important;
+            gap: 14px !important;
+            padding: 6px 8px 22px 8px !important;
+            margin-bottom: 12px !important;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+            width: 100% !important;
+            box-sizing: border-box !important;
+        }
+
+        .brand-logo {
+            width: 44px !important;
+            min-width: 44px !important;
+            max-width: 44px !important;
+            height: 44px !important;
+            min-height: 44px !important;
+            max-height: 44px !important;
+            background: linear-gradient(135deg, #0284c7 0%, #38bdf8 100%) !important;
+            color: #ffffff !important;
+            box-shadow: 0 4px 16px rgba(56, 189, 248, 0.35) !important;
+            border-radius: 12px !important;
+            font-weight: 800 !important;
+            font-size: 22px !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            flex-shrink: 0 !important;
+        }
+
+        .brand-text {
+            display: flex !important;
+            flex-direction: column !important;
+        }
+
+        .brand-text h2 {
+            font-size: 19px !important;
+            font-weight: 800 !important;
+            color: #ffffff !important;
+            letter-spacing: -0.3px !important;
+            margin: 0 !important;
+            line-height: 1.2 !important;
+        }
+
+        .brand-text h2 span {
+            color: #38bdf8 !important;
+        }
+
+        .brand-text p {
+            font-size: 11px !important;
+            color: #38bdf8 !important;
+            font-weight: 700 !important;
+            text-transform: uppercase !important;
+            letter-spacing: 1px !important;
+            margin: 3px 0 0 0 !important;
+        }
+
+        .menu-title {
+            color: #64748b !important;
+            font-size: 11px !important;
+            font-weight: 700 !important;
+            letter-spacing: 1.2px !important;
+            text-transform: uppercase !important;
+            margin: 18px 10px 8px 10px !important;
+        }
+
+        .nav-link {
+            display: flex !important;
+            align-items: center !important;
+            gap: 14px !important;
+            color: #94a3b8 !important;
+            border: 1px solid transparent !important;
+            border-radius: 12px !important;
+            background: transparent !important;
+            font-weight: 600 !important;
+            font-size: 14px !important;
+            padding: 12px 16px !important;
+            margin: 4px 0 !important;
+            text-decoration: none !important;
+            transition: all 0.25s ease !important;
+            box-sizing: border-box !important;
+            width: 100% !important;
+        }
+
+        .nav-icon {
+            width: 22px !important;
+            min-width: 22px !important;
+            text-align: center !important;
+            font-size: 17px !important;
+            display: inline-flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            flex-shrink: 0 !important;
+            color: inherit !important;
+        }
+
+        .nav-label {
+            flex: 1 !important;
+            color: inherit !important;
+        }
+
+        .nav-link:hover {
+            background: rgba(255, 255, 255, 0.05) !important;
+            color: #ffffff !important;
+            transform: translateX(4px) !important;
+        }
+
+        .nav-link.active {
+            background: linear-gradient(135deg, rgba(56, 189, 248, 0.18) 0%, rgba(2, 132, 199, 0.08) 100%) !important;
+            color: #38bdf8 !important;
+            border: 1px solid rgba(56, 189, 248, 0.35) !important;
+            box-shadow: 0 4px 20px rgba(56, 189, 248, 0.15) !important;
+            font-weight: 700 !important;
+        }
+
+        /* LAYOUT & MAIN */
+        .layout {
+            display: flex;
+            min-height: 100vh;
+            width: 100%;
+            background: #061121;
+        }
+
+        .main {
+            margin-left: 270px;
+            width: calc(100% - 270px);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .content {
+            padding: 30px 36px;
+            flex: 1;
+        }
+
+        /* TELE-MEET STAGE */
+        .tele-stage-grid {
+            display: grid;
+            grid-template-columns: 1.8fr 1fr;
+            gap: 24px;
+        }
+
+        .meet-card {
+            background: #0a192f;
+            border: 1px solid rgba(56, 189, 248, 0.2);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .meet-header {
+            padding: 18px 24px;
+            background: rgba(13, 33, 62, 0.6);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .video-viewport {
+            background: #030814;
+            min-height: 380px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .video-feed {
+            width: 100%;
+            height: 100%;
+            min-height: 380px;
+            object-fit: cover;
+        }
+
+        .posture-grid-overlay {
+            position: absolute;
+            inset: 0;
+            background-image: 
+                linear-gradient(rgba(56, 189, 248, 0.12) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(56, 189, 248, 0.12) 1px, transparent 1px);
+            background-size: 40px 40px;
+            pointer-events: none;
+            display: none;
+        }
+
+        .posture-grid-overlay.active {
+            display: block;
+        }
+
+        .video-placeholder {
+            text-align: center;
+            color: #94a3b8;
+            padding: 40px;
+        }
+
+        .meet-controls {
+            padding: 16px 24px;
+            background: rgba(10, 25, 47, 0.95);
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+        }
+
+        .ctrl-btn {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            background: rgba(255, 255, 255, 0.05);
+            color: #ffffff;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.25s ease;
+        }
+
+        .ctrl-btn:hover {
+            background: rgba(56, 189, 248, 0.2);
+            border-color: #38bdf8;
+            transform: scale(1.08);
+        }
+
+        .ctrl-btn.active-off {
+            background: rgba(239, 68, 68, 0.2);
+            border-color: #ef4444;
+            color: #f87171;
+        }
+
+        .ctrl-btn.end-btn {
+            background: #ef4444;
+            color: #ffffff;
+            width: auto;
+            border-radius: 25px;
+            padding: 0 22px;
+            font-size: 14px;
+            font-weight: 700;
+            gap: 8px;
+        }
+
+        .session-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 14px;
+            padding: 16px;
+            margin-bottom: 12px;
+            transition: all 0.25s ease;
+        }
+
+        .session-card:hover {
+            border-color: rgba(56, 189, 248, 0.35);
+            background: rgba(56, 189, 248, 0.05);
+        }
+
+        @media (max-width: 1024px) {
+            .tele-stage-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="layout">
+
+    <!-- =====================================================
+         SIDEBAR (Unified 9-Item Project Navigation)
+    ====================================================== -->
+        <aside class="sidebar" id="sidebar">
+        <div class="brand">
+            <div class="brand-logo">M</div>
+            <div class="brand-text">
+                <h2>MediMate <span>AI</span></h2>
+                <p>Rehab Admin Portal</p>
+            </div>
+        </div>
+
+        <div class="menu-title">Main Menu</div>
+        <a href="dashboard.html" class="nav-link"><span class="nav-icon"><i class="fa-solid fa-chart-pie"></i></span><span class="nav-label">Dashboard</span></a>
+        <a href="doctors.html" class="nav-link"><span class="nav-icon"><i class="fa-solid fa-user-doctor"></i></span><span class="nav-label">Physiotherapists</span></a>
+        <a href="patients.html" class="nav-link"><span class="nav-icon"><i class="fa-solid fa-user-injured"></i></span><span class="nav-label">Rehab Patients</span></a>
+        <a href="appointments.html" class="nav-link"><span class="nav-icon"><i class="fa-solid fa-calendar-check"></i></span><span class="nav-label">Rehab Appointments</span></a>
+        <a href="tele-rehab.html" class="nav-link active"><span class="nav-icon"><i class="fa-solid fa-video"></i></span><span class="nav-label">Tele-Rehab Consultation</span></a>
+        <a href="reports.html" class="nav-link"><span class="nav-icon"><i class="fa-solid fa-chart-line"></i></span><span class="nav-label">Reports & Analytics</span></a>
+
+        <div class="menu-title">System & Security</div>
+        <a href="settings.html" class="nav-link"><span class="nav-icon"><i class="fa-solid fa-sliders"></i></span><span class="nav-label">Settings</span></a>
+        <a href="profile.html" class="nav-link"><span class="nav-icon"><i class="fa-solid fa-user-shield"></i></span><span class="nav-label">Admin Profile</span></a>
+        <a href="/login.html" class="nav-link" onclick="sessionStorage.clear(); localStorage.removeItem('currentUser'); localStorage.removeItem('firebaseIdToken'); localStorage.removeItem('adminLoggedIn'); localStorage.removeItem('userRole');"><span class="nav-icon"><i class="fa-solid fa-arrow-right-from-bracket"></i></span><span class="nav-label">Sign Out</span></a>
+    </aside>
+
+    <!-- =====================================================
+         MAIN CONTENT AREA
+    ====================================================== -->
+    <main class="main">
+
+        <!-- TOPBAR -->
+        <header class="header">
+            <div class="header-left">
+                <div class="welcome">
+                    <h1 style="font-size:22px; margin:0; font-weight:800; color:#fff;">
+                        Tele-Rehab Consultation Suite 📹
+                    </h1>
+                    <p style="font-size:12.5px; margin:4px 0 0; color:#94a3b8;">
+                        Google Meet style virtual video consultation with posture analysis & ROM measurement
+                    </p>
+                </div>
+            </div>
+
+            <div class="topbar-right" style="display:flex; align-items:center; gap:14px;">
+                <a href="/tele-rehab.html" target="_blank" class="btn-primary" style="display:flex; align-items:center; gap:8px; padding:10px 18px; border-radius:12px; font-weight:700; text-decoration:none;">
+                    <i class="fa-solid fa-up-right-from-square"></i> Launch Full-Screen Meet
+                </a>
+            </div>
+        </header>
+
+        <!-- CONTENT -->
+        <div class="content">
+
+            <div class="tele-stage-grid">
+
+                <!-- VIDEO CONSULTATION TERMINAL -->
+                <div class="meet-card">
+                    <div class="meet-header">
+                        <div style="display:flex; align-items:center; gap:10px;">
+                            <span style="display:inline-block; width:10px; height:10px; border-radius:50%; background:#10b981; box-shadow:0 0 10px #10b981;"></span>
+                            <strong style="color:#ffffff; font-size:15px;">Live Clinical Video Stream</strong>
+                            <span style="font-size:12px; color:#38bdf8; background:rgba(56,189,248,0.12); padding:3px 10px; border-radius:12px; border:1px solid rgba(56,189,248,0.3);">HD 1080p WebRTC</span>
+                        </div>
+                        <button type="button" id="toggleGridBtn" onclick="togglePostureGrid()" style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.12); color:#cbd5e1; padding:6px 14px; border-radius:10px; font-size:12.5px; font-weight:600; cursor:pointer;">
+                            📐 Posture Grid Overlay
+                        </button>
+                    </div>
+
+                    <div class="video-viewport" id="videoViewport">
+                        <video id="localVideoFeed" class="video-feed" autoplay playsinline muted style="display:none;"></video>
+                        <div class="posture-grid-overlay" id="postureGrid"></div>
+
+                        <div class="video-placeholder" id="videoPlaceholder">
+                            <i class="fa-solid fa-video" style="font-size:48px; color:#38bdf8; margin-bottom:14px; opacity:0.8;"></i>
+                            <h3 style="color:#fff; font-size:17px; margin:0 0 6px;">Camera Standby Mode</h3>
+                            <p style="font-size:13px; color:#94a3b8; margin:0 0 18px; max-width:340px;">Click Start Camera below to activate real-time posture analysis & video feed.</p>
+                            <button type="button" onclick="startCamera()" style="background:linear-gradient(135deg, #0284c7 0%, #38bdf8 100%); color:#fff; border:none; padding:10px 22px; border-radius:12px; font-weight:700; cursor:pointer; font-size:13.5px;">
+                                📷 Start Camera Feed
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- CONTROLS -->
+                    <div class="meet-controls">
+                        <button class="ctrl-btn" id="camBtn" onclick="toggleCamera()" title="Camera Toggle">
+                            <i class="fa-solid fa-video"></i>
+                        </button>
+                        <button class="ctrl-btn" id="micBtn" onclick="toggleMic()" title="Microphone Toggle">
+                            <i class="fa-solid fa-microphone"></i>
+                        </button>
+                        <button class="ctrl-btn" onclick="togglePostureGrid()" title="Posture Alignment Grid">
+                            <i class="fa-solid fa-border-all"></i>
+                        </button>
+                        <button class="ctrl-btn end-btn" onclick="endConsultation()">
+                            <i class="fa-solid fa-phone-slash"></i> End Session
+                        </button>
+                    </div>
+                </div>
+
+                <!-- RIGHT PANEL: SCHEDULED REHAB TELE-CONSULTATIONS -->
+                <div class="meet-card" style="padding:24px;">
+                    <h3 style="font-size:17px; font-weight:800; color:#fff; margin:0 0 6px;">Today's Tele-Rehab Sessions</h3>
+                    <p style="font-size:12.5px; color:#94a3b8; margin:0 0 18px;">Remote accident recovery & posture checkups</p>
+
+                    <div id="scheduledSessionsList">
+                        <div class="session-card">
+                            <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:6px;">
+                                <strong style="color:#fff; font-size:14px;">Karthik Subramanian (Age: 32)</strong>
+                                <span style="font-size:11px; background:rgba(56,189,248,0.15); color:#38bdf8; padding:3px 8px; border-radius:10px; font-weight:700;">LIVE NOW</span>
+                            </div>
+                            <p style="font-size:12.5px; color:#cbd5e1; margin:0 0 6px;">Whiplash Grade II • Day 14 Follow-up</p>
+                            <div style="display:flex; justify-content:space-between; align-items:center; font-size:12px; color:#94a3b8;">
+                                <span>👨‍⚕️ Dr. Anand Kumar (PT)</span>
+                                <span style="color:#38bdf8; font-weight:600;">11:30 AM</span>
+                            </div>
+                        </div>
+
+                        <div class="session-card">
+                            <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:6px;">
+                                <strong style="color:#fff; font-size:14px;">Priya Natarajan (Age: 28)</strong>
+                                <span style="font-size:11px; background:rgba(245,158,11,0.15); color:#f59e0b; padding:3px 8px; border-radius:10px; font-weight:700;">UPCOMING</span>
+                            </div>
+                            <p style="font-size:12.5px; color:#cbd5e1; margin:0 0 6px;">Knee ACL Tear Post-Op ROM Analysis</p>
+                            <div style="display:flex; justify-content:space-between; align-items:center; font-size:12px; color:#94a3b8;">
+                                <span>👨‍⚕️ Dr. Ramesh Kumar (BPT)</span>
+                                <span style="color:#f59e0b; font-weight:600;">02:00 PM</span>
+                            </div>
+                        </div>
+
+                        <div class="session-card">
+                            <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:6px;">
+                                <strong style="color:#fff; font-size:14px;">Manoj Kumar (Age: 45)</strong>
+                                <span style="font-size:11px; background:rgba(245,158,11,0.15); color:#f59e0b; padding:3px 8px; border-radius:10px; font-weight:700;">UPCOMING</span>
+                            </div>
+                            <p style="font-size:12.5px; color:#cbd5e1; margin:0 0 6px;">Lumbar Disc Hernia Posture Review</p>
+                            <div style="display:flex; justify-content:space-between; align-items:center; font-size:12px; color:#94a3b8;">
+                                <span>👨‍⚕️ Dr. Sneha Rao (MPT)</span>
+                                <span style="color:#f59e0b; font-weight:600;">04:30 PM</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <a href="/tele-rehab.html" target="_blank" style="display:block; text-align:center; padding:12px; border:1px dashed rgba(56,189,248,0.4); border-radius:12px; color:#38bdf8; text-decoration:none; font-weight:700; font-size:13px; margin-top:14px; transition:0.2s;">
+                        📹 Launch Full-Screen Meet Room →
+                    </a>
+                </div>
+
+            </div>
+
+        </div>
+
+    </main>
+
+</div>
+
+<script>
+    let stream = null;
+    let isCamOn = false;
+    let isMicOn = true;
+
+    async function startCamera() {
+        const video = document.getElementById("localVideoFeed");
+        const placeholder = document.getElementById("videoPlaceholder");
+        try {
+            stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+            video.srcObject = stream;
+            video.style.display = "block";
+            placeholder.style.display = "none";
+            isCamOn = true;
+            document.getElementById("camBtn").classList.remove("active-off");
+        } catch(e) {
+            alert("Camera access notice: Could not access webcam (" + e.message + "). Simulated video active.");
+            video.style.display = "none";
+            placeholder.style.display = "block";
+        }
+    }
+
+    function toggleCamera() {
+        if (!stream) {
+            startCamera();
+            return;
+        }
+        isCamOn = !isCamOn;
+        stream.getVideoTracks().forEach(t => t.enabled = isCamOn);
+        document.getElementById("camBtn").classList.toggle("active-off", !isCamOn);
+    }
+
+    function toggleMic() {
+        if (stream) {
+            isMicOn = !isMicOn;
+            stream.getAudioTracks().forEach(t => t.enabled = isMicOn);
+        } else {
+            isMicOn = !isMicOn;
+        }
+        document.getElementById("micBtn").classList.toggle("active-off", !isMicOn);
+    }
+
+    function togglePostureGrid() {
+        const grid = document.getElementById("postureGrid");
+        if (grid) grid.classList.toggle("active");
+    }
+
+    function endConsultation() {
+        if (stream) {
+            stream.getTracks().forEach(t => t.stop());
+            stream = null;
+        }
+        const video = document.getElementById("localVideoFeed");
+        const placeholder = document.getElementById("videoPlaceholder");
+        if (video) video.style.display = "none";
+        if (placeholder) placeholder.style.display = "block";
+        isCamOn = false;
+        alert("Tele-Rehab Consultation session ended successfully.");
+    }
+</script>
+
+</body>
+</html>

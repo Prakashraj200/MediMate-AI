@@ -1,0 +1,811 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Unified Clinical Login | MediMate AI</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='25' fill='%2338bdf8'/><text x='50' y='68' font-size='55' font-family='sans-serif' font-weight='800' text-anchor='middle' fill='%230a192f'>M</text></svg>">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --navy-deep: #050d1a;
+      --navy-card: rgba(13, 29, 56, 0.92);
+      --navy-surface: rgba(10, 24, 48, 0.85);
+      --navy-hover: #163666;
+      --navy-border: rgba(56, 189, 248, 0.25);
+      --accent-cyan: #38bdf8;
+      --accent-blue: #0284c7;
+      --accent-emerald: #10b981;
+      --text-white: #ffffff;
+      --text-slate: #94a3b8;
+      --radius-lg: 24px;
+      --radius-md: 14px;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+
+    body {
+      background: radial-gradient(circle at 15% 15%, #0f2748 0%, #050d1a 60%),
+                  radial-gradient(circle at 85% 85%, #0b1f3a 0%, #050d1a 70%);
+      color: var(--text-white);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 30px 20px;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    /* Animated Ambient Glow Blobs */
+    .ambient-blob {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(140px);
+      pointer-events: none;
+      z-index: 0;
+      animation: floatBlob 14s infinite alternate ease-in-out;
+    }
+    .blob-1 {
+      width: 500px;
+      height: 500px;
+      background: rgba(56, 189, 248, 0.16);
+      top: -120px;
+      left: -120px;
+    }
+    .blob-2 {
+      width: 550px;
+      height: 550px;
+      background: rgba(2, 132, 199, 0.15);
+      bottom: -150px;
+      right: -100px;
+      animation-delay: -7s;
+    }
+
+    @keyframes floatBlob {
+      0% { transform: translate(0, 0) scale(1); }
+      100% { transform: translate(50px, 60px) scale(1.15); }
+    }
+
+    /* Background Ambient Grid */
+    .grid-lines {
+      position: fixed;
+      inset: 0;
+      background-image: 
+        linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+      background-size: 40px 40px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ============================================================
+       SPLIT-SCREEN 2-COLUMN WRAPPER (LEFT ANIMATION, RIGHT LOGIN)
+       ============================================================ */
+    .split-layout-wrapper {
+      width: 100%;
+      max-width: 1140px;
+      display: grid;
+      grid-template-columns: 1.15fr 1fr;
+      gap: 40px;
+      align-items: center;
+      position: relative;
+      z-index: 1;
+    }
+
+    @media (max-width: 980px) {
+      .split-layout-wrapper {
+        grid-template-columns: 1fr;
+        max-width: 520px;
+        gap: 30px;
+      }
+      .showcase-column {
+        display: none; /* Auto-hide on smaller mobile screens to keep login instant */
+      }
+    }
+
+    /* ============================================================
+       LEFT COLUMN: ANIMATED VISUALS & MEDICAL RADAR SHOWCASE
+       ============================================================ */
+    .showcase-column {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      animation: fadeInLeft 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    @keyframes fadeInLeft {
+      from { opacity: 0; transform: translateX(-30px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+
+    .showcase-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(56, 189, 248, 0.12);
+      border: 1px solid var(--navy-border);
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 12px;
+      color: var(--accent-cyan);
+      font-weight: 700;
+      width: fit-content;
+      letter-spacing: 0.5px;
+    }
+
+    .pulse-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #38bdf8;
+      box-shadow: 0 0 10px #38bdf8;
+      animation: pulseAnim 1.8s infinite;
+    }
+
+    @keyframes pulseAnim {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.4); opacity: 0.4; }
+    }
+
+    .showcase-title {
+      font-size: 34px;
+      font-weight: 800;
+      line-height: 1.25;
+      color: #ffffff;
+      letter-spacing: -0.8px;
+    }
+
+    .gradient-cyan {
+      background: linear-gradient(135deg, #38bdf8 0%, #00d2ff 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .showcase-desc {
+      font-size: 15px;
+      color: var(--text-slate);
+      line-height: 1.7;
+    }
+
+    /* ANIMATED MEDICAL RECOVERY RADAR BOX */
+    .radar-showcase-box {
+      background: var(--navy-card);
+      border: 1px solid var(--navy-border);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5), inset 0 0 20px rgba(56, 189, 248, 0.05);
+      backdrop-filter: blur(16px);
+    }
+
+    /* Sine wave / ECG pulse animation */
+    .wave-line-container {
+      height: 60px;
+      width: 100%;
+      position: relative;
+      margin-bottom: 20px;
+      overflow: hidden;
+      background: rgba(5, 13, 26, 0.6);
+      border-radius: 12px;
+      border: 1px solid rgba(56, 189, 248, 0.15);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .svg-ecg-wave {
+      width: 200%;
+      height: 100%;
+      stroke: #38bdf8;
+      stroke-width: 2.5;
+      fill: none;
+      animation: moveWave 4s linear infinite;
+    }
+
+    @keyframes moveWave {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    /* FLOATING ANIMATED REHAB FEATURE TILES */
+    .floating-cards-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .float-card {
+      background: var(--navy-surface);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: var(--radius-md);
+      padding: 14px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      transition: all 0.3s ease;
+      animation: floatGentle 4s ease-in-out infinite alternate;
+    }
+
+    .float-card:nth-child(1) { animation-delay: 0s; }
+    .float-card:nth-child(2) { animation-delay: 1.2s; }
+    .float-card:nth-child(3) { animation-delay: 2.4s; }
+
+    @keyframes floatGentle {
+      0% { transform: translateY(0); }
+      100% { transform: translateY(-5px); }
+    }
+
+    .float-card:hover {
+      border-color: var(--accent-cyan);
+      background: rgba(20, 44, 82, 0.95);
+      transform: translateX(6px) scale(1.02);
+      box-shadow: 0 8px 25px rgba(56, 189, 248, 0.2);
+    }
+
+    .float-card-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .float-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      background: rgba(56, 189, 248, 0.14);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      color: #38bdf8;
+      flex-shrink: 0;
+    }
+
+    .float-card-info strong {
+      display: block;
+      font-size: 14px;
+      color: #ffffff;
+      font-weight: 700;
+    }
+
+    .float-card-info span {
+      font-size: 12px;
+      color: var(--text-slate);
+    }
+
+    .status-badge-sm {
+      font-size: 11px;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-family: 'JetBrains Mono', monospace;
+    }
+    .badge-cyan { background: rgba(56, 189, 248, 0.15); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.4); }
+    .badge-green { background: rgba(16, 185, 129, 0.15); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.4); }
+
+    /* Bottom Trust Pills */
+    .trust-strip {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .trust-pill {
+      font-size: 12px;
+      color: #cbd5e1;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      padding: 6px 14px;
+      border-radius: 20px;
+    }
+
+    /* ============================================================
+       RIGHT COLUMN: UNIFIED LOGIN CARD (ANIMATED)
+       ============================================================ */
+    .login-container {
+      width: 100%;
+      background: var(--navy-card);
+      border: 1px solid var(--navy-border);
+      border-radius: var(--radius-lg);
+      padding: 38px 34px;
+      box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.8),
+                  0 0 35px rgba(56, 189, 248, 0.12);
+      backdrop-filter: blur(24px);
+      position: relative;
+      animation: cardEntrance 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    @keyframes cardEntrance {
+      0% { opacity: 0; transform: translateY(30px) scale(0.96); }
+      100% { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    .login-brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 20px;
+      text-decoration: none;
+    }
+
+    .brand-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #0284c7, #38bdf8);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      font-weight: 800;
+      color: #050d1a;
+      box-shadow: 0 4px 18px rgba(56, 189, 248, 0.4);
+      transition: transform 0.3s ease;
+    }
+
+    .login-brand:hover .brand-icon {
+      transform: rotate(6deg) scale(1.08);
+    }
+
+    .brand-title {
+      font-size: 20px;
+      font-weight: 800;
+      color: var(--text-white);
+      letter-spacing: -0.5px;
+    }
+
+    .brand-title span {
+      color: var(--accent-cyan);
+    }
+
+    .login-heading h2 {
+      font-size: 24px;
+      font-weight: 800;
+      color: var(--text-white);
+      margin-bottom: 4px;
+    }
+
+    .login-heading p {
+      font-size: 13.5px;
+      color: var(--text-slate);
+      margin-bottom: 22px;
+    }
+
+    /* ANIMATED ROLE SWITCHER TABS */
+    .role-tabs {
+      display: flex;
+      background: rgba(5, 13, 26, 0.85);
+      border: 1px solid var(--navy-border);
+      border-radius: var(--radius-md);
+      padding: 5px;
+      margin-bottom: 24px;
+      gap: 4px;
+    }
+
+    .role-tab-btn {
+      flex: 1;
+      padding: 10px 6px;
+      border: none;
+      background: transparent;
+      color: var(--text-slate);
+      font-size: 13px;
+      font-weight: 700;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    .role-tab-btn:hover {
+      color: var(--text-white);
+    }
+
+    .role-tab-btn.active {
+      background: linear-gradient(135deg, #0284c7, #38bdf8);
+      color: #050d1a;
+      box-shadow: 0 4px 14px rgba(56, 189, 248, 0.35);
+      transform: scale(1.02);
+    }
+
+    /* INPUT FIELDS */
+    .form-group {
+      margin-bottom: 18px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      color: #cbd5e1;
+      margin-bottom: 8px;
+    }
+
+    .input-wrapper {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .input-icon {
+      position: absolute;
+      left: 14px;
+      font-size: 16px;
+      color: var(--text-slate);
+      pointer-events: none;
+      transition: color 0.2s ease;
+    }
+
+    .form-input {
+      width: 100%;
+      background: rgba(5, 13, 26, 0.7);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: var(--radius-md);
+      padding: 13px 14px 13px 44px;
+      font-size: 14px;
+      color: var(--text-white);
+      outline: none;
+      transition: all 0.25s ease;
+    }
+
+    .form-input:focus {
+      border-color: var(--accent-cyan);
+      box-shadow: 0 0 0 4px rgba(56, 189, 248, 0.18);
+      background: rgba(5, 13, 26, 0.95);
+    }
+
+    /* SUBMIT BUTTON */
+    .submit-btn {
+      width: 100%;
+      padding: 14px;
+      background: linear-gradient(135deg, #0284c7 0%, #38bdf8 100%);
+      color: #050d1a;
+      border: none;
+      border-radius: var(--radius-md);
+      font-size: 15px;
+      font-weight: 800;
+      letter-spacing: 0.3px;
+      cursor: pointer;
+      margin-top: 8px;
+      transition: all 0.3s ease;
+      box-shadow: 0 6px 20px rgba(56, 189, 248, 0.35);
+    }
+
+    .submit-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 25px rgba(56, 189, 248, 0.5);
+    }
+
+    /* DEMO FAST-FILL STRIP */
+    .demo-strip {
+      margin-top: 24px;
+      padding-top: 18px;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      text-align: center;
+    }
+
+    .demo-strip p {
+      font-size: 11px;
+      color: var(--text-slate);
+      margin-bottom: 10px;
+      text-transform: uppercase;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+    }
+
+    .demo-btn-group {
+      display: flex;
+      gap: 6px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .demo-chip {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      color: #cbd5e1;
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 11.5px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .demo-chip:hover {
+      background: rgba(56, 189, 248, 0.15);
+      color: var(--accent-cyan);
+      border-color: var(--accent-cyan);
+      transform: translateY(-1px);
+    }
+
+    /* ERROR BANNER */
+    .error-banner {
+      background: rgba(239, 68, 68, 0.15);
+      border: 1px solid #ef4444;
+      color: #fca5a5;
+      padding: 10px 14px;
+      border-radius: 10px;
+      font-size: 13px;
+      margin-bottom: 16px;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Ambient Blobs & Grid Overlay -->
+  <div class="ambient-blob blob-1"></div>
+  <div class="ambient-blob blob-2"></div>
+  <div class="grid-lines"></div>
+
+  <!-- ============================================================
+       SPLIT-SCREEN 2-COLUMN CONTAINER
+       ============================================================ -->
+  <div class="split-layout-wrapper">
+
+    <!-- LEFT SIDE: ANIMATED MEDICAL & REHABILITATION SHOWCASE -->
+    <div class="showcase-column">
+      
+      <div class="showcase-badge">
+        <span class="pulse-dot"></span>
+        <span>POST-ACCIDENT CLINICAL REHABILITATION</span>
+      </div>
+
+      <h1 class="showcase-title">
+        Intelligent Pain Management & <br>
+        <span class="gradient-cyan">Physiotherapy Tele-Care</span>
+      </h1>
+
+      <p class="showcase-desc">
+        A synchronous clinical ecosystem bridging post-accident patients at home with licensed physiotherapists through continuous VAS pain tracking, 105 Q&A AI guidance, and Google Meet video assessments.
+      </p>
+
+      <!-- ANIMATED MEDICAL RADAR BOX -->
+      <div class="radar-showcase-box">
+        
+        <!-- Live Sine ECG / Mobility Wave -->
+        <div class="wave-line-container">
+          <svg class="svg-ecg-wave" viewBox="0 0 1000 60" preserveAspectRatio="none">
+            <path d="M0,30 L100,30 L120,10 L140,50 L160,30 L250,30 L270,15 L290,45 L310,30 L400,30 L420,5 L440,55 L460,30 L550,30 L570,12 L590,48 L610,30 L700,30 L720,8 L740,52 L760,30 L850,30 L870,15 L890,45 L910,30 L1000,30" />
+          </svg>
+        </div>
+
+        <!-- 3 FLOATING REHAB FEATURE TILES -->
+        <div class="floating-cards-list">
+          
+          <div class="float-card">
+            <div class="float-card-left">
+              <div class="float-icon">🩹</div>
+              <div class="float-card-info">
+                <strong>Daily VAS 1–10 Pain Tracking</strong>
+                <span>Continuous Range of Motion & Swelling Logs</span>
+              </div>
+            </div>
+            <span class="status-badge-sm badge-cyan">ACTIVE RADAR</span>
+          </div>
+
+          <div class="float-card">
+            <div class="float-card-left">
+              <div class="float-icon" style="background: rgba(16, 185, 129, 0.15); color: #34d399;">🤖</div>
+              <div class="float-card-info">
+                <strong>Preethi AI (105 Q&As)</strong>
+                <span>R.I.C.E. Ice/Heat & Safe Home Exercises</span>
+              </div>
+            </div>
+            <span class="status-badge-sm badge-green">105 PROTOCOLS</span>
+          </div>
+
+          <div class="float-card">
+            <div class="float-card-left">
+              <div class="float-icon">📹</div>
+              <div class="float-card-info">
+                <strong>Google Meet Tele-Rehab Suite</strong>
+                <span>Real-Time Joint Posture & Mobility Consult</span>
+              </div>
+            </div>
+            <span class="status-badge-sm badge-cyan">WEBRTC HD</span>
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- TRUST PILLS -->
+      <div class="trust-strip">
+        <div class="trust-pill"><span>🔒</span> Role-Based Security</div>
+        <div class="trust-pill"><span>📈</span> 99.17% ML Prognosis</div>
+        <div class="trust-pill"><span>⚡</span> Sub-Second Response</div>
+      </div>
+
+    </div>
+
+    <!-- RIGHT SIDE: UNIFIED LOGIN CARD -->
+    <div class="login-container">
+      
+      <!-- Brand -->
+      <a href="/" class="login-brand">
+        <div class="brand-icon">M</div>
+        <div class="brand-title">MediMate <span>AI</span></div>
+      </a>
+
+      <div class="login-heading">
+        <h2 id="loginTitle">Patient Sign In</h2>
+        <p id="loginSubtitle">Daily VAS Pain Logging & Home Rehabilitation</p>
+      </div>
+
+      <!-- ERROR BANNER -->
+      <div class="error-banner" id="errorBanner"></div>
+
+      <!-- ANIMATED ROLE SWITCHER TABS -->
+      <div class="role-tabs">
+        <button type="button" class="role-tab-btn active" data-role="patient" id="tabPatient">
+          <span>🧑‍⚕️</span> Patient
+        </button>
+        <button type="button" class="role-tab-btn" data-role="physio" id="tabPhysio">
+          <span>👨‍⚕️</span> Physiotherapist
+        </button>
+        <button type="button" class="role-tab-btn" data-role="admin" id="tabAdmin">
+          <span>🛡️</span> Admin
+        </button>
+      </div>
+
+      <!-- LOGIN FORM -->
+      <form id="unifiedLoginForm">
+        <div class="form-group">
+          <label for="userEmail">Registered Email</label>
+          <div class="input-wrapper">
+            <span class="input-icon">✉️</span>
+            <input type="email" id="userEmail" class="form-input" placeholder="patient@medimate.ai" value="patient@medimate.ai" required>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="userPassword">Password</label>
+          <div class="input-wrapper">
+            <span class="input-icon">🔒</span>
+            <input type="password" id="userPassword" class="form-input" placeholder="••••••••" value="patient123" required>
+          </div>
+        </div>
+
+        <button type="submit" class="submit-btn" id="submitBtn">
+          Enter Clinical Portal &rarr;
+        </button>
+      </form>
+
+      <!-- 1-CLICK DEMO AUTO-FILL FOR VIVA / PRESENTATION -->
+      <div class="demo-strip">
+        <p>⚡ 1-Click Fast Fill for Demo / Viva</p>
+        <div class="demo-btn-group">
+          <button type="button" class="demo-chip" onclick="quickFill('patient')">🧑‍⚕️ Patient Demo</button>
+          <button type="button" class="demo-chip" onclick="quickFill('physio')">👨‍⚕️ Physio Demo</button>
+          <button type="button" class="demo-chip" onclick="quickFill('admin')">🛡️ Admin Demo</button>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- AUTH SCRIPTS -->
+  <script src="/static/js/auth.js"></script>
+  <script src="/static/js/login.js"></script>
+
+  <script>
+    let currentRole = "patient";
+
+    const titleEl = document.getElementById("loginTitle");
+    const subtitleEl = document.getElementById("loginSubtitle");
+    const emailInput = document.getElementById("userEmail");
+    const passInput = document.getElementById("userPassword");
+    const errorBanner = document.getElementById("errorBanner");
+    const form = document.getElementById("unifiedLoginForm");
+    const submitBtn = document.getElementById("submitBtn");
+
+    const roleConfigs = {
+      patient: {
+        title: "Patient Sign In",
+        subtitle: "Daily VAS Pain Logging & Rehabilitation Exercises",
+        email: "patient@medimate.ai",
+        pass: "patient123",
+        redirect: "/patient/rehab.html"
+      },
+      physio: {
+        title: "Physiotherapist Sign In",
+        subtitle: "Clinical Recovery Trajectory & Exercise Prescription",
+        email: "physio@medimate.ai",
+        pass: "physio123",
+        redirect: "/doctor/dashboard.html"
+      },
+      admin: {
+        title: "Clinic Admin Sign In",
+        subtitle: "Specialist Allocation & Rehab Inventory Control",
+        email: "admin@medimate.ai",
+        pass: "admin123",
+        redirect: "/admin/dashboard.html"
+      }
+    };
+
+    // Auto-detect role from URL query param (e.g. ?role=physio)
+    const urlParams = new URLSearchParams(window.location.search);
+    const initialRole = urlParams.get("role");
+    if (initialRole && roleConfigs[initialRole]) {
+      setRole(initialRole);
+    }
+
+    // Role Tab Event Listeners
+    document.querySelectorAll(".role-tab-btn").forEach(btn => {
+      btn.addEventListener("click", function() {
+        const role = this.getAttribute("data-role");
+        setRole(role);
+      });
+    });
+
+    function setRole(role) {
+      currentRole = role;
+      document.querySelectorAll(".role-tab-btn").forEach(b => b.classList.remove("active"));
+      const activeBtn = document.querySelector(`.role-tab-btn[data-role="${role}"]`);
+      if (activeBtn) activeBtn.classList.add("active");
+
+      const config = roleConfigs[role];
+      titleEl.textContent = config.title;
+      subtitleEl.textContent = config.subtitle;
+      emailInput.value = config.email;
+      passInput.value = config.pass;
+      errorBanner.style.display = "none";
+    }
+
+    function quickFill(role) {
+      setRole(role);
+    }
+
+    // Handle Login Submit
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      errorBanner.style.display = "none";
+      submitBtn.disabled = true;
+      submitBtn.textContent = "Verifying Credentials...";
+
+      const email = emailInput.value.trim();
+      const password = passInput.value.trim();
+
+      try {
+        const result = await handleUnifiedLogin(email, password, currentRole);
+        if (result && result.success) {
+          submitBtn.textContent = "Access Granted! Redirecting...";
+          setTimeout(() => {
+            window.location.href = roleConfigs[currentRole].redirect;
+          }, 300);
+        } else {
+          showError(result.message || "Invalid credentials for selected role.");
+        }
+      } catch (err) {
+        showError("Authentication check failed. Please use demo credentials.");
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = "Enter Clinical Portal →";
+      }
+    });
+
+    function showError(msg) {
+      errorBanner.textContent = msg;
+      errorBanner.style.display = "block";
+    }
+  </script>
+
+</body>
+</html>

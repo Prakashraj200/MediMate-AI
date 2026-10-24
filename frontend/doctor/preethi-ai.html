@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Preethi AI Clinical Assistant | MediMate AI</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="doctor-dark-theme.css">
+  <style>
+    :root {
+      --gpt-bg: #061121;
+      --gpt-sidebar: #071224;
+      --gpt-surface: #0a192f;
+      --gpt-surface-elevated: #0d223f;
+      --gpt-border: rgba(255, 255, 255, 0.08);
+      --gpt-border-hover: rgba(56, 189, 248, 0.4);
+      --gpt-cyan: #38bdf8;
+      --gpt-cyan-glow: rgba(56, 189, 248, 0.35);
+      --gpt-user-bubble: #132a4e;
+      --gpt-bot-bubble: rgba(10, 25, 47, 0.9);
+    }
+
+    body {
+      background: var(--gpt-bg);
+      color: #f8fafc;
+      font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      height: 100vh;
+    }
+
+    .chatgpt-layout {
+      display: flex;
+      height: 100vh;
+      width: 100vw;
+    }
+
+    .chatgpt-sidebar {
+      width: 270px;
+      background: var(--gpt-sidebar);
+      border-right: 1px solid var(--gpt-border);
+      display: flex;
+      flex-direction: column;
+      flex-shrink: 0;
+      transition: all 0.3s ease;
+      z-index: 100;
+    }
+
+    .sidebar-brand-box {
+      padding: 18px 16px 14px;
+      border-bottom: 1px solid var(--gpt-border);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .sidebar-brand-logo {
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #0284c7 0%, #38bdf8 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      color: #ffffff;
+      font-size: 20px;
+      flex-shrink: 0;
+      box-shadow: 0 4px 14px rgba(56, 189, 248, 0.35);
+    }
+
+    .sidebar-brand-text h3 {
+      font-size: 17px;
+      font-weight: 800;
+      color: #ffffff;
+      margin: 0;
+      line-height: 1.2;
+    }
+
+    .sidebar-brand-text span {
+      font-size: 11px;
+      color: var(--gpt-cyan);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+    }
+
+    .new-chat-btn-wrap {
+      padding: 14px 14px 8px;
+    }
+
+    .new-chat-btn {
+      width: 100%;
+      padding: 11px 14px;
+      background: rgba(56, 189, 248, 0.12);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      color: #ffffff;
+      border-radius: 10px;
+      font-weight: 700;
+      font-size: 13.5px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: all 0.25s ease;
+    }
+
+    .new-chat-btn:hover {
+      background: rgba(56, 189, 248, 0.25);
+      border-color: #38bdf8;
+      transform: translateY(-1px);
+    }
+
+    .sidebar-history-list {
+      flex: 1;
+      overflow-y: auto;
+      padding: 8px 12px;
+    }
+
+    .history-section-label {
+      font-size: 11px;
+      font-weight: 700;
+      color: #64748b;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      margin: 12px 6px 6px;
+    }
+
+    .history-item {
+      padding: 9px 12px;
+      border-radius: 8px;
+      font-size: 13px;
+      color: #cbd5e1;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      transition: all 0.2s;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .history-item:hover {
+      background: rgba(255, 255, 255, 0.05);
+      color: #ffffff;
+    }
+
+    .sidebar-portal-nav {
+      padding: 10px 12px;
+      border-top: 1px solid var(--gpt-border);
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      background: #050e1c;
+    }
+
+    .portal-link {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 9px 12px;
+      border-radius: 8px;
+      color: #94a3b8;
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 600;
+      transition: all 0.2s;
+    }
+
+    .portal-link:hover {
+      background: rgba(56, 189, 248, 0.1);
+      color: #38bdf8;
+    }
+
+    .portal-link i {
+      width: 16px;
+      text-align: center;
+    }
+
+    .chatgpt-main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      background: var(--gpt-bg);
+      position: relative;
+    }
+
+    .chatgpt-topbar {
+      height: 60px;
+      padding: 0 24px;
+      border-bottom: 1px solid var(--gpt-border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(10, 25, 47, 0.8);
+      backdrop-filter: blur(12px);
+      z-index: 10;
+    }
+
+    .model-selector-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(56, 189, 248, 0.1);
+      border: 1px solid rgba(56, 189, 248, 0.25);
+      padding: 6px 14px;
+      border-radius: 20px;
+    }
+
+    .robot-thumb {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 1px solid var(--gpt-cyan);
+    }
+
+    .model-title {
+      font-size: 13.5px;
+      font-weight: 700;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .model-badge {
+      font-size: 10px;
+      padding: 2px 7px;
+      background: #0284c7;
+      color: white;
+      border-radius: 10px;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+
+    .chat-scroll-area {
+      flex: 1;
+      overflow-y: auto;
+      padding: 24px 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .chat-max-width {
+      width: 100%;
+      max-width: 820px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .welcome-container {
+      text-align: center;
+      padding: 30px 16px 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .hero-robot-avatar {
+      width: 76px;
+      height: 76px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid var(--gpt-cyan);
+      box-shadow: 0 0 25px var(--gpt-cyan-glow);
+      margin-bottom: 16px;
+    }
+
+    .welcome-title {
+      font-size: 24px;
+      font-weight: 800;
+      color: #ffffff;
+      margin-bottom: 8px;
+    }
+
+    .welcome-subtitle {
+      font-size: 14px;
+      color: #94a3b8;
+      max-width: 580px;
+      line-height: 1.5;
+      margin-bottom: 26px;
+    }
+
+    .clinical-cards-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      width: 100%;
+      max-width: 760px;
+      margin-bottom: 20px;
+    }
+
+    .clinical-card {
+      background: var(--gpt-surface);
+      border: 1px solid var(--gpt-border);
+      border-radius: 14px;
+      padding: 16px;
+      cursor: pointer;
+      text-align: left;
+      transition: all 0.25s ease;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .clinical-card:hover {
+      background: var(--gpt-surface-elevated);
+      border-color: var(--gpt-cyan);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(56, 189, 248, 0.2);
+    }
+
+    .card-header-icon {
+      font-size: 15px;
+      color: var(--gpt-cyan);
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .card-prompt-text {
+      font-size: 12.5px;
+      color: #94a3b8;
+      line-height: 1.4;
+    }
+
+    /* Message Bubbles */
+    .msg-row {
+      display: flex;
+      gap: 14px;
+      width: 100%;
+      margin-bottom: 6px;
+    }
+
+    .msg-row.user-row {
+      justify-content: flex-end;
+    }
+
+    .msg-row.bot-row {
+      justify-content: flex-start;
+    }
+
+    .msg-avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      font-weight: 800;
+      font-size: 13px;
+    }
+
+    .msg-avatar.user-av {
+      background: #0284c7;
+      color: white;
+    }
+
+    .msg-avatar.bot-av img {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid var(--gpt-cyan);
+    }
+
+    .msg-bubble {
+      max-width: 82%;
+      padding: 14px 18px;
+      border-radius: 16px;
+      font-size: 14px;
+      line-height: 1.6;
+      word-break: break-word;
+    }
+
+    .user-bubble {
+      background: var(--gpt-user-bubble);
+      color: #ffffff;
+      border-bottom-right-radius: 4px;
+      border: 1px solid rgba(56, 189, 248, 0.2);
+    }
+
+    .bot-bubble {
+      background: var(--gpt-bot-bubble);
+      color: #e2e8f0;
+      border-bottom-left-radius: 4px;
+      border: 1px solid var(--gpt-border);
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+    }
+
+    /* Chat Input Bar */
+    .chat-input-wrapper {
+      padding: 12px 20px 18px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background: linear-gradient(180deg, transparent 0%, var(--gpt-bg) 40%);
+    }
+
+    .input-box-container {
+      width: 100%;
+      max-width: 820px;
+      background: var(--gpt-surface);
+      border: 1px solid var(--gpt-border);
+      border-radius: 18px;
+      padding: 8px 12px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+      transition: border-color 0.2s;
+    }
+
+    .input-box-container:focus-within {
+      border-color: var(--gpt-cyan);
+      box-shadow: 0 10px 30px rgba(56, 189, 248, 0.25);
+    }
+
+    .chat-textarea {
+      flex: 1;
+      background: transparent;
+      border: none;
+      color: #ffffff;
+      font-size: 14.5px;
+      padding: 8px 6px;
+      resize: none;
+      outline: none;
+      max-height: 120px;
+      font-family: inherit;
+    }
+
+    .chat-textarea::placeholder {
+      color: #64748b;
+    }
+
+    .send-msg-btn {
+      width: 38px;
+      height: 38px;
+      border-radius: 12px;
+      background: var(--gpt-cyan);
+      color: #061121;
+      border: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      cursor: pointer;
+      transition: all 0.2s;
+      flex-shrink: 0;
+    }
+
+    .send-msg-btn:hover {
+      background: #7dd3fc;
+      transform: scale(1.05);
+    }
+
+    .input-disclaimer {
+      font-size: 11px;
+      color: #64748b;
+      margin-top: 8px;
+      text-align: center;
+    }
+
+    @media (max-width: 768px) {
+      .chatgpt-sidebar {
+        position: fixed;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        transform: translateX(-100%);
+      }
+      .chatgpt-sidebar.mobile-open {
+        transform: translateX(0);
+      }
+      .clinical-cards-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="chatgpt-layout">
+
+  <!-- =========================================================
+       SIDEBAR: Preethi AI Clinical History & Doctor Links
+       ========================================================= -->
+  <aside class="chatgpt-sidebar" id="sidebar">
+    <div class="sidebar-brand-box">
+      <div class="sidebar-brand-logo">M</div>
+      <div class="sidebar-brand-text">
+        <h3>MediMate AI</h3>
+        <span>Physio Portal • Preethi AI</span>
+      </div>
+    </div>
+
+    <div class="new-chat-btn-wrap">
+      <button class="new-chat-btn" id="newChatBtn">
+        <span><i class="fa-solid fa-plus" style="margin-right: 8px;"></i> New Consultation</span>
+        <i class="fa-regular fa-pen-to-square"></i>
+      </button>
+    </div>
+
+    <!-- Recent Clinical Inquiries -->
+    <div class="sidebar-history-list" id="chatHistoryList">
+      <div class="history-section-label">Clinical Inquiries</div>
+      <div class="history-item" onclick="loadClinicalPrompt('Cervical Whiplash Grade 2 exercise progression guidelines')">
+        <i class="fa-regular fa-comment-dots" style="color: #38bdf8;"></i>
+        <span>Whiplash Progression</span>
+      </div>
+      <div class="history-item" onclick="loadClinicalPrompt('TENS pulse frequency for acute post-accident lumbar spasm')">
+        <i class="fa-regular fa-comment-dots" style="color: #38bdf8;"></i>
+        <span>TENS Pulse Frequency</span>
+      </div>
+      <div class="history-item" onclick="loadClinicalPrompt('Chronic pain risk criteria for VAS 7.0 at subacute stage')">
+        <i class="fa-regular fa-comment-dots" style="color: #38bdf8;"></i>
+        <span>VAS 7.0 Risk Evaluation</span>
+      </div>
+    </div>
+
+    <!-- Doctor Portal Quick Navigation -->
+    <div class="sidebar-portal-nav">
+      <a href="dashboard.html" class="portal-link">
+        <i class="fa-solid fa-chart-pie"></i>
+        <span>Dashboard</span>
+      </a>
+      <a href="preethi-ai.html" class="portal-link active" style="background: rgba(56, 189, 248, 0.18); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.35); font-weight: 700;">
+        <i class="fa-solid fa-robot"></i>
+        <span>Preethi AI Clinical</span>
+      </a>
+      <a href="/tele-rehab.html" class="portal-link">
+        <i class="fa-solid fa-video"></i>
+        <span>Tele-Rehab Consultation</span>
+      </a>
+      <a href="appointments.html" class="portal-link">
+        <i class="fa-solid fa-calendar-check"></i>
+        <span>Rehab Appointments</span>
+      </a>
+      <a href="patients.html" class="portal-link">
+        <i class="fa-solid fa-user-injured"></i>
+        <span>Rehab Patients</span>
+      </a>
+      <a href="patient-records.html" class="portal-link">
+        <i class="fa-solid fa-file-medical"></i>
+        <span>Clinical Records & Scans</span>
+      </a>
+      <a href="profile.html" class="portal-link">
+        <i class="fa-solid fa-user-doctor"></i>
+        <span>Physio Profile</span>
+      </a>
+      <a href="/login.html" onclick="sessionStorage.clear(); localStorage.removeItem('currentUser'); localStorage.removeItem('doctorLoggedIn');" class="portal-link" style="color: #f87171; margin-top: 6px; font-weight: 700;">
+        <i class="fa-solid fa-arrow-right-from-bracket"></i>
+        <span>Logout</span>
+      </a>
+    </div>
+  </aside>
+
+  <!-- =========================================================
+       MAIN WORKSPACE
+       ========================================================= -->
+  <main class="chatgpt-main">
+
+    <!-- Topbar -->
+    <header class="chatgpt-topbar">
+      <div class="model-selector-pill">
+        <img src="/static/images/preethi_ai_robot.png" alt="Preethi AI" class="robot-thumb">
+        <div class="model-title">
+          <span>Preethi AI Clinical</span>
+          <span class="model-badge">Rehab v2.5</span>
+        </div>
+      </div>
+      <div style="display: flex; gap: 10px; align-items: center;">
+        <a href="/tele-rehab.html" style="background: rgba(56, 189, 248, 0.15); border: 1px solid #38bdf8; color: #38bdf8; padding: 6px 14px; border-radius: 8px; font-size: 13px; font-weight: 700; text-decoration: none; display: flex; align-items: center; gap: 6px;">
+          <i class="fa-solid fa-video"></i> Tele-Rehab Meet
+        </a>
+      </div>
+    </header>
+
+    <!-- Chat Messages Scroll Area -->
+    <div class="chat-scroll-area" id="chatScrollArea">
+      <div class="chat-max-width" id="chatMaxWidth">
+
+        <!-- Welcome View -->
+        <div class="welcome-container" id="welcomeContainer">
+          <img src="/static/images/preethi_ai_robot.png" alt="Preethi AI" class="hero-robot-avatar">
+          <h2 class="welcome-title">Preethi AI Clinical Assistant</h2>
+          <p class="welcome-subtitle">
+            Your 24/7 intelligent physical therapy co-pilot. Inquire about trauma rehabilitation protocols, ML pain recovery trajectories, cryotherapy/TENS parameters, or patient discharge summaries.
+          </p>
+
+          <div class="clinical-cards-grid">
+            <div class="clinical-card" onclick="submitClinicalQuery('Generate a 4-week progressive cervical whiplash exercise protocol for a Grade II trauma patient.')">
+              <span class="card-header-icon"><i class="fa-solid fa-notes-medical"></i> 4-Week Whiplash Protocol</span>
+              <span class="card-prompt-text">Generate progressive cervical mobilization & isometric strengthening stages for Grade 2 whiplash.</span>
+            </div>
+
+            <div class="clinical-card" onclick="submitClinicalQuery('Evaluate clinical trajectory and red flags for a patient reporting VAS 7.5 pain at day 21 with mild pitting edema.')">
+              <span class="card-header-icon"><i class="fa-solid fa-chart-line"></i> Chronic Pain Risk Analysis</span>
+              <span class="card-prompt-text">Evaluate clinical trajectory & complications for patient reporting VAS 7.5 at subacute stage.</span>
+            </div>
+
+            <div class="clinical-card" onclick="submitClinicalQuery('What are the recommended cryotherapy durations and TENS pulse parameters for acute post-trauma lumbar spasm?')">
+              <span class="card-header-icon"><i class="fa-solid fa-bolt"></i> Cryo & TENS Parameters</span>
+              <span class="card-prompt-text">Recommended cryo durations and TENS pulse frequencies for acute lumbar muscle spasms.</span>
+            </div>
+
+            <div class="clinical-card" onclick="submitClinicalQuery('Provide structured criteria to clear a post-accident patient for progressive resistance bands and low-impact gait retraining.')">
+              <span class="card-header-icon"><i class="fa-solid fa-person-walking"></i> Gait Retraining Clearance</span>
+              <span class="card-prompt-text">Criteria to clear patient for progressive resistance bands & functional gait reconditioning.</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Chat messages will be injected here -->
+        <div id="messagesList" style="display: flex; flex-direction: column; gap: 16px; width: 100%;"></div>
+
+      </div>
+    </div>
+
+    <!-- Bottom Input Bar -->
+    <div class="chat-input-wrapper">
+      <div class="input-box-container">
+        <textarea
+          id="chatInput"
+          class="chat-textarea"
+          rows="1"
+          placeholder="Ask Preethi AI about trauma protocols, ROM targets, or patient guidance..."
+        ></textarea>
+        <button class="send-msg-btn" id="sendBtn" title="Send Query">
+          <i class="fa-solid fa-arrow-up"></i>
+        </button>
+      </div>
+      <div class="input-disclaimer">
+        MediMate AI Clinical Assistant synthesizes evidence-based rehabilitation protocols. Final clinical decisions remain with the attending physiotherapist.
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<script>
+  const chatInput = document.getElementById("chatInput");
+  const sendBtn = document.getElementById("sendBtn");
+  const messagesList = document.getElementById("messagesList");
+  const welcomeContainer = document.getElementById("welcomeContainer");
+  const chatScrollArea = document.getElementById("chatScrollArea");
+
+  chatInput.addEventListener("input", function() {
+    this.style.height = "auto";
+    this.style.height = (this.scrollHeight) + "px";
+  });
+
+  chatInput.addEventListener("keydown", function(e) {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      handleSend();
+    }
+  });
+
+  sendBtn.addEventListener("click", handleSend);
+
+  document.getElementById("newChatBtn").addEventListener("click", () => {
+    messagesList.innerHTML = "";
+    welcomeContainer.style.display = "flex";
+  });
+
+  function submitClinicalQuery(text) {
+    chatInput.value = text;
+    handleSend();
+  }
+
+  function loadClinicalPrompt(text) {
+    chatInput.value = text;
+    handleSend();
+  }
+
+  async function handleSend() {
+    const text = chatInput.value.trim();
+    if (!text) return;
+
+    welcomeContainer.style.display = "none";
+    chatInput.value = "";
+    chatInput.style.height = "auto";
+
+    appendUserMessage(text);
+    const botMsgId = appendBotPlaceholder();
+    scrollToBottom();
+
+    try {
+      const resp = await fetch("/api/preethi/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          message: text,
+          context: "clinical_physiotherapist_portal",
+          doctor_specialty: "Orthopedic Rehabilitation & Trauma Recovery"
+        })
+      });
+
+      const data = await resp.json();
+      let botResponse = "I have analyzed your clinical query according to standard trauma rehabilitation guidelines.";
+      if (data && data.reply) botResponse = data.reply;
+      else if (data && data.response) botResponse = data.response;
+
+      updateBotMessage(botMsgId, botResponse);
+    } catch (e) {
+      updateBotMessage(botMsgId, "Unable to connect to Preethi AI clinical service. Please ensure the backend is active.");
+    }
+    scrollToBottom();
+  }
+
+  function appendUserMessage(text) {
+    const row = document.createElement("div");
+    row.className = "msg-row user-row";
+    row.innerHTML = `
+      <div class="msg-bubble user-bubble">${escapeHtml(text)}</div>
+      <div class="msg-avatar user-av">Dr</div>
+    `;
+    messagesList.appendChild(row);
+  }
+
+  function appendBotPlaceholder() {
+    const id = "botMsg_" + Date.now();
+    const row = document.createElement("div");
+    row.className = "msg-row bot-row";
+    row.id = id;
+    row.innerHTML = `
+      <div class="msg-avatar bot-av">
+        <img src="/static/images/preethi_ai_robot.png" alt="Preethi AI">
+      </div>
+      <div class="msg-bubble bot-bubble">
+        <i class="fa-solid fa-spinner fa-spin" style="color: #38bdf8; margin-right: 8px;"></i>
+        <span>Synthesizing clinical recovery response...</span>
+      </div>
+    `;
+    messagesList.appendChild(row);
+    return id;
+  }
+
+  function updateBotMessage(id, text) {
+    const row = document.getElementById(id);
+    if (!row) return;
+    const bubble = row.querySelector(".msg-bubble");
+    bubble.innerHTML = formatMarkdown(text);
+  }
+
+  function scrollToBottom() {
+    chatScrollArea.scrollTop = chatScrollArea.scrollHeight;
+  }
+
+  function escapeHtml(text) {
+    const div = document.createElement("div");
+    div.textContent = text;
+    return div.innerHTML;
+  }
+
+  function formatMarkdown(text) {
+    let clean = escapeHtml(text);
+    clean = clean.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+    clean = clean.replace(/\*(.*?)\*/g, '<em>$1</em>');
+    clean = clean.replace(/\n\n/g, '<br><br>');
+    clean = clean.replace(/\n- /g, '<br>• ');
+    clean = clean.replace(/\n/g, '<br>');
+    return clean;
+  }
+</script>
+
+</body>
+</html>

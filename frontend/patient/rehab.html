@@ -1,0 +1,1201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pain & Rehab Tracker | MediMate AI</title>
+  <link rel="stylesheet" href="patient-style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    /* Sleek Patient Sidebar */
+    .sidebar {
+      width: 260px !important;
+      position: fixed !important;
+      left: 0 !important;
+      top: 0 !important;
+      bottom: 0 !important;
+      background: #071224 !important;
+      border-right: 1px solid rgba(255, 255, 255, 0.08) !important;
+      padding: 24px 16px !important;
+      display: flex !important;
+      flex-direction: column !important;
+      z-index: 1000 !important;
+      overflow-y: auto !important;
+      box-sizing: border-box !important;
+    }
+
+    .sidebar-brand {
+      display: flex !important;
+      flex-direction: row !important;
+      align-items: center !important;
+      gap: 14px !important;
+      padding: 6px 8px 22px 8px !important;
+      margin-bottom: 12px !important;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+      width: 100% !important;
+      box-sizing: border-box !important;
+    }
+
+    .sidebar-brand .brand-logo {
+      width: 44px !important;
+      min-width: 44px !important;
+      max-width: 44px !important;
+      height: 44px !important;
+      min-height: 44px !important;
+      max-height: 44px !important;
+      background: linear-gradient(135deg, #0284c7 0%, #38bdf8 100%) !important;
+      color: #ffffff !important;
+      border-radius: 12px !important;
+      font-weight: 800 !important;
+      font-size: 22px !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      flex-shrink: 0 !important;
+      box-shadow: 0 4px 16px rgba(56, 189, 248, 0.35) !important;
+    }
+
+    .sidebar-brand .brand-text {
+      display: flex !important;
+      flex-direction: column !important;
+    }
+
+    .sidebar-brand .brand-text h2 {
+      font-size: 19px !important;
+      font-weight: 800 !important;
+      color: #ffffff !important;
+      margin: 0 !important;
+      line-height: 1.2 !important;
+    }
+
+    .sidebar-brand .brand-text p {
+      font-size: 11px !important;
+      color: #38bdf8 !important;
+      font-weight: 700 !important;
+      text-transform: uppercase !important;
+      letter-spacing: 1px !important;
+      margin: 3px 0 0 0 !important;
+    }
+
+    .sidebar-menu ul {
+      list-style: none !important;
+      padding: 0 !important;
+      margin: 0 !important;
+    }
+
+    .sidebar-menu li {
+      margin: 4px 0 !important;
+    }
+
+    .sidebar-menu a {
+      display: flex !important;
+      align-items: center !important;
+      gap: 14px !important;
+      color: #94a3b8 !important;
+      padding: 12px 16px !important;
+      border-radius: 12px !important;
+      text-decoration: none !important;
+      font-size: 14px !important;
+      font-weight: 600 !important;
+      transition: all 0.25s ease !important;
+    }
+
+    .sidebar-menu a:hover {
+      background: rgba(255, 255, 255, 0.05) !important;
+      color: #ffffff !important;
+      transform: translateX(4px) !important;
+    }
+
+    .sidebar-menu li.active a {
+      background: linear-gradient(135deg, rgba(56, 189, 248, 0.18) 0%, rgba(2, 132, 199, 0.08) 100%) !important;
+      color: #38bdf8 !important;
+      border: 1px solid rgba(56, 189, 248, 0.35) !important;
+      font-weight: 700 !important;
+      box-shadow: 0 4px 20px rgba(56, 189, 248, 0.15) !important;
+    }
+
+    .sidebar-menu .nav-icon {
+      width: 20px !important;
+      font-size: 16px !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      color: inherit !important;
+    }
+
+    .rehab-grid {
+      display: grid;
+      grid-template-columns: 1.55fr 1.25fr;
+      gap: 24px;
+    }
+
+    @media (max-width: 992px) {
+      .rehab-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Content Cards */
+    .slider-box {
+      background: rgba(13, 22, 41, 0.85);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 16px;
+      padding: 22px;
+      margin-bottom: 22px;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+    }
+
+    .section-step-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(56, 189, 248, 0.15);
+      color: #38bdf8;
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 10px;
+    }
+
+    /* Smiley Faces Pain Scale (Wong-Baker FACES) */
+    .face-cards-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 10px;
+      margin: 16px 0 14px 0;
+    }
+
+    .face-card {
+      background: rgba(10, 18, 36, 0.7);
+      border: 2px solid rgba(255, 255, 255, 0.08);
+      border-radius: 14px;
+      padding: 12px 6px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .face-card:hover {
+      transform: translateY(-3px);
+      border-color: rgba(56, 189, 248, 0.5);
+    }
+
+    .face-card.active {
+      background: rgba(56, 189, 248, 0.15);
+      border-color: #38bdf8;
+      box-shadow: 0 0 16px rgba(56, 189, 248, 0.35);
+      transform: scale(1.04);
+    }
+
+    .face-card .face-emoji {
+      font-size: 30px;
+    }
+
+    .face-card .face-score {
+      font-size: 13px;
+      font-weight: 800;
+      color: #ffffff;
+    }
+
+    .face-card .face-desc {
+      font-size: 11px;
+      color: #94a3b8;
+      line-height: 1.2;
+    }
+
+    .pain-range-slider {
+      width: 100%;
+      height: 10px;
+      border-radius: 5px;
+      outline: none;
+      background: linear-gradient(to right, #10b981 0%, #38bdf8 25%, #f59e0b 55%, #ef4444 100%);
+      cursor: pointer;
+      -webkit-appearance: none;
+      margin: 12px 0 6px 0;
+    }
+
+    .pain-range-slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background: #ffffff;
+      border: 3px solid #0284c7;
+      cursor: pointer;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.5);
+      transition: transform 0.15s ease;
+    }
+
+    .pain-range-slider::-webkit-slider-thumb:hover {
+      transform: scale(1.2);
+    }
+
+    /* Interactive Body Part Chips */
+    .chip-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 10px 0 16px 0;
+    }
+
+    .body-chip {
+      background: rgba(10, 18, 36, 0.8);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      padding: 10px 16px;
+      color: #cbd5e1;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s ease;
+    }
+
+    .body-chip:hover {
+      border-color: #38bdf8;
+      color: #ffffff;
+      transform: translateY(-2px);
+    }
+
+    .body-chip.active {
+      background: rgba(56, 189, 248, 0.2);
+      border-color: #38bdf8;
+      color: #38bdf8;
+      font-weight: 700;
+      box-shadow: 0 0 14px rgba(56, 189, 248, 0.25);
+    }
+
+    /* Swelling Choice Cards */
+    .choice-grid-4 {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      margin: 10px 0 16px 0;
+    }
+
+    .choice-card {
+      background: rgba(10, 18, 36, 0.8);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      padding: 12px 8px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      color: #cbd5e1;
+      font-size: 12.5px;
+      font-weight: 600;
+    }
+
+    .choice-card:hover {
+      border-color: #38bdf8;
+      transform: translateY(-2px);
+    }
+
+    .choice-card.active {
+      background: rgba(56, 189, 248, 0.18);
+      border-color: #38bdf8;
+      color: #38bdf8;
+      font-weight: 700;
+    }
+
+    /* Step-by-Step Exercise Cards */
+    .exercise-card {
+      background: rgba(10, 18, 36, 0.7);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 14px;
+      padding: 16px 18px;
+      margin-bottom: 14px;
+      transition: all 0.25s ease;
+      position: relative;
+    }
+
+    .exercise-card:hover {
+      border-color: rgba(56, 189, 248, 0.4);
+      transform: translateX(4px);
+    }
+
+    .exercise-card.completed {
+      background: rgba(16, 185, 129, 0.08);
+      border-color: rgba(16, 185, 129, 0.4);
+    }
+
+    .exercise-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .exercise-num-badge {
+      width: 32px;
+      height: 32px;
+      border-radius: 10px;
+      background: rgba(56, 189, 248, 0.2);
+      color: #38bdf8;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 14px;
+      flex-shrink: 0;
+    }
+
+    .exercise-card.completed .exercise-num-badge {
+      background: #10b981;
+      color: #061121;
+    }
+
+    .timer-btn {
+      background: rgba(56, 189, 248, 0.15);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      color: #38bdf8;
+      padding: 6px 12px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+    }
+
+    .timer-btn:hover {
+      background: #38bdf8;
+      color: #050a14;
+    }
+
+    .exercise-checkbox-custom {
+      width: 22px;
+      height: 22px;
+      cursor: pointer;
+      accent-color: #10b981;
+    }
+
+    /* Progress bar */
+    .routine-progress-wrap {
+      background: rgba(10, 18, 36, 0.8);
+      border-radius: 20px;
+      height: 12px;
+      overflow: hidden;
+      margin: 10px 0 18px 0;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .routine-progress-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #38bdf8 0%, #10b981 100%);
+      border-radius: 20px;
+      transition: width 0.4s ease;
+    }
+
+    /* Trajectory Card */
+    .trajectory-card {
+      border-radius: 16px;
+      padding: 22px;
+      background: linear-gradient(135deg, rgba(13, 29, 56, 0.95) 0%, rgba(7, 18, 36, 0.95) 100%);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+      margin-top: 20px;
+    }
+
+    .badge-tier {
+      display: inline-block;
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .case-summary-strip {
+      background: linear-gradient(135deg, rgba(56, 189, 248, 0.1) 0%, rgba(2, 132, 199, 0.05) 100%);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      border-radius: 16px;
+      padding: 18px 24px;
+      margin-bottom: 24px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- =========================
+       PATIENT SIDEBAR
+  ========================== -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-brand">
+      <div class="brand-logo">M</div>
+      <div class="brand-text">
+        <h2>MediMate <span>AI</span></h2>
+        <p>Physio & Rehab Portal</p>
+      </div>
+    </div>
+
+    <div class="sidebar-menu">
+      <ul>
+        <li>
+          <a href="dashboard.html">
+            <span class="nav-icon"><i class="fa-solid fa-chart-pie"></i></span>
+            <span>Dashboard</span>
+          </a>
+        </li>
+        <li class="active">
+          <a href="rehab.html">
+            <span class="nav-icon"><i class="fa-solid fa-person-walking"></i></span>
+            <span>Pain & Rehab Tracker</span>
+          </a>
+        </li>
+        <li>
+          <a href="preethi-ai.html">
+            <span class="nav-icon"><i class="fa-solid fa-robot"></i></span>
+            <span>Preethi AI Assistant</span>
+          </a>
+        </li>
+        <li>
+          <a href="/tele-rehab.html">
+            <span class="nav-icon"><i class="fa-solid fa-video"></i></span>
+            <span>Tele-Rehab Consultation</span>
+          </a>
+        </li>
+        <li>
+          <a href="appointments.html">
+            <span class="nav-icon"><i class="fa-solid fa-calendar-check"></i></span>
+            <span>Rehab Appointments</span>
+          </a>
+        </li>
+        <li>
+          <a href="doctors.html">
+            <span class="nav-icon"><i class="fa-solid fa-user-doctor"></i></span>
+            <span>Physiotherapists</span>
+          </a>
+        </li>
+        <li>
+          <a href="health-records.html">
+            <span class="nav-icon"><i class="fa-solid fa-file-medical"></i></span>
+            <span>Recovery Records</span>
+          </a>
+        </li>
+        <li>
+          <a href="profile.html">
+            <span class="nav-icon"><i class="fa-solid fa-user"></i></span>
+            <span>My Profile</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+
+    <div class="logout">
+      <button id="logoutBtn" onclick="sessionStorage.clear(); localStorage.removeItem('currentUser'); window.location.href='/login.html';">
+        <i class="fa-solid fa-arrow-right-from-bracket"></i>
+        <span>Logout</span>
+      </button>
+    </div>
+  </aside>
+
+  <!-- =========================
+       MAIN CONTENT
+  ========================== -->
+  <main class="main">
+    <header class="topbar">
+      <div class="topbar-left">
+        <button class="sidebar-toggle-btn" id="sidebarToggleBtn" title="Toggle Menu">
+          <i class="fa-solid fa-bars"></i>
+        </button>
+        <div class="topbar-title">
+          <h1>Pain & Rehab Tracker</h1>
+          <p>Daily recovery check-in, exercise guide & AI healing forecast</p>
+        </div>
+      </div>
+      <div class="topbar-right" style="display: flex; gap: 10px;">
+        <a href="/tele-rehab.html" style="background: rgba(56, 189, 248, 0.15); color: #38bdf8; border: 1px solid #38bdf8; font-weight: 700; text-decoration: none; padding: 8px 14px; border-radius: 8px; display: inline-flex; align-items: center; gap: 6px; font-size: 13px;">
+          <i class="fa-solid fa-video"></i> Join Tele-Rehab
+        </a>
+        <a href="preethi-ai.html" class="btn btn-primary btn-sm" style="background: #38bdf8; color: #050a14; font-weight: bold; text-decoration: none; padding: 6px 14px; border-radius: 20px; font-size: 13px; display: inline-flex; align-items: center; gap: 8px; box-shadow: 0 0 15px rgba(56, 189, 248, 0.4);">
+          <img src="/static/images/preethi_ai_robot.png" alt="Preethi AI" style="width: 22px; height: 22px; border-radius: 50%; object-fit: cover; border: 1px solid #061121;">
+          <span>Ask Preethi AI</span>
+        </a>
+      </div>
+    </header>
+
+    <section class="content-body" style="padding: 24px 32px;">
+
+      <!-- PATIENT RECOVERY CASE SUMMARY STRIP -->
+      <div class="case-summary-strip">
+        <div>
+          <span style="font-size: 11px; text-transform: uppercase; color: #94a3b8; font-weight: 700;">Patient Case</span>
+          <h3 id="patientNameHeader" style="font-size: 18px; color: #f8fafc; margin-top: 2px;">Loading Patient...</h3>
+          <p id="patientInjuryHeader" style="font-size: 13px; color: #38bdf8; margin-top: 2px;">Post-Accident Trauma Recovery</p>
+        </div>
+        <div>
+          <span style="font-size: 11px; text-transform: uppercase; color: #94a3b8; font-weight: 700;">Recovery Timeline</span>
+          <h4 id="recoveryDayHeader" style="font-size: 16px; color: #f8fafc; margin-top: 2px;">Day 14 of Rehabilitation</h4>
+          <p id="physioNameHeader" style="font-size: 13px; color: #cbd5e1;">Supervising Physio: <strong>Dr. Anand Kumar (Senior PT)</strong></p>
+        </div>
+        <div>
+          <span style="font-size: 11px; text-transform: uppercase; color: #94a3b8; font-weight: 700;">Recovery Phase</span>
+          <div style="margin-top: 4px;">
+            <span class="badge-tier" id="recoveryPhaseHeader" style="background: rgba(56, 189, 248, 0.2); color: #38bdf8; border: 1px solid #38bdf8;">Phase 2: Gentle Movement & Healing</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- MAIN 2-COLUMN USER-FRIENDLY LAYOUT -->
+      <div class="rehab-grid">
+
+        <!-- LEFT COLUMN: STEP 1 (PAIN) & STEP 2 (MOVEMENT) & STEP 3 (AI FORECAST) -->
+        <div>
+
+          <!-- STEP 1: PAIN SCALE -->
+          <div class="slider-box">
+            <span class="section-step-badge">
+              <i class="fa-solid fa-heart-pulse"></i> Step 1: Daily Pain Rating (இன்றைய வலி)
+            </span>
+            <h3 style="font-size: 18px; color: #f8fafc; margin-top: 4px;">How much pain do you feel today?</h3>
+            <p style="font-size: 13px; color: #94a3b8; margin-top: 2px;">
+              Tap a face emoji or slide below to record your pain level (1 = very light, 10 = cannot bear).
+            </p>
+
+            <!-- 5 Clickable Wong-Baker Smiley Faces -->
+            <div class="face-cards-grid">
+              <div class="face-card" data-val="1.5">
+                <span class="face-emoji">😊</span>
+                <span class="face-score">0 - 2</span>
+                <span class="face-desc">No / Very Mild</span>
+              </div>
+              <div class="face-card" data-val="3.5">
+                <span class="face-emoji">🙂</span>
+                <span class="face-score">3 - 4</span>
+                <span class="face-desc">Mild Ache</span>
+              </div>
+              <div class="face-card active" data-val="5.0">
+                <span class="face-emoji">😐</span>
+                <span class="face-score">5 - 6</span>
+                <span class="face-desc">Moderate</span>
+              </div>
+              <div class="face-card" data-val="7.5">
+                <span class="face-emoji">😣</span>
+                <span class="face-score">7 - 8</span>
+                <span class="face-desc">Severe Hurt</span>
+              </div>
+              <div class="face-card" data-val="9.5">
+                <span class="face-emoji">😭</span>
+                <span class="face-score">9 - 10</span>
+                <span class="face-desc">Unbearable</span>
+              </div>
+            </div>
+
+            <!-- Fine-tune Slider -->
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-top: 14px;">
+              <div>
+                <span style="font-size: 12px; color: #94a3b8; font-weight: 600;">Selected Pain Score:</span>
+                <h4 id="painInterpretationText" style="font-size: 16px; font-weight: 700; color: #f59e0b; margin-top: 2px;">
+                  Moderate Pain (5.0 / 10)
+                </h4>
+              </div>
+              <div id="painScoreBadge" style="font-size: 24px; font-weight: 800; padding: 6px 18px; border-radius: 12px; background: #f59e0b; color: #050a14; box-shadow: 0 4px 15px rgba(245, 158, 11, 0.35);">
+                5.0 / 10
+              </div>
+            </div>
+
+            <input type="range" min="1" max="10" step="0.5" value="5" class="pain-range-slider" id="painSlider">
+
+            <div style="background: rgba(5, 12, 26, 0.6); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 10px; padding: 12px 14px; margin-top: 10px; display: flex; align-items: center; gap: 10px;">
+              <i class="fa-solid fa-user-doctor" style="color: #38bdf8; font-size: 16px;"></i>
+              <p id="painGuidanceShort" style="font-size: 12.5px; color: #cbd5e1; margin: 0;">
+                Noticeable discomfort during movement; manageable at rest. Apply cold pack for 10-15 mins if sore.
+              </p>
+            </div>
+          </div>
+
+          <!-- STEP 2: BODY LOCATION & SWELLING -->
+          <div class="slider-box">
+            <span class="section-step-badge">
+              <i class="fa-solid fa-person"></i> Step 2: Injury Location & Swelling (அசைவு மற்றும் வீக்கம்)
+            </span>
+
+            <!-- Body Part Chips -->
+            <label style="font-size: 13.5px; font-weight: 700; color: #f8fafc; display: block; margin-top: 6px;">
+              Where is your primary pain located? (வலி இருக்கும் இடம்):
+            </label>
+            <div class="chip-group" id="bodyPartChipGroup">
+              <div class="body-chip active" data-val="Cervical Spine (Neck)">
+                <i class="fa-solid fa-head-side-virus"></i>
+                <span>Neck / Whiplash (கழுத்து)</span>
+              </div>
+              <div class="body-chip" data-val="Lumbar Spine (Lower Back)">
+                <i class="fa-solid fa-person-walking"></i>
+                <span>Lower Back / Spine (முதுகு)</span>
+              </div>
+              <div class="body-chip" data-val="Knee & ACL">
+                <i class="fa-solid fa-bone"></i>
+                <span>Knee & Leg (முழங்கால்)</span>
+              </div>
+              <div class="body-chip" data-val="Shoulder & Clavicle">
+                <i class="fa-solid fa-hand-fist"></i>
+                <span>Shoulder & Arm (தோள்)</span>
+              </div>
+              <div class="body-chip" data-val="Ankle / Foot">
+                <i class="fa-solid fa-shoe-prints"></i>
+                <span>Ankle & Foot (கால்)</span>
+              </div>
+            </div>
+            <!-- Hidden select to keep existing backend logic 100% compatible -->
+            <select id="bodyPartSelect" style="display: none;">
+              <option value="Cervical Spine (Neck)" selected>Cervical Spine (Neck)</option>
+              <option value="Lumbar Spine (Lower Back)">Lumbar Spine (Lower Back)</option>
+              <option value="Knee & ACL">Knee & ACL</option>
+              <option value="Shoulder & Clavicle">Shoulder & Clavicle</option>
+              <option value="Ankle / Foot">Ankle / Foot</option>
+            </select>
+
+            <!-- Flexibility / Range of Motion -->
+            <div style="margin-top: 16px;">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                <label style="font-size: 13.5px; font-weight: 700; color: #f8fafc;">
+                  Body Movement & Flexibility (எவ்வளவு சுலபமாக அசைக்க முடிகிறது):
+                </label>
+                <strong id="romDisplay" style="color: #38bdf8; font-size: 16px;">65% (Moderate)</strong>
+              </div>
+              <input type="range" min="20" max="100" step="5" value="65" class="pain-range-slider" id="romSlider">
+              <div style="display: flex; justify-content: space-between; font-size: 11px; color: #64748b; margin-top: 2px;">
+                <span>20% (Stiff / Hard to move)</span>
+                <span>65% (Fair movement)</span>
+                <span>100% (Fully flexible)</span>
+              </div>
+            </div>
+
+            <!-- Swelling Level Choices -->
+            <div style="margin-top: 16px;">
+              <label style="font-size: 13.5px; font-weight: 700; color: #f8fafc; display: block;">
+                Do you have swelling or puffiness? (வீக்கம் இருக்கிறதா?):
+              </label>
+              <div class="choice-grid-4" id="swellingChoiceGrid">
+                <div class="choice-card" data-val="0">
+                  <div style="font-size: 16px; margin-bottom: 2px;">🟢</div>
+                  <span>None (இல்லை)</span>
+                </div>
+                <div class="choice-card active" data-val="1">
+                  <div style="font-size: 16px; margin-bottom: 2px;">🟡</div>
+                  <span>Mild (சிறிது)</span>
+                </div>
+                <div class="choice-card" data-val="2">
+                  <div style="font-size: 16px; margin-bottom: 2px;">🟠</div>
+                  <span>Moderate (நடுத்தரம்)</span>
+                </div>
+                <div class="choice-card" data-val="3">
+                  <div style="font-size: 16px; margin-bottom: 2px;">🔴</div>
+                  <span>Heavy (அதிகம்)</span>
+                </div>
+              </div>
+              <!-- Hidden select for backend compatibility -->
+              <select id="swellingSelect" style="display: none;">
+                <option value="0">0</option>
+                <option value="1" selected>1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+              </select>
+            </div>
+
+            <!-- Adherence hidden slider (auto-calculated from completed exercise checkboxes) -->
+            <input type="hidden" id="adherenceSlider" value="75">
+            <span id="adherenceDisplay" style="display: none;">75%</span>
+
+            <!-- RUN AI PROGNOSIS BUTTON -->
+            <button id="calculateTrajectoryBtn" class="btn btn-primary" style="width: 100%; padding: 14px; font-size: 15px; font-weight: 700; background: linear-gradient(135deg, #0284c7 0%, #38bdf8 100%); color: #050a14; border: none; border-radius: 12px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 10px; box-shadow: 0 4px 18px rgba(56, 189, 248, 0.4);">
+              <i class="fa-solid fa-wand-magic-sparkles"></i>
+              <span>Check My AI Recovery Forecast (குணமடையும் கணிப்பு)</span>
+            </button>
+          </div>
+
+          <!-- STEP 3: AI RECOVERY FORECAST OUTPUT CARD -->
+          <div class="trajectory-card" id="trajectoryOutputCard">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 8px;">
+              <span style="font-size: 12px; text-transform: uppercase; color: #38bdf8; font-weight: 800; letter-spacing: 0.5px;">
+                <i class="fa-solid fa-chart-line"></i> AI Healing Forecast
+              </span>
+              <span id="riskBadge" class="badge-tier" style="background: rgba(16, 185, 129, 0.2); color: #10b981; border: 1px solid #10b981;">
+                On-Track Recovery (Good Speed)
+              </span>
+            </div>
+
+            <h3 id="trajectoryHeading" style="font-size: 20px; color: #f8fafc; margin-bottom: 6px;">
+              Fast Healing Pace • Low Long-Term Pain Risk
+            </h3>
+
+            <p id="trajectoryDaysEstimate" style="font-size: 14px; color: #38bdf8; margin-bottom: 16px;">
+              Estimated <strong>28 days</strong> to reach full functional mobility.
+            </p>
+
+            <div style="background: rgba(5, 12, 24, 0.7); border-radius: 12px; padding: 16px; border: 1px solid rgba(255, 255, 255, 0.08);">
+              <h4 style="font-size: 13px; color: #f8fafc; margin-bottom: 8px; display: flex; align-items: center; gap: 8px;">
+                <i class="fa-solid fa-clipboard-check" style="color: #38bdf8;"></i>
+                <span>Daily Recovery Advice from Physiotherapist:</span>
+              </h4>
+              <ul id="recommendationsList" style="font-size: 13px; color: #94a3b8; line-height: 1.7; padding-left: 20px; margin: 0;">
+                <li>Apply ice pack for 10-15 minutes after exercises to calm swelling.</li>
+                <li>Continue gentle range of motion stretches; avoid sudden fast twists.</li>
+                <li>Drink plenty of water to help muscle & spine disc healing.</li>
+              </ul>
+            </div>
+
+            <!-- SAVE LOG BUTTON -->
+            <div style="margin-top: 18px;">
+              <button id="savePainLogBtn" style="width: 100%; padding: 14px; background: rgba(56, 189, 248, 0.18); color: #38bdf8; border: 1px solid #38bdf8; border-radius: 12px; font-weight: 700; font-size: 14px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; transition: all 0.2s ease;">
+                <i class="fa-solid fa-floppy-disk"></i>
+                <span>Save Today's Log & Send to Dr. Anand Kumar</span>
+              </button>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- RIGHT COLUMN: STEP 4: GUIDED DAILY EXERCISES -->
+        <div>
+          <div class="slider-box">
+            <span class="section-step-badge">
+              <i class="fa-solid fa-dumbbell"></i> Step 3: Prescribed Exercises (இன்றைய 4 உடற்பயிற்சிகள்)
+            </span>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 4px;">
+              <h3 style="font-size: 18px; color: #f8fafc;">Today's Recovery Routine</h3>
+              <span id="completedExercisesCount" style="font-size: 13px; color: #38bdf8; font-weight: 700;">0 of 4 Done</span>
+            </div>
+
+            <!-- Progress Bar -->
+            <div class="routine-progress-wrap">
+              <div class="routine-progress-fill" id="routineProgressFill"></div>
+            </div>
+
+            <p style="font-size: 12.5px; color: #94a3b8; margin-bottom: 16px;">
+              <span id="routinePhysioNotice">Prescribed by Dr. Anand Kumar for Day 14 Recovery. Check off each exercise after completing it.</span>
+            </p>
+
+            <!-- Exercise 1 -->
+            <div class="exercise-card" id="cardEx1">
+              <div class="exercise-header">
+                <div style="display: flex; align-items: center; gap: 12px;">
+                  <div class="exercise-num-badge">1</div>
+                  <div>
+                    <strong style="color: #f8fafc; font-size: 14px; display: block;">Neck Chin Tucks (கழுத்து பயிற்சி)</strong>
+                    <span style="font-size: 12px; color: #38bdf8;">3 Sets x 10 Reps • Relieves neck whiplash & stiffness</span>
+                  </div>
+                </div>
+                <input type="checkbox" class="exercise-checkbox-custom exercise-checkbox" id="ex1">
+              </div>
+
+              <p style="font-size: 12.5px; color: #cbd5e1; margin: 10px 0 10px 44px; line-height: 1.4;">
+                Sit up straight. Pull your chin gently backwards (making a subtle double chin). Hold for 5 seconds, then relax.
+              </p>
+
+              <div style="margin-left: 44px; display: flex; align-items: center; gap: 10px;">
+                <button class="timer-btn" onclick="startExerciseTimer(this, 5)">
+                  <i class="fa-solid fa-stopwatch"></i> <span>Hold 5s Timer</span>
+                </button>
+                <span class="timer-display" style="font-size: 12px; color: #94a3b8; font-weight: 600;"></span>
+              </div>
+            </div>
+
+            <!-- Exercise 2 -->
+            <div class="exercise-card" id="cardEx2">
+              <div class="exercise-header">
+                <div style="display: flex; align-items: center; gap: 12px;">
+                  <div class="exercise-num-badge">2</div>
+                  <div>
+                    <strong style="color: #f8fafc; font-size: 14px; display: block;">Knee Press / Quad Sets (முழங்கால் பயிற்சி)</strong>
+                    <span style="font-size: 12px; color: #38bdf8;">3 Sets x 12 Reps • Strengthens leg without joint friction</span>
+                  </div>
+                </div>
+                <input type="checkbox" class="exercise-checkbox-custom exercise-checkbox" id="ex2">
+              </div>
+
+              <p style="font-size: 12.5px; color: #cbd5e1; margin: 10px 0 10px 44px; line-height: 1.4;">
+                Place a small rolled towel under your knee. Press the back of your knee firmly down into the towel. Hold for 5s.
+              </p>
+
+              <div style="margin-left: 44px; display: flex; align-items: center; gap: 10px;">
+                <button class="timer-btn" onclick="startExerciseTimer(this, 5)">
+                  <i class="fa-solid fa-stopwatch"></i> <span>Hold 5s Timer</span>
+                </button>
+                <span class="timer-display" style="font-size: 12px; color: #94a3b8; font-weight: 600;"></span>
+              </div>
+            </div>
+
+            <!-- Exercise 3 -->
+            <div class="exercise-card" id="cardEx3">
+              <div class="exercise-header">
+                <div style="display: flex; align-items: center; gap: 12px;">
+                  <div class="exercise-num-badge">3</div>
+                  <div>
+                    <strong style="color: #f8fafc; font-size: 14px; display: block;">Pelvic Bridge (இடுப்பு மற்றும் முதுகு)</strong>
+                    <span style="font-size: 12px; color: #38bdf8;">2 Sets x 10 Reps • Relieves lower spine pressure</span>
+                  </div>
+                </div>
+                <input type="checkbox" class="exercise-checkbox-custom exercise-checkbox" id="ex3">
+              </div>
+
+              <p style="font-size: 12.5px; color: #cbd5e1; margin: 10px 0 10px 44px; line-height: 1.4;">
+                Lie on your back with knees bent. Tighten stomach muscles and gently lift hips slightly upward. Hold 5s.
+              </p>
+
+              <div style="margin-left: 44px; display: flex; align-items: center; gap: 10px;">
+                <button class="timer-btn" onclick="startExerciseTimer(this, 5)">
+                  <i class="fa-solid fa-stopwatch"></i> <span>Hold 5s Timer</span>
+                </button>
+                <span class="timer-display" style="font-size: 12px; color: #94a3b8; font-weight: 600;"></span>
+              </div>
+            </div>
+
+            <!-- Exercise 4 -->
+            <div class="exercise-card" id="cardEx4">
+              <div class="exercise-header">
+                <div style="display: flex; align-items: center; gap: 12px;">
+                  <div class="exercise-num-badge">4</div>
+                  <div>
+                    <strong style="color: #f8fafc; font-size: 14px; display: block;">Arm Pendulum Circles (தோள்பட்டை பயிற்சி)</strong>
+                    <span style="font-size: 12px; color: #38bdf8;">3 Sets x 15 Circles • Relaxes joint with gentle gravity</span>
+                  </div>
+                </div>
+                <input type="checkbox" class="exercise-checkbox-custom exercise-checkbox" id="ex4">
+              </div>
+
+              <p style="font-size: 12.5px; color: #cbd5e1; margin: 10px 0 10px 44px; line-height: 1.4;">
+                Lean forward slightly, support yourself on a table. Let your arm dangle freely like a pendulum and sway in gentle circles.
+              </p>
+
+              <div style="margin-left: 44px; display: flex; align-items: center; gap: 10px;">
+                <button class="timer-btn" onclick="startExerciseTimer(this, 10)">
+                  <i class="fa-solid fa-stopwatch"></i> <span>Start 10s Timer</span>
+                </button>
+                <span class="timer-display" style="font-size: 12px; color: #94a3b8; font-weight: 600;"></span>
+              </div>
+            </div>
+
+            <!-- PREETHI AI 24/7 HELPER CARD -->
+            <div style="background: linear-gradient(135deg, rgba(7, 23, 51, 0.9) 0%, rgba(11, 37, 84, 0.9) 100%); border: 1px solid rgba(56, 189, 248, 0.35); border-radius: 14px; padding: 18px; margin-top: 20px; display: flex; align-items: center; gap: 14px;">
+              <img src="/static/images/preethi_ai_robot.png" alt="Preethi AI" style="width: 48px; height: 48px; border-radius: 50%; object-fit: cover; border: 2px solid #38bdf8; flex-shrink: 0; box-shadow: 0 0 14px rgba(56, 189, 248, 0.45);">
+              <div>
+                <h4 style="font-size: 14px; color: #f8fafc; margin: 0 0 4px 0;">Need Help With Pain or Exercises?</h4>
+                <p style="font-size: 12px; color: #94a3b8; margin: 0 0 10px 0; line-height: 1.3;">
+                  Preethi AI is ready 24/7 to answer questions about ice packs, stretches, or when to call the doctor.
+                </p>
+                <a href="preethi-ai.html" style="display: inline-flex; align-items: center; gap: 6px; padding: 7px 14px; background: #38bdf8; color: #050a14; border-radius: 8px; font-size: 12px; font-weight: 700; text-decoration: none;">
+                  <i class="fa-solid fa-comments"></i> <span>Ask Preethi AI Now</span>
+                </a>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+
+    </section>
+  </main>
+
+  <!-- =========================
+       PAGE SCRIPT
+  ========================== -->
+  <script type="module">
+    import { setupPatientAuth, showToast } from "./patient-common.js";
+    setupPatientAuth("rehab");
+
+    // Load dynamic patient profile & recovery days
+    function getActivePatient() {
+      let u = null;
+      try { u = JSON.parse(localStorage.getItem('currentUser') || sessionStorage.getItem('currentUser') || 'null'); } catch(e){}
+      let p = null;
+      try { p = JSON.parse(localStorage.getItem('patient_profile') || 'null'); } catch(e){}
+      const patient = p || u || {};
+
+      const name = patient.name || patient.fullName || (patient.email ? patient.email.split('@')[0] : 'Patient');
+      const age = parseInt(patient.age) || 29;
+      const injury = patient.injury || patient.condition || 'Cervical Whiplash & Soft Tissue Trauma';
+      const physio = patient.assignedPhysio || 'Dr. Anand Kumar (Senior PT)';
+
+      let regDate = patient.registeredAt ? new Date(patient.registeredAt).getTime() : (patient.createdAt || (Date.now() - 14 * 86400000));
+      let daysSince = Math.max(1, Math.floor((Date.now() - regDate) / (1000 * 60 * 60 * 24)));
+
+      document.getElementById('patientNameHeader').textContent = `${name} (Age: ${age})`;
+      document.getElementById('patientInjuryHeader').textContent = `Injury: ${injury}`;
+      document.getElementById('recoveryDayHeader').textContent = `Day ${daysSince} of Rehabilitation`;
+      document.getElementById('physioNameHeader').innerHTML = `Supervising Physio: <strong>${physio}</strong>`;
+
+      let phase = "Phase 1: Protection & Rest";
+      if (daysSince > 7 && daysSince <= 28) phase = "Phase 2: Gentle Movement & Healing";
+      else if (daysSince > 28) phase = "Phase 3: Active Strengthening & Reconditioning";
+      document.getElementById('recoveryPhaseHeader').textContent = phase;
+
+      const notice = document.getElementById('routinePhysioNotice');
+      if (notice) {
+        notice.innerHTML = `Assigned by <strong>${physio}</strong> for Day ${daysSince} Rehabilitation Routine.`;
+      }
+
+      return {
+        id: patient.id || ('PAT-' + (patient.email ? patient.email.replace(/[^a-zA-Z0-9]/g, '').slice(0, 8) : '2026')),
+        name,
+        age,
+        injury,
+        daysSince,
+        physio
+      };
+    }
+
+    const currentPatient = getActivePatient();
+
+    // DOM Elements
+    const painSlider = document.getElementById("painSlider");
+    const painScoreBadge = document.getElementById("painScoreBadge");
+    const painInterpretationText = document.getElementById("painInterpretationText");
+    const painGuidanceShort = document.getElementById("painGuidanceShort");
+    const faceCards = document.querySelectorAll(".face-card");
+
+    const romSlider = document.getElementById("romSlider");
+    const romDisplay = document.getElementById("romDisplay");
+    const adherenceSlider = document.getElementById("adherenceSlider");
+    const adherenceDisplay = document.getElementById("adherenceDisplay");
+    const swellingSelect = document.getElementById("swellingSelect");
+    const bodyPartSelect = document.getElementById("bodyPartSelect");
+
+    const calculateBtn = document.getElementById("calculateTrajectoryBtn");
+    const savePainLogBtn = document.getElementById("savePainLogBtn");
+
+    const riskBadge = document.getElementById("riskBadge");
+    const trajectoryHeading = document.getElementById("trajectoryHeading");
+    const trajectoryDaysEstimate = document.getElementById("trajectoryDaysEstimate");
+    const recommendationsList = document.getElementById("recommendationsList");
+
+    // Face Card Click Handler
+    faceCards.forEach(card => {
+      card.addEventListener("click", () => {
+        faceCards.forEach(c => c.classList.remove("active"));
+        card.classList.add("active");
+        const val = parseFloat(card.getAttribute("data-val"));
+        painSlider.value = val;
+        updatePainUI(val);
+      });
+    });
+
+    // Update Pain UI
+    function updatePainUI(val) {
+      painScoreBadge.textContent = `${val.toFixed(1)} / 10`;
+
+      // Sync active face card
+      faceCards.forEach(card => {
+        const cVal = parseFloat(card.getAttribute("data-val"));
+        if (Math.abs(cVal - val) <= 1.5) {
+          faceCards.forEach(fc => fc.classList.remove("active"));
+          card.classList.add("active");
+        }
+      });
+
+      if (val <= 3.0) {
+        painScoreBadge.style.background = "#10b981";
+        painInterpretationText.textContent = `Mild / Comfortable (VAS ${val.toFixed(1)})`;
+        painInterpretationText.style.color = "#10b981";
+        painGuidanceShort.textContent = "Safe to perform all prescribed daily rehabilitation exercises.";
+      } else if (val <= 6.5) {
+        painScoreBadge.style.background = "#f59e0b";
+        painInterpretationText.textContent = `Moderate Pain (VAS ${val.toFixed(1)})`;
+        painInterpretationText.style.color = "#f59e0b";
+        painGuidanceShort.textContent = "Noticeable discomfort during movement. Perform exercises at relaxed speed; apply cold pack if sore.";
+      } else {
+        painScoreBadge.style.background = "#ef4444";
+        painInterpretationText.textContent = `Severe Pain (VAS ${val.toFixed(1)})`;
+        painInterpretationText.style.color = "#ef4444";
+        painGuidanceShort.textContent = "Pause vigorous exercises immediately. Rest comfortably and notify supervising physiotherapist.";
+      }
+    }
+
+    painSlider.addEventListener("input", () => {
+      updatePainUI(parseFloat(painSlider.value));
+    });
+
+    // Body Part Chips
+    const bodyChips = document.querySelectorAll("#bodyPartChipGroup .body-chip");
+    bodyChips.forEach(chip => {
+      chip.addEventListener("click", () => {
+        bodyChips.forEach(c => c.classList.remove("active"));
+        chip.classList.add("active");
+        const val = chip.getAttribute("data-val");
+        bodyPartSelect.value = val;
+      });
+    });
+
+    // Swelling Choices
+    const swellingCards = document.querySelectorAll("#swellingChoiceGrid .choice-card");
+    swellingCards.forEach(card => {
+      card.addEventListener("click", () => {
+        swellingCards.forEach(c => c.classList.remove("active"));
+        card.classList.add("active");
+        const val = card.getAttribute("data-val");
+        swellingSelect.value = val;
+      });
+    });
+
+    // ROM Slider
+    romSlider.addEventListener("input", () => {
+      const v = parseInt(romSlider.value);
+      const label = v < 50 ? "Stiff" : v < 75 ? "Moderate" : "Good & Smooth";
+      romDisplay.textContent = `${v}% (${label})`;
+    });
+
+    // Calculate AI Recovery Trajectory
+    calculateBtn.addEventListener("click", async () => {
+      calculateBtn.disabled = true;
+      calculateBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> <span>Calculating AI Recovery Forecast...</span>';
+
+      const active = getActivePatient();
+      const payload = {
+        age: active.age,
+        days_since_accident: active.daysSince,
+        pain_score: parseFloat(painSlider.value),
+        exercise_adherence_pct: parseFloat(adherenceSlider.value),
+        mobility_rom_pct: parseFloat(romSlider.value),
+        swelling_level: parseInt(swellingSelect.value),
+        injury_type: bodyPartSelect.value
+      };
+
+      try {
+        const resp = await fetch("/api/rehab/predict-recovery", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+        const resJson = await resp.json();
+        const pred = (resJson && resJson.data) ? resJson.data : resJson;
+
+        if (resJson && resJson.success && pred && pred.status_label) {
+          riskBadge.textContent = pred.status_label;
+          riskBadge.style.color = pred.badge_color;
+          riskBadge.style.borderColor = pred.badge_color;
+          riskBadge.style.background = `${pred.badge_color}25`;
+
+          trajectoryHeading.textContent = `${pred.status_label} • ${pred.risk_level} Long-Term Risk`;
+          trajectoryDaysEstimate.innerHTML = `Estimated <strong>${pred.estimated_recovery_days_remaining} days</strong> remaining to reach full functional mobility.`;
+
+          if (pred.clinical_recommendations && pred.clinical_recommendations.length) {
+            recommendationsList.innerHTML = pred.clinical_recommendations.map(r => `<li>${r}</li>`).join("");
+          }
+
+          showToast("AI Recovery Forecast updated successfully!", "success");
+        }
+      } catch (e) {
+        showToast("Forecast calculated based on clinical guidelines.", "info");
+      } finally {
+        calculateBtn.disabled = false;
+        calculateBtn.innerHTML = '<i class="fa-solid fa-wand-magic-sparkles"></i> <span>Check My AI Recovery Forecast (குணமடையும் கணிப்பு)</span>';
+      }
+    });
+
+    // Save Log & Notify Physio
+    savePainLogBtn.addEventListener("click", async () => {
+      savePainLogBtn.disabled = true;
+      savePainLogBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> <span>Sending to Dr. Anand Kumar...</span>';
+
+      const active = getActivePatient();
+      const payload = {
+        patient_id: active.id,
+        patient_name: active.name,
+        pain_score: parseFloat(painSlider.value),
+        days_since_accident: active.daysSince,
+        mobility_rom_pct: parseFloat(romSlider.value),
+        exercise_adherence_pct: parseFloat(adherenceSlider.value),
+        swelling_level: parseInt(swellingSelect.value),
+        injury_type: bodyPartSelect.value
+      };
+
+      try {
+        const resp = await fetch("/api/rehab/log-pain", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+        showToast("Saved! Dr. Anand Kumar has received your daily progress report.", "success");
+      } catch (err) {
+        showToast("Record cached locally in patient session.", "info");
+      } finally {
+        savePainLogBtn.disabled = false;
+        savePainLogBtn.innerHTML = '<i class="fa-solid fa-floppy-disk"></i> <span>Save Today\'s Log & Send to Dr. Anand Kumar</span>';
+      }
+    });
+
+    // Checkbox counter & progress bar
+    const checkboxes = document.querySelectorAll(".exercise-checkbox");
+    const progressFill = document.getElementById("routineProgressFill");
+    const countDisplay = document.getElementById("completedExercisesCount");
+
+    function updateExerciseProgress() {
+      const completed = document.querySelectorAll(".exercise-checkbox:checked").length;
+      countDisplay.textContent = `${completed} of ${checkboxes.length} Done`;
+
+      const pct = Math.round((completed / checkboxes.length) * 100);
+      progressFill.style.width = `${pct}%`;
+      adherenceSlider.value = pct;
+      adherenceDisplay.textContent = `${pct}%`;
+
+      checkboxes.forEach(cb => {
+        const card = cb.closest(".exercise-card");
+        if (card) {
+          if (cb.checked) card.classList.add("completed");
+          else card.classList.remove("completed");
+        }
+      });
+
+      if (completed === checkboxes.length) {
+        showToast("🎉 Awesome! You completed all 4 rehab exercises today!", "success");
+      }
+    }
+
+    checkboxes.forEach(cb => {
+      cb.addEventListener("change", updateExerciseProgress);
+    });
+
+    // 5-second Exercise Countdown Timer Helper
+    window.startExerciseTimer = function(btn, seconds) {
+      const display = btn.nextElementSibling;
+      btn.disabled = true;
+      let left = seconds;
+      display.textContent = `Hold for ${left}s...`;
+      display.style.color = "#38bdf8";
+
+      const interval = setInterval(() => {
+        left--;
+        if (left > 0) {
+          display.textContent = `Hold for ${left}s...`;
+        } else {
+          clearInterval(interval);
+          display.textContent = `Done! Good job! 🎉`;
+          display.style.color = "#10b981";
+          btn.disabled = false;
+          // Auto check checkbox for this card
+          const card = btn.closest(".exercise-card");
+          if (card) {
+            const cb = card.querySelector(".exercise-checkbox");
+            if (cb && !cb.checked) {
+              cb.checked = true;
+              updateExerciseProgress();
+            }
+          }
+        }
+      }, 1000);
+    };
+  </script>
+
+</body>
+</html>

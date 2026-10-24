@@ -96,12 +96,12 @@ modules = [
                   ("Colab /\nTraining", 87.5, "#fef08a", "#eab308"),
                   ("Model API\n(Inference)", 94.5, "#dcfce7", "#22c55e")],
         "steps": [
-            (81.5, 87.5, 76, "1. Train model\n    (with dataset)", False, "#7c3aed"),
-            (87.5, 81.5, 68, "2. Save model\n    (export)", True, "#ca8a04"),
-            (81.5, 94.5, 58, "3. Use model for\n    inference", False, "#7c3aed"),
-            (94.5, 81.5, 46, "4. Return prediction\n    (or result)", True, "#16a34a")
+            (81.5, 87.5, 73, "1. Train model\n    (with dataset)", False, "#7c3aed"),
+            (87.5, 81.5, 63, "2. Save model\n    (export)", True, "#ca8a04"),
+            (81.5, 94.5, 54, "3. Use model for\n    inference", False, "#7c3aed"),
+            (94.5, 81.5, 45, "4. Return prediction\n    (or result)", True, "#16a34a")
         ],
-        "bars": [(81.5, 46, 76, "#c4b5fd"), (87.5, 68, 76, "#fde047"), (94.5, 46, 58, "#86efac")]
+        "bars": [(81.5, 45, 73, "#c4b5fd"), (87.5, 63, 73, "#fde047"), (94.5, 45, 54, "#86efac")]
     }
 ]
 

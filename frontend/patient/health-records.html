@@ -212,76 +212,70 @@
       font-weight: 700;
     }
   </style>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
 
   <!-- SIDEBAR -->
-  <aside class="sidebar">
-    <div class="logo">
-      <div class="logo-icon">🏥</div>
-      <h2>MediMate AI</h2>
-      <p>Patient Portal</p>
+    <!-- =========================
+       PATIENT SIDEBAR
+  ========================== -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-brand">
+      <div class="brand-logo">M</div>
+      <div class="brand-text">
+        <h2>MediMate <span>AI</span></h2>
+        <p>Physio & Rehab Portal</p>
+      </div>
     </div>
 
-    <div class="menu-container">
-      <ul class="menu">
+    <div class="sidebar-menu">
+      <ul>
         <li>
           <a href="dashboard.html">
-            <span class="nav-icon">🏠</span>
+            <span class="nav-icon"><i class="fa-solid fa-chart-pie"></i></span>
             <span>Dashboard</span>
           </a>
         </li>
         <li>
-          <a href="appointments.html">
-            <span class="nav-icon">📅</span>
-            <span>Appointments</span>
-          </a>
-        </li>
-        <li>
-          <a href="health-records.html" class="active">
-            <span class="nav-icon">❤️</span>
-            <span>Health Records</span>
-          </a>
-        </li>
-        <li>
-          <a href="medicines.html">
-            <span class="nav-icon">💊</span>
-            <span>Medicines</span>
-          </a>
-        </li>
-        <li>
-          <a href="prescriptions.html">
-            <span class="nav-icon">📋</span>
-            <span>Prescriptions</span>
-          </a>
-        </li>
-        <li>
-          <a href="lab-reports.html">
-            <span class="nav-icon">🧪</span>
-            <span>Lab Reports</span>
-          </a>
-        </li>
-        <li>
-          <a href="doctors.html">
-            <span class="nav-icon">👨‍⚕️</span>
-            <span>Doctors</span>
+          <a href="rehab.html">
+            <span class="nav-icon"><i class="fa-solid fa-person-walking"></i></span>
+            <span>Pain & Rehab Tracker</span>
           </a>
         </li>
         <li>
           <a href="preethi-ai.html">
-            <span class="nav-icon">🤖</span>
-            <span>Preethi AI</span>
+            <span class="nav-icon"><i class="fa-solid fa-robot"></i></span>
+            <span>Preethi AI Assistant</span>
           </a>
         </li>
         <li>
-          <a href="notifications.html">
-            <span class="nav-icon">🔔</span>
-            <span>Notifications</span>
+          <a href="/tele-rehab.html">
+            <span class="nav-icon"><i class="fa-solid fa-video"></i></span>
+            <span>Tele-Rehab Consultation</span>
+          </a>
+        </li>
+        <li>
+          <a href="appointments.html">
+            <span class="nav-icon"><i class="fa-solid fa-calendar-check"></i></span>
+            <span>Rehab Appointments</span>
+          </a>
+        </li>
+        <li>
+          <a href="doctors.html">
+            <span class="nav-icon"><i class="fa-solid fa-user-doctor"></i></span>
+            <span>Physiotherapists</span>
+          </a>
+        </li>
+        <li class="active">
+          <a href="health-records.html">
+            <span class="nav-icon"><i class="fa-solid fa-file-medical"></i></span>
+            <span>Recovery Records</span>
           </a>
         </li>
         <li>
           <a href="profile.html">
-            <span class="nav-icon">👤</span>
+            <span class="nav-icon"><i class="fa-solid fa-user"></i></span>
             <span>My Profile</span>
           </a>
         </li>
@@ -289,8 +283,8 @@
     </div>
 
     <div class="logout">
-      <button id="logoutBtn">
-        <span>🚪</span>
+      <button id="logoutBtn" onclick="sessionStorage.clear(); localStorage.removeItem('currentUser'); window.location.href='/login.html';">
+        <i class="fa-solid fa-arrow-right-from-bracket"></i>
         <span>Logout</span>
       </button>
     </div>
@@ -302,10 +296,10 @@
     <!-- TOPBAR -->
     <header class="topbar">
       <div class="topbar-left">
-        <button class="sidebar-toggle-btn" id="sidebarToggleBtn" title="Toggle Menu">☰</button>
+        <button class="sidebar-toggle-btn" id="sidebarToggleBtn" title="Toggle Menu"><i class="fa-solid fa-bars"></i></button>
         <div class="topbar-title">
-          <h1>Health Records & Vitals</h1>
-          <p>Continuous physiological telemetry, allergies & medical history</p>
+          <h1>Accident Recovery Records & Scans</h1>
+          <p>Diagnostic spine scans, kinematics ROM reports & clinical recovery assessments</p>
         </div>
       </div>
 
@@ -331,8 +325,8 @@
       <!-- BANNER -->
       <div class="page-banner">
         <div>
-          <h2>Comprehensive Health Passport</h2>
-          <p>Monitor your everyday vital signs, record clinical readings, and export verified digital health summaries for medical consultations.</p>
+          <h2>Post-Accident Recovery Passport</h2>
+          <p>Manage diagnostic MRI/CT scans, range of motion telemetry, and verified recovery progress documentation.</p>
         </div>
         <div style="display: flex; gap: 10px; flex-wrap: wrap;">
           <button class="btn btn-primary" id="openUploadPdfBtn" style="background: linear-gradient(135deg, #0284c7, #0369a1); border:none; display:flex; align-items:center; gap:8px;">

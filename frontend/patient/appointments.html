@@ -187,76 +187,70 @@
       }
     }
   </style>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
 
   <!-- SIDEBAR -->
-  <aside class="sidebar">
-    <div class="logo">
-      <div class="logo-icon">🏥</div>
-      <h2>MediMate AI</h2>
-      <p>Patient Portal</p>
+    <!-- =========================
+       PATIENT SIDEBAR
+  ========================== -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-brand">
+      <div class="brand-logo">M</div>
+      <div class="brand-text">
+        <h2>MediMate <span>AI</span></h2>
+        <p>Physio & Rehab Portal</p>
+      </div>
     </div>
 
-    <div class="menu-container">
-      <ul class="menu">
+    <div class="sidebar-menu">
+      <ul>
         <li>
           <a href="dashboard.html">
-            <span class="nav-icon">🏠</span>
+            <span class="nav-icon"><i class="fa-solid fa-chart-pie"></i></span>
             <span>Dashboard</span>
           </a>
         </li>
         <li>
-          <a href="appointments.html" class="active">
-            <span class="nav-icon">📅</span>
-            <span>Appointments</span>
-          </a>
-        </li>
-        <li>
-          <a href="health-records.html">
-            <span class="nav-icon">❤️</span>
-            <span>Health Records</span>
-          </a>
-        </li>
-        <li>
-          <a href="medicines.html">
-            <span class="nav-icon">💊</span>
-            <span>Medicines</span>
-          </a>
-        </li>
-        <li>
-          <a href="prescriptions.html">
-            <span class="nav-icon">📋</span>
-            <span>Prescriptions</span>
-          </a>
-        </li>
-        <li>
-          <a href="lab-reports.html">
-            <span class="nav-icon">🧪</span>
-            <span>Lab Reports</span>
-          </a>
-        </li>
-        <li>
-          <a href="doctors.html">
-            <span class="nav-icon">👨‍⚕️</span>
-            <span>Doctors</span>
+          <a href="rehab.html">
+            <span class="nav-icon"><i class="fa-solid fa-person-walking"></i></span>
+            <span>Pain & Rehab Tracker</span>
           </a>
         </li>
         <li>
           <a href="preethi-ai.html">
-            <span class="nav-icon">🤖</span>
-            <span>Preethi AI</span>
+            <span class="nav-icon"><i class="fa-solid fa-robot"></i></span>
+            <span>Preethi AI Assistant</span>
           </a>
         </li>
         <li>
-          <a href="notifications.html">
-            <span class="nav-icon">🔔</span>
-            <span>Notifications</span>
+          <a href="/tele-rehab.html">
+            <span class="nav-icon"><i class="fa-solid fa-video"></i></span>
+            <span>Tele-Rehab Consultation</span>
+          </a>
+        </li>
+        <li class="active">
+          <a href="appointments.html">
+            <span class="nav-icon"><i class="fa-solid fa-calendar-check"></i></span>
+            <span>Rehab Appointments</span>
+          </a>
+        </li>
+        <li>
+          <a href="doctors.html">
+            <span class="nav-icon"><i class="fa-solid fa-user-doctor"></i></span>
+            <span>Physiotherapists</span>
+          </a>
+        </li>
+        <li>
+          <a href="health-records.html">
+            <span class="nav-icon"><i class="fa-solid fa-file-medical"></i></span>
+            <span>Recovery Records</span>
           </a>
         </li>
         <li>
           <a href="profile.html">
-            <span class="nav-icon">👤</span>
+            <span class="nav-icon"><i class="fa-solid fa-user"></i></span>
             <span>My Profile</span>
           </a>
         </li>
@@ -264,8 +258,8 @@
     </div>
 
     <div class="logout">
-      <button id="logoutBtn">
-        <span>🚪</span>
+      <button id="logoutBtn" onclick="sessionStorage.clear(); localStorage.removeItem('currentUser'); window.location.href='/login.html';">
+        <i class="fa-solid fa-arrow-right-from-bracket"></i>
         <span>Logout</span>
       </button>
     </div>
@@ -277,7 +271,7 @@
     <!-- TOPBAR -->
     <header class="topbar">
       <div class="topbar-left">
-        <button class="sidebar-toggle-btn" id="sidebarToggleBtn" title="Toggle Menu">☰</button>
+        <button class="sidebar-toggle-btn" id="sidebarToggleBtn" title="Toggle Menu"><i class="fa-solid fa-bars"></i></button>
         <div class="topbar-title">
           <h1>My Appointments</h1>
           <p>Schedule, manage and join your medical consultations</p>
@@ -386,22 +380,20 @@
       <div class="modal-header">
         <div>
           <h3>📅 Book a Medical Appointment</h3>
-          <p style="font-size: 12px; color: #94a3b8; margin-top: 3px;">Consult with verified hospital doctors & specialists</p>
+          <p style="font-size: 12px; color: #94a3b8; margin-top: 3px;">Consult with licensed physiotherapists & trauma recovery specialists</p>
         </div>
         <button class="modal-close" id="closeBookModalBtn">&times;</button>
       </div>
       <form id="bookAppointmentForm">
         <div class="modal-body">
           <div class="form-group">
-            <label for="deptSelect">🏥 Select Medical Department</label>
+                        <label for="deptSelect"><i class="fa-solid fa-stethoscope" style="color:#38bdf8; margin-right:6px;"></i> Select Clinical Rehabilitation Specialty</label>
             <select id="deptSelect" required>
-              <option value="">-- Choose Department --</option>
-              <option value="Cardiology">Cardiology (Heart & Circulation)</option>
-              <option value="General Medicine">General Medicine & Internal Care</option>
-              <option value="Dermatology">Dermatology (Skin & Hair)</option>
-              <option value="Orthopedics">Orthopedics (Bones & Joints)</option>
-              <option value="Neurology">Neurology (Brain & Nerves)</option>
-              <option value="Pediatrics">Pediatrics (Child Health)</option>
+              <option value="">-- Choose Specialty --</option>
+              <option value="Orthopedic Rehabilitation">Orthopedic Rehabilitation (Post-Trauma Bones & Joints)</option>
+              <option value="Post-Accident Trauma & Sports Physio">Post-Accident Trauma Physio (Spine & Soft Tissue Injury)</option>
+              <option value="Neurological Rehabilitation">Neurological Rehabilitation (Nerve Recovery & Balance)</option>
+              <option value="Spine & Joint Mobilization">Spine & Joint Mobilization (Cervical & Lumbar Decompression)</option>
             </select>
           </div>
 
@@ -440,12 +432,12 @@
 
           <div class="form-group">
             <label for="aptReason">📝 Reason for Visit / Symptoms</label>
-            <textarea id="aptReason" rows="3" placeholder="Briefly describe your symptoms or reason for visit (e.g., routine blood pressure review, headache, joint pain)..." required></textarea>
+            <textarea id="aptReason" rows="3" placeholder="Briefly describe your symptoms or reason for visit (e.g., post-accident cervical stiffness, lower back pain, knee joint strain)..." required></textarea>
           </div>
 
-          <div style="background: rgba(0, 229, 153, 0.08); border: 1px solid rgba(0, 229, 153, 0.2); border-radius: 8px; padding: 12px 14px; font-size: 13px; color: #cbd5e1; display: flex; align-items: center; gap: 10px;">
-            <span style="font-size: 18px;">ℹ️</span>
-            <span>Estimated consultation fee: <strong style="color: #00e599;">₹500 - ₹800</strong> (Instant confirmation & automated OPD token issued)</span>
+          <div style="background: rgba(56, 189, 248, 0.08); border: 1px solid rgba(56, 189, 248, 0.25); border-radius: 8px; padding: 12px 14px; font-size: 13px; color: #cbd5e1; display: flex; align-items: center; gap: 10px;">
+            <i class="fa-solid fa-circle-info" style="color:#38bdf8; font-size:18px;"></i>
+            <span>Estimated consultation fee: <strong style="color: #38bdf8;">₹600 - ₹750</strong> (Instant booking confirmation & tele-rehab meet room token issued)</span>
           </div>
         </div>
 

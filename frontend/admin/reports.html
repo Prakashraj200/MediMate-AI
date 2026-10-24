@@ -3,9 +3,147 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hospital Analytics & Reports | MediMate-AI Admin</title>
+    <title>Rehab Analytics & Recovery Intelligence | MediMate-AI Admin</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        /* ================= SIDEBAR EXPLICIT BULLETPROOF STYLES ================= */
+        .sidebar {
+            width: 270px !important;
+            min-width: 270px !important;
+            max-width: 270px !important;
+            height: 100vh !important;
+            background: #071224 !important;
+            border-right: 1px solid rgba(255, 255, 255, 0.08) !important;
+            color: #f8fafc !important;
+            position: fixed !important;
+            left: 0 !important;
+            top: 0 !important;
+            bottom: 0 !important;
+            z-index: 1000 !important;
+            display: flex !important;
+            flex-direction: column !important;
+            transform: none !important;
+            padding: 24px 16px !important;
+            box-sizing: border-box !important;
+            overflow-y: auto !important;
+        }
+
+        .brand {
+            display: flex !important;
+            flex-direction: row !important;
+            align-items: center !important;
+            gap: 14px !important;
+            padding: 6px 8px 22px 8px !important;
+            margin-bottom: 12px !important;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+            width: 100% !important;
+            box-sizing: border-box !important;
+        }
+
+        .brand-logo {
+            width: 44px !important;
+            min-width: 44px !important;
+            max-width: 44px !important;
+            height: 44px !important;
+            min-height: 44px !important;
+            max-height: 44px !important;
+            background: linear-gradient(135deg, #0284c7 0%, #38bdf8 100%) !important;
+            color: #ffffff !important;
+            box-shadow: 0 4px 16px rgba(56, 189, 248, 0.35) !important;
+            border-radius: 12px !important;
+            font-weight: 800 !important;
+            font-size: 22px !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            flex-shrink: 0 !important;
+        }
+
+        .brand-text {
+            display: flex !important;
+            flex-direction: column !important;
+        }
+
+        .brand-text h2 {
+            font-size: 19px !important;
+            font-weight: 800 !important;
+            color: #ffffff !important;
+            letter-spacing: -0.3px !important;
+            margin: 0 !important;
+            line-height: 1.2 !important;
+        }
+
+        .brand-text h2 span {
+            color: #38bdf8 !important;
+        }
+
+        .brand-text p {
+            font-size: 11px !important;
+            color: #38bdf8 !important;
+            font-weight: 700 !important;
+            text-transform: uppercase !important;
+            letter-spacing: 1px !important;
+            margin: 3px 0 0 0 !important;
+        }
+
+        .menu-title {
+            color: #64748b !important;
+            font-size: 11px !important;
+            font-weight: 700 !important;
+            letter-spacing: 1.2px !important;
+            text-transform: uppercase !important;
+            margin: 18px 10px 8px 10px !important;
+        }
+
+        .nav-link {
+            display: flex !important;
+            align-items: center !important;
+            gap: 14px !important;
+            color: #94a3b8 !important;
+            border: 1px solid transparent !important;
+            border-radius: 12px !important;
+            background: transparent !important;
+            font-weight: 600 !important;
+            font-size: 14px !important;
+            padding: 12px 16px !important;
+            margin: 4px 0 !important;
+            text-decoration: none !important;
+            transition: all 0.25s ease !important;
+            box-sizing: border-box !important;
+            width: 100% !important;
+        }
+
+        .nav-icon {
+            width: 22px !important;
+            min-width: 22px !important;
+            text-align: center !important;
+            font-size: 17px !important;
+            display: inline-flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            flex-shrink: 0 !important;
+            color: inherit !important;
+        }
+
+        .nav-label {
+            flex: 1 !important;
+            color: inherit !important;
+        }
+
+        .nav-link:hover {
+            background: rgba(255, 255, 255, 0.05) !important;
+            color: #ffffff !important;
+            transform: translateX(4px) !important;
+        }
+
+        .nav-link.active {
+            background: linear-gradient(135deg, rgba(56, 189, 248, 0.18) 0%, rgba(2, 132, 199, 0.08) 100%) !important;
+            color: #38bdf8 !important;
+            border: 1px solid rgba(56, 189, 248, 0.35) !important;
+            box-shadow: 0 4px 20px rgba(56, 189, 248, 0.15) !important;
+            font-weight: 700 !important;
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -14,8 +152,8 @@
         }
 
         body {
-            background: #f2faf6;
-            color: #183b2a;
+            background: #061121;
+            color: #f8fafc;
             min-height: 100vh;
         }
 
@@ -27,7 +165,7 @@
         .sidebar {
             width: 270px;
             min-height: 100vh;
-            background: linear-gradient(180deg, #087f5b, #07583f);
+            background: linear-gradient(180deg, #0284c7, #0a192f);
             color: white;
             padding: 25px 18px;
             position: fixed;
@@ -49,7 +187,7 @@
             width: 46px;
             height: 46px;
             background: white;
-            color: #087f5b;
+            color: #0284c7;
             border-radius: 14px;
             display: flex;
             align-items: center;
@@ -130,8 +268,8 @@
             transition: all 0.2s ease;
         }
 
-        .btn-primary { background: #087f5b; color: white; }
-        .btn-secondary { background: #edf7f2; color: #087f5b; border: 1px solid #c2e5d4; }
+        .btn-primary { background: #0284c7; color: white; }
+        .btn-secondary { background: #edf7f2; color: #0284c7; border: 1px solid #c2e5d4; }
 
         .stats-grid {
             display: grid;
@@ -145,7 +283,7 @@
             padding: 22px;
             border-radius: 18px;
             border: 1px solid #e1efe7;
-            box-shadow: 0 4px 15px rgba(8, 127, 91, 0.05);
+            box-shadow: 0 4px 15px rgba(56, 189, 248, 0.05);
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -176,7 +314,7 @@
             border-radius: 20px;
             padding: 24px;
             border: 1px solid #e1efe7;
-            box-shadow: 0 4px 15px rgba(8, 127, 91, 0.04);
+            box-shadow: 0 4px 15px rgba(56, 189, 248, 0.04);
         }
 
         .chart-bar-container {
@@ -200,7 +338,7 @@
         .chart-bar {
             width: 100%;
             max-width: 42px;
-            background: linear-gradient(180deg, #059669, #10b981);
+            background: linear-gradient(180deg, #0284c7, #38bdf8);
             border-radius: 6px 6px 0 0;
             position: relative;
             transition: height 0.5s ease;
@@ -244,7 +382,7 @@
 
         .progress-fill {
             height: 100%;
-            background: #087f5b;
+            background: #0284c7;
             border-radius: 999px;
         }
 
@@ -263,41 +401,32 @@
 <body>
 <div class="dashboard-container">
     <!-- Sidebar -->
-    <aside class="sidebar" id="sidebar">
-        <div class="logo">
-            <div class="logo-icon">M</div>
-            <div>
+                        <aside class="sidebar" id="sidebar">
+        <div class="brand">
+            <div class="brand-logo">M</div>
+            <div class="brand-text">
                 <h2>MediMate <span>AI</span></h2>
-                <p>Hospital Administration</p>
+                <p>Rehab Admin Portal</p>
             </div>
         </div>
 
-        <p class="menu-title">Main Navigation</p>
-        <ul class="menu">
-            <li><a href="dashboard.html"><span class="menu-icon">📊</span><span>Dashboard</span></a></li>
-            <li><a href="doctors.html"><span class="menu-icon">👨‍⚕️</span><span>Doctors</span></a></li>
-            <li><a href="patients.html"><span class="menu-icon">🧑‍🤝‍🧑</span><span>Patients</span></a></li>
-            <li><a href="laboratory.html"><span class="menu-icon">🧪</span><span>Laboratory</span></a></li>
-            <li><a href="pharmacy.html"><span class="menu-icon">💊</span><span>Pharmacy</span></a></li>
-            <li><a href="appointments.html"><span class="menu-icon">📅</span><span>Appointments</span></a></li>
-            <li><a href="departments.html"><span class="menu-icon">🏥</span><span>Departments</span></a></li>
-            <li><a href="medicines.html"><span class="menu-icon">📦</span><span>Medicines Inventory</span></a></li>
-            <li><a href="prescriptions.html"><span class="menu-icon">📋</span><span>Prescriptions</span></a></li>
-            <li><a href="reports.html" class="active"><span class="menu-icon">📈</span><span>Reports & Analytics</span></a></li>
-        </ul>
+        <div class="menu-title">Main Menu</div>
+        <a href="dashboard.html" class="nav-link"><span class="nav-icon"><i class="fa-solid fa-chart-pie"></i></span><span class="nav-label">Dashboard</span></a>
+        <a href="doctors.html" class="nav-link"><span class="nav-icon"><i class="fa-solid fa-user-doctor"></i></span><span class="nav-label">Physiotherapists</span></a>
+        <a href="patients.html" class="nav-link"><span class="nav-icon"><i class="fa-solid fa-user-injured"></i></span><span class="nav-label">Rehab Patients</span></a>
+        <a href="appointments.html" class="nav-link"><span class="nav-icon"><i class="fa-solid fa-calendar-check"></i></span><span class="nav-label">Rehab Appointments</span></a>
+        <a href="tele-rehab.html" class="nav-link"><span class="nav-icon"><i class="fa-solid fa-video"></i></span><span class="nav-label">Tele-Rehab Consultation</span></a>
+        <a href="reports.html" class="nav-link active"><span class="nav-icon"><i class="fa-solid fa-chart-line"></i></span><span class="nav-label">Reports & Analytics</span></a>
 
-        <p class="menu-title">System & Security</p>
-        <ul class="menu">
-            <li><a href="notifications.html"><span class="menu-icon">🔔</span><span>Notifications</span></a></li>
-            <li><a href="settings.html"><span class="menu-icon">⚙️</span><span>Settings</span></a></li>
-            <li><a href="profile.html"><span class="menu-icon">👤</span><span>Admin Profile</span></a></li>
-            <li><a href="admin-login.html" onclick="sessionStorage.clear(); localStorage.removeItem('currentUser'); localStorage.removeItem('firebaseIdToken'); localStorage.removeItem('adminLoggedIn');"><span class="menu-icon">🚪</span><span>Sign Out</span></a></li>
-        </ul>
+        <div class="menu-title">System & Security</div>
+        <a href="settings.html" class="nav-link"><span class="nav-icon"><i class="fa-solid fa-sliders"></i></span><span class="nav-label">Settings</span></a>
+        <a href="profile.html" class="nav-link"><span class="nav-icon"><i class="fa-solid fa-user-shield"></i></span><span class="nav-label">Admin Profile</span></a>
+        <a href="/login.html" class="nav-link" onclick="sessionStorage.clear(); localStorage.removeItem('currentUser'); localStorage.removeItem('firebaseIdToken'); localStorage.removeItem('adminLoggedIn'); localStorage.removeItem('userRole');"><span class="nav-icon"><i class="fa-solid fa-arrow-right-from-bracket"></i></span><span class="nav-label">Sign Out</span></a>
     </aside>
 
     <div class="main-content">
         <header class="topbar">
-            <h3 style="font-size: 18px; color: #087f5b; font-weight: 700;">Executive Clinical & Operations Intelligence</h3>
+            <h3 style="font-size: 18px; color: #0284c7; font-weight: 700;">Post-Accident Rehabilitation & Recovery Intelligence</h3>
             <div style="display:flex; gap:10px;">
                 <button class="btn btn-secondary" onclick="window.print()"><i class="fa-solid fa-print"></i> Print Executive Summary</button>
                 <button class="btn btn-primary" onclick="exportReportData()"><i class="fa-solid fa-file-export"></i> Export CSV</button>
@@ -308,31 +437,31 @@
             <div class="stats-grid">
                 <div class="stat-card">
                     <div>
-                        <h3>Total Consultations</h3>
+                        <h3>Total Rehab Consultations</h3>
                         <div class="value">4,892</div>
                     </div>
-                    <div class="stat-icon" style="background:#eaf8f0; color:#087f5b;"><i class="fa-solid fa-stethoscope"></i></div>
+                    <div class="stat-icon" style="background:#eaf8f0; color:#0284c7;"><i class="fa-solid fa-stethoscope"></i></div>
                 </div>
                 <div class="stat-card">
                     <div>
-                        <h3>Lab Diagnostic Volume</h3>
-                        <div class="value" style="color:#0284c7;">3,120</div>
+                        <h3>Tele-Rehab Video Sessions</h3>
+                        <div class="value" style="color:#0284c7;">1,420</div>
                     </div>
-                    <div class="stat-icon" style="background:#f0f9ff; color:#0284c7;"><i class="fa-solid fa-flask-vial"></i></div>
+                    <div class="stat-icon" style="background:#f0f9ff; color:#0284c7;"><i class="fa-solid fa-video"></i></div>
                 </div>
                 <div class="stat-card">
                     <div>
-                        <h3>Preethi AI Triage Inquiries</h3>
+                        <h3>Preethi AI Clinical Consults</h3>
                         <div class="value" style="color:#7c3aed;">12,450</div>
                     </div>
                     <div class="stat-icon" style="background:#f5f3ff; color:#7c3aed;"><i class="fa-solid fa-brain"></i></div>
                 </div>
                 <div class="stat-card">
                     <div>
-                        <h3>Avg. Patient Recovery Rate</h3>
-                        <div class="value" style="color:#10b981;">98.4%</div>
+                        <h3>Chronic Pain Prevention Rate</h3>
+                        <div class="value" style="color:#38bdf8;">92.1%</div>
                     </div>
-                    <div class="stat-icon" style="background:#ecfdf5; color:#10b981;"><i class="fa-solid fa-chart-line"></i></div>
+                    <div class="stat-icon" style="background:#ecfdf5; color:#38bdf8;"><i class="fa-solid fa-shield-halved"></i></div>
                 </div>
             </div>
 
@@ -344,7 +473,7 @@
                             <h3 style="font-size:16px; font-weight:700;">Monthly Outpatient Flow</h3>
                             <p style="font-size:12.5px; color:#64748b;">Consultations logged across all departments (in hundreds).</p>
                         </div>
-                        <span style="font-size:12px; font-weight:600; color:#087f5b;">2026 Fiscal Year</span>
+                        <span style="font-size:12px; font-weight:600; color:#0284c7;">2026 Fiscal Year</span>
                     </div>
 
                     <div class="chart-bar-container">
@@ -377,47 +506,47 @@
 
                 <!-- Department load -->
                 <div class="panel">
-                    <h3 style="font-size:16px; font-weight:700; margin-bottom:4px;">Department Occupancy & Load</h3>
-                    <p style="font-size:12.5px; color:#64748b; margin-bottom:20px;">Staff allocation vs active inpatient/outpatient census.</p>
+                    <h3 style="font-size:16px; font-weight:700; margin-bottom:4px;">Rehabilitation Division Census & Velocity</h3>
+                    <p style="font-size:12.5px; color:#64748b; margin-bottom:20px;">Active recovery capacity and physiotherapist caseload.</p>
 
                     <div class="dept-progress">
                         <div class="dept-header">
-                            <span>Cardiology</span>
-                            <span>84% capacity</span>
+                            <span>Whiplash & Cervical Spine Unit</span>
+                            <span>92% Recovery Velocity</span>
                         </div>
-                        <div class="progress-track"><div class="progress-fill" style="width: 84%; background: #dc2626;"></div></div>
+                        <div class="progress-track"><div class="progress-fill" style="width: 92%; background: #0284c7;"></div></div>
                     </div>
 
                     <div class="dept-progress">
                         <div class="dept-header">
-                            <span>General Medicine</span>
-                            <span>92% capacity</span>
+                            <span>Orthopedic Trauma & Fracture Recovery</span>
+                            <span>88% Recovery Velocity</span>
                         </div>
-                        <div class="progress-track"><div class="progress-fill" style="width: 92%; background: #087f5b;"></div></div>
+                        <div class="progress-track"><div class="progress-fill" style="width: 88%; background: #0284c7;"></div></div>
                     </div>
 
                     <div class="dept-progress">
                         <div class="dept-header">
-                            <span>Pediatrics</span>
-                            <span>65% capacity</span>
+                            <span>Knee Meniscus & ACL Rehab</span>
+                            <span>78% Recovery Velocity</span>
                         </div>
-                        <div class="progress-track"><div class="progress-fill" style="width: 65%; background: #0284c7;"></div></div>
+                        <div class="progress-track"><div class="progress-fill" style="width: 78%; background: #3b82f6;"></div></div>
                     </div>
 
                     <div class="dept-progress">
                         <div class="dept-header">
-                            <span>Orthopedics</span>
-                            <span>71% capacity</span>
+                            <span>Lumbar Spine & Core Rehabilitation</span>
+                            <span>84% Recovery Velocity</span>
                         </div>
-                        <div class="progress-track"><div class="progress-fill" style="width: 71%; background: #d97706;"></div></div>
+                        <div class="progress-track"><div class="progress-fill" style="width: 84%; background: #d97706;"></div></div>
                     </div>
 
                     <div class="dept-progress">
                         <div class="dept-header">
-                            <span>Laboratory & Pathology</span>
-                            <span>88% capacity</span>
+                            <span>TENS & Electrotherapy Modalities</span>
+                            <span>95% Utilization Rate</span>
                         </div>
-                        <div class="progress-track"><div class="progress-fill" style="width: 88%; background: #7c3aed;"></div></div>
+                        <div class="progress-track"><div class="progress-fill" style="width: 95%; background: #7c3aed;"></div></div>
                     </div>
                 </div>
             </div>
@@ -427,11 +556,17 @@
 
 <script>
     function exportReportData() {
-        const csv = "Department,Capacity,MonthlyPatients,AvgStayDays\\nCardiology,84%,840,4.2\\nGeneral Medicine,92%,1020,2.1\\nPediatrics,65%,580,1.8\\nOrthopedics,71%,710,5.0\\nLaboratory,88%,3120,0.5\\n";
+        const csv = "RehabDivision,RecoveryVelocity,MonthlyPatients,AvgRecoveryDays
+Whiplash & Cervical Spine,92%,320,28.5
+Orthopedic Trauma,88%,410,42.0
+Knee Meniscus & ACL,78%,290,56.0
+Lumbar Spine,84%,350,35.0
+TENS & Modalities,95%,820,14.0
+";
         const blob = new Blob([csv], { type: 'text/csv' });
         const a = document.createElement('a');
         a.href = URL.createObjectURL(blob);
-        a.download = 'hospital_executive_analytics.csv';
+        a.download = 'medimate_rehab_analytics.csv';
         a.click();
     }
 </script>

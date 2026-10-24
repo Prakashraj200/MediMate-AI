@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Patient Dashboard - MediMate AI</title>
+  <title>Patient Rehab Dashboard | MediMate AI</title>
   <link rel="stylesheet" href="patient-style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
-    /* Dashboard specific customizations */
     .dashboard-grid {
       display: grid;
-      grid-template-columns: 2fr 1.2fr;
+      grid-template-columns: 1.8fr 1.2fr;
       gap: 24px;
     }
 
@@ -40,12 +40,15 @@
     .doctor-avatar-box {
       width: 48px;
       height: 48px;
-      border-radius: 14px;
+      border-radius: 12px;
       background: var(--primary-subtle);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      color: #38bdf8;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 24px;
+      font-size: 16px;
+      font-weight: 800;
       flex-shrink: 0;
     }
 
@@ -76,28 +79,30 @@
       border: 1px solid rgba(255, 255, 255, 0.08);
       border-radius: var(--radius-md);
       background: rgba(13, 22, 41, 0.85);
-      transition: all 0.2s ease;
+      transition: all 0.25s ease;
       display: flex;
       flex-direction: column;
       align-items: center;
       gap: 10px;
       box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
+      text-decoration: none;
     }
 
     .action-tile:hover {
-      background: rgba(0, 229, 153, 0.12);
-      border-color: #00e599;
+      background: rgba(56, 189, 248, 0.12);
+      border-color: #38bdf8;
       transform: translateY(-3px);
-      box-shadow: 0 8px 25px rgba(0, 229, 153, 0.2);
+      box-shadow: 0 8px 25px rgba(56, 189, 248, 0.25);
     }
 
     .action-tile .action-icon {
-      font-size: 32px;
-      filter: drop-shadow(0 2px 8px rgba(0, 229, 153, 0.25));
+      font-size: 26px;
+      color: #38bdf8;
+      filter: drop-shadow(0 2px 8px rgba(56, 189, 248, 0.35));
     }
 
     .action-tile span {
-      font-size: 14px;
+      font-size: 13.5px;
       font-weight: 700;
       color: #ffffff;
       letter-spacing: 0.2px;
@@ -105,7 +110,7 @@
 
     .vitals-preview-strip {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(2, 1fr);
       gap: 12px;
       margin-top: 16px;
     }
@@ -114,23 +119,49 @@
       background: var(--bg-surface-alt);
       border: 1px solid var(--border-color);
       border-radius: var(--radius-sm);
-      padding: 12px;
-      text-align: center;
+      padding: 14px;
+      text-align: left;
     }
 
     .vital-mini-card p {
-      font-size: 11px;
+      font-size: 12px;
       color: var(--text-muted);
       margin-bottom: 4px;
+      font-weight: 600;
     }
 
     .vital-mini-card strong {
-      font-size: 16px;
-      color: var(--primary-dark);
+      font-size: 18px;
+      color: #38bdf8;
+      font-weight: 800;
+    }
+
+    .routine-exercise-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 16px;
+      background: var(--bg-surface-alt);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      margin-bottom: 10px;
+    }
+
+    .routine-exercise-item .routine-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: #ffffff;
+    }
+
+    .routine-exercise-item .routine-sub {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-top: 2px;
     }
 
     .ai-banner-card {
-      background: linear-gradient(135deg, #094833 0%, #0ca678 100%);
+      background: linear-gradient(135deg, #071733 0%, #0b2554 100%);
+      border: 1px solid rgba(56, 189, 248, 0.3);
       color: white;
       border-radius: var(--radius-md);
       padding: 22px;
@@ -138,13 +169,12 @@
       align-items: center;
       gap: 18px;
       margin-top: 24px;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
     }
 
     .ai-banner-card .ai-avatar {
-      font-size: 42px;
-      background: rgba(255, 255, 255, 0.15);
-      width: 64px;
-      height: 64px;
+      width: 58px;
+      height: 58px;
       border-radius: 50%;
       display: flex;
       align-items: center;
@@ -154,12 +184,14 @@
 
     .ai-banner-card h4 {
       font-size: 16px;
+      font-weight: 800;
+      color: #ffffff;
       margin-bottom: 4px;
     }
 
     .ai-banner-card p {
       font-size: 13px;
-      opacity: 0.9;
+      color: #94a3b8;
       line-height: 1.4;
       margin-bottom: 12px;
     }
@@ -174,74 +206,64 @@
 <body>
 
   <!-- =========================
-       SIDEBAR
+       PATIENT SIDEBAR
   ========================== -->
-  <aside class="sidebar">
-    <div class="logo">
-      <div class="logo-icon">🏥</div>
-      <h2>MediMate AI</h2>
-      <p>Patient Portal</p>
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-brand">
+      <div class="brand-logo">M</div>
+      <div class="brand-text">
+        <h2>MediMate <span>AI</span></h2>
+        <p>Physio & Rehab Portal</p>
+      </div>
     </div>
 
-    <div class="menu-container">
-      <ul class="menu">
-        <li>
-          <a href="dashboard.html" class="active">
-            <span class="nav-icon">🏠</span>
+    <div class="sidebar-menu">
+      <ul>
+        <li class="active">
+          <a href="dashboard.html">
+            <span class="nav-icon"><i class="fa-solid fa-chart-pie"></i></span>
             <span>Dashboard</span>
           </a>
         </li>
         <li>
-          <a href="appointments.html">
-            <span class="nav-icon">📅</span>
-            <span>Appointments</span>
-          </a>
-        </li>
-        <li>
-          <a href="health-records.html">
-            <span class="nav-icon">❤️</span>
-            <span>Health Records</span>
-          </a>
-        </li>
-        <li>
-          <a href="medicines.html">
-            <span class="nav-icon">💊</span>
-            <span>Medicines</span>
-          </a>
-        </li>
-        <li>
-          <a href="prescriptions.html">
-            <span class="nav-icon">📋</span>
-            <span>Prescriptions</span>
-          </a>
-        </li>
-        <li>
-          <a href="lab-reports.html">
-            <span class="nav-icon">🧪</span>
-            <span>Lab Reports</span>
-          </a>
-        </li>
-        <li>
-          <a href="doctors.html">
-            <span class="nav-icon">👨‍⚕️</span>
-            <span>Doctors</span>
+          <a href="rehab.html">
+            <span class="nav-icon"><i class="fa-solid fa-person-walking"></i></span>
+            <span>Pain & Rehab Tracker</span>
           </a>
         </li>
         <li>
           <a href="preethi-ai.html">
-            <span class="nav-icon">🤖</span>
-            <span>Preethi AI</span>
+            <span class="nav-icon"><i class="fa-solid fa-robot"></i></span>
+            <span>Preethi AI Assistant</span>
           </a>
         </li>
         <li>
-          <a href="notifications.html">
-            <span class="nav-icon">🔔</span>
-            <span>Notifications</span>
+          <a href="/tele-rehab.html">
+            <span class="nav-icon"><i class="fa-solid fa-video"></i></span>
+            <span>Tele-Rehab Consultation</span>
+          </a>
+        </li>
+        <li>
+          <a href="appointments.html">
+            <span class="nav-icon"><i class="fa-solid fa-calendar-check"></i></span>
+            <span>Rehab Appointments</span>
+          </a>
+        </li>
+        <li>
+          <a href="doctors.html">
+            <span class="nav-icon"><i class="fa-solid fa-user-doctor"></i></span>
+            <span>Physiotherapists</span>
+          </a>
+        </li>
+        <li>
+          <a href="health-records.html">
+            <span class="nav-icon"><i class="fa-solid fa-file-medical"></i></span>
+            <span>Recovery Records</span>
           </a>
         </li>
         <li>
           <a href="profile.html">
-            <span class="nav-icon">👤</span>
+            <span class="nav-icon"><i class="fa-solid fa-user"></i></span>
             <span>My Profile</span>
           </a>
         </li>
@@ -249,8 +271,8 @@
     </div>
 
     <div class="logout">
-      <button id="logoutBtn">
-        <span>🚪</span>
+      <button id="logoutBtn" onclick="sessionStorage.clear(); localStorage.removeItem('currentUser'); window.location.href='/login.html';">
+        <i class="fa-solid fa-arrow-right-from-bracket"></i>
         <span>Logout</span>
       </button>
     </div>
@@ -264,23 +286,25 @@
     <!-- TOPBAR -->
     <header class="topbar">
       <div class="topbar-left">
-        <button class="sidebar-toggle-btn" id="sidebarToggleBtn" title="Toggle Menu">☰</button>
+        <button class="sidebar-toggle-btn" id="sidebarToggleBtn" title="Toggle Menu">
+          <i class="fa-solid fa-bars"></i>
+        </button>
         <div class="topbar-title">
-          <h1>Patient Dashboard</h1>
-          <p>Welcome to your personal health hub</p>
+          <h1>Patient Rehab Dashboard</h1>
+          <p>Personalized Trauma & Mobility Recovery Progress</p>
         </div>
       </div>
 
       <div class="topbar-right">
-        <a href="notifications.html" class="notif-link" title="Notifications">
-          <span>🔔</span>
+        <a href="dashboard.html" class="notif-link" title="Notifications">
+          <i class="fa-solid fa-bell"></i>
           <span class="notif-badge" id="notifBadge" style="display: none;">0</span>
         </a>
 
         <a href="profile.html" class="user-profile-widget">
           <div class="user-profile-info">
             <strong id="userName">Patient</strong>
-            <span>Verified Patient</span>
+            <span>Rehab Patient</span>
           </div>
           <div class="user-avatar-circle" id="userAvatar">P</div>
         </a>
@@ -293,50 +317,50 @@
       <!-- WELCOME HERO -->
       <div class="page-banner">
         <div>
-          <h2>Welcome back, <span id="welcomeName">Patient</span>! 👋</h2>
-          <p>Manage your health, upcoming appointments, prescriptions and diagnostic records in one secure, unified portal.</p>
+          <h2>Welcome back, <span id="welcomeName">Patient</span>!</h2>
+          <p>Track your post-accident mobility milestones, daily rehab exercises, and tele-consultations in one unified care portal.</p>
         </div>
-        <a href="appointments.html" class="btn btn-primary">
-          <span>📅</span>
-          <span>Book Appointment</span>
+        <a href="rehab.html" class="btn btn-primary" style="display: inline-flex; align-items: center; gap: 8px;">
+          <i class="fa-solid fa-person-walking"></i>
+          <span>Open Pain & Rehab Tracker</span>
         </a>
       </div>
 
       <!-- SUMMARY STAT CARDS -->
       <div class="stats-grid">
         <div class="stat-card">
-          <div class="stat-icon">📅</div>
+          <div class="stat-icon"><i class="fa-solid fa-chart-line" style="color: #38bdf8;"></i></div>
           <div class="stat-details">
-            <h4>Upcoming Appointments</h4>
+            <h4>Mobility Restoration</h4>
+            <div class="stat-value" id="statMobility">78%</div>
+            <p class="stat-sub">ROM: C-Spine & Lumbar</p>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon"><i class="fa-solid fa-heart-pulse" style="color: #38bdf8;"></i></div>
+          <div class="stat-details">
+            <h4>Current Pain Score</h4>
+            <div class="stat-value" id="statPain" style="color: #38bdf8;">3 / 10</div>
+            <p class="stat-sub">Controlled (Mild Strain)</p>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon"><i class="fa-solid fa-calendar-check" style="color: #38bdf8;"></i></div>
+          <div class="stat-details">
+            <h4>Next Physio Session</h4>
             <div class="stat-value" id="statAppointments">0</div>
-            <p class="stat-sub">Next: In 2 days</p>
+            <p class="stat-sub" id="aptStatSub">No upcoming visits</p>
           </div>
         </div>
 
         <div class="stat-card">
-          <div class="stat-icon">💊</div>
+          <div class="stat-icon"><i class="fa-solid fa-fire" style="color: #38bdf8;"></i></div>
           <div class="stat-details">
-            <h4>Active Medicines</h4>
-            <div class="stat-value" id="statMedicines">0</div>
-            <p class="stat-sub">Daily dosages tracked</p>
-          </div>
-        </div>
-
-        <div class="stat-card">
-          <div class="stat-icon">🧪</div>
-          <div class="stat-details">
-            <h4>Lab Reports</h4>
-            <div class="stat-value" id="statReports">0</div>
-            <p class="stat-sub">Recent: Lipid Profile</p>
-          </div>
-        </div>
-
-        <div class="stat-card">
-          <div class="stat-icon">❤️</div>
-          <div class="stat-details">
-            <h4>Health Status</h4>
-            <div class="stat-value" style="color: var(--primary);">Normal</div>
-            <p class="stat-sub">BP: 120/80 mmHg</p>
+            <h4>Rehab Streak</h4>
+            <div class="stat-value" id="statStreak">12 Days</div>
+            <p class="stat-sub">Active Daily Recovery Routine</p>
           </div>
         </div>
       </div>
@@ -344,15 +368,15 @@
       <!-- MAIN DASHBOARD TWO-COLUMN GRID -->
       <div class="dashboard-grid">
 
-        <!-- LEFT COLUMN: APPOINTMENTS & HEALTH VITALS PREVIEW -->
+        <!-- LEFT COLUMN: APPOINTMENTS & REHAB ROUTINES -->
         <div class="dashboard-left">
 
           <!-- Upcoming Appointments Card -->
           <div class="surface-card">
             <div class="card-header-flex">
               <h3>
-                <span>📅</span>
-                <span>Upcoming Appointments</span>
+                <i class="fa-solid fa-calendar-day" style="color: #38bdf8;"></i>
+                <span>Upcoming Physio & Tele-Rehab Sessions</span>
               </h3>
               <a href="appointments.html" class="btn btn-outline btn-sm">View All</a>
             </div>
@@ -362,106 +386,139 @@
             </div>
           </div>
 
-          <!-- Active Prescriptions Preview -->
+          <!-- Prescribed Daily Recovery Routine -->
           <div class="surface-card">
             <div class="card-header-flex">
               <h3>
-                <span>💊</span>
-                <span>Current Medication Regimen</span>
+                <i class="fa-solid fa-person-walking" style="color: #38bdf8;"></i>
+                <span>Prescribed Daily Mobility Routine</span>
               </h3>
-              <a href="medicines.html" class="btn btn-outline btn-sm">Manage Meds</a>
+              <a href="rehab.html" class="btn btn-outline btn-sm">Track Progress</a>
             </div>
 
-            <div id="medicinesPreviewList">
-              <!-- Dynamically populated -->
+            <div class="routine-exercise-item">
+              <div>
+                <div class="routine-title">Cervical Retraction & Isometric Holds</div>
+                <div class="routine-sub">3 Sets x 10 Reps • Restores lordotic curve & relieves C5-C6 strain</div>
+              </div>
+              <span class="status-badge optimal">Active</span>
+            </div>
+
+            <div class="routine-exercise-item">
+              <div>
+                <div class="routine-title">Thoracic Extension & Scapular Squeezes</div>
+                <div class="routine-sub">2 Sets x 12 Reps • Upper back stabilization & posture correction</div>
+              </div>
+              <span class="status-badge optimal">Active</span>
+            </div>
+
+            <div class="routine-exercise-item">
+              <div>
+                <div class="routine-title">Assisted Hamstring & Lumbar Decompression</div>
+                <div class="routine-sub">Hold 30s x 3 Sets • Reduces lower back tension post-accident</div>
+              </div>
+              <span class="status-badge optimal">Active</span>
+            </div>
+
+            <div style="margin-top: 14px; text-align: right;">
+              <a href="rehab.html" class="btn btn-primary btn-sm" style="display: inline-flex; align-items: center; gap: 6px;">
+                <i class="fa-solid fa-arrow-right"></i>
+                <span>Launch Interactive Pain & Rehab Tracker</span>
+              </a>
             </div>
           </div>
 
         </div>
 
-        <!-- RIGHT COLUMN: QUICK ACTIONS & PREETHI AI & VITALS -->
+        <!-- RIGHT COLUMN: QUICK ACTIONS & PREETHI AI & ROM -->
         <div class="dashboard-right">
 
           <!-- Quick Actions Tile Grid -->
           <div class="surface-card">
             <div class="card-header-flex">
               <h3>
-                <span>⚡</span>
-                <span>Quick Actions</span>
+                <i class="fa-solid fa-bolt" style="color: #38bdf8;"></i>
+                <span>Quick Rehab Actions</span>
               </h3>
             </div>
 
             <div class="quick-actions-grid">
+              <a href="rehab.html" class="action-tile" style="border-color: rgba(56, 189, 248, 0.4); background: rgba(56, 189, 248, 0.08);">
+                <div class="action-icon"><i class="fa-solid fa-person-walking"></i></div>
+                <span style="color: #38bdf8;">Rehab Tracker</span>
+              </a>
+
+              <a href="/tele-rehab.html" class="action-tile" style="border-color: rgba(56, 189, 248, 0.4); background: rgba(56, 189, 248, 0.08);">
+                <div class="action-icon"><i class="fa-solid fa-video"></i></div>
+                <span style="color: #38bdf8;">Tele-Rehab</span>
+              </a>
+
+              <a href="preethi-ai.html" class="action-tile">
+                <div class="action-icon"><i class="fa-solid fa-robot"></i></div>
+                <span>Preethi AI</span>
+              </a>
+
               <a href="appointments.html" class="action-tile">
-                <div class="action-icon">📅</div>
-                <span>Book Appointment</span>
-              </a>
-
-              <a href="medicines.html" class="action-tile">
-                <div class="action-icon">💊</div>
-                <span>My Medicines</span>
-              </a>
-
-              <a href="lab-reports.html" class="action-tile">
-                <div class="action-icon">🧪</div>
-                <span>Lab Reports</span>
+                <div class="action-icon"><i class="fa-solid fa-calendar-check"></i></div>
+                <span>Book Session</span>
               </a>
 
               <a href="doctors.html" class="action-tile">
-                <div class="action-icon">👨‍⚕️</div>
-                <span>Find Doctors</span>
+                <div class="action-icon"><i class="fa-solid fa-user-doctor"></i></div>
+                <span>Physiotherapists</span>
               </a>
 
               <a href="health-records.html" class="action-tile">
-                <div class="action-icon">❤️</div>
-                <span>Health Records</span>
-              </a>
-
-              <a href="prescriptions.html" class="action-tile">
-                <div class="action-icon">📋</div>
-                <span>Prescriptions</span>
+                <div class="action-icon"><i class="fa-solid fa-file-medical"></i></div>
+                <span>Recovery Records</span>
               </a>
             </div>
           </div>
 
-          <!-- Quick Vitals Snapshot -->
+          <!-- Range of Motion Snapshot -->
           <div class="surface-card">
             <div class="card-header-flex">
               <h3>
-                <span>🩺</span>
-                <span>Recent Vitals Snapshot</span>
+                <i class="fa-solid fa-ruler-combined" style="color: #38bdf8;"></i>
+                <span>Range of Motion (ROM) Snapshot</span>
               </h3>
-              <a href="health-records.html" class="btn btn-outline btn-sm">All Vitals</a>
+              <a href="health-records.html" class="btn btn-outline btn-sm">Full Scan</a>
             </div>
 
             <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 8px;">
-              Recorded today at 08:30 AM
+              Clinical Kinematics Telemetry (Oct 21, 2026)
             </p>
 
             <div class="vitals-preview-strip">
               <div class="vital-mini-card">
-                <p>Blood Pressure</p>
-                <strong id="bpVal">120/80</strong>
+                <p>Cervical Flexion</p>
+                <strong>42° / 50°</strong>
               </div>
               <div class="vital-mini-card">
-                <p>Heart Rate</p>
-                <strong id="hrVal">72 bpm</strong>
+                <p>Lateral Rotation</p>
+                <strong>60° / 70°</strong>
               </div>
               <div class="vital-mini-card">
-                <p>Fasting Sugar</p>
-                <strong id="sugarVal">95 mg/dL</strong>
+                <p>Lumbar Extension</p>
+                <strong>20° / 25°</strong>
+              </div>
+              <div class="vital-mini-card">
+                <p>Core Stability</p>
+                <strong>8.2 / 10</strong>
               </div>
             </div>
           </div>
 
           <!-- Preethi AI Chat Promotion -->
           <div class="ai-banner-card">
-            <div class="ai-avatar">🤖</div>
+            <div class="ai-avatar">
+              <img src="/static/images/preethi_ai_robot.png" alt="Preethi AI" style="width: 52px; height: 52px; border-radius: 50%; object-fit: cover; border: 2px solid #38bdf8; box-shadow: 0 0 14px rgba(56, 189, 248, 0.45);">
+            </div>
             <div>
-              <h4>Have Symptoms or Questions?</h4>
-              <p>Consult with Preethi AI, your 24/7 intelligent clinical wellness guide.</p>
-              <a href="preethi-ai.html" class="btn btn-primary" style="background: #ffffff; color: #050a14; font-weight: 700;">
-                <span>💬</span>
+              <h4>Have Pain or Need Exercise Guidance?</h4>
+              <p>Preethi AI is your 24/7 intelligent rehabilitation companion. Ask about stretches, pain relief, or recovery pace.</p>
+              <a href="preethi-ai.html" class="btn btn-primary" style="background: #ffffff; color: #061121; font-weight: 700; display: inline-flex; align-items: center; gap: 8px;">
+                <i class="fa-solid fa-comments"></i>
                 <span>Chat with Preethi AI</span>
               </a>
             </div>
@@ -481,111 +538,79 @@
   <script type="module">
     import { setupPatientAuth, PatientStore } from "./patient-common.js";
 
-    // Setup Auth and header info
     setupPatientAuth("dashboard");
 
-    // Load dynamic data onto dashboard
     document.addEventListener("DOMContentLoaded", function () {
       loadDashboardData();
     });
 
     function loadDashboardData() {
       const appointments = PatientStore.getAppointments();
-      const medicines = PatientStore.getMedicines();
-      const labReports = PatientStore.getLabReports();
       const vitals = PatientStore.getVitals();
 
       // Counts
       const upcomingApts = appointments.filter(a => a.status === "Confirmed" || a.status === "Pending");
       document.getElementById("statAppointments").textContent = upcomingApts.length;
-      const aptStatSub = document.querySelector("#statAppointments + .stat-sub");
+      const aptStatSub = document.getElementById("aptStatSub");
       if (aptStatSub) {
         aptStatSub.textContent = upcomingApts.length > 0 ? `Next: ${upcomingApts[0].date}` : "No upcoming visits";
       }
-      document.getElementById("statMedicines").textContent = medicines.length;
-      document.getElementById("statReports").textContent = labReports.length;
 
-      // Vitals values
-      if (vitals && vitals.bloodPressure) {
-        document.getElementById("bpVal").textContent = `${vitals.bloodPressure.systolic}/${vitals.bloodPressure.diastolic}`;
+      if (vitals && vitals.mobilityScore) {
+        document.getElementById("statMobility").textContent = `${vitals.mobilityScore.value}%`;
       }
-      if (vitals && vitals.heartRate) {
-        document.getElementById("hrVal").textContent = `${vitals.heartRate.value} bpm`;
+      if (vitals && vitals.painScore) {
+        document.getElementById("statPain").textContent = `${vitals.painScore.value} / 10`;
       }
-      if (vitals && vitals.bloodSugar) {
-        document.getElementById("sugarVal").textContent = `${vitals.bloodSugar.fasting} mg/dL`;
+      if (vitals && vitals.rehabStreak) {
+        document.getElementById("statStreak").textContent = `${vitals.rehabStreak.value} Days`;
       }
 
       // Render upcoming appointments
       const aptsContainer = document.getElementById("upcomingAppointmentsList");
       if (upcomingApts.length === 0) {
         aptsContainer.innerHTML = `
-          <div style="text-align: center; padding: 32px 16px; color: var(--text-muted); border: 1px dashed var(--border-color); border-radius: 12px;">
-            <div style="font-size: 36px; margin-bottom: 8px;">📅</div>
-            <strong style="color: var(--text-main); font-size: 14px; display: block; margin-bottom: 4px;">No upcoming appointments</strong>
-            <p style="font-size: 13px; margin-bottom: 12px;">You have no scheduled clinical visits.</p>
-            <a href="appointments.html" class="btn btn-primary btn-sm">Book Appointment</a>
+          <div style="text-align: center; padding: 36px 16px; color: var(--text-muted); border: 1px dashed var(--border-color); border-radius: 12px;">
+            <div style="font-size: 32px; color: #38bdf8; margin-bottom: 8px;"><i class="fa-solid fa-calendar-plus"></i></div>
+            <strong style="color: var(--text-main); font-size: 14px; display: block; margin-bottom: 4px;">No upcoming physio appointments</strong>
+            <p style="font-size: 13px; margin-bottom: 14px;">Schedule a 1-on-1 clinic visit or a live Tele-Rehab video consultation.</p>
+            <a href="appointments.html" class="btn btn-primary btn-sm" style="display: inline-flex; align-items: center; gap: 6px;">
+              <i class="fa-solid fa-plus"></i>
+              <span>Book Rehab Consultation</span>
+            </a>
           </div>
         `;
       } else {
         aptsContainer.innerHTML = upcomingApts.slice(0, 3).map(apt => `
           <div class="appointment-item">
             <div class="doctor-meta">
-              <div class="doctor-avatar-box">${apt.doctorAvatar || "👨‍⚕️"}</div>
+              <div class="doctor-avatar-box">${apt.doctorAvatar || "PT"}</div>
               <div>
                 <strong>${apt.doctorName}</strong>
-                <span>${apt.department || 'General'} • ${apt.date} at ${apt.time}</span>
+                <span>${apt.department || 'Orthopedic Physio'} • ${apt.date} at ${apt.time}</span>
               </div>
             </div>
             <div class="appointment-actions" style="display: flex; flex-direction: column; align-items: flex-end; gap: 6px;">
               <span class="status-badge ${(apt.status || 'confirmed').toLowerCase()}">${apt.status || 'Confirmed'}</span>
               <div style="display: flex; gap: 6px; align-items: center;">
                 <a href="appointments.html" class="btn btn-outline btn-sm">Details</a>
-                <button class="btn btn-danger btn-sm delete-dash-apt-btn" data-id="${apt.id}" title="Delete appointment" style="padding: 4px 8px; font-size: 12px; background: rgba(239, 68, 68, 0.15); border: 1px solid #ef4444; color: #f87171; cursor: pointer; border-radius: 6px;">
-                  🗑️
+                <button class="btn btn-danger btn-sm delete-dash-apt-btn" data-id="${apt.id}" title="Cancel appointment" style="padding: 4px 8px; font-size: 12px; background: rgba(239, 68, 68, 0.15); border: 1px solid #ef4444; color: #f87171; cursor: pointer; border-radius: 6px;">
+                  <i class="fa-solid fa-trash-can"></i>
                 </button>
               </div>
             </div>
           </div>
         `).join("");
 
-        // Bind delete action
         document.querySelectorAll(".delete-dash-apt-btn").forEach(btn => {
           btn.addEventListener("click", function () {
             const id = this.getAttribute("data-id");
-            if (confirm("Are you sure you want to delete this appointment?")) {
+            if (confirm("Are you sure you want to cancel this appointment?")) {
               PatientStore.deleteAppointment(id);
               loadDashboardData();
             }
           });
         });
-      }
-
-      // Render medication preview
-      const medsContainer = document.getElementById("medicinesPreviewList");
-      if (medicines.length === 0) {
-        medsContainer.innerHTML = `
-          <div style="text-align: center; padding: 24px; color: var(--text-muted);">
-            <p>No active medications logged.</p>
-          </div>
-        `;
-      } else {
-        medsContainer.innerHTML = medicines.slice(0, 3).map(med => `
-          <div class="appointment-item" style="padding: 12px 16px;">
-            <div class="doctor-meta">
-              <div class="doctor-avatar-box" style="font-size: 20px;">💊</div>
-              <div>
-                <strong>${med.name}</strong>
-                <span style="font-size: 12px;">${med.scheduleDescription}</span>
-              </div>
-            </div>
-            <div>
-              <span class="status-badge ${med.refillNeeded ? 'high' : 'normal'}">
-                ${med.remainingPills} pills left
-              </span>
-            </div>
-          </div>
-        `).join("");
       }
     }
   </script>

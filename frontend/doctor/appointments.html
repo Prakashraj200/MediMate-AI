@@ -1,392 +1,571 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Doctor Appointments | MediMate AI</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Arial, sans-serif;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rehab Appointments & Schedule | MediMate AI Doctor</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="doctor-dark-theme.css">
+  <style>
+    .filter-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
 
-        body {
-            background: #f1faf5;
-            color: #183b2b;
-            min-height: 100vh;
-        }
+    .filter-controls {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
 
-        .app-container {
-            display: flex;
-            min-height: 100vh;
-        }
+    .filter-pill {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: #94a3b8;
+      padding: 7px 14px;
+      border-radius: 20px;
+      font-size: 12.5px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
 
-        /* SIDEBAR */
-        .sidebar {
-            width: 270px;
-            min-height: 100vh;
-            background: linear-gradient(180deg, #056238, #079653);
-            color: white;
-            padding: 28px 20px;
-            position: fixed;
-            left: 0; top: 0; bottom: 0;
-            z-index: 100;
-            transition: 0.3s ease;
-            overflow-y: auto;
-        }
+    .filter-pill:hover, .filter-pill.active {
+      background: rgba(56, 189, 248, 0.15);
+      border-color: #38bdf8;
+      color: #38bdf8;
+    }
 
-        .brand {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 5px 12px 28px;
-            border-bottom: 1px solid rgba(255,255,255,0.25);
-        }
+    .patient-cell {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
 
-        .brand-icon {
-            width: 50px;
-            height: 50px;
-            background: white;
-            color: #087743;
-            border-radius: 16px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 26px;
-        }
+    .patient-avatar-mini {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      background: rgba(56, 189, 248, 0.12);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      color: #38bdf8;
+      font-weight: 800;
+      font-size: 13px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
 
-        .brand h2 { font-size: 21px; }
-        .brand p { font-size: 12px; color: #d3f5e1; }
-
-        .menu-title {
-            font-size: 11px;
-            letter-spacing: 1px;
-            color: #bcebd0;
-            margin: 26px 12px 10px;
-            text-transform: uppercase;
-        }
-
-        .nav-menu { list-style: none; }
-        .nav-menu li { margin: 6px 0; }
-        .nav-menu a {
-            width: 100%;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            text-decoration: none;
-            color: white;
-            padding: 12px 14px;
-            border-radius: 12px;
-            font-size: 14.5px;
-            transition: 0.2s ease;
-        }
-
-        .nav-menu a:hover, .nav-menu a.active {
-            background: rgba(255,255,255,0.22);
-            font-weight: 600;
-        }
-
-        .nav-icon { width: 22px; text-align: center; font-size: 18px; }
-
-        .main-content {
-            width: calc(100% - 270px);
-            margin-left: 270px;
-            min-height: 100vh;
-        }
-
-        .topbar {
-            height: 80px;
-            background: white;
-            border-bottom: 1px solid #e1eee6;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0 35px;
-            position: sticky;
-            top: 0;
-            z-index: 50;
-        }
-
-        .content {
-            padding: 30px 35px;
-        }
-
-        .btn {
-            padding: 10px 18px;
-            border-radius: 10px;
-            font-size: 13.5px;
-            font-weight: 600;
-            border: none;
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            transition: all 0.2s ease;
-        }
-
-        .btn-primary { background: #087743; color: white; }
-        .btn-primary:hover { background: #065e35; }
-        .btn-secondary { background: #eaf8f0; color: #087743; border: 1px solid #c2e5d4; }
-
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 20px;
-            margin-bottom: 25px;
-        }
-
-        .stat-card {
-            background: white;
-            padding: 22px;
-            border-radius: 18px;
-            border: 1px solid #e1eee6;
-            box-shadow: 0 4px 15px rgba(8, 119, 67, 0.04);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .panel {
-            background: white;
-            border-radius: 20px;
-            padding: 24px;
-            border: 1px solid #e1eee6;
-            box-shadow: 0 4px 15px rgba(8, 119, 67, 0.04);
-            margin-bottom: 25px;
-        }
-
-        .table-responsive { overflow-x: auto; }
-        table { width: 100%; border-collapse: collapse; text-align: left; }
-        th {
-            background: #f4faf6;
-            color: #4b6f5d;
-            font-size: 12.5px;
-            text-transform: uppercase;
-            padding: 14px 16px;
-            border-bottom: 1.5px solid #dcefe4;
-        }
-        td {
-            padding: 15px 16px;
-            border-bottom: 1px solid #edf4ef;
-            font-size: 13.5px;
-        }
-        tr:hover td { background: #f9fdfa; }
-
-        .badge {
-            padding: 4px 10px;
-            border-radius: 999px;
-            font-size: 12px;
-            font-weight: 600;
-        }
-        .badge-confirmed { background: #d9f7e6; color: #078044; }
-        .badge-pending { background: #fff0cc; color: #a86a00; }
-        .badge-completed { background: #e0f2fe; color: #0369a1; }
-
-        @media (max-width: 800px) {
-            .sidebar { transform: translateX(-100%); }
-            .sidebar.open { transform: translateX(0); }
-            .main-content { margin-left: 0; width: 100%; }
-        }
-    </style>
-    <link rel="stylesheet" href="../static/css/medimate-dark-theme.css">
+    .action-btn-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+  </style>
 </head>
 <body>
-<div class="app-container">
-    <aside class="sidebar" id="sidebar">
-        <div class="brand">
-            <div class="brand-icon">🩺</div>
-            <div>
-                <h2>MediMate AI</h2>
-                <p>Doctor Portal</p>
-            </div>
+
+  <!-- =========================
+       DOCTOR / PHYSIO SIDEBAR (Matching dashboard.html)
+  ========================== -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-brand">
+      <div class="brand-logo">M</div>
+      <div class="brand-text">
+        <h2>MediMate <span>AI</span></h2>
+        <p>Physiotherapist Portal</p>
+      </div>
+    </div>
+
+    <div class="sidebar-menu">
+      <ul>
+        <li>
+          <a href="dashboard.html">
+            <span class="nav-icon"><i class="fa-solid fa-chart-pie"></i></span>
+            <span>Dashboard</span>
+          </a>
+        </li>
+        <li>
+          <a href="preethi-ai.html">
+            <span class="nav-icon"><i class="fa-solid fa-robot"></i></span>
+            <span>Preethi AI Clinical</span>
+          </a>
+        </li>
+        <li>
+          <a href="/tele-rehab.html">
+            <span class="nav-icon"><i class="fa-solid fa-video"></i></span>
+            <span>Tele-Rehab Consultation</span>
+          </a>
+        </li>
+        <li class="active">
+          <a href="appointments.html">
+            <span class="nav-icon"><i class="fa-solid fa-calendar-check"></i></span>
+            <span>Rehab Appointments</span>
+          </a>
+        </li>
+        <li>
+          <a href="patients.html">
+            <span class="nav-icon"><i class="fa-solid fa-user-injured"></i></span>
+            <span>Rehab Patients</span>
+          </a>
+        </li>
+        <li>
+          <a href="patient-records.html">
+            <span class="nav-icon"><i class="fa-solid fa-file-medical"></i></span>
+            <span>Clinical Records & Scans</span>
+          </a>
+        </li>
+        <li>
+          <a href="profile.html">
+            <span class="nav-icon"><i class="fa-solid fa-user-doctor"></i></span>
+            <span>Physio Profile</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+
+    <div class="logout">
+      <button id="logoutBtn" onclick="sessionStorage.clear(); localStorage.removeItem('currentUser'); localStorage.removeItem('doctorLoggedIn'); window.location.href='/login.html';">
+        <i class="fa-solid fa-arrow-right-from-bracket"></i>
+        <span>Logout</span>
+      </button>
+    </div>
+  </aside>
+
+  <!-- =========================
+       MAIN CONTENT
+  ========================== -->
+  <main class="main">
+    <header class="topbar">
+      <div class="topbar-left">
+        <button class="sidebar-toggle-btn" id="sidebarToggleBtn" title="Toggle Menu">
+          <i class="fa-solid fa-bars"></i>
+        </button>
+        <div class="topbar-title">
+          <h1>Rehab Appointments & Tele-Consultation Schedule</h1>
+          <p>Real-time clinical queue for post-accident trauma recovery & video follow-ups</p>
+        </div>
+      </div>
+      <div class="topbar-right">
+        <button class="btn btn-outline btn-sm" onclick="openBookModal()">
+          <i class="fa-solid fa-plus"></i>
+          <span>Schedule Session</span>
+        </button>
+        <a href="/tele-rehab.html" class="btn btn-primary btn-sm">
+          <i class="fa-solid fa-video"></i>
+          <span>Launch Tele-Rehab</span>
+        </a>
+      </div>
+    </header>
+
+    <div class="content">
+
+      <!-- Stats Grid -->
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-icon" style="color: #38bdf8; background: rgba(56, 189, 248, 0.12);">
+            <i class="fa-solid fa-calendar-day"></i>
+          </div>
+          <div class="stat-details">
+            <h4>Today's Consultations</h4>
+            <div class="stat-value" id="statTodayCount">8 Patients</div>
+            <div class="stat-sub">3 Telehealth, 5 In-Clinic</div>
+          </div>
         </div>
 
-        <p class="menu-title">Clinical Navigation</p>
-        <ul class="nav-menu">
-            <li><a href="dashboard.html"><span class="nav-icon">📊</span><span>Dashboard</span></a></li>
-            <li><a href="appointments.html" class="active"><span class="nav-icon">🗓️</span><span>Appointments</span></a></li>
-            <li><a href="patients.html"><span class="nav-icon">👥</span><span>My Patients</span></a></li>
-            <li><a href="patient-records.html"><span class="nav-icon">📁</span><span>Patient Records</span></a></li>
-            <li><a href="prescriptions.html"><span class="nav-icon">💊</span><span>Prescriptions</span></a></li>
-            <li><a href="health-monitoring.html"><span class="nav-icon">❤️</span><span>Telemetry Monitoring</span></a></li>
-        </ul>
+        <div class="stat-card">
+          <div class="stat-icon" style="color: #0ea5e9; background: rgba(14, 165, 233, 0.12);">
+            <i class="fa-solid fa-video"></i>
+          </div>
+          <div class="stat-details">
+            <h4>Tele-Rehab Video</h4>
+            <div class="stat-value" id="statVideoCount">3 Sessions</div>
+            <div class="stat-sub">HD WebRTC Clinical Calls</div>
+          </div>
+        </div>
 
-        <p class="menu-title">Account & Support</p>
-        <ul class="nav-menu">
-            <li><a href="notifications.html"><span class="nav-icon">🔔</span><span>Notifications</span></a></li>
-            <li><a href="profile.html"><span class="nav-icon">👤</span><span>My Profile</span></a></li>
-            <li><a href="doctor-login.html" onclick="localStorage.removeItem('currentUser'); localStorage.removeItem('doctorLoggedIn'); sessionStorage.clear();"><span class="nav-icon">🚪</span><span>Sign Out</span></a></li>
-        </ul>
-    </aside>
+        <div class="stat-card">
+          <div class="stat-icon" style="color: #10b981; background: rgba(16, 185, 129, 0.12);">
+            <i class="fa-solid fa-person-walking"></i>
+          </div>
+          <div class="stat-details">
+            <h4>In-Clinic Physio</h4>
+            <div class="stat-value" id="statClinicCount">5 Sessions</div>
+            <div class="stat-sub">Gait & Mobility Rehab</div>
+          </div>
+        </div>
 
-    <div class="main-content">
-        <header class="topbar">
-            <div>
-                <h1 style="font-size:22px; color:#075f36; font-weight:700;">Consultation Appointments Schedule</h1>
-                <p style="font-size:13px; color:#789082;">Manage daily in-person patient appointments and telehealth clinical calls.</p>
-            </div>
-            <button class="btn btn-primary" onclick="alert('Appointment scheduler modal initialized.')"><i class="fa-solid fa-plus"></i> Book Walk-In Patient</button>
-        </header>
+        <div class="stat-card">
+          <div class="stat-icon" style="color: #a855f7; background: rgba(168, 85, 247, 0.12);">
+            <i class="fa-solid fa-circle-check"></i>
+          </div>
+          <div class="stat-details">
+            <h4>Completed Sessions</h4>
+            <div class="stat-value">4 Done</div>
+            <div class="stat-sub">Updated to Clinical Records</div>
+          </div>
+        </div>
+      </div>
 
-        <main class="content">
-            <div class="stats-grid">
-                <div class="stat-card">
-                    <div>
-                        <div style="font-size:13px; color:#789082; font-weight:600;">Today's Schedule</div>
-                        <div style="font-size:26px; font-weight:700; color:#087743;">8 Patients</div>
-                    </div>
-                    <div style="font-size:28px;">📅</div>
-                </div>
-                <div class="stat-card">
-                    <div>
-                        <div style="font-size:13px; color:#789082; font-weight:600;">Telehealth Video Calls</div>
-                        <div style="font-size:26px; font-weight:700; color:#0284c7;">3 Calls</div>
-                    </div>
-                    <div style="font-size:28px;">💻</div>
-                </div>
-                <div class="stat-card">
-                    <div>
-                        <div style="font-size:13px; color:#789082; font-weight:600;">In-Clinic Consultations</div>
-                        <div style="font-size:26px; font-weight:700; color:#059669;">5 Visits</div>
-                    </div>
-                    <div style="font-size:28px;">🏥</div>
-                </div>
-                <div class="stat-card">
-                    <div>
-                        <div style="font-size:13px; color:#789082; font-weight:600;">Completed Consultations</div>
-                        <div style="font-size:26px; font-weight:700; color:#10b981;">4 Done</div>
-                    </div>
-                    <div style="font-size:28px;">✅</div>
-                </div>
-            </div>
+      <!-- Main Appointments Panel -->
+      <div class="surface-card">
+        <div class="filter-bar">
+          <div>
+            <h3 style="font-size: 17px; font-weight: 700; color: #ffffff; display: flex; align-items: center; gap: 10px;">
+              <i class="fa-solid fa-clock" style="color: #38bdf8;"></i>
+              Upcoming Consultations (Today)
+            </h3>
+            <p style="font-size: 12.5px; color: #94a3b8; margin-top: 4px;">Live schedule of trauma recovery patients booked for clinical evaluation</p>
+          </div>
 
-            <div class="panel">
-                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; flex-wrap:wrap; gap:12px;">
-                    <div>
-                        <h3 style="font-size:16px; font-weight:700;">Upcoming Consultations (Today)</h3>
-                        <p style="font-size:12.5px; color:#64748b;">Live queue of scheduled patients awaiting doctor review.</p>
-                    </div>
-                    <div style="display:flex; gap:10px;">
-                        <input type="text" id="searchAppt" placeholder="Search patient name..." onkeyup="filterAppt()" style="padding:8px 14px; border:1px solid #cce3d6; border-radius:10px; font-size:13px; outline:none;">
-                    </div>
-                </div>
+          <div class="filter-controls">
+            <div class="filter-pill active" onclick="setModeFilter('all', this)">All (8)</div>
+            <div class="filter-pill" onclick="setModeFilter('telehealth', this)"><i class="fa-solid fa-video"></i> Tele-Rehab</div>
+            <div class="filter-pill" onclick="setModeFilter('in-clinic', this)"><i class="fa-solid fa-hospital-user"></i> In-Clinic</div>
+            <input type="text" id="searchAppt" placeholder="Search patient or diagnosis..." onkeyup="filterApptTable()" style="width: 220px; padding: 7px 12px; font-size: 13px;">
+          </div>
+        </div>
 
-                <div class="table-responsive">
-                    <table id="apptTable">
-                        <thead>
-                            <tr>
-                                <th>Time</th>
-                                <th>Patient Name</th>
-                                <th>MRN #</th>
-                                <th>Reason / Chief Complaint</th>
-                                <th>Mode</th>
-                                <th>Status</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody id="apptTbody">
-                            <tr>
-                                <td colspan="7" style="text-align:center; padding: 25px; color:#64748b;">Loading appointments...</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </main>
+        <div class="table-responsive">
+          <table class="data-table" id="apptTable">
+            <thead>
+              <tr>
+                <th style="width: 95px;">Time</th>
+                <th>Patient & Diagnosis</th>
+                <th>MRN #</th>
+                <th>Rehab Protocol / Chief Complaint</th>
+                <th>Mode</th>
+                <th>Status</th>
+                <th style="text-align: right;">Action</th>
+              </tr>
+            </thead>
+            <tbody id="apptTbody">
+              <tr>
+                <td colspan="7" style="text-align: center; padding: 30px; color: #94a3b8;">
+                  <i class="fa-solid fa-spinner fa-spin"></i> Loading trauma recovery schedule...
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
     </div>
-</div>
+  </main>
 
-<script>
+  <!-- =========================
+       SCHEDULE NEW SESSION MODAL
+  ========================== -->
+  <div class="modal-overlay" id="bookModal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3><i class="fa-solid fa-calendar-plus" style="color: #38bdf8; margin-right: 8px;"></i> Schedule Rehab Session</h3>
+        <button class="modal-close-btn" onclick="closeBookModal()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <form id="newApptForm" onsubmit="handleCreateAppt(event)">
+          <div style="margin-bottom: 14px;">
+            <label style="display: block; font-size: 12.5px; color: #94a3b8; margin-bottom: 6px; font-weight: 600;">Patient Full Name</label>
+            <input type="text" id="modalPatientName" required placeholder="e.g. Ramesh Kumar" style="width: 100%;">
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 14px;">
+            <div>
+              <label style="display: block; font-size: 12.5px; color: #94a3b8; margin-bottom: 6px; font-weight: 600;">Age & Gender</label>
+              <input type="text" id="modalPatientMeta" placeholder="e.g. 34 yrs, Male" style="width: 100%;">
+            </div>
+            <div>
+              <label style="display: block; font-size: 12.5px; color: #94a3b8; margin-bottom: 6px; font-weight: 600;">MRN / Case ID</label>
+              <input type="text" id="modalMrn" placeholder="MRN-1082" style="width: 100%;">
+            </div>
+          </div>
+
+          <div style="margin-bottom: 14px;">
+            <label style="display: block; font-size: 12.5px; color: #94a3b8; margin-bottom: 6px; font-weight: 600;">Trauma Diagnosis / Rehab Reason</label>
+            <input type="text" id="modalReason" required placeholder="e.g. Cervical Whiplash C4-C5 & Cervical Traction" style="width: 100%;">
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px;">
+            <div>
+              <label style="display: block; font-size: 12.5px; color: #94a3b8; margin-bottom: 6px; font-weight: 600;">Consultation Mode</label>
+              <select id="modalMode" style="width: 100%;">
+                <option value="Tele-Rehab Video">Tele-Rehab Consultation (Video)</option>
+                <option value="In-Clinic Physio">In-Clinic Session (Physio Clinic)</option>
+              </select>
+            </div>
+            <div>
+              <label style="display: block; font-size: 12.5px; color: #94a3b8; margin-bottom: 6px; font-weight: 600;">Scheduled Time</label>
+              <input type="text" id="modalTime" placeholder="e.g. 11:30 AM" value="11:30 AM" style="width: 100%;">
+            </div>
+          </div>
+
+          <div class="modal-footer" style="padding: 16px 0 0; background: transparent; border: none;">
+            <button type="button" class="btn btn-outline btn-sm" onclick="closeBookModal()">Cancel</button>
+            <button type="submit" class="btn btn-primary btn-sm">Confirm & Save</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let activeFilter = 'all';
+
     function escapeHTML(str) {
-        return String(str || "").replace(/[&<>"']/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' })[m]);
+      return String(str || "").replace(/[&<>"']/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' })[m]);
     }
 
-    function loadDoctorAppointments() {
-        let appts = [];
-        try {
-            const stored = JSON.parse(localStorage.getItem("patient_appointments") || "[]");
-            const allUsers = JSON.parse(localStorage.getItem("medimateUsers") || "[]");
-            const patients = allUsers.filter(u => u.role === "patient");
+    const defaultRehabAppts = [
+      {
+        time: "09:30 AM",
+        patientName: "Kavitha Sundaram",
+        patientAgeGender: "29 yrs, Female",
+        mrn: "MRN-1044",
+        reason: "Cervical Whiplash (Post-Accident MVA) • Range of Motion Check",
+        mode: "Telehealth",
+        status: "Confirmed"
+      },
+      {
+        time: "10:15 AM",
+        patientName: "Arunachalam S.",
+        patientAgeGender: "42 yrs, Male",
+        mrn: "MRN-1018",
+        reason: "Right Knee ACL Reconstruction • Week 4 Weight-Bearing Protocol",
+        mode: "In-Clinic",
+        status: "Confirmed"
+      },
+      {
+        time: "11:00 AM",
+        patientName: "Deepak Varma",
+        patientAgeGender: "36 yrs, Male",
+        mrn: "MRN-1029",
+        reason: "L4-L5 Lumbar Disc Herniation • TENS Parameters Review",
+        mode: "Telehealth",
+        status: "Pending"
+      },
+      {
+        time: "11:45 AM",
+        patientName: "Priya Lakshmi",
+        patientAgeGender: "25 yrs, Female",
+        mrn: "MRN-1052",
+        reason: "Post-Fracture Wrist Stiffness • Active Resistance Mobilization",
+        mode: "In-Clinic",
+        status: "Confirmed"
+      },
+      {
+        time: "02:15 PM",
+        patientName: "Manojkumar B.",
+        patientAgeGender: "51 yrs, Male",
+        mrn: "MRN-1033",
+        reason: "Frozen Shoulder (Adhesive Capsulitis) • Scapular Glides",
+        mode: "In-Clinic",
+        status: "Confirmed"
+      },
+      {
+        time: "03:00 PM",
+        patientName: "Meenakshi R.",
+        patientAgeGender: "38 yrs, Female",
+        mrn: "MRN-1065",
+        reason: "Rotator Cuff Tendinopathy • Isometric Progress Evaluation",
+        mode: "Telehealth",
+        status: "Confirmed"
+      },
+      {
+        time: "03:45 PM",
+        patientName: "Venkatesh S.",
+        patientAgeGender: "47 yrs, Male",
+        mrn: "MRN-1077",
+        reason: "Patellofemoral Pain Syndrome • Quad Activation Drills",
+        mode: "In-Clinic",
+        status: "Confirmed"
+      },
+      {
+        time: "04:30 PM",
+        patientName: "Ananya Iyer",
+        patientAgeGender: "31 yrs, Female",
+        mrn: "MRN-1089",
+        reason: "Thoracic Outlet Syndrome • Posture Correction & Cervical Traction",
+        mode: "In-Clinic",
+        status: "Confirmed"
+      }
+    ];
 
-            if (stored.length > 0) {
-                appts = stored.map(a => ({
-                    time: a.time || "10:00 AM",
-                    patientName: a.patientName || (patients.length ? patients[0].name : "Registered Patient"),
-                    patientAgeGender: a.patientMeta || "Patient",
-                    mrn: a.mrn || a.id || "MRN-1001",
-                    reason: a.reason || "Consultation and Health Evaluation",
-                    mode: (a.type && a.type.toLowerCase().includes("video")) ? "Telehealth" : "In-Clinic",
-                    status: a.status || "Confirmed"
-                }));
-            } else if (patients.length > 0) {
-                appts = patients.map((p, idx) => ({
-                    time: `${9 + idx}:30 AM`,
-                    patientName: p.name || p.fullName || "Registered Patient",
-                    patientAgeGender: (p.age ? p.age + " yrs" : "Adult") + (p.gender ? ", " + p.gender : ""),
-                    mrn: p.id || ("MRN-" + (1000 + idx)),
-                    reason: "Initial Clinical Assessment",
-                    mode: idx % 2 === 0 ? "In-Clinic" : "Telehealth",
-                    status: "Confirmed"
-                }));
-            }
-        } catch(e) {}
-
-        const tbody = document.getElementById("apptTbody");
-        if (!tbody) return;
-
-        if (appts.length === 0) {
-            tbody.innerHTML = `
-                <tr>
-                    <td colspan="7" style="text-align: center; padding: 30px; color: #64748b;">
-                        No appointments scheduled yet. Registered appointments will appear here automatically.
-                    </td>
-                </tr>
-            `;
-            return;
+    function getAppointments() {
+      try {
+        const stored = JSON.parse(localStorage.getItem("patient_appointments") || "[]");
+        if (stored && stored.length > 0) {
+          return stored.map(a => ({
+            time: a.time || "10:00 AM",
+            patientName: a.patientName || a.name || "Rehab Patient",
+            patientAgeGender: a.patientAgeGender || a.patientMeta || "30 yrs, Patient",
+            mrn: a.mrn || a.id || "MRN-1050",
+            reason: a.reason || a.complaint || "Post-Trauma Rehabilitation Protocol",
+            mode: (a.mode || a.type || "").toLowerCase().includes("video") || (a.mode || "").toLowerCase().includes("tele") ? "Telehealth" : "In-Clinic",
+            status: a.status || "Confirmed"
+          }));
         }
-
-        tbody.innerHTML = appts.map(a => `
-            <tr>
-                <td><strong>${escapeHTML(a.time)}</strong></td>
-                <td><strong>${escapeHTML(a.patientName)}</strong><br><span style="font-size:12px; color:#64748b;">${escapeHTML(a.patientAgeGender)}</span></td>
-                <td><code>${escapeHTML(a.mrn)}</code></td>
-                <td>${escapeHTML(a.reason)}</td>
-                <td>
-                    <span style="font-size:12px; color:${a.mode === 'Telehealth' ? '#0369a1' : '#087743'};">
-                        <i class="fa-solid ${a.mode === 'Telehealth' ? 'fa-video' : 'fa-hospital-user'}"></i> ${escapeHTML(a.mode)}
-                    </span>
-                </td>
-                <td><span class="badge ${a.status.toLowerCase() === 'confirmed' ? 'badge-confirmed' : 'badge-pending'}">${escapeHTML(a.status)}</span></td>
-                <td>
-                    <button class="btn btn-primary" style="padding:5px 10px; font-size:12px;" onclick="startCall('${escapeHTML(a.patientName)}')">
-                        <i class="fa-solid ${a.mode === 'Telehealth' ? 'fa-video' : 'fa-stethoscope'}"></i> Attend
-                    </button>
-                </td>
-            </tr>
-        `).join("");
+      } catch(e) {}
+      return defaultRehabAppts;
     }
 
-    function startCall(patient) {
-        alert(`Launching encrypted WebRTC telehealth video room with ${patient}...`);
+    function renderAppointments() {
+      const appts = getAppointments();
+      const tbody = document.getElementById("apptTbody");
+      if (!tbody) return;
+
+      const filtered = appts.filter(a => {
+        if (activeFilter === 'telehealth' && a.mode !== 'Telehealth') return false;
+        if (activeFilter === 'in-clinic' && a.mode !== 'In-Clinic') return false;
+        return true;
+      });
+
+      if (filtered.length === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="7" style="text-align: center; padding: 36px; color: #94a3b8;">
+              No appointments found matching the selected filter.
+            </td>
+          </tr>
+        `;
+        return;
+      }
+
+      tbody.innerHTML = filtered.map(a => {
+        const isTele = a.mode === "Telehealth";
+        const isPending = a.status.toLowerCase() === "pending";
+        const initials = a.patientName.split(" ").map(n => n[0]).slice(0, 2).join("").toUpperCase() || "PT";
+
+        return `
+          <tr>
+            <td>
+              <span style="font-family: 'JetBrains Mono', monospace; font-weight: 700; color: #38bdf8; font-size: 13px;">
+                ${escapeHTML(a.time)}
+              </span>
+            </td>
+            <td>
+              <div class="patient-cell">
+                <div class="patient-avatar-mini">${initials}</div>
+                <div>
+                  <div style="font-weight: 700; color: #ffffff;">${escapeHTML(a.patientName)}</div>
+                  <div style="font-size: 12px; color: #94a3b8;">${escapeHTML(a.patientAgeGender)}</div>
+                </div>
+              </div>
+            </td>
+            <td>
+              <span style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #7dd3fc; background: rgba(56, 189, 248, 0.1); padding: 3px 8px; border-radius: 6px;">
+                ${escapeHTML(a.mrn)}
+              </span>
+            </td>
+            <td>
+              <span style="color: #e2e8f0; font-size: 13px;">${escapeHTML(a.reason)}</span>
+            </td>
+            <td>
+              <span class="status-badge ${isTele ? 'optimal' : 'active'}" style="display: inline-flex; align-items: center; gap: 5px;">
+                <i class="fa-solid ${isTele ? 'fa-video' : 'fa-hospital-user'}"></i>
+                ${isTele ? 'Tele-Rehab' : 'In-Clinic'}
+              </span>
+            </td>
+            <td>
+              <span class="status-badge ${isPending ? 'pending' : 'confirmed'}">
+                ${escapeHTML(a.status)}
+              </span>
+            </td>
+            <td style="text-align: right;">
+              <div class="action-btn-group" style="justify-content: flex-end;">
+                <a href="${isTele ? '/tele-rehab.html?patient=' + encodeURIComponent(a.patientName) : '/tele-rehab.html'}" class="btn btn-primary btn-sm" style="font-size: 12px; padding: 6px 12px;" title="${isTele ? 'Launch Video Room' : 'Start Clinical Consult'}">
+                  <i class="fa-solid ${isTele ? 'fa-video' : 'fa-stethoscope'}"></i>
+                  <span>Attend</span>
+                </a>
+                <a href="patient-records.html?mrn=${encodeURIComponent(a.mrn)}" class="btn btn-outline btn-sm" style="font-size: 12px; padding: 6px 10px;" title="View Patient Records & Scans">
+                  <i class="fa-solid fa-file-medical"></i>
+                </a>
+              </div>
+            </td>
+          </tr>
+        `;
+      }).join("");
+
+      // Update stat badges
+      const todayTotal = appts.length;
+      const teleCount = appts.filter(a => a.mode === "Telehealth").length;
+      const clinicCount = appts.filter(a => a.mode === "In-Clinic").length;
+
+      const stTot = document.getElementById("statTodayCount");
+      if (stTot) stTot.textContent = `${todayTotal} Patients`;
+      const stVid = document.getElementById("statVideoCount");
+      if (stVid) stVid.textContent = `${teleCount} Sessions`;
+      const stCln = document.getElementById("statClinicCount");
+      if (stCln) stCln.textContent = `${clinicCount} Sessions`;
     }
 
-    function openRecords(mrn) {
-        window.location.href = `patient-records.html?mrn=${mrn}`;
+    function setModeFilter(mode, el) {
+      activeFilter = mode;
+      document.querySelectorAll(".filter-pill").forEach(p => p.classList.remove("active"));
+      if (el) el.classList.add("active");
+      renderAppointments();
     }
 
-    function filterAppt() {
-        const query = document.getElementById('searchAppt').value.toLowerCase();
-        const rows = document.querySelectorAll('#apptTbody tr');
-        rows.forEach(r => {
-            r.style.display = r.innerText.toLowerCase().includes(query) ? '' : 'none';
-        });
+    function filterApptTable() {
+      const q = (document.getElementById("searchAppt").value || "").toLowerCase();
+      const rows = document.querySelectorAll("#apptTbody tr");
+      rows.forEach(r => {
+        r.style.display = r.innerText.toLowerCase().includes(q) ? "" : "none";
+      });
     }
 
-    document.addEventListener("DOMContentLoaded", loadDoctorAppointments);
-    loadDoctorAppointments();
-</script>
+    function openBookModal() {
+      document.getElementById("bookModal").classList.add("active");
+    }
+
+    function closeBookModal() {
+      document.getElementById("bookModal").classList.remove("active");
+    }
+
+    function handleCreateAppt(e) {
+      e.preventDefault();
+      const name = document.getElementById("modalPatientName").value.trim();
+      const meta = document.getElementById("modalPatientMeta").value.trim() || "Adult, Patient";
+      const mrn = document.getElementById("modalMrn").value.trim() || ("MRN-" + Math.floor(1000 + Math.random() * 9000));
+      const reason = document.getElementById("modalReason").value.trim();
+      const mode = document.getElementById("modalMode").value;
+      const time = document.getElementById("modalTime").value.trim() || "11:30 AM";
+
+      const newAppt = {
+        time: time,
+        patientName: name,
+        patientAgeGender: meta,
+        mrn: mrn,
+        reason: reason,
+        mode: mode.includes("Video") ? "Telehealth" : "In-Clinic",
+        status: "Confirmed"
+      };
+
+      const current = getAppointments();
+      current.unshift(newAppt);
+      localStorage.setItem("patient_appointments", JSON.stringify(current));
+
+      closeBookModal();
+      document.getElementById("newApptForm").reset();
+      renderAppointments();
+    }
+
+    // Mobile sidebar toggle
+    const toggleBtn = document.getElementById("sidebarToggleBtn");
+    const sidebar = document.getElementById("sidebar");
+    if (toggleBtn && sidebar) {
+      toggleBtn.addEventListener("click", () => {
+        sidebar.classList.toggle("mobile-open");
+      });
+    }
+
+    document.addEventListener("DOMContentLoaded", renderAppointments);
+    renderAppointments();
+  </script>
 </body>
 </html>

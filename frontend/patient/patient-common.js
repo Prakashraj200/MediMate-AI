@@ -1,14 +1,13 @@
 /**
  * MediMate AI - Patient Portal Common Data & Utility Service
- * Provides centralized data synchronization, authentication verification,
- * notifications, and interactive portal functionality.
+ * Post-Accident Rehabilitation & Physiotherapy Intelligence
  */
 
 import { auth } from "../static/js/firebase-config.js";
 import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
 
 // ============================================================================
-// DEFAULT SEED DATA
+// DEFAULT SEED DATA (POST-ACCIDENT PHYSIO & REHAB SPECIFIC)
 // ============================================================================
 
 const DEFAULT_PATIENT_PROFILE = {
@@ -38,149 +37,62 @@ const DEFAULT_PATIENT_PROFILE = {
         validTill: "2027-03-31",
         coverageLimit: "₹10,00,000"
     },
-    primaryPhysician: "",
-    allergies: ["Penicillin", "Peanuts", "Dust Mites"],
-    chronicConditions: ["Mild Hypertension"],
-    joinedDate: "January 2024"
+    primaryPhysician: "Dr. Anand Kumar (Senior Orthopedic Physio)",
+    rehabCategory: "Post-Accident Cervical & Lumbar Rehabilitation",
+    traumaDate: "October 2026",
+    recoveryPhase: "Active Mobilization & Strengthening",
+    allergies: ["Penicillin"],
+    chronicConditions: ["Post-Trauma Cervical Strain"],
+    joinedDate: "October 2026"
 };
 
 const DEFAULT_APPOINTMENTS = [];
 
-const DEFAULT_MEDICINES = [
-    {
-        id: "MED-01",
-        name: "Telmisartan 40mg",
-        generic: "Telmisartan",
-        dosage: "40 mg",
-        timing: ["Morning"],
-        scheduleDescription: "1 tablet daily after breakfast",
-        purpose: "Blood Pressure control",
-        prescribedBy: "Attending Physician",
-        startDate: "2026-08-01",
-        duration: "90 Days",
-        remainingPills: 28,
-        totalPills: 90,
-        takenToday: {
-            morning: true,
-            afternoon: false,
-            evening: false,
-            night: false
-        },
-        refillNeeded: false,
-        instructions: "Take with water. Do not skip morning dose."
-    },
-    {
-        id: "MED-02",
-        name: "Atorvastatin 10mg",
-        generic: "Atorvastatin Calcium",
-        dosage: "10 mg",
-        timing: ["Night"],
-        scheduleDescription: "1 tablet before bedtime",
-        purpose: "Cholesterol management",
-        prescribedBy: "Attending Physician",
-        startDate: "2026-09-01",
-        duration: "60 Days",
-        remainingPills: 14,
-        totalPills: 60,
-        takenToday: {
-            morning: false,
-            afternoon: false,
-            evening: false,
-            night: false
-        },
-        refillNeeded: true,
-        instructions: "Take at bedtime. Avoid eating grapefruit."
-    },
-    {
-        id: "MED-03",
-        name: "Vitamin D3 60,000 IU",
-        generic: "Cholecalciferol",
-        dosage: "60,000 IU",
-        timing: ["Morning"],
-        scheduleDescription: "1 capsule once weekly on Sundays",
-        purpose: "Bone & Immune Health",
-        prescribedBy: "Attending Physician",
-        startDate: "2026-09-10",
-        duration: "8 Weeks",
-        remainingPills: 4,
-        totalPills: 8,
-        takenToday: {
-            morning: true,
-            afternoon: false,
-            evening: false,
-            night: false
-        },
-        refillNeeded: false,
-        instructions: "Take after breakfast with a glass of milk or warm water."
-    },
-    {
-        id: "MED-04",
-        name: "Omega-3 Fish Oil 1000mg",
-        generic: "EPA + DHA Fatty Acids",
-        dosage: "1000 mg",
-        timing: ["Afternoon"],
-        scheduleDescription: "1 softgel daily after lunch",
-        purpose: "Cardiovascular wellness",
-        prescribedBy: "Attending Physician",
-        startDate: "2026-08-15",
-        duration: "120 Days",
-        remainingPills: 52,
-        totalPills: 120,
-        takenToday: {
-            morning: false,
-            afternoon: true,
-            evening: false,
-            night: false
-        },
-        refillNeeded: false,
-        instructions: "Take with a full meal."
-    }
-];
+const DEFAULT_MEDICINES = []; // Zero pharmacy clutter
 
 const DEFAULT_VITALS = {
+    mobilityScore: {
+        value: 78,
+        unit: "% ROM",
+        status: "Progressing Rapidly",
+        lastChecked: "Today, 08:30 AM"
+    },
+    painScore: {
+        value: 3,
+        unit: "/ 10",
+        status: "Controlled (Mild Strain)",
+        lastChecked: "Today, 08:30 AM"
+    },
+    cervicalFlexion: {
+        value: "42° / 50°",
+        unit: "Range",
+        status: "84% Recovered",
+        lastChecked: "Oct 21, 2026"
+    },
+    lumbarFlexion: {
+        value: "65° / 80°",
+        unit: "Range",
+        status: "81% Recovered",
+        lastChecked: "Oct 21, 2026"
+    },
+    rehabStreak: {
+        value: 12,
+        unit: "Days",
+        status: "Consistent",
+        lastChecked: "Active Streak"
+    },
     bloodPressure: {
         systolic: 120,
         diastolic: 80,
         unit: "mmHg",
         status: "Normal",
-        lastChecked: "Today, 08:30 AM",
-        history: [
-            { date: "Oct 13", value: "120/80" },
-            { date: "Oct 10", value: "122/82" },
-            { date: "Oct 06", value: "124/84" },
-            { date: "Oct 01", value: "119/79" }
-        ]
+        lastChecked: "Today, 08:30 AM"
     },
     heartRate: {
         value: 72,
         unit: "bpm",
         status: "Optimal",
         lastChecked: "Today, 08:30 AM"
-    },
-    bloodSugar: {
-        fasting: 95,
-        postPrandial: 132,
-        unit: "mg/dL",
-        status: "Normal",
-        lastChecked: "Yesterday, 07:45 AM"
-    },
-    oxygenSaturation: {
-        value: 99,
-        unit: "% SpO2",
-        status: "Normal",
-        lastChecked: "Today, 08:30 AM"
-    },
-    bodyTemp: {
-        value: 98.4,
-        unit: "°F",
-        status: "Normal",
-        lastChecked: "Today, 08:30 AM"
-    },
-    weight: {
-        value: 68.0,
-        unit: "kg",
-        status: "Healthy BMI (22.5)",
-        lastChecked: "Oct 10, 2026"
     }
 };
 
@@ -188,126 +100,135 @@ const DEFAULT_PRESCRIPTIONS = [];
 
 const DEFAULT_LAB_REPORTS = [
     {
-        id: "LAB-9801",
-        testName: "Lipid Profile Comprehensive",
-        category: "Biochemistry",
-        date: "2026-10-02",
-        labTechnician: "Senior Biochemist",
+        id: "REHAB-REC-01",
+        testName: "Cervical Spine Diagnostic MRI & Disc Scan",
+        category: "Diagnostic Scan",
+        date: "2026-10-18",
+        labTechnician: "Dr. R. Ramanathan, Radiologist",
         status: "Completed",
-        flag: "Borderline",
-        summary: "Total cholesterol mildly elevated. Triglycerides and HDL within optimal targets.",
+        flag: "Improving",
+        summary: "C5-C6 mild posterior disc bulge without canal stenosis. Neural foramina patent. Clear for active physiotherapy.",
         parameters: [
-            { name: "Total Cholesterol", value: 205, unit: "mg/dL", normalRange: "< 200", status: "Borderline High" },
-            { name: "HDL Cholesterol (Good)", value: 52, unit: "mg/dL", normalRange: "> 40", status: "Normal" },
-            { name: "LDL Cholesterol (Bad)", value: 122, unit: "mg/dL", normalRange: "< 100", status: "Mildly High" },
-            { name: "Triglycerides", value: 140, unit: "mg/dL", normalRange: "< 150", status: "Normal" },
-            { name: "VLDL Cholesterol", value: 28, unit: "mg/dL", normalRange: "< 30", status: "Normal" }
+            { name: "C5-C6 Disc Height", value: "Preserved (4.8mm)", unit: "mm", normalRange: "4.5 - 5.5mm", status: "Optimal" },
+            { name: "Cervical Alignment", value: "Mild lordotic straightening", unit: "Deg", normalRange: "Normal Lordosis", status: "Mild Strain" },
+            { name: "Thecal Sac Impingement", value: "None", unit: "-", normalRange: "None", status: "Clear" },
+            { name: "Paravertebral Muscle Tone", value: "Mild spasm", unit: "-", normalRange: "Normal Tone", status: "Improving with TENS" }
         ]
     },
     {
-        id: "LAB-9802",
-        testName: "Complete Blood Count (CBC) with ESR",
-        category: "Hematology",
-        date: "2026-09-12",
-        labTechnician: "Lab Technologist",
+        id: "REHAB-REC-02",
+        testName: "Post-Trauma Range of Motion (ROM) Kinematics Report",
+        category: "Kinematics Analysis",
+        date: "2026-10-20",
+        labTechnician: "Dr. Anand Kumar, Lead Physio",
         status: "Completed",
         flag: "Normal",
-        summary: "All red cell, white cell and platelet indices within normal physiological limits.",
+        summary: "78% baseline mobility restored in cervical rotation and lumbar lateral bending. No neuro-deficit noted.",
         parameters: [
-            { name: "Hemoglobin", value: 14.8, unit: "g/dL", normalRange: "13.5 - 17.5", status: "Normal" },
-            { name: "Total Leukocyte Count (WBC)", value: 6800, unit: "cells/mcL", normalRange: "4000 - 11000", status: "Normal" },
-            { name: "Platelet Count", value: 245000, unit: "/mcL", normalRange: "150000 - 450000", status: "Normal" },
-            { name: "RBC Count", value: 5.1, unit: "million/mcL", normalRange: "4.5 - 5.9", status: "Normal" },
-            { name: "ESR (Westergren)", value: 8, unit: "mm/hr", normalRange: "0 - 15", status: "Normal" }
+            { name: "Cervical Flexion", value: 42, unit: "degrees", normalRange: "45 - 50", status: "Near Normal" },
+            { name: "Cervical Extension", value: 48, unit: "degrees", normalRange: "50 - 60", status: "Near Normal" },
+            { name: "Right Lateral Rotation", value: 65, unit: "degrees", normalRange: "70 - 80", status: "Mild Deficit" },
+            { name: "Left Lateral Rotation", value: 68, unit: "degrees", normalRange: "70 - 80", status: "Near Normal" }
         ]
     },
     {
-        id: "LAB-9803",
-        testName: "Glycated Hemoglobin (HbA1c)",
-        category: "Endocrinology",
-        date: "2026-09-12",
-        labTechnician: "Senior Biochemist",
+        id: "REHAB-REC-03",
+        testName: "Lumbar Dynamic Recovery & Axial Load Evaluation",
+        category: "Rehab Assessment",
+        date: "2026-10-21",
+        labTechnician: "Dr. Sneha Rao, Senior Physio",
         status: "Completed",
         flag: "Normal",
-        summary: "Non-diabetic range with excellent glucose regulation over past 90 days.",
+        summary: "Lumbar core endurance test passed. Patient cleared for progressive resistance bands and low-impact gait retraining.",
         parameters: [
-            { name: "HbA1c Level", value: 5.4, unit: "%", normalRange: "< 5.7", status: "Normal" },
-            { name: "Estimated Average Glucose (eAG)", value: 108, unit: "mg/dL", normalRange: "< 117", status: "Normal" }
-        ]
-    },
-    {
-        id: "LAB-9804",
-        testName: "Thyroid Stimulating Hormone (TSH)",
-        category: "Immunoassay",
-        date: "2026-08-01",
-        labTechnician: "Lab Technologist",
-        status: "Completed",
-        flag: "Normal",
-        summary: "Thyroid function within euthyroid reference range.",
-        parameters: [
-            { name: "Ultrasensitive TSH", value: 2.15, unit: "uIU/mL", normalRange: "0.4 - 4.2", status: "Normal" }
-        ]
-    },
-    {
-        id: "LAB-9805",
-        testName: "Electrocardiogram (12-Lead ECG)",
-        category: "Cardiology Diagnostic",
-        date: "2026-07-15",
-        labTechnician: "Clinical Diagnostics Dept",
-        status: "Completed",
-        flag: "Normal",
-        summary: "Normal sinus rhythm, heart rate 72 bpm. No ST-T changes or arrhythmias noted.",
-        parameters: [
-            { name: "Rhythm", value: "Normal Sinus", unit: "-", normalRange: "Sinus", status: "Normal" },
-            { name: "PR Interval", value: 148, unit: "ms", normalRange: "120 - 200", status: "Normal" },
-            { name: "QRS Duration", value: 88, unit: "ms", normalRange: "80 - 120", status: "Normal" },
-            { name: "QTc Interval", value: 412, unit: "ms", normalRange: "< 440", status: "Normal" }
+            { name: "Core Endurance Hold", value: 45, unit: "seconds", normalRange: "> 40", status: "Normal" },
+            { name: "Straight Leg Raise (SLR) Right", value: 80, unit: "degrees", normalRange: "70 - 90", status: "Negative / Normal" },
+            { name: "Straight Leg Raise (SLR) Left", value: 82, unit: "degrees", normalRange: "70 - 90", status: "Negative / Normal" }
         ]
     }
 ];
 
-const DEFAULT_DOCTORS = [];
+const DEFAULT_DOCTORS = [
+    {
+        id: "DOC-PHY-01",
+        name: "Dr. Anand Kumar",
+        department: "Orthopedic Rehabilitation",
+        qualifications: "BPT, MPT (Orthopedics), MIAP",
+        experience: "12+ Years Experience",
+        rating: 4.9,
+        reviewsCount: 38,
+        fee: "₹650",
+        avatar: "AK",
+        availableDays: "Mon - Sat",
+        nextSlot: "Today, 11:30 AM",
+        bio: "Senior Physiotherapist specializing in post-accident musculoskeletal trauma, cervical spinal alignment, and joint mobility restoration.",
+        email: "anand.physio@medimate.ai",
+        phone: "+91 98401 23456"
+    },
+    {
+        id: "DOC-PHY-02",
+        name: "Dr. Sneha Rao",
+        department: "Neurological Rehabilitation",
+        qualifications: "MPT (Neurology), Fellowship in Neuro-Rehab",
+        experience: "9+ Years Experience",
+        rating: 4.9,
+        reviewsCount: 29,
+        fee: "₹700",
+        avatar: "SR",
+        availableDays: "Mon - Fri",
+        nextSlot: "Tomorrow, 10:00 AM",
+        bio: "Consultant Neuro-Physiotherapist expert in traumatic nerve injury rehabilitation, proprioceptive retraining, and motor balance recovery.",
+        email: "sneha.physio@medimate.ai",
+        phone: "+91 98402 34567"
+    },
+    {
+        id: "DOC-PHY-03",
+        name: "Dr. Ramesh Kumar",
+        department: "Post-Accident Trauma & Sports Physio",
+        qualifications: "BPT, MPT (Sports Rehabilitation), CSCS",
+        experience: "8+ Years Experience",
+        rating: 4.8,
+        reviewsCount: 24,
+        fee: "₹600",
+        avatar: "RK",
+        availableDays: "Tue - Sun",
+        nextSlot: "Today, 03:00 PM",
+        bio: "Trauma recovery specialist focusing on soft-tissue injury remodeling, spinal decompression therapies, and progressive resistance retraining.",
+        email: "ramesh.physio@medimate.ai",
+        phone: "+91 98403 45678"
+    }
+];
 
 const DEFAULT_NOTIFICATIONS = [
     {
         id: "NOTIF-01",
-        category: "appointment",
-        title: "Welcome to MediMate AI",
-        message: "Welcome to MediMate AI! Manage your health records, view assigned prescriptions, and connect with clinical departments.",
+        category: "rehab",
+        title: "Daily Rehab Plan Ready",
+        message: "Your customized post-accident cervical stretching and isometric protocol for today is ready in the Pain & Rehab Tracker.",
         time: "1 hour ago",
         read: false,
-        icon: "📅",
-        link: "appointments.html"
+        icon: "fa-solid fa-person-walking",
+        link: "rehab.html"
     },
     {
         id: "NOTIF-02",
-        category: "medicine",
-        title: "Medication Refill Alert",
-        message: "Your Atorvastatin 10mg has only 14 days of supply remaining. Tap to request an easy refill from MediMate Pharmacy.",
-        time: "5 hours ago",
+        category: "ai",
+        title: "Preethi AI Milestone Update",
+        message: "Preethi AI noticed your mobility score improved from 72% to 78% this week. Keep up the consistent routines!",
+        time: "3 hours ago",
         read: false,
-        icon: "💊",
-        link: "medicines.html"
+        icon: "fa-solid fa-robot",
+        link: "preethi-ai.html"
     },
     {
         id: "NOTIF-03",
-        category: "lab",
-        title: "Lab Report Ready for Download",
-        message: "Your Lipid Profile Comprehensive report from Oct 02 is verified and ready to view.",
-        time: "2 days ago",
+        category: "consultation",
+        title: "Tele-Rehab Consultation Available",
+        message: "Licensed physiotherapists are online. Tap Tele-Rehab Consultation to join a high-definition video check-in.",
+        time: "1 day ago",
         read: true,
-        icon: "🧪",
-        link: "lab-reports.html"
-    },
-    {
-        id: "NOTIF-04",
-        category: "system",
-        title: "New AI Healthcare Assistant: Preethi AI",
-        message: "Preethi AI is now online to help you understand symptoms, medications, and wellness guidelines 24/7.",
-        time: "4 days ago",
-        read: true,
-        icon: "🤖",
-        link: "preethi-ai.html"
+        icon: "fa-solid fa-video",
+        link: "/tele-rehab.html"
     }
 ];
 
@@ -323,7 +244,11 @@ export class PatientStore {
             "anita patel",
             "vikram malhotra",
             "meenakshi sundaram",
-            "karthik raman"
+            "karthik raman",
+            "sarah connor",
+            "john smith",
+            "sujipreethi",
+            "suji"
         ];
         
         // 1. Purge patient_appointments
@@ -356,37 +281,25 @@ export class PatientStore {
             localStorage.setItem("patient_doctors", JSON.stringify([]));
         }
 
-        // 3. Purge patient_prescriptions
+        // 3. Purge patient_prescriptions (zero pharmacy clutter)
+        localStorage.setItem("patient_prescriptions", JSON.stringify([]));
+
+        // 4. Purge patient_medicines (zero pharmacy clutter)
+        localStorage.setItem("patient_medicines", JSON.stringify([]));
+
+        // 5. Purge patient_lab_reports of generic cardiac/lipid tests
         try {
-            const rawRx = JSON.parse(localStorage.getItem("patient_prescriptions") || "[]");
-            if (Array.isArray(rawRx)) {
-                const cleanedRx = rawRx.filter(rx => {
-                    if (!rx || !rx.doctorName) return false;
-                    const docName = rx.doctorName.toLowerCase();
-                    return !dummyNames.some(d => docName.includes(d));
-                });
-                localStorage.setItem("patient_prescriptions", JSON.stringify(cleanedRx));
+            const rawLabs = JSON.parse(localStorage.getItem("patient_lab_reports") || "[]");
+            const dummyLabs = ["lipid profile", "complete blood count", "glycated hemoglobin", "hba1c", "thyroid", "cbc"];
+            const cleanedLabs = Array.isArray(rawLabs) ? rawLabs.filter(l => !dummyLabs.some(dl => (l.testName || "").toLowerCase().includes(dl))) : [];
+            if (cleanedLabs.length === 0) {
+                localStorage.setItem("patient_lab_reports", JSON.stringify(DEFAULT_LAB_REPORTS));
+            } else {
+                localStorage.setItem("patient_lab_reports", JSON.stringify(cleanedLabs));
             }
         } catch (e) {
-            localStorage.setItem("patient_prescriptions", JSON.stringify([]));
+            localStorage.setItem("patient_lab_reports", JSON.stringify(DEFAULT_LAB_REPORTS));
         }
-
-        // 4. Sanitize patient_medicines prescribedBy
-        try {
-            const rawMeds = JSON.parse(localStorage.getItem("patient_medicines") || "[]");
-            if (Array.isArray(rawMeds)) {
-                let changed = false;
-                rawMeds.forEach(m => {
-                    if (m && m.prescribedBy && dummyNames.some(d => m.prescribedBy.toLowerCase().includes(d))) {
-                        m.prescribedBy = "Attending Physician";
-                        changed = true;
-                    }
-                });
-                if (changed) {
-                    localStorage.setItem("patient_medicines", JSON.stringify(rawMeds));
-                }
-            }
-        } catch (e) {}
     }
 
     static init() {
@@ -397,20 +310,16 @@ export class PatientStore {
         if (!localStorage.getItem("patient_appointments")) {
             localStorage.setItem("patient_appointments", JSON.stringify([]));
         }
-        if (!localStorage.getItem("patient_medicines")) {
-            localStorage.setItem("patient_medicines", JSON.stringify(DEFAULT_MEDICINES));
-        }
+        localStorage.setItem("patient_medicines", JSON.stringify([]));
         if (!localStorage.getItem("patient_vitals")) {
             localStorage.setItem("patient_vitals", JSON.stringify(DEFAULT_VITALS));
         }
-        if (!localStorage.getItem("patient_prescriptions")) {
-            localStorage.setItem("patient_prescriptions", JSON.stringify([]));
-        }
+        localStorage.setItem("patient_prescriptions", JSON.stringify([]));
         if (!localStorage.getItem("patient_lab_reports")) {
             localStorage.setItem("patient_lab_reports", JSON.stringify(DEFAULT_LAB_REPORTS));
         }
         if (!localStorage.getItem("patient_doctors")) {
-            localStorage.setItem("patient_doctors", JSON.stringify([]));
+            localStorage.setItem("patient_doctors", JSON.stringify(DEFAULT_DOCTORS));
         }
         if (!localStorage.getItem("patient_notifications")) {
             localStorage.setItem("patient_notifications", JSON.stringify(DEFAULT_NOTIFICATIONS));
@@ -425,7 +334,6 @@ export class PatientStore {
         this.init();
         try {
             let prof = JSON.parse(localStorage.getItem("patient_profile")) || {};
-            // Priority: logged-in currentUser
             let curUser = null;
             try {
                 curUser = JSON.parse(localStorage.getItem("currentUser") || sessionStorage.getItem("currentUser") || "null");
@@ -453,7 +361,6 @@ export class PatientStore {
 
     static saveProfile(profile) {
         localStorage.setItem("patient_profile", JSON.stringify(profile));
-        // Also sync currentUser if exists
         const currentUser = JSON.parse(localStorage.getItem("currentUser") || "{}");
         currentUser.name = profile.name;
         currentUser.email = profile.email;
@@ -467,38 +374,30 @@ export class PatientStore {
         this.purgeDummyData();
         try {
             const raw = JSON.parse(localStorage.getItem("patient_appointments")) || [];
-            const dummyNames = [
-                "sarah jenkins",
-                "rajesh kumar",
-                "anita patel",
-                "vikram malhotra",
-                "meenakshi sundaram",
-                "karthik raman"
-            ];
-            return raw.filter(a => a && a.doctorName && !dummyNames.some(d => a.doctorName.toLowerCase().includes(d)));
+            return Array.isArray(raw) ? raw : [];
         } catch {
             return [];
         }
     }
 
     static addAppointment(apt) {
+        this.init();
         const apts = this.getAppointments();
         const newApt = {
-            id: "APT-" + (1000 + apts.length + 1),
+            id: "APT-REHAB-" + (1000 + apts.length + 1),
             status: "Confirmed",
             ...apt
         };
         apts.unshift(newApt);
         localStorage.setItem("patient_appointments", JSON.stringify(apts));
         
-        // Add notification
         this.addNotification({
-            category: "appointment",
-            title: "Appointment Booked Successfully",
-            message: `Your appointment with ${newApt.doctorName} for ${newApt.date} at ${newApt.time} is confirmed.`,
+            category: "consultation",
+            title: "Rehab Consultation Confirmed",
+            message: `Your session with ${newApt.doctorName} for ${newApt.date} at ${newApt.time} is confirmed.`,
             time: "Just now",
             read: false,
-            icon: "📅",
+            icon: "fa-solid fa-calendar-check",
             link: "appointments.html"
         });
 
@@ -528,51 +427,12 @@ export class PatientStore {
         }
     }
 
-    // Medicines
+    // Medicines (Empty array maintained for API safety)
     static getMedicines() {
-        this.init();
-        try {
-            return JSON.parse(localStorage.getItem("patient_medicines")) || DEFAULT_MEDICINES;
-        } catch {
-            return DEFAULT_MEDICINES;
-        }
+        return [];
     }
 
-    static toggleMedicineDose(medId, timeOfDay) {
-        const meds = this.getMedicines();
-        const med = meds.find(m => m.id === medId);
-        if (med) {
-            if (!med.takenToday) med.takenToday = {};
-            med.takenToday[timeOfDay] = !med.takenToday[timeOfDay];
-            localStorage.setItem("patient_medicines", JSON.stringify(meds));
-            return med;
-        }
-        return null;
-    }
-
-    static requestRefill(medId) {
-        const meds = this.getMedicines();
-        const med = meds.find(m => m.id === medId);
-        if (med) {
-            med.refillRequested = true;
-            med.refillStatus = "Processing with Pharmacy";
-            localStorage.setItem("patient_medicines", JSON.stringify(meds));
-
-            this.addNotification({
-                category: "medicine",
-                title: "Refill Request Submitted",
-                message: `Refill request for ${med.name} sent to MediMate Central Pharmacy.`,
-                time: "Just now",
-                read: false,
-                icon: "💊",
-                link: "medicines.html"
-            });
-            return true;
-        }
-        return false;
-    }
-
-    // Vitals
+    // Vitals / Telemetry
     static getVitals() {
         this.init();
         try {
@@ -582,55 +442,22 @@ export class PatientStore {
         }
     }
 
-    static logVitals(newVitals) {
-        const vitals = this.getVitals();
-        if (newVitals.systolic && newVitals.diastolic) {
-            vitals.bloodPressure.systolic = Number(newVitals.systolic);
-            vitals.bloodPressure.diastolic = Number(newVitals.diastolic);
-            vitals.bloodPressure.lastChecked = "Just now";
-            if (!vitals.bloodPressure.history) vitals.bloodPressure.history = [];
-            vitals.bloodPressure.history.unshift({
-                date: "Today",
-                value: `${newVitals.systolic}/${newVitals.diastolic}`
-            });
-        }
-        if (newVitals.heartRate) {
-            vitals.heartRate.value = Number(newVitals.heartRate);
-            vitals.heartRate.lastChecked = "Just now";
-        }
-        if (newVitals.bloodSugar) {
-            vitals.bloodSugar.fasting = Number(newVitals.bloodSugar);
-            vitals.bloodSugar.lastChecked = "Just now";
-        }
-        if (newVitals.oxygenSaturation) {
-            vitals.oxygenSaturation.value = Number(newVitals.oxygenSaturation);
-            vitals.oxygenSaturation.lastChecked = "Just now";
-        }
-        if (newVitals.bodyTemp) {
-            vitals.bodyTemp.value = Number(newVitals.bodyTemp);
-            vitals.bodyTemp.lastChecked = "Just now";
-        }
-        if (newVitals.weight) {
-            vitals.weight.value = Number(newVitals.weight);
-            vitals.weight.lastChecked = "Just now";
-        }
-        localStorage.setItem("patient_vitals", JSON.stringify(vitals));
-        return vitals;
+    static updateVitals(vitalsUpdate) {
+        const current = this.getVitals();
+        const merged = { ...current, ...vitalsUpdate };
+        localStorage.setItem("patient_vitals", JSON.stringify(merged));
+        return merged;
     }
 
-    // Prescriptions
+    // Prescriptions (Empty array maintained)
     static getPrescriptions() {
-        this.init();
-        try {
-            return JSON.parse(localStorage.getItem("patient_prescriptions")) || DEFAULT_PRESCRIPTIONS;
-        } catch {
-            return DEFAULT_PRESCRIPTIONS;
-        }
+        return [];
     }
 
-    // Lab Reports
+    // Recovery & Lab Reports
     static getLabReports() {
         this.init();
+        this.purgeDummyData();
         try {
             return JSON.parse(localStorage.getItem("patient_lab_reports")) || DEFAULT_LAB_REPORTS;
         } catch {
@@ -638,23 +465,22 @@ export class PatientStore {
         }
     }
 
-    // Doctors
+    // Physiotherapists & Specialists
     static getDoctors() {
         this.init();
         this.purgeDummyData();
         try {
-            const dummyNames = ["sarah jenkins", "rajesh kumar", "anita patel", "vikram malhotra", "meenakshi sundaram", "karthik raman"];
-            // Check real registered doctors first from medimateDoctors and medimateUsers
+            const dummyNames = ["sarah jenkins", "rajesh kumar", "anita patel", "vikram malhotra", "meenakshi sundaram", "karthik raman", "sujipreethi", "suji"];
             const medimateDocs = JSON.parse(localStorage.getItem("medimateDoctors") || "[]");
             const allUsers = JSON.parse(localStorage.getItem("medimateUsers") || "[]");
-            const userDocs = allUsers.filter(u => u.role === "doctor");
+            const userDocs = allUsers.filter(u => u.role === "doctor" || u.role === "physio");
 
             const registry = [];
             const seen = new Set();
 
             [...medimateDocs, ...userDocs].forEach(d => {
                 const em = (d.email || d.id || "").toLowerCase();
-                const rawName = (d.name || d.fullName || "Doctor").trim();
+                const rawName = (d.name || d.fullName || "Physiotherapist").trim();
                 if (dummyNames.some(dn => rawName.toLowerCase().includes(dn))) return;
 
                 if (em && !seen.has(em)) {
@@ -663,25 +489,30 @@ export class PatientStore {
                     registry.push({
                         id: d.id || ("DOC-" + Math.floor(1000 + Math.random() * 9000)),
                         name: docName,
-                        department: d.department || d.specialization || "General Medicine",
-                        qualifications: d.qualifications || "MBBS, MD",
-                        experience: d.experience || "10+ Years",
-                        rating: d.rating || 5.0,
-                        reviewsCount: d.reviewsCount || 1,
-                        fee: d.fee || "₹500",
-                        avatar: "👨‍⚕️",
-                        availableDays: d.availableDays || "Mon to Sat",
-                        nextSlot: d.nextSlot || "Today, 10:00 AM",
-                        bio: d.bio || `Specialist in ${d.department || d.specialization || "General Medicine"}.`,
+                        department: d.department || d.specialization || "Orthopedic Rehabilitation",
+                        qualifications: d.qualifications || "BPT, MPT",
+                        experience: d.experience || "8+ Years",
+                        rating: d.rating || 4.9,
+                        reviewsCount: d.reviewsCount || 12,
+                        fee: d.fee || "₹650",
+                        avatar: docName.replace("Dr. ", "").split(" ").map(p => p[0]).join("").toUpperCase().substring(0, 2) || "PT",
+                        availableDays: d.availableDays || "Mon - Sat",
+                        nextSlot: d.nextSlot || "Today, 11:30 AM",
+                        bio: d.bio || `Specialist in ${d.department || d.specialization || "Post-Accident Rehabilitation"}.`,
                         email: d.email,
                         phone: d.phone
                     });
                 }
             });
 
+            // If no custom doctors registered yet, provide default verified physios
+            if (registry.length === 0) {
+                return DEFAULT_DOCTORS;
+            }
+
             return registry;
         } catch {
-            return [];
+            return DEFAULT_DOCTORS;
         }
     }
 
@@ -712,7 +543,7 @@ export class PatientStore {
         localStorage.setItem("patient_notifications", JSON.stringify(notifs));
     }
 
-    // Health Documents / PDF Uploads
+    // Recovery Documents / PDF Uploads
     static getHealthDocuments() {
         this.init();
         try {
@@ -725,7 +556,7 @@ export class PatientStore {
     static saveHealthDocument(doc) {
         const docs = this.getHealthDocuments();
         const newDoc = {
-            id: "DOC-PDF-" + Date.now(),
+            id: "DOC-REHAB-" + Date.now(),
             uploadedAt: new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' }),
             ...doc
         };
@@ -733,12 +564,12 @@ export class PatientStore {
         localStorage.setItem("patient_health_documents", JSON.stringify(docs));
 
         this.addNotification({
-            category: "record",
-            title: "Medical PDF Uploaded",
-            message: `Document "${newDoc.title}" has been securely attached to your health records.`,
+            category: "document",
+            title: "Recovery Document Saved",
+            message: `"${newDoc.title}" successfully added to your records.`,
             time: "Just now",
             read: false,
-            icon: "📄",
+            icon: "fa-solid fa-file-medical",
             link: "health-records.html"
         });
 
@@ -749,12 +580,11 @@ export class PatientStore {
         let docs = this.getHealthDocuments();
         docs = docs.filter(d => d.id !== id);
         localStorage.setItem("patient_health_documents", JSON.stringify(docs));
-        return true;
     }
 }
 
 // ============================================================================
-// AUTH & HEADER SETUP
+// AUTHENTICATION & PORTAL SETUP
 // ============================================================================
 
 export function setupPatientAuth(activePageName = "") {
@@ -766,8 +596,7 @@ export function setupPatientAuth(activePageName = "") {
         const sessionUser = sessionStorage.getItem("medimateUser");
 
         if (!user && !savedUser && !sessionUser) {
-            // Unauthenticated
-            window.location.href = "patient-login.html";
+            window.location.href = "/login.html?role=patient";
             return;
         }
 
@@ -782,27 +611,25 @@ export function setupPatientAuth(activePageName = "") {
             name = user.email.split("@")[0];
         }
 
-        // Update name fields
         const userNameEl = document.getElementById("userName");
         if (userNameEl) userNameEl.textContent = name;
 
         const welcomeNameEl = document.getElementById("welcomeName");
         if (welcomeNameEl) welcomeNameEl.textContent = name;
 
-        // Update avatar
         const userAvatarEl = document.getElementById("userAvatar");
         if (userAvatarEl) {
             userAvatarEl.textContent = name.charAt(0).toUpperCase();
         }
 
-        // Update notification badge
         updateNotificationBadge();
     });
 
     // Setup Logout
     const logoutBtn = document.getElementById("logoutBtn");
     if (logoutBtn) {
-        logoutBtn.addEventListener("click", async function () {
+        logoutBtn.addEventListener("click", async function (e) {
+            e.preventDefault();
             if (confirm("Are you sure you want to log out from Patient Portal?")) {
                 try {
                     await signOut(auth);
@@ -812,10 +639,8 @@ export function setupPatientAuth(activePageName = "") {
                 localStorage.removeItem("currentUser");
                 localStorage.removeItem("userRole");
                 localStorage.removeItem("userUID");
-                sessionStorage.removeItem("medimateRole");
-                sessionStorage.removeItem("medimateUser");
-                sessionStorage.removeItem("medimateUid");
-                window.location.href = "patient-login.html";
+                sessionStorage.clear();
+                window.location.href = "/login.html";
             }
         });
     }
@@ -845,39 +670,51 @@ function setupMobileSidebar() {
         toggleBtn.addEventListener("click", function () {
             sidebar.classList.toggle("mobile-open");
         });
-
-        // Close when clicking outside
         document.addEventListener("click", function (e) {
-            if (!sidebar.contains(e.target) && !toggleBtn.contains(e.target) && sidebar.classList.contains("mobile-open")) {
+            if (sidebar.classList.contains("mobile-open") && !sidebar.contains(e.target) && !toggleBtn.contains(e.target)) {
                 sidebar.classList.remove("mobile-open");
             }
         });
     }
 }
 
-// ============================================================================
-// TOAST NOTIFICATION UTILITY
-// ============================================================================
-
-export function showToast(message, type = "success") {
-    let toast = document.getElementById("portalToast");
-    if (!toast) {
-        toast = document.createElement("div");
-        toast.id = "portalToast";
-        toast.className = "portal-toast";
-        document.body.appendChild(toast);
+export function showToast(message, type = "info") {
+    let container = document.getElementById("toastContainer");
+    if (!container) {
+        container = document.createElement("div");
+        container.id = "toastContainer";
+        container.style.cssText = "position: fixed; bottom: 24px; right: 24px; z-index: 9999; display: flex; flex-direction: column; gap: 10px;";
+        document.body.appendChild(container);
     }
 
-    const icons = {
-        success: "✅",
-        error: "⚠️",
-        info: "ℹ️"
-    };
+    const toast = document.createElement("div");
+    const bg = type === "success" ? "#0284c7" : type === "error" ? "#ef4444" : "#071733";
+    const border = type === "success" ? "#38bdf8" : type === "error" ? "#f87171" : "rgba(56, 189, 248, 0.4)";
+    const icon = type === "success" ? "fa-circle-check" : type === "error" ? "fa-circle-exclamation" : "fa-circle-info";
 
-    toast.innerHTML = `<span class="toast-icon">${icons[type] || "ℹ️"}</span><span>${message}</span>`;
-    toast.className = `portal-toast show ${type}`;
+    toast.style.cssText = `
+        background: ${bg};
+        color: #ffffff;
+        padding: 14px 20px;
+        border-radius: 12px;
+        border: 1px solid ${border};
+        box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        font-size: 14px;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        min-width: 280px;
+        animation: toastIn 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    `;
+
+    toast.innerHTML = `<i class="fa-solid ${icon}"></i> <span>${message}</span>`;
+    container.appendChild(toast);
 
     setTimeout(() => {
-        toast.className = "portal-toast";
+        toast.style.opacity = "0";
+        toast.style.transform = "translateX(20px)";
+        toast.style.transition = "all 0.3s ease";
+        setTimeout(() => toast.remove(), 300);
     }, 3500);
 }

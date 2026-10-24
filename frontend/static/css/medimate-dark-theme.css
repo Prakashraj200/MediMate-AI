@@ -72,34 +72,66 @@ a {
    SIDEBAR (Universal across all portals)
 ========================================= */
 .sidebar, aside.sidebar, #sidebar {
-    background: var(--sidebar-bg) !important;
+    background: rgba(7, 18, 36, 0.98) !important;
     border-right: 1px solid var(--border-color) !important;
     color: var(--text-main) !important;
     backdrop-filter: blur(20px) !important;
     -webkit-backdrop-filter: blur(20px) !important;
     box-shadow: 4px 0 24px rgba(0, 0, 0, 0.5) !important;
+    box-sizing: border-box !important;
 }
 
 .logo, .brand {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    gap: 14px !important;
+    padding: 6px 8px 22px 8px !important;
+    margin-bottom: 12px !important;
     border-bottom: 1px solid var(--border-color) !important;
     background: transparent !important;
 }
 
 .logo-icon, .brand-icon, .brand-logo {
-    background: linear-gradient(135deg, #00e599 0%, #059669 100%) !important;
-    color: #050a14 !important;
-    box-shadow: 0 0 20px rgba(0, 229, 153, 0.4) !important;
-    border-radius: 14px !important;
+    width: 44px !important;
+    min-width: 44px !important;
+    max-width: 44px !important;
+    height: 44px !important;
+    min-height: 44px !important;
+    max-height: 44px !important;
+    background: linear-gradient(135deg, #0284c7 0%, #38bdf8 100%) !important;
+    color: #ffffff !important;
+    box-shadow: 0 4px 16px rgba(56, 189, 248, 0.35) !important;
+    border-radius: 12px !important;
     font-weight: 800 !important;
+    font-size: 22px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    flex-shrink: 0 !important;
+}
+
+.brand-text, .sidebar-brand .brand-text, .logo .brand-text, .brand .brand-text {
+    display: flex !important;
+    flex-direction: column !important;
 }
 
 .logo h2, .brand h2, .brand-text h2 {
+    font-size: 19px !important;
+    font-weight: 800 !important;
     color: #ffffff !important;
     letter-spacing: -0.3px !important;
+    margin: 0 !important;
+    line-height: 1.2 !important;
 }
 
 .logo span, .brand span, .brand p, .logo p, .brand-text p {
     color: var(--primary) !important;
+    font-size: 11px !important;
+    font-weight: 700 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 1px !important;
+    margin: 3px 0 0 0 !important;
 }
 
 .menu-title, .nav-title {
@@ -108,16 +140,35 @@ a {
     font-weight: 700 !important;
     letter-spacing: 1.2px !important;
     text-transform: uppercase !important;
+    margin: 18px 10px 8px 10px !important;
 }
 
 .menu a, .nav-link, .nav-menu a, .nav-menu button {
+    display: flex !important;
+    align-items: center !important;
+    gap: 14px !important;
     color: var(--text-muted) !important;
     border: 1px solid transparent !important;
     border-radius: 12px !important;
     background: transparent !important;
-    font-weight: 500 !important;
-    transition: all 0.25s ease !important;
+    font-weight: 600 !important;
+    font-size: 14px !important;
+    padding: 12px 16px !important;
+    margin: 4px 0 !important;
     text-decoration: none !important;
+    transition: all 0.25s ease !important;
+    box-sizing: border-box !important;
+}
+
+.menu-icon, .nav-icon {
+    width: 22px !important;
+    min-width: 22px !important;
+    text-align: center !important;
+    font-size: 17px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    flex-shrink: 0 !important;
 }
 
 .menu a:hover, .nav-link:hover, .nav-menu a:hover, .nav-menu button:hover {
@@ -127,11 +178,11 @@ a {
 }
 
 .menu a.active, .nav-link.active, .nav-menu a.active, .nav-menu button.active {
-    background: linear-gradient(135deg, rgba(0, 229, 153, 0.16) 0%, rgba(0, 229, 153, 0.04) 100%) !important;
-    color: var(--primary) !important;
-    border: 1px solid var(--border-highlight) !important;
-    box-shadow: 0 4px 20px rgba(0, 229, 153, 0.15) !important;
-    font-weight: 600 !important;
+    background: linear-gradient(135deg, rgba(56, 189, 248, 0.18) 0%, rgba(2, 132, 199, 0.08) 100%) !important;
+    color: #38bdf8 !important;
+    border: 1px solid rgba(56, 189, 248, 0.35) !important;
+    box-shadow: 0 4px 20px rgba(56, 189, 248, 0.15) !important;
+    font-weight: 700 !important;
 }
 
 /* =========================================

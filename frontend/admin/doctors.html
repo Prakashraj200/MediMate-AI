@@ -10,10 +10,148 @@
         content="width=device-width, initial-scale=1.0"
     >
 
-    <title>Doctors | MediMate-AI</title>
+    <title>Licensed Physiotherapists | MediMate-AI Rehab Admin</title>
 
 
     <style>
+        /* ================= SIDEBAR EXPLICIT BULLETPROOF STYLES ================= */
+        .sidebar {
+            width: 270px !important;
+            min-width: 270px !important;
+            max-width: 270px !important;
+            height: 100vh !important;
+            background: #071224 !important;
+            border-right: 1px solid rgba(255, 255, 255, 0.08) !important;
+            color: #f8fafc !important;
+            position: fixed !important;
+            left: 0 !important;
+            top: 0 !important;
+            bottom: 0 !important;
+            z-index: 1000 !important;
+            display: flex !important;
+            flex-direction: column !important;
+            transform: none !important;
+            padding: 24px 16px !important;
+            box-sizing: border-box !important;
+            overflow-y: auto !important;
+        }
+
+        .brand {
+            display: flex !important;
+            flex-direction: row !important;
+            align-items: center !important;
+            gap: 14px !important;
+            padding: 6px 8px 22px 8px !important;
+            margin-bottom: 12px !important;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+            width: 100% !important;
+            box-sizing: border-box !important;
+        }
+
+        .brand-logo {
+            width: 44px !important;
+            min-width: 44px !important;
+            max-width: 44px !important;
+            height: 44px !important;
+            min-height: 44px !important;
+            max-height: 44px !important;
+            background: linear-gradient(135deg, #0284c7 0%, #38bdf8 100%) !important;
+            color: #ffffff !important;
+            box-shadow: 0 4px 16px rgba(56, 189, 248, 0.35) !important;
+            border-radius: 12px !important;
+            font-weight: 800 !important;
+            font-size: 22px !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            flex-shrink: 0 !important;
+        }
+
+        .brand-text {
+            display: flex !important;
+            flex-direction: column !important;
+        }
+
+        .brand-text h2 {
+            font-size: 19px !important;
+            font-weight: 800 !important;
+            color: #ffffff !important;
+            letter-spacing: -0.3px !important;
+            margin: 0 !important;
+            line-height: 1.2 !important;
+        }
+
+        .brand-text h2 span {
+            color: #38bdf8 !important;
+        }
+
+        .brand-text p {
+            font-size: 11px !important;
+            color: #38bdf8 !important;
+            font-weight: 700 !important;
+            text-transform: uppercase !important;
+            letter-spacing: 1px !important;
+            margin: 3px 0 0 0 !important;
+        }
+
+        .menu-title {
+            color: #64748b !important;
+            font-size: 11px !important;
+            font-weight: 700 !important;
+            letter-spacing: 1.2px !important;
+            text-transform: uppercase !important;
+            margin: 18px 10px 8px 10px !important;
+        }
+
+        .nav-link {
+            display: flex !important;
+            align-items: center !important;
+            gap: 14px !important;
+            color: #94a3b8 !important;
+            border: 1px solid transparent !important;
+            border-radius: 12px !important;
+            background: transparent !important;
+            font-weight: 600 !important;
+            font-size: 14px !important;
+            padding: 12px 16px !important;
+            margin: 4px 0 !important;
+            text-decoration: none !important;
+            transition: all 0.25s ease !important;
+            box-sizing: border-box !important;
+            width: 100% !important;
+        }
+
+        .nav-icon {
+            width: 22px !important;
+            min-width: 22px !important;
+            text-align: center !important;
+            font-size: 17px !important;
+            display: inline-flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            flex-shrink: 0 !important;
+            color: inherit !important;
+        }
+
+        .nav-label {
+            flex: 1 !important;
+            color: inherit !important;
+        }
+
+        .nav-link:hover {
+            background: rgba(255, 255, 255, 0.05) !important;
+            color: #ffffff !important;
+            transform: translateX(4px) !important;
+        }
+
+        .nav-link.active {
+            background: linear-gradient(135deg, rgba(56, 189, 248, 0.18) 0%, rgba(2, 132, 199, 0.08) 100%) !important;
+            color: #38bdf8 !important;
+            border: 1px solid rgba(56, 189, 248, 0.35) !important;
+            box-shadow: 0 4px 20px rgba(56, 189, 248, 0.15) !important;
+            font-weight: 700 !important;
+        }
+
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
 
         :root {
@@ -24,9 +162,9 @@
             --sidebar-bg: rgba(10, 18, 36, 0.95);
             --topbar-bg: rgba(10, 18, 36, 0.85);
             --border-color: rgba(255, 255, 255, 0.08);
-            --border-highlight: rgba(0, 229, 153, 0.35);
-            --primary: #00e599;
-            --primary-glow: rgba(0, 229, 153, 0.35);
+            --border-highlight: rgba(56, 189, 248, 0.35);
+            --primary: #38bdf8;
+            --primary-glow: rgba(56, 189, 248, 0.35);
             --accent-amber: #f59e0b;
             --accent-blue: #3b82f6;
             --accent-red: #ef4444;
@@ -49,7 +187,7 @@
             background-color: var(--bg-base);
             background-image:
                 radial-gradient(circle at 10% 20%, rgba(245, 158, 11, 0.07), transparent 40%),
-                radial-gradient(circle at 90% 80%, rgba(0, 229, 153, 0.07), transparent 40%);
+                radial-gradient(circle at 90% 80%, rgba(56, 189, 248, 0.07), transparent 40%);
             background-attachment: fixed;
             color: var(--text-main);
             -webkit-font-smoothing: antialiased;
@@ -91,7 +229,7 @@
         .brand-logo {
             width: 44px;
             height: 44px;
-            background: linear-gradient(135deg, #00e599 0%, #059669 100%);
+            background: linear-gradient(135deg, #38bdf8 0%, #0284c7 100%);
             color: #050a14;
             border-radius: 12px;
             display: flex;
@@ -99,7 +237,7 @@
             justify-content: center;
             font-size: 22px;
             font-weight: 800;
-            box-shadow: 0 0 20px rgba(0, 229, 153, 0.4);
+            box-shadow: 0 0 20px rgba(56, 189, 248, 0.4);
         }
 
         .brand-text h2 {
@@ -148,10 +286,10 @@
         }
 
         .nav-link.active {
-            background: linear-gradient(135deg, rgba(0, 229, 153, 0.16) 0%, rgba(0, 229, 153, 0.04) 100%);
+            background: linear-gradient(135deg, rgba(56, 189, 248, 0.16) 0%, rgba(56, 189, 248, 0.04) 100%);
             color: var(--primary);
             border: 1px solid var(--border-highlight);
-            box-shadow: 0 4px 20px rgba(0, 229, 153, 0.15);
+            box-shadow: 0 4px 20px rgba(56, 189, 248, 0.15);
             font-weight: 600;
         }
 
@@ -255,14 +393,14 @@
             width: 36px;
             height: 36px;
             border-radius: 10px;
-            background: linear-gradient(135deg, #00e599, #059669);
+            background: linear-gradient(135deg, #38bdf8, #0284c7);
             color: #050a14;
             display: flex;
             align-items: center;
             justify-content: center;
             font-weight: 800;
             font-size: 14px;
-            box-shadow: 0 0 15px rgba(0, 229, 153, 0.3);
+            box-shadow: 0 0 15px rgba(56, 189, 248, 0.3);
         }
 
         .profile-text strong {
@@ -309,14 +447,14 @@
 
         .add-button {
             border: none;
-            background: linear-gradient(135deg, #00e599 0%, #059669 100%);
+            background: linear-gradient(135deg, #38bdf8 0%, #0284c7 100%);
             color: #050a14;
             padding: 13px 24px;
             border-radius: 12px;
             font-size: 14px;
             font-weight: 800;
             cursor: pointer;
-            box-shadow: 0 8px 25px rgba(0, 229, 153, 0.35);
+            box-shadow: 0 8px 25px rgba(56, 189, 248, 0.35);
             transition: all 0.25s ease;
             display: flex;
             align-items: center;
@@ -325,7 +463,7 @@
 
         .add-button:hover {
             transform: translateY(-2px);
-            box-shadow: 0 12px 30px rgba(0, 229, 153, 0.5);
+            box-shadow: 0 12px 30px rgba(56, 189, 248, 0.5);
             filter: brightness(1.05);
         }
 
@@ -354,18 +492,18 @@
         }
 
         .stat-card:hover {
-            border-color: rgba(0, 229, 153, 0.3);
+            border-color: rgba(56, 189, 248, 0.3);
             transform: translateY(-3px);
-            box-shadow: 0 14px 35px rgba(0, 229, 153, 0.12);
+            box-shadow: 0 14px 35px rgba(56, 189, 248, 0.12);
         }
 
         .stat-icon {
             width: 52px;
             height: 52px;
             border-radius: 14px;
-            background: rgba(0, 229, 153, 0.12);
+            background: rgba(56, 189, 248, 0.12);
             color: var(--primary);
-            border: 1px solid rgba(0, 229, 153, 0.25);
+            border: 1px solid rgba(56, 189, 248, 0.25);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -444,7 +582,7 @@
 
         .search-box input:focus {
             border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(0, 229, 153, 0.18);
+            box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.18);
             background: rgba(5, 10, 20, 0.95);
         }
 
@@ -471,7 +609,7 @@
 
         .status-filter:focus {
             border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(0, 229, 153, 0.18);
+            box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.18);
         }
 
         .status-filter option {
@@ -520,7 +658,7 @@
         }
 
         tbody tr:hover {
-            background: rgba(0, 229, 153, 0.03);
+            background: rgba(56, 189, 248, 0.03);
         }
 
         .doctor-info {
@@ -533,8 +671,8 @@
             width: 40px;
             height: 40px;
             border-radius: 12px;
-            background: linear-gradient(135deg, rgba(0, 229, 153, 0.2), rgba(245, 158, 11, 0.12));
-            border: 1px solid rgba(0, 229, 153, 0.35);
+            background: linear-gradient(135deg, rgba(56, 189, 248, 0.2), rgba(245, 158, 11, 0.12));
+            border: 1px solid rgba(56, 189, 248, 0.35);
             color: var(--primary);
             display: flex;
             align-items: center;
@@ -567,9 +705,9 @@
         }
 
         .badge.active {
-            background: rgba(0, 229, 153, 0.14);
-            color: #00e599;
-            border: 1px solid rgba(0, 229, 153, 0.35);
+            background: rgba(56, 189, 248, 0.14);
+            color: #38bdf8;
+            border: 1px solid rgba(56, 189, 248, 0.35);
         }
 
         .badge.inactive {
@@ -677,7 +815,7 @@
             border: 1px solid rgba(255, 255, 255, 0.12);
             border-radius: 24px;
             padding: 32px;
-            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.9), 0 0 40px rgba(0, 229, 153, 0.1);
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.9), 0 0 40px rgba(56, 189, 248, 0.1);
             backdrop-filter: blur(20px);
             animation: modalAppear 0.3s cubic-bezier(0.16, 1, 0.3, 1);
         }
@@ -765,7 +903,7 @@
         .form-group input:focus,
         .form-group select:focus {
             border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(0, 229, 153, 0.2);
+            box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.2);
             background: rgba(5, 10, 20, 0.95);
         }
 
@@ -798,19 +936,19 @@
         .save-button {
             padding: 12px 24px;
             border: none;
-            background: linear-gradient(135deg, #00e599 0%, #059669 100%);
+            background: linear-gradient(135deg, #38bdf8 0%, #0284c7 100%);
             color: #050a14;
             border-radius: 11px;
             cursor: pointer;
             font-weight: 800;
             font-size: 13.5px;
-            box-shadow: 0 8px 24px rgba(0, 229, 153, 0.35);
+            box-shadow: 0 8px 24px rgba(56, 189, 248, 0.35);
             transition: all 0.25s ease;
         }
 
         .save-button:hover {
             transform: translateY(-2px);
-            box-shadow: 0 12px 28px rgba(0, 229, 153, 0.5);
+            box-shadow: 0 12px 28px rgba(56, 189, 248, 0.5);
         }
 
         /* =========================================
@@ -827,7 +965,7 @@
             border-radius: 14px;
             font-size: 13.5px;
             font-weight: 600;
-            box-shadow: 0 14px 35px rgba(0, 0, 0, 0.6), 0 0 25px rgba(0, 229, 153, 0.2);
+            box-shadow: 0 14px 35px rgba(0, 0, 0, 0.6), 0 0 25px rgba(56, 189, 248, 0.2);
             display: none;
             z-index: 1000;
             backdrop-filter: blur(16px);
@@ -875,6 +1013,7 @@
         }
     </style>
     <link rel="stylesheet" href="admin-dark-theme.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 
 
@@ -888,175 +1027,27 @@
          SIDEBAR
     ========================================== -->
 
-    <aside class="sidebar">
-
+                        <aside class="sidebar" id="sidebar">
         <div class="brand">
-
-            <div class="brand-logo">
-                M
-            </div>
-
+            <div class="brand-logo">M</div>
             <div class="brand-text">
-
-                <h2>MediMate AI</h2>
-
-                <p>Admin Portal</p>
-
+                <h2>MediMate <span>AI</span></h2>
+                <p>Rehab Admin Portal</p>
             </div>
-
         </div>
 
+        <div class="menu-title">Main Menu</div>
+        <a href="dashboard.html" class="nav-link"><span class="nav-icon"><i class="fa-solid fa-chart-pie"></i></span><span class="nav-label">Dashboard</span></a>
+        <a href="doctors.html" class="nav-link active"><span class="nav-icon"><i class="fa-solid fa-user-doctor"></i></span><span class="nav-label">Physiotherapists</span></a>
+        <a href="patients.html" class="nav-link"><span class="nav-icon"><i class="fa-solid fa-user-injured"></i></span><span class="nav-label">Rehab Patients</span></a>
+        <a href="appointments.html" class="nav-link"><span class="nav-icon"><i class="fa-solid fa-calendar-check"></i></span><span class="nav-label">Rehab Appointments</span></a>
+        <a href="tele-rehab.html" class="nav-link"><span class="nav-icon"><i class="fa-solid fa-video"></i></span><span class="nav-label">Tele-Rehab Consultation</span></a>
+        <a href="reports.html" class="nav-link"><span class="nav-icon"><i class="fa-solid fa-chart-line"></i></span><span class="nav-label">Reports & Analytics</span></a>
 
-        <div class="menu-title">
-            Main Menu
-        </div>
-
-
-        <a
-            href="dashboard.html"
-            class="nav-link"
-        >
-
-            <span class="nav-icon">📊</span>
-
-            Dashboard
-
-        </a>
-
-
-        <a
-            href="doctors.html"
-            class="nav-link active"
-        >
-
-            <span class="nav-icon">👨‍⚕️</span>
-
-            Doctors
-
-        </a>
-
-
-        <a
-            href="patients.html"
-            class="nav-link"
-        >
-
-            <span class="nav-icon">🧑‍🤝‍🧑</span>
-
-            Patients
-
-        </a>
-
-
-        <a
-            href="laboratory.html"
-            class="nav-link"
-        >
-
-            <span class="nav-icon">🧪</span>
-
-            Laboratory
-
-        </a>
-
-
-        <a
-            href="pharmacy.html"
-            class="nav-link"
-        >
-
-            <span class="nav-icon">💊</span>
-
-            Pharmacy
-
-        </a>
-
-
-        <a
-            href="appointments.html"
-            class="nav-link"
-        >
-
-            <span class="nav-icon">📅</span>
-
-            Appointments
-
-        </a>
-
-
-        <a
-            href="departments.html"
-            class="nav-link"
-        >
-
-            <span class="nav-icon">🏥</span>
-
-            Departments
-
-        </a>
-
-
-        <a
-            href="reports.html"
-            class="nav-link"
-        >
-            <span class="nav-icon">📈</span>
-            Reports & Analytics
-        </a>
-
-        <a
-            href="medicines.html"
-            class="nav-link"
-        >
-            <span class="nav-icon">📦</span>
-            Medicines Inventory
-        </a>
-
-        <a
-            href="prescriptions.html"
-            class="nav-link"
-        >
-            <span class="nav-icon">📋</span>
-            Prescriptions
-        </a>
-
-        <div class="menu-title">
-            System & Security
-        </div>
-
-        <a
-            href="notifications.html"
-            class="nav-link"
-        >
-            <span class="nav-icon">🔔</span>
-            Notifications
-        </a>
-
-        <a
-            href="settings.html"
-            class="nav-link"
-        >
-            <span class="nav-icon">⚙️</span>
-            Settings
-        </a>
-
-        <a
-            href="profile.html"
-            class="nav-link"
-        >
-            <span class="nav-icon">👤</span>
-            Admin Profile
-        </a>
-
-        <a
-            href="admin-login.html"
-            class="nav-link"
-            onclick="sessionStorage.clear(); localStorage.removeItem('currentUser'); localStorage.removeItem('firebaseIdToken'); localStorage.removeItem('adminLoggedIn');"
-        >
-            <span class="nav-icon">🚪</span>
-            Sign Out
-        </a>
-
+        <div class="menu-title">System & Security</div>
+        <a href="settings.html" class="nav-link"><span class="nav-icon"><i class="fa-solid fa-sliders"></i></span><span class="nav-label">Settings</span></a>
+        <a href="profile.html" class="nav-link"><span class="nav-icon"><i class="fa-solid fa-user-shield"></i></span><span class="nav-label">Admin Profile</span></a>
+        <a href="/login.html" class="nav-link" onclick="sessionStorage.clear(); localStorage.removeItem('currentUser'); localStorage.removeItem('firebaseIdToken'); localStorage.removeItem('adminLoggedIn'); localStorage.removeItem('userRole');"><span class="nav-icon"><i class="fa-solid fa-arrow-right-from-bracket"></i></span><span class="nav-label">Sign Out</span></a>
     </aside>
 
 
@@ -1066,61 +1057,25 @@
     ========================================== -->
 
     <main class="main">
+        <header class="header" style="display:flex; justify-content:space-between; align-items:center; padding: 20px 30px; border-bottom: 1px solid rgba(56, 189, 248, 0.15); background: rgba(9, 23, 46, 0.85); backdrop-filter: blur(16px);">
+            <div class="header-title">
+                <h1 style="font-size: 22px; font-weight: 800; color: #ffffff;">Licensed Physiotherapists</h1>
+                <p style="font-size: 13px; color: #94a3b8; margin-top: 2px;">View and manage registered doctors and clinical specialists</p>
+            </div>
+            <div style="display:flex; align-items:center; gap: 16px;">
+                <button class="add-button" id="addDoctorButton" onclick="openDoctorModal()" style="background: linear-gradient(135deg, #0284c7 0%, #38bdf8 100%); color: #ffffff; border: none; padding: 11px 22px; border-radius: 10px; font-weight: 700; cursor: pointer; box-shadow: 0 4px 18px rgba(56, 189, 248, 0.45); font-size: 13.5px; display: inline-flex; align-items: center; gap: 6px;">
+                    + Add Physiotherapist
+                </button>
+                <div class="admin-profile" style="display:flex; align-items:center; gap:12px;">
+                    <div class="profile-avatar" style="width:38px; height:38px; border-radius:10px; background:linear-gradient(135deg,#0284c7,#38bdf8); color:#061121; display:flex; align-items:center; justify-content:center; font-weight:800; font-size:15px;">A</div>
+                </div>
+            </div>
+        </header>
 
 
         <!-- HEADER -->
 
-        <header class="header">
-
-            <div class="header-title">
-
-                <h1>
-                    Doctors
-                </h1>
-
-                <p>
-                    Manage hospital doctors and their information
-                </p>
-
-            </div>
-
-
-            <div class="admin-profile">
-
-                <div class="notification" style="cursor: pointer;" onclick="window.location.href='notifications.html'">
-
-                    🔔
-
-                    <span class="notification-badge">
-                        3
-                    </span>
-
-                </div>
-
-
-                <div class="profile" style="cursor: pointer;" onclick="window.location.href='profile.html'">
-
-                    <div class="profile-avatar">
-                        A
-                    </div>
-
-                    <div class="profile-text">
-
-                        <strong>
-                            Administrator
-                        </strong>
-
-                        <span>
-                            System Administrator
-                        </span>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-        </header>
+        
 
 
 
@@ -1135,13 +1090,9 @@
 
                 <div class="page-heading">
 
-                    <h2>
-                        Doctor Management
-                    </h2>
+                    <h2>Licensed Physiotherapists & Specialists</h2>
 
-                    <p>
-                        Add, update and manage doctors in MediMate-AI.
-                    </p>
+                    <p>Manage licensed physiotherapists, trauma recovery clinicians, and tele-rehab consultants.</p>
 
                 </div>
 
@@ -1152,7 +1103,7 @@
                     onclick="openDoctorModal()"
                 >
 
-                    ＋ Add Doctor
+                    ＋ Add Physiotherapist
 
                 </button>
 
@@ -1248,7 +1199,7 @@
                         <input
                             type="text"
                             id="searchInput"
-                            placeholder="Search doctors..."
+                            placeholder="Search physiotherapists, specialties..."
                         >
 
                     </div>
@@ -1285,9 +1236,7 @@
 
                             <tr>
 
-                                <th>
-                                    Doctor
-                                </th>
+                                <th>Physiotherapist</th>
 
                                 <th>
                                     Email
@@ -1297,13 +1246,9 @@
                                     Phone
                                 </th>
 
-                                <th>
-                                    Specialization
-                                </th>
+                                <th>Clinical Focus</th>
 
-                                <th>
-                                    Department
-                                </th>
+                                <th>Rehab Division</th>
 
                                 <th>
                                     Status
@@ -1458,7 +1403,7 @@
                     <input
                         type="text"
                         id="doctorSpecialization"
-                        placeholder="Cardiologist"
+                        placeholder="e.g. Cervical Spine & Whiplash Specialist (MPT)"
                         required
                     >
 
@@ -1480,33 +1425,12 @@
                             Select Department
                         </option>
 
-                        <option value="Cardiology">
-                            Cardiology
-                        </option>
-
-                        <option value="Neurology">
-                            Neurology
-                        </option>
-
-                        <option value="General Medicine">
-                            General Medicine
-                        </option>
-
-                        <option value="Pediatrics">
-                            Pediatrics
-                        </option>
-
-                        <option value="Orthopedics">
-                            Orthopedics
-                        </option>
-
-                        <option value="Dermatology">
-                            Dermatology
-                        </option>
-
-                        <option value="Emergency">
-                            Emergency
-                        </option>
+                        <option value="Whiplash & Cervical Spine Unit">Whiplash & Cervical Spine Unit</option>
+                        <option value="Orthopedic Trauma & Fracture Recovery">Orthopedic Trauma & Fracture Recovery</option>
+                        <option value="Knee Meniscus & ACL Rehab">Knee Meniscus & ACL Rehab</option>
+                        <option value="Lumbar Spine & Core Rehabilitation">Lumbar Spine & Core Rehabilitation</option>
+                        <option value="TENS & Electrotherapy Modalities">TENS & Electrotherapy Modalities</option>
+                        <option value="Sports Ligament & Soft Tissue Trauma">Sports Ligament & Soft Tissue Trauma</option>
 
                     </select>
 
@@ -1556,7 +1480,7 @@
                     class="save-button"
                     id="saveButton"
                 >
-                    Save Doctor
+                    Save Physiotherapist
                 </button>
 
             </div>
@@ -1722,6 +1646,9 @@
        VARIABLES
     ========================================== */
 
+    
+    
+
     let doctors = [];
 
     let editingDoctorId = null;
@@ -1766,7 +1693,7 @@
     function openDoctorModal() {
         editingDoctorId = null;
         if (modalTitle) modalTitle.textContent = "Add Doctor";
-        if (saveButton) saveButton.textContent = "Save Doctor";
+        if (saveButton) saveButton.textContent = "Save Physiotherapist";
         if (doctorForm) doctorForm.reset();
         if (doctorPassword) doctorPassword.value = "";
         if (doctorStatus) doctorStatus.value = "active";
@@ -2011,7 +1938,7 @@
                 saveButton.textContent =
                     editingDoctorId
                     ? "Update Doctor"
-                    : "Save Doctor";
+                    : "Save Physiotherapist";
 
             }
 
@@ -2472,10 +2399,21 @@
        HYBRID DOCTORS LOADER
     ========================================== */
 
+    
+        // Purge dummy doctors from localStorage if present
+        try {
+            const dummyNames = ["sarah jenkins", "rajesh kumar", "anita patel", "vikram malhotra", "sarah connor", "john smith", "malini swaminathan", "sanjay patel", "radhika menon", "anand kumar"];
+            let localD = JSON.parse(localStorage.getItem("medimateDoctors") || "[]");
+            const cleanD = localD.filter(d => !dummyNames.some(dn => (d.name || "").toLowerCase().includes(dn)));
+            if (cleanD.length !== localD.length) {
+                localStorage.setItem("medimateDoctors", JSON.stringify(cleanD));
+            }
+        } catch(e) {}
+
     function loadAllDoctors(firestoreDocs = []) {
         let combined = Array.isArray(firestoreDocs) ? [...firestoreDocs] : [];
 
-        // 1. Merge from medimateDoctors local registry
+        // 1. Merge from medimateDoctors local registry (real added doctors)
         try {
             const localDocs = JSON.parse(localStorage.getItem("medimateDoctors") || "[]");
             localDocs.forEach(ld => {
@@ -2487,7 +2425,7 @@
         // 2. Merge from medimateUsers (users registered with doctor role)
         try {
             const allUsers = JSON.parse(localStorage.getItem("medimateUsers") || "[]");
-            allUsers.filter(u => u.role === "doctor").forEach(u => {
+            allUsers.filter(u => u.role === "doctor" || u.role === "physio").forEach(u => {
                 const exists = combined.some(c => (c.email && u.email && c.email.toLowerCase() === u.email.toLowerCase()) || c.id === u.id);
                 if (!exists) {
                     combined.push({
@@ -2495,21 +2433,22 @@
                         name: u.name || u.fullName || (u.email ? u.email.split("@")[0] : "Doctor"),
                         email: u.email || "",
                         phone: u.phone || "+91 9876543210",
-                        specialization: u.specialization || "General Medicine",
-                        department: u.department || "Clinical Medicine",
-                        status: "active"
+                        specialization: u.specialization || "Physiotherapy & Rehab Specialist",
+                        department: u.department || "Rehabilitation Unit",
+                        status: u.status || "active"
                     });
                 }
             });
         } catch (e) {}
 
-        // Filter out any known dummy doctor names
-        const dummyNames = ["sarah jenkins", "rajesh kumar", "anita patel", "vikram malhotra", "sarah connor", "john smith"];
+        // Strict filter: Remove any dummy names completely
+        const dummyNames = ["sarah jenkins", "rajesh kumar", "anita patel", "vikram malhotra", "sarah connor", "john smith", "malini swaminathan", "sanjay patel", "radhika menon"];
         combined = combined.filter(d => {
             const n = (d.name || "").toLowerCase();
             return !dummyNames.some(dn => n.includes(dn));
         });
 
+        // ZERO dummy fallback - only show real data!
         doctors = combined;
         renderDoctors();
     }
