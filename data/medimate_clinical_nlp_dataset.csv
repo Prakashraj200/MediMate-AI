@@ -1,0 +1,145 @@
+query,category,is_red_flag
+Should I apply ice or a heating pad on my swollen neck?,Cryotherapy_Thermotherapy,0
+"Doctor, should i apply ice or a heating pad on my swollen neck?",Cryotherapy_Thermotherapy,0
+Is it better to use a cold pack or warm compress for new whiplash?,Cryotherapy_Thermotherapy,0
+"Doctor, is it better to use a cold pack or warm compress for new whiplash?",Cryotherapy_Thermotherapy,0
+How long should I leave an ice bag on my sprained shoulder?,Cryotherapy_Thermotherapy,0
+"Doctor, how long should i leave an ice bag on my sprained shoulder?",Cryotherapy_Thermotherapy,0
+Can I use hot water bag on my fresh knee contusion?,Cryotherapy_Thermotherapy,0
+"Doctor, can i use hot water bag on my fresh knee contusion?",Cryotherapy_Thermotherapy,0
+Ice application duration for acute swelling post accident,Cryotherapy_Thermotherapy,0
+"Doctor, ice application duration for acute swelling post accident",Cryotherapy_Thermotherapy,0
+Why should I avoid heat on acute inflammation?,Cryotherapy_Thermotherapy,0
+"Doctor, why should i avoid heat on acute inflammation?",Cryotherapy_Thermotherapy,0
+When should I switch from ice packs to warm heat packs?,Cryotherapy_Thermotherapy,0
+"Doctor, when should i switch from ice packs to warm heat packs?",Cryotherapy_Thermotherapy,0
+Cold therapy rules for soft tissue trauma,Cryotherapy_Thermotherapy,0
+"Doctor, cold therapy rules for soft tissue trauma",Cryotherapy_Thermotherapy,0
+Hot compress or ice pack for post trauma edema?,Cryotherapy_Thermotherapy,0
+"Doctor, hot compress or ice pack for post trauma edema?",Cryotherapy_Thermotherapy,0
+Vasoconstriction timing with cold pack for joint strain,Cryotherapy_Thermotherapy,0
+"Doctor, vasoconstriction timing with cold pack for joint strain",Cryotherapy_Thermotherapy,0
+How to relieve neck stiffness after a rear end car crash?,Cervical_Whiplash,0
+"Doctor, how to relieve neck stiffness after a rear end car crash?",Cervical_Whiplash,0
+Exercises for acute whiplash injury and cervical strain,Cervical_Whiplash,0
+"Doctor, exercises for acute whiplash injury and cervical strain",Cervical_Whiplash,0
+Can I rotate my neck completely after car collision?,Cervical_Whiplash,0
+"Doctor, can i rotate my neck completely after car collision?",Cervical_Whiplash,0
+Gentle isometric contractions for cervical spine stability,Cervical_Whiplash,0
+"Doctor, gentle isometric contractions for cervical spine stability",Cervical_Whiplash,0
+How to prevent neck muscle spasm after road accident?,Cervical_Whiplash,0
+"Doctor, how to prevent neck muscle spasm after road accident?",Cervical_Whiplash,0
+Is cervical collar recommended for all day use?,Cervical_Whiplash,0
+"Doctor, is cervical collar recommended for all day use?",Cervical_Whiplash,0
+Neutral spine exercises for severe neck muscle stiffness,Cervical_Whiplash,0
+"Doctor, neutral spine exercises for severe neck muscle stiffness",Cervical_Whiplash,0
+Chin tucks and isometric neck holds for trauma recovery,Cervical_Whiplash,0
+"Doctor, chin tucks and isometric neck holds for trauma recovery",Cervical_Whiplash,0
+Safe range of motion exercises for cervical whiplash,Cervical_Whiplash,0
+"Doctor, safe range of motion exercises for cervical whiplash",Cervical_Whiplash,0
+Managing upper trapezius spasm following vehicle impact,Cervical_Whiplash,0
+"Doctor, managing upper trapezius spasm following vehicle impact",Cervical_Whiplash,0
+My ankle is swollen and bruised after stepping off the vehicle,Ankle_Sprain_RICE,0
+"Doctor, my ankle is swollen and bruised after stepping off the vehicle",Ankle_Sprain_RICE,0
+How many times a day should I do ankle alphabet pumps?,Ankle_Sprain_RICE,0
+"Doctor, how many times a day should i do ankle alphabet pumps?",Ankle_Sprain_RICE,0
+RICE protocol steps for acute lateral ankle ligament sprain,Ankle_Sprain_RICE,0
+"Doctor, rice protocol steps for acute lateral ankle ligament sprain",Ankle_Sprain_RICE,0
+When can I bear full weight on my twisted ankle?,Ankle_Sprain_RICE,0
+"Doctor, when can i bear full weight on my twisted ankle?",Ankle_Sprain_RICE,0
+Elevation and compression bandage guidelines for swollen foot,Ankle_Sprain_RICE,0
+"Doctor, elevation and compression bandage guidelines for swollen foot",Ankle_Sprain_RICE,0
+Ankle dorsiflexion and plantarflexion home exercises,Ankle_Sprain_RICE,0
+"Doctor, ankle dorsiflexion and plantarflexion home exercises",Ankle_Sprain_RICE,0
+Reducing ankle joint effusion after motorcycle fall,Ankle_Sprain_RICE,0
+"Doctor, reducing ankle joint effusion after motorcycle fall",Ankle_Sprain_RICE,0
+Towel calf stretch for ankle joint mobility restoration,Ankle_Sprain_RICE,0
+"Doctor, towel calf stretch for ankle joint mobility restoration",Ankle_Sprain_RICE,0
+How tight should the crepe bandage be for ankle sprain?,Ankle_Sprain_RICE,0
+"Doctor, how tight should the crepe bandage be for ankle sprain?",Ankle_Sprain_RICE,0
+Non weight bearing timeline for grade 2 ligament strain,Ankle_Sprain_RICE,0
+"Doctor, non weight bearing timeline for grade 2 ligament strain",Ankle_Sprain_RICE,0
+Severe lower back ache after sudden braking in car accident,Lumbar_Spine_Rehab,0
+"Doctor, severe lower back ache after sudden braking in car accident",Lumbar_Spine_Rehab,0
+Ergonomic seating and lumbar roll for driving recovery,Lumbar_Spine_Rehab,0
+"Doctor, ergonomic seating and lumbar roll for driving recovery",Lumbar_Spine_Rehab,0
+Pelvic tilt exercises for post-accident lumbar spine pain,Lumbar_Spine_Rehab,0
+"Doctor, pelvic tilt exercises for post-accident lumbar spine pain",Lumbar_Spine_Rehab,0
+How long can I sit continuously without worsening lumbar stiffness?,Lumbar_Spine_Rehab,0
+"Doctor, how long can i sit continuously without worsening lumbar stiffness?",Lumbar_Spine_Rehab,0
+Knee to chest stretch for acute lower back strain,Lumbar_Spine_Rehab,0
+"Doctor, knee to chest stretch for acute lower back strain",Lumbar_Spine_Rehab,0
+Bridging exercise for gluteal and lumbar spine stability,Lumbar_Spine_Rehab,0
+"Doctor, bridging exercise for gluteal and lumbar spine stability",Lumbar_Spine_Rehab,0
+Sleeping position for post-traumatic lumbar disc irritation,Lumbar_Spine_Rehab,0
+"Doctor, sleeping position for post-traumatic lumbar disc irritation",Lumbar_Spine_Rehab,0
+Should I bend forward to pick up things with lumbar pain?,Lumbar_Spine_Rehab,0
+"Doctor, should i bend forward to pick up things with lumbar pain?",Lumbar_Spine_Rehab,0
+Cat cow gentle mobility stretch for vehicular back injury,Lumbar_Spine_Rehab,0
+"Doctor, cat cow gentle mobility stretch for vehicular back injury",Lumbar_Spine_Rehab,0
+Core bracing techniques during early domestic recovery,Lumbar_Spine_Rehab,0
+"Doctor, core bracing techniques during early domestic recovery",Lumbar_Spine_Rehab,0
+"My right calf is intensely swollen, red, hot to touch and painful",DVT_Emergency_RedFlag,1
+"Doctor, my right calf is intensely swollen, red, hot to touch and painful",DVT_Emergency_RedFlag,1
+Severe calf tenderness and warmth after 2 weeks in bed,DVT_Emergency_RedFlag,1
+"Doctor, severe calf tenderness and warmth after 2 weeks in bed",DVT_Emergency_RedFlag,1
+One leg calf is much larger and burning hot compared to other,DVT_Emergency_RedFlag,1
+"Doctor, one leg calf is much larger and burning hot compared to other",DVT_Emergency_RedFlag,1
+Throbbing calf cramp and redness in lower limb post fracture,DVT_Emergency_RedFlag,1
+"Doctor, throbbing calf cramp and redness in lower limb post fracture",DVT_Emergency_RedFlag,1
+Deep vein thrombosis warning signs in leg after trauma,DVT_Emergency_RedFlag,1
+"Doctor, deep vein thrombosis warning signs in leg after trauma",DVT_Emergency_RedFlag,1
+"Calf is hard, swollen and extremely warm with red streaks",DVT_Emergency_RedFlag,1
+"Doctor, calf is hard, swollen and extremely warm with red streaks",DVT_Emergency_RedFlag,1
+Sudden painful unilateral swelling in gastrocnemius muscle,DVT_Emergency_RedFlag,1
+"Doctor, sudden painful unilateral swelling in gastrocnemius muscle",DVT_Emergency_RedFlag,1
+Is a hot red swollen calf an emergency after surgery?,DVT_Emergency_RedFlag,1
+"Doctor, is a hot red swollen calf an emergency after surgery?",DVT_Emergency_RedFlag,1
+Calf pain increases when pulling toes upward with fever,DVT_Emergency_RedFlag,1
+"Doctor, calf pain increases when pulling toes upward with fever",DVT_Emergency_RedFlag,1
+Suspicion of blood clot in lower leg after bed rest,DVT_Emergency_RedFlag,1
+"Doctor, suspicion of blood clot in lower leg after bed rest",DVT_Emergency_RedFlag,1
+Sudden numbness in saddle groin area and loss of bladder control,Spinal_Cord_Emergency,1
+"Doctor, sudden numbness in saddle groin area and loss of bladder control",Spinal_Cord_Emergency,1
+I cannot feel my legs and cannot urinate after spine injury,Spinal_Cord_Emergency,1
+"Doctor, i cannot feel my legs and cannot urinate after spine injury",Spinal_Cord_Emergency,1
+Progressive loss of bowel control and leg weakness,Spinal_Cord_Emergency,1
+"Doctor, progressive loss of bowel control and leg weakness",Spinal_Cord_Emergency,1
+Pins and needles with complete loss of sensation in both legs,Spinal_Cord_Emergency,1
+"Doctor, pins and needles with complete loss of sensation in both legs",Spinal_Cord_Emergency,1
+Cauda equina red flag symptoms post vehicular trauma,Spinal_Cord_Emergency,1
+"Doctor, cauda equina red flag symptoms post vehicular trauma",Spinal_Cord_Emergency,1
+Sudden foot drop and inability to move toes after back trauma,Spinal_Cord_Emergency,1
+"Doctor, sudden foot drop and inability to move toes after back trauma",Spinal_Cord_Emergency,1
+Bilateral leg numbness with perineal sensory loss,Spinal_Cord_Emergency,1
+"Doctor, bilateral leg numbness with perineal sensory loss",Spinal_Cord_Emergency,1
+Rapidly worsening neurological deficit in lower extremities,Spinal_Cord_Emergency,1
+"Doctor, rapidly worsening neurological deficit in lower extremities",Spinal_Cord_Emergency,1
+"Unbearable tight swelling, pale foot and no pulse felt",Compartment_Syndrome,1
+"Doctor, unbearable tight swelling, pale foot and no pulse felt",Compartment_Syndrome,1
+Pain out of proportion to injury with tense shiny skin,Compartment_Syndrome,1
+"Doctor, pain out of proportion to injury with tense shiny skin",Compartment_Syndrome,1
+Extreme pressure inside limb with cold pale toes and numbness,Compartment_Syndrome,1
+"Doctor, extreme pressure inside limb with cold pale toes and numbness",Compartment_Syndrome,1
+Loss of pulse and severe ischemic pain in casted leg,Compartment_Syndrome,1
+"Doctor, loss of pulse and severe ischemic pain in casted leg",Compartment_Syndrome,1
+Limb feels like it is about to burst with severe paralysis,Compartment_Syndrome,1
+"Doctor, limb feels like it is about to burst with severe paralysis",Compartment_Syndrome,1
+Emergency signs of acute compartment syndrome post fracture,Compartment_Syndrome,1
+"Doctor, emergency signs of acute compartment syndrome post fracture",Compartment_Syndrome,1
+What cadence should I follow for repetition counting?,Routine_Pacing_Cadence,0
+"Doctor, what cadence should i follow for repetition counting?",Routine_Pacing_Cadence,0
+How fast should I perform cervical isometric exercises?,Routine_Pacing_Cadence,0
+"Doctor, how fast should i perform cervical isometric exercises?",Routine_Pacing_Cadence,0
+Recommended hold time and rest interval between exercise sets,Routine_Pacing_Cadence,0
+"Doctor, recommended hold time and rest interval between exercise sets",Routine_Pacing_Cadence,0
+Should I push through sharp pain above 7 on VAS slider?,Routine_Pacing_Cadence,0
+"Doctor, should i push through sharp pain above 7 on vas slider?",Routine_Pacing_Cadence,0
+How many repetitions per set for early stage physiotherapy?,Routine_Pacing_Cadence,0
+"Doctor, how many repetitions per set for early stage physiotherapy?",Routine_Pacing_Cadence,0
+Timer guidelines: concentric contraction vs isometric hold,Routine_Pacing_Cadence,0
+"Doctor, timer guidelines: concentric contraction vs isometric hold",Routine_Pacing_Cadence,0
+When should I pause or cease my daily exercise program?,Routine_Pacing_Cadence,0
+"Doctor, when should i pause or cease my daily exercise program?",Routine_Pacing_Cadence,0
+Pacing principles to avoid micro trauma during recovery,Routine_Pacing_Cadence,0
+"Doctor, pacing principles to avoid micro trauma during recovery",Routine_Pacing_Cadence,0

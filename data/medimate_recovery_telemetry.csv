@@ -1,0 +1,601 @@
+patient_id,age,gender,trauma_type,days_post_discharge,initial_vas,current_vas,rom_percentage,rom_angle_deg,exercise_adherence_pct,expected_recovery_weeks,complication_risk
+PAT-1000,56,Male,Lumbar Strain,47,8.0,2.2,80.8,113.1,86.0,6.8,Low
+PAT-1001,69,Female,Knee Ligament Contusion,24,8.4,5.9,59.0,82.6,44.3,11.1,Moderate
+PAT-1002,46,Female,Lumbar Strain,54,8.8,2.0,73.7,103.2,68.9,7.3,Low
+PAT-1003,32,Male,Cervical Whiplash,22,6.7,4.6,68.4,95.7,81.3,9.6,Moderate
+PAT-1004,60,Male,Lumbar Strain,5,6.6,4.7,57.5,80.4,73.1,12.2,Moderate
+PAT-1005,25,Female,Lumbar Strain,56,6.4,2.8,77.1,108.0,43.2,8.6,Low
+PAT-1006,38,Male,Lumbar Strain,33,8.2,4.4,62.7,87.7,54.9,10.1,Low
+PAT-1007,56,Male,Lumbar Strain,58,8.5,2.1,89.3,125.0,84.9,6.8,Low
+PAT-1008,36,Male,Knee Ligament Contusion,36,6.1,3.0,69.1,96.7,68.8,8.5,Low
+PAT-1009,40,Female,Cervical Whiplash,47,9.3,5.2,66.1,92.5,30.4,10.5,Moderate
+PAT-1010,28,Female,Knee Ligament Contusion,20,6.2,3.3,65.2,91.3,83.3,8.9,Low
+PAT-1011,28,Male,Knee Ligament Contusion,19,7.9,5.8,49.6,69.5,32.5,12.0,Moderate
+PAT-1012,41,Female,Lumbar Strain,35,8.5,3.3,72.7,101.8,82.2,8.6,Low
+PAT-1013,70,Female,Ankle Sprain/Fracture,52,9.0,4.0,74.5,104.3,44.2,9.6,Low
+PAT-1014,53,Female,Ankle Sprain/Fracture,43,8.5,2.3,87.4,122.4,97.1,7.2,Low
+PAT-1015,57,Female,Knee Ligament Contusion,17,8.8,6.1,56.6,79.3,55.8,11.8,Moderate
+PAT-1016,41,Female,Knee Ligament Contusion,59,7.2,2.8,79.3,111.0,52.9,7.4,Low
+PAT-1017,20,Male,Lumbar Strain,45,8.9,3.3,63.2,88.4,40.4,10.6,Low
+PAT-1018,39,Male,Knee Ligament Contusion,43,6.3,3.3,69.1,96.7,51.4,8.5,Low
+PAT-1019,70,Male,Lumbar Strain,34,9.1,3.5,78.0,109.1,91.4,9.0,Low
+PAT-1020,19,Female,Ankle Sprain/Fracture,9,7.9,4.0,75.2,105.2,99.7,9.6,Low
+PAT-1021,41,Female,Ankle Sprain/Fracture,26,8.9,5.0,58.9,82.4,55.8,10.8,Moderate
+PAT-1022,61,Male,Cervical Whiplash,2,7.6,5.9,55.4,77.6,61.4,12.0,Moderate
+PAT-1023,47,Female,Ankle Sprain/Fracture,53,8.3,2.7,87.9,123.0,80.5,6.9,Low
+PAT-1024,55,Male,Knee Ligament Contusion,9,7.8,4.0,65.6,91.9,92.0,11.0,Low
+PAT-1025,19,Male,Ankle Sprain/Fracture,9,8.6,5.6,63.4,88.7,71.5,12.1,Moderate
+PAT-1026,38,Male,Lumbar Strain,40,6.3,2.6,71.4,100.0,57.4,9.6,Low
+PAT-1027,50,Female,Ankle Sprain/Fracture,17,6.2,3.4,59.5,83.3,58.9,11.3,Low
+PAT-1028,29,Female,Cervical Whiplash,1,6.9,4.3,56.0,78.3,78.7,11.1,Low
+PAT-1029,39,Male,Ankle Sprain/Fracture,25,6.6,4.9,57.0,79.8,30.2,11.8,Moderate
+PAT-1030,61,Male,Lumbar Strain,43,9.1,3.9,80.4,112.6,73.4,8.3,Low
+PAT-1031,42,Male,Lumbar Strain,40,6.8,3.5,67.6,94.7,54.9,10.0,Low
+PAT-1032,66,Male,Knee Ligament Contusion,42,9.4,3.5,76.6,107.3,85.6,7.7,Low
+PAT-1033,44,Female,Ankle Sprain/Fracture,25,7.2,5.0,54.8,76.7,36.5,12.3,Moderate
+PAT-1034,59,Female,Lumbar Strain,39,6.6,2.5,71.9,100.6,71.2,8.9,Low
+PAT-1035,45,Male,Cervical Whiplash,35,8.8,4.4,69.5,97.2,63.7,10.8,Low
+PAT-1036,33,Male,Knee Ligament Contusion,3,8.3,5.8,59.7,83.6,75.0,11.9,Moderate
+PAT-1037,32,Female,Cervical Whiplash,50,7.7,4.2,66.9,93.7,34.5,10.2,Low
+PAT-1038,64,Female,Ankle Sprain/Fracture,37,7.9,4.0,72.9,102.0,70.6,10.2,Low
+PAT-1039,68,Male,Ankle Sprain/Fracture,44,8.5,3.6,76.5,107.1,69.3,8.4,Low
+PAT-1040,61,Male,Ankle Sprain/Fracture,44,6.8,2.8,78.9,110.4,69.2,7.4,Low
+PAT-1041,69,Male,Knee Ligament Contusion,51,9.5,3.6,74.4,104.1,72.2,7.3,Low
+PAT-1042,20,Female,Lumbar Strain,30,9.4,4.3,69.6,97.4,77.4,10.2,Low
+PAT-1043,54,Female,Knee Ligament Contusion,38,8.3,2.7,79.3,111.0,86.3,7.3,Low
+PAT-1044,68,Female,Cervical Whiplash,34,6.7,3.6,67.9,95.1,48.9,10.0,Low
+PAT-1045,24,Male,Knee Ligament Contusion,12,8.4,4.2,63.5,89.0,87.8,10.8,Low
+PAT-1046,38,Male,Cervical Whiplash,19,6.3,3.4,55.7,78.0,64.9,10.7,Low
+PAT-1047,26,Female,Knee Ligament Contusion,37,6.1,3.5,63.4,88.8,35.4,10.7,Low
+PAT-1048,56,Female,Lumbar Strain,44,6.9,3.4,63.0,88.2,34.1,10.3,Low
+PAT-1049,35,Male,Cervical Whiplash,59,7.6,2.6,75.7,106.0,53.4,8.6,Low
+PAT-1050,21,Female,Ankle Sprain/Fracture,59,9.0,1.2,87.7,122.8,84.9,6.2,Low
+PAT-1051,42,Female,Ankle Sprain/Fracture,49,8.5,2.8,81.8,114.6,79.5,7.4,Low
+PAT-1052,31,Male,Knee Ligament Contusion,17,8.6,4.5,65.1,91.1,85.2,9.9,Low
+PAT-1053,67,Female,Ankle Sprain/Fracture,10,7.5,4.5,50.3,70.4,66.2,12.1,Moderate
+PAT-1054,26,Male,Cervical Whiplash,57,7.2,2.7,83.3,116.7,60.8,8.0,Low
+PAT-1055,43,Male,Ankle Sprain/Fracture,55,7.3,3.6,76.7,107.4,40.3,9.2,Low
+PAT-1056,70,Male,Lumbar Strain,49,9.5,3.4,75.7,106.0,53.0,10.0,Low
+PAT-1057,19,Male,Lumbar Strain,47,6.1,2.2,71.7,100.3,60.4,7.6,Low
+PAT-1058,37,Male,Knee Ligament Contusion,12,9.0,6.6,47.7,66.7,36.2,14.5,Moderate
+PAT-1059,45,Male,Cervical Whiplash,16,8.0,5.2,53.4,74.8,45.4,13.2,Moderate
+PAT-1060,64,Male,Lumbar Strain,24,7.5,4.3,68.2,95.4,71.9,10.5,Low
+PAT-1061,24,Female,Lumbar Strain,19,8.5,4.4,68.8,96.3,81.5,11.2,Low
+PAT-1062,61,Male,Cervical Whiplash,8,7.7,3.9,64.6,90.4,99.9,9.3,Low
+PAT-1063,25,Male,Ankle Sprain/Fracture,31,9.1,2.6,78.0,109.2,95.3,8.4,Low
+PAT-1064,64,Female,Ankle Sprain/Fracture,21,9.2,5.1,67.1,94.0,75.0,10.3,Moderate
+PAT-1065,52,Female,Knee Ligament Contusion,17,7.5,4.2,62.9,88.1,59.5,11.8,Low
+PAT-1066,31,Female,Ankle Sprain/Fracture,23,7.0,3.7,68.8,96.3,74.5,9.4,Low
+PAT-1067,34,Male,Cervical Whiplash,37,8.1,3.2,80.0,112.0,85.0,8.7,Low
+PAT-1068,53,Female,Lumbar Strain,54,9.2,4.7,71.9,100.7,38.3,10.4,Moderate
+PAT-1069,67,Male,Ankle Sprain/Fracture,16,6.7,3.8,62.0,86.8,58.7,11.7,Low
+PAT-1070,57,Male,Knee Ligament Contusion,6,8.2,3.5,63.3,88.7,88.8,11.2,Low
+PAT-1071,21,Male,Ankle Sprain/Fracture,8,8.2,5.8,50.2,70.3,56.9,12.1,Moderate
+PAT-1072,19,Male,Cervical Whiplash,25,8.6,5.2,70.5,98.7,70.0,10.0,Moderate
+PAT-1073,23,Female,Knee Ligament Contusion,18,6.5,4.2,65.0,91.0,71.1,11.0,Low
+PAT-1074,71,Female,Ankle Sprain/Fracture,25,8.5,5.5,56.2,78.6,42.9,12.3,Moderate
+PAT-1075,59,Male,Knee Ligament Contusion,12,9.2,6.0,53.1,74.3,55.4,12.6,Moderate
+PAT-1076,21,Male,Cervical Whiplash,15,6.6,4.7,56.4,78.9,53.4,11.5,Moderate
+PAT-1077,71,Male,Lumbar Strain,59,6.8,2.7,73.7,103.2,31.8,7.9,Low
+PAT-1078,46,Female,Cervical Whiplash,26,9.4,6.6,55.0,77.0,31.7,12.2,Moderate
+PAT-1079,35,Male,Cervical Whiplash,41,6.6,2.4,81.8,114.5,88.2,8.3,Low
+PAT-1080,43,Male,Cervical Whiplash,45,9.0,4.7,75.4,105.6,49.1,9.2,Moderate
+PAT-1081,61,Female,Cervical Whiplash,26,7.7,5.2,68.8,96.4,66.3,10.4,Moderate
+PAT-1082,51,Female,Lumbar Strain,47,6.9,3.3,72.6,101.6,50.9,9.5,Low
+PAT-1083,27,Male,Lumbar Strain,32,9.0,3.1,81.3,113.8,95.8,7.9,Low
+PAT-1084,53,Female,Knee Ligament Contusion,10,7.6,5.5,48.0,67.2,48.2,12.8,Moderate
+PAT-1085,31,Female,Ankle Sprain/Fracture,16,7.8,4.2,59.4,83.1,60.1,12.0,Low
+PAT-1086,48,Male,Lumbar Strain,7,7.3,3.8,68.8,96.4,91.1,10.5,Low
+PAT-1087,65,Female,Lumbar Strain,17,8.1,3.9,67.5,94.4,88.9,11.4,Low
+PAT-1088,32,Male,Ankle Sprain/Fracture,23,6.6,4.1,53.9,75.5,43.0,10.7,Low
+PAT-1089,25,Female,Lumbar Strain,26,7.4,3.4,70.1,98.2,86.2,9.6,Low
+PAT-1090,31,Male,Cervical Whiplash,21,9.4,5.2,58.3,81.6,62.1,11.4,Moderate
+PAT-1091,40,Male,Cervical Whiplash,22,6.9,4.4,60.3,84.4,63.8,10.9,Low
+PAT-1092,57,Male,Ankle Sprain/Fracture,58,8.3,3.5,73.1,102.3,39.3,9.2,Low
+PAT-1093,38,Female,Knee Ligament Contusion,7,7.1,5.7,41.2,57.6,35.6,13.2,Moderate
+PAT-1094,33,Male,Knee Ligament Contusion,14,8.7,4.7,63.9,89.5,81.0,11.0,Moderate
+PAT-1095,62,Female,Ankle Sprain/Fracture,15,6.5,4.1,61.9,86.6,64.8,10.1,Low
+PAT-1096,35,Male,Ankle Sprain/Fracture,53,9.4,3.8,75.7,105.9,60.6,8.9,Low
+PAT-1097,64,Male,Cervical Whiplash,7,7.6,4.3,64.7,90.6,81.1,11.3,Low
+PAT-1098,70,Female,Knee Ligament Contusion,9,6.8,3.7,63.6,89.0,83.6,10.9,Low
+PAT-1099,41,Male,Lumbar Strain,51,6.3,2.8,74.1,103.7,41.1,9.5,Low
+PAT-1100,43,Male,Cervical Whiplash,48,6.6,1.8,77.7,108.7,72.7,7.8,Low
+PAT-1101,42,Female,Ankle Sprain/Fracture,8,7.8,5.7,49.7,69.6,39.5,13.5,Moderate
+PAT-1102,62,Male,Knee Ligament Contusion,50,7.2,1.9,80.7,112.9,82.6,6.6,Low
+PAT-1103,58,Male,Lumbar Strain,59,8.9,2.7,89.3,125.1,76.0,6.7,Low
+PAT-1104,46,Male,Lumbar Strain,23,7.5,3.3,74.5,104.3,97.0,9.4,Low
+PAT-1105,32,Male,Cervical Whiplash,29,6.9,4.5,58.7,82.2,34.8,12.2,Moderate
+PAT-1106,62,Female,Knee Ligament Contusion,18,8.2,6.3,47.3,66.2,34.0,12.8,Moderate
+PAT-1107,18,Female,Knee Ligament Contusion,31,8.5,4.8,60.3,84.4,49.8,11.0,Moderate
+PAT-1108,42,Male,Ankle Sprain/Fracture,30,6.6,4.0,63.7,89.2,48.3,10.1,Low
+PAT-1109,24,Female,Knee Ligament Contusion,52,6.6,2.8,70.7,99.0,47.3,9.2,Low
+PAT-1110,26,Male,Knee Ligament Contusion,39,6.1,2.1,82.9,116.0,93.4,7.5,Low
+PAT-1111,41,Female,Cervical Whiplash,35,8.6,4.5,60.3,84.4,47.5,11.7,Low
+PAT-1112,18,Male,Knee Ligament Contusion,18,8.3,4.6,58.2,81.5,49.0,11.7,Moderate
+PAT-1113,61,Male,Lumbar Strain,59,7.7,1.7,85.3,119.4,83.2,6.1,Low
+PAT-1114,25,Male,Cervical Whiplash,42,9.0,4.5,74.4,104.1,61.5,9.6,Moderate
+PAT-1115,41,Male,Cervical Whiplash,39,8.8,3.6,80.4,112.6,84.4,8.8,Low
+PAT-1116,28,Male,Ankle Sprain/Fracture,17,8.0,6.3,48.4,67.7,34.6,12.8,Moderate
+PAT-1117,68,Male,Knee Ligament Contusion,14,9.0,6.2,60.2,84.2,64.1,11.5,Moderate
+PAT-1118,34,Female,Ankle Sprain/Fracture,31,6.7,4.4,58.1,81.3,32.4,11.8,Low
+PAT-1119,25,Male,Lumbar Strain,24,6.4,4.4,52.6,73.6,34.4,12.2,Low
+PAT-1120,52,Female,Cervical Whiplash,35,6.9,2.2,76.3,106.8,93.5,7.3,Low
+PAT-1121,52,Male,Cervical Whiplash,44,6.2,3.1,60.9,85.2,39.7,10.3,Low
+PAT-1122,50,Female,Cervical Whiplash,45,7.9,3.4,77.3,108.2,67.3,9.1,Low
+PAT-1123,22,Female,Lumbar Strain,34,9.3,5.2,62.8,88.0,58.8,10.5,Moderate
+PAT-1124,59,Female,Lumbar Strain,3,6.1,4.5,49.6,69.4,54.3,12.6,Moderate
+PAT-1125,56,Male,Ankle Sprain/Fracture,37,6.4,2.0,79.5,111.3,93.0,7.7,Low
+PAT-1126,58,Male,Ankle Sprain/Fracture,43,7.6,4.3,65.6,91.8,31.5,10.2,Low
+PAT-1127,45,Female,Ankle Sprain/Fracture,40,9.3,3.9,75.6,105.9,76.5,8.9,Low
+PAT-1128,24,Male,Knee Ligament Contusion,26,7.1,2.3,74.8,104.7,97.4,7.3,Low
+PAT-1129,26,Female,Cervical Whiplash,55,7.8,1.5,84.5,118.3,69.2,7.9,Low
+PAT-1130,25,Male,Cervical Whiplash,23,6.1,2.4,74.5,104.3,95.6,7.7,Low
+PAT-1131,29,Female,Ankle Sprain/Fracture,44,6.5,3.1,65.7,92.0,33.7,10.8,Low
+PAT-1132,51,Female,Cervical Whiplash,39,9.5,4.3,71.8,100.5,59.3,9.8,Low
+PAT-1133,50,Male,Ankle Sprain/Fracture,15,9.4,6.4,49.2,68.9,48.2,12.7,Moderate
+PAT-1134,65,Female,Knee Ligament Contusion,56,6.0,1.4,89.0,124.6,81.2,5.9,Low
+PAT-1135,40,Male,Knee Ligament Contusion,49,9.3,2.8,90.5,126.6,98.7,6.7,Low
+PAT-1136,41,Female,Lumbar Strain,4,8.2,6.5,44.7,62.6,48.0,14.2,Moderate
+PAT-1137,54,Female,Knee Ligament Contusion,29,9.0,4.4,69.6,97.5,75.8,8.6,Low
+PAT-1138,52,Male,Ankle Sprain/Fracture,22,7.6,5.2,56.1,78.5,43.9,12.5,Moderate
+PAT-1139,61,Male,Knee Ligament Contusion,25,7.8,3.7,65.7,92.0,69.6,10.4,Low
+PAT-1140,57,Male,Lumbar Strain,13,7.7,5.4,58.3,81.7,62.5,11.1,Moderate
+PAT-1141,39,Female,Cervical Whiplash,18,8.3,3.8,75.9,106.3,98.0,8.9,Low
+PAT-1142,44,Male,Ankle Sprain/Fracture,33,6.5,3.2,74.7,104.6,72.6,9.8,Low
+PAT-1143,52,Female,Cervical Whiplash,16,6.1,3.6,52.4,73.4,54.5,10.9,Low
+PAT-1144,18,Female,Lumbar Strain,45,7.1,3.1,68.6,96.0,38.0,9.3,Low
+PAT-1145,52,Male,Lumbar Strain,42,8.5,4.8,69.9,97.9,40.6,11.0,Moderate
+PAT-1146,54,Male,Lumbar Strain,44,6.7,3.5,69.9,97.8,45.8,9.6,Low
+PAT-1147,64,Female,Cervical Whiplash,2,8.4,6.2,49.8,69.7,47.6,13.2,Moderate
+PAT-1148,31,Female,Cervical Whiplash,55,9.4,1.8,94.9,132.9,89.5,7.0,Low
+PAT-1149,20,Male,Cervical Whiplash,35,6.3,3.3,74.5,104.4,69.3,8.4,Low
+PAT-1150,18,Male,Cervical Whiplash,42,8.4,3.0,75.2,105.2,66.6,9.5,Low
+PAT-1151,22,Male,Lumbar Strain,34,7.6,5.2,63.9,89.5,38.0,11.6,Moderate
+PAT-1152,43,Male,Lumbar Strain,30,9.0,3.3,76.0,106.4,90.2,9.3,Low
+PAT-1153,31,Male,Ankle Sprain/Fracture,59,6.6,1.8,88.2,123.5,80.6,6.3,Low
+PAT-1154,56,Female,Ankle Sprain/Fracture,55,8.4,3.8,70.0,98.0,34.7,10.5,Low
+PAT-1155,44,Female,Cervical Whiplash,13,8.9,5.3,67.6,94.6,79.5,11.1,Moderate
+PAT-1156,26,Female,Knee Ligament Contusion,13,9.3,5.5,56.7,79.4,68.0,11.3,Moderate
+PAT-1157,32,Female,Knee Ligament Contusion,18,8.4,6.0,56.0,78.3,35.7,13.1,Moderate
+PAT-1158,32,Male,Lumbar Strain,32,7.7,4.0,69.0,96.6,62.1,11.0,Low
+PAT-1159,43,Male,Lumbar Strain,32,8.2,3.7,63.9,89.5,63.9,9.5,Low
+PAT-1160,59,Male,Lumbar Strain,35,9.0,5.5,63.6,89.0,41.6,11.0,Moderate
+PAT-1161,30,Female,Ankle Sprain/Fracture,59,8.0,1.2,86.9,121.7,96.2,5.9,Low
+PAT-1162,68,Female,Ankle Sprain/Fracture,39,6.1,2.0,82.1,114.9,89.5,7.3,Low
+PAT-1163,49,Male,Lumbar Strain,46,9.3,2.8,82.5,115.6,76.8,7.8,Low
+PAT-1164,56,Male,Lumbar Strain,52,8.4,2.1,76.7,107.3,62.4,8.9,Low
+PAT-1165,66,Female,Lumbar Strain,29,8.4,4.5,65.2,91.3,58.8,11.8,Low
+PAT-1166,69,Female,Knee Ligament Contusion,49,6.8,3.2,87.0,121.7,75.6,7.5,Low
+PAT-1167,49,Male,Ankle Sprain/Fracture,29,8.3,4.5,66.3,92.9,68.2,9.6,Moderate
+PAT-1168,21,Male,Knee Ligament Contusion,53,7.4,3.5,66.7,93.4,34.4,8.7,Low
+PAT-1169,47,Female,Knee Ligament Contusion,44,8.3,3.3,79.7,111.6,65.9,9.0,Low
+PAT-1170,54,Male,Lumbar Strain,57,6.4,1.5,94.9,132.8,86.4,6.5,Low
+PAT-1171,40,Male,Lumbar Strain,16,8.3,5.4,58.9,82.4,62.1,11.8,Moderate
+PAT-1172,56,Male,Cervical Whiplash,56,9.5,3.9,74.3,104.0,33.6,9.9,Low
+PAT-1173,62,Female,Cervical Whiplash,44,6.2,2.5,85.5,119.7,85.0,6.8,Low
+PAT-1174,32,Female,Knee Ligament Contusion,47,9.4,4.8,67.6,94.6,44.1,9.5,Moderate
+PAT-1175,60,Female,Ankle Sprain/Fracture,57,7.4,3.2,75.1,105.1,48.1,8.8,Low
+PAT-1176,46,Female,Lumbar Strain,10,9.0,7.0,52.6,73.6,41.5,14.0,Moderate
+PAT-1177,53,Female,Lumbar Strain,30,8.7,4.9,68.6,96.0,53.1,10.2,Moderate
+PAT-1178,30,Female,Knee Ligament Contusion,25,8.0,4.0,72.2,101.1,83.0,10.3,Low
+PAT-1179,49,Female,Cervical Whiplash,39,8.6,4.0,70.1,98.1,66.4,9.6,Low
+PAT-1180,24,Male,Ankle Sprain/Fracture,20,9.1,5.9,61.2,85.7,44.3,13.2,Moderate
+PAT-1181,68,Male,Cervical Whiplash,5,7.4,4.0,60.8,85.2,91.4,10.1,Low
+PAT-1182,39,Male,Cervical Whiplash,1,7.1,4.4,59.3,83.0,91.6,10.3,Low
+PAT-1183,45,Male,Cervical Whiplash,30,8.3,4.0,76.8,107.6,90.9,8.7,Low
+PAT-1184,19,Male,Cervical Whiplash,49,8.8,3.5,76.4,106.9,46.7,9.8,Low
+PAT-1185,59,Male,Lumbar Strain,3,8.7,5.6,54.2,75.9,61.6,13.8,Moderate
+PAT-1186,62,Male,Lumbar Strain,45,8.8,2.4,87.8,122.9,98.9,7.4,Low
+PAT-1187,70,Female,Cervical Whiplash,14,7.5,4.1,66.3,92.8,84.0,10.2,Low
+PAT-1188,23,Female,Ankle Sprain/Fracture,56,8.9,4.2,70.8,99.2,31.9,9.3,Low
+PAT-1189,45,Male,Knee Ligament Contusion,30,6.4,4.2,59.2,82.8,34.6,11.9,Low
+PAT-1190,45,Male,Ankle Sprain/Fracture,50,7.9,2.9,69.8,97.7,62.5,7.9,Low
+PAT-1191,61,Female,Ankle Sprain/Fracture,4,6.0,4.0,61.7,86.4,93.6,11.1,Low
+PAT-1192,61,Male,Ankle Sprain/Fracture,18,7.1,3.5,62.5,87.5,67.7,10.6,Low
+PAT-1193,37,Male,Cervical Whiplash,37,7.3,3.0,67.7,94.7,64.8,10.0,Low
+PAT-1194,47,Female,Lumbar Strain,25,7.4,4.9,56.9,79.6,37.4,12.2,Moderate
+PAT-1195,28,Male,Ankle Sprain/Fracture,48,8.4,2.2,80.1,112.1,76.0,7.9,Low
+PAT-1196,45,Female,Cervical Whiplash,1,7.4,4.5,64.3,90.0,87.5,11.0,Low
+PAT-1197,42,Male,Ankle Sprain/Fracture,53,7.6,3.6,81.8,114.6,56.6,8.1,Low
+PAT-1198,56,Female,Ankle Sprain/Fracture,46,6.8,2.2,80.9,113.3,84.3,7.4,Low
+PAT-1199,50,Female,Cervical Whiplash,15,7.3,3.6,69.4,97.1,97.5,9.5,Low
+PAT-1200,18,Female,Lumbar Strain,9,6.8,4.6,49.0,68.7,44.3,12.5,Moderate
+PAT-1201,44,Male,Lumbar Strain,15,6.3,3.6,58.4,81.8,66.6,10.8,Low
+PAT-1202,69,Female,Knee Ligament Contusion,49,8.1,3.4,73.4,102.8,50.1,9.2,Low
+PAT-1203,30,Male,Cervical Whiplash,57,8.3,1.8,86.4,120.9,85.5,5.5,Low
+PAT-1204,58,Male,Knee Ligament Contusion,24,8.2,4.8,62.5,87.5,70.4,10.6,Moderate
+PAT-1205,20,Male,Knee Ligament Contusion,4,7.6,5.2,58.2,81.5,74.4,11.3,Moderate
+PAT-1206,56,Male,Knee Ligament Contusion,12,7.3,3.6,66.3,92.8,85.9,9.8,Low
+PAT-1207,23,Female,Lumbar Strain,59,9.0,3.1,78.3,109.6,57.7,7.3,Low
+PAT-1208,25,Female,Cervical Whiplash,58,7.8,1.7,94.7,132.5,94.1,5.0,Low
+PAT-1209,44,Male,Knee Ligament Contusion,37,7.7,3.9,70.0,98.0,67.3,8.5,Low
+PAT-1210,26,Male,Cervical Whiplash,37,6.1,4.1,64.1,89.8,41.1,9.8,Low
+PAT-1211,54,Female,Cervical Whiplash,43,7.2,2.2,81.3,113.9,78.7,8.9,Low
+PAT-1212,50,Male,Lumbar Strain,6,7.3,4.0,60.9,85.3,85.5,10.7,Low
+PAT-1213,68,Female,Knee Ligament Contusion,39,7.4,3.2,69.4,97.2,52.2,9.9,Low
+PAT-1214,59,Male,Knee Ligament Contusion,56,8.0,1.7,88.0,123.2,90.0,6.5,Low
+PAT-1215,61,Male,Cervical Whiplash,46,7.9,2.4,84.7,118.6,93.4,7.1,Low
+PAT-1216,41,Female,Ankle Sprain/Fracture,24,8.1,5.4,58.4,81.8,49.4,11.5,Moderate
+PAT-1217,32,Male,Lumbar Strain,11,8.7,4.3,65.8,92.2,98.8,9.6,Low
+PAT-1218,71,Female,Lumbar Strain,13,8.8,6.4,49.5,69.2,39.8,14.0,Moderate
+PAT-1219,49,Male,Lumbar Strain,34,8.5,4.9,58.1,81.4,44.1,11.9,Moderate
+PAT-1220,49,Male,Lumbar Strain,25,9.3,5.7,56.0,78.4,42.9,11.3,Moderate
+PAT-1221,41,Male,Knee Ligament Contusion,7,6.1,4.2,63.0,88.2,92.6,9.6,Low
+PAT-1222,58,Female,Knee Ligament Contusion,52,6.7,1.4,82.0,114.8,75.8,6.9,Low
+PAT-1223,69,Male,Ankle Sprain/Fracture,4,6.0,4.9,44.7,62.5,40.6,12.7,Moderate
+PAT-1224,66,Male,Lumbar Strain,59,8.3,3.5,81.5,114.2,60.8,8.0,Low
+PAT-1225,66,Male,Lumbar Strain,8,9.1,5.8,59.5,83.3,73.1,11.6,Moderate
+PAT-1226,69,Male,Cervical Whiplash,20,6.9,4.8,55.1,77.1,35.8,13.3,Moderate
+PAT-1227,29,Female,Knee Ligament Contusion,29,9.2,3.6,73.6,103.0,91.8,9.7,Low
+PAT-1228,56,Female,Lumbar Strain,54,6.2,1.5,83.7,117.1,86.3,6.3,Low
+PAT-1229,19,Male,Ankle Sprain/Fracture,53,9.3,3.8,76.8,107.6,65.4,8.8,Low
+PAT-1230,20,Female,Ankle Sprain/Fracture,51,7.2,0.7,87.9,123.1,97.7,6.7,Low
+PAT-1231,66,Male,Knee Ligament Contusion,45,6.4,3.3,72.6,101.6,59.2,8.2,Low
+PAT-1232,54,Male,Ankle Sprain/Fracture,46,7.7,1.4,84.7,118.6,98.9,6.2,Low
+PAT-1233,66,Male,Ankle Sprain/Fracture,10,6.9,4.1,56.5,79.1,76.8,11.0,Low
+PAT-1234,34,Female,Knee Ligament Contusion,43,7.0,2.5,76.1,106.6,74.4,8.5,Low
+PAT-1235,66,Female,Lumbar Strain,34,7.1,4.4,62.5,87.5,41.6,10.8,Low
+PAT-1236,19,Female,Lumbar Strain,57,8.8,1.2,92.5,129.5,91.7,5.6,Low
+PAT-1237,19,Female,Ankle Sprain/Fracture,26,7.9,4.6,61.9,86.6,59.9,10.3,Moderate
+PAT-1238,45,Female,Ankle Sprain/Fracture,41,7.1,4.6,64.4,90.2,41.4,10.1,Moderate
+PAT-1239,71,Female,Lumbar Strain,49,8.1,3.7,63.8,89.3,30.9,10.2,Low
+PAT-1240,40,Female,Knee Ligament Contusion,58,8.5,2.6,83.8,117.3,69.2,8.4,Low
+PAT-1241,54,Female,Ankle Sprain/Fracture,3,7.0,4.6,50.8,71.2,66.9,11.4,Moderate
+PAT-1242,49,Female,Cervical Whiplash,56,7.4,2.1,88.2,123.4,80.4,6.9,Low
+PAT-1243,50,Male,Knee Ligament Contusion,6,6.4,3.6,57.9,81.1,92.3,11.0,Low
+PAT-1244,18,Female,Ankle Sprain/Fracture,5,6.6,5.1,43.2,60.5,35.6,14.7,Moderate
+PAT-1245,36,Female,Ankle Sprain/Fracture,5,8.4,5.4,60.0,84.0,81.2,11.4,Moderate
+PAT-1246,19,Female,Cervical Whiplash,54,6.6,3.6,73.8,103.3,43.1,8.9,Low
+PAT-1247,70,Female,Cervical Whiplash,47,7.8,2.2,92.8,129.9,90.1,7.4,Low
+PAT-1248,61,Female,Lumbar Strain,23,8.5,4.2,71.9,100.6,87.3,9.7,Low
+PAT-1249,43,Female,Knee Ligament Contusion,49,6.4,1.8,75.6,105.8,67.9,7.6,Low
+PAT-1250,49,Female,Knee Ligament Contusion,9,8.0,4.4,60.5,84.7,79.7,11.4,Low
+PAT-1251,23,Female,Lumbar Strain,35,6.9,3.9,60.5,84.7,52.0,8.7,Low
+PAT-1252,49,Female,Knee Ligament Contusion,20,9.4,6.1,61.1,85.5,63.0,11.9,Moderate
+PAT-1253,21,Female,Knee Ligament Contusion,58,7.7,1.8,87.4,122.3,87.5,6.2,Low
+PAT-1254,28,Female,Knee Ligament Contusion,49,8.8,3.3,79.5,111.3,62.1,8.6,Low
+PAT-1255,34,Male,Knee Ligament Contusion,59,7.9,2.8,78.2,109.5,55.0,9.0,Low
+PAT-1256,55,Male,Knee Ligament Contusion,42,6.2,2.1,73.4,102.8,64.6,8.1,Low
+PAT-1257,41,Female,Cervical Whiplash,35,8.2,3.3,75.6,105.9,88.0,8.2,Low
+PAT-1258,22,Female,Knee Ligament Contusion,50,9.3,4.3,79.7,111.5,53.5,10.3,Low
+PAT-1259,69,Male,Cervical Whiplash,18,8.1,5.4,52.5,73.5,42.2,12.0,Moderate
+PAT-1260,51,Female,Knee Ligament Contusion,17,8.9,4.6,70.7,98.9,79.8,10.4,Moderate
+PAT-1261,23,Male,Lumbar Strain,24,9.1,4.3,74.0,103.6,87.8,9.6,Low
+PAT-1262,39,Male,Ankle Sprain/Fracture,3,6.8,5.4,45.1,63.2,37.0,14.1,Moderate
+PAT-1263,28,Male,Cervical Whiplash,32,6.7,3.8,63.6,89.1,46.8,10.6,Low
+PAT-1264,65,Male,Knee Ligament Contusion,35,8.1,5.6,63.1,88.4,39.9,10.4,Moderate
+PAT-1265,33,Male,Lumbar Strain,38,7.4,3.6,62.5,87.5,54.4,9.5,Low
+PAT-1266,50,Female,Ankle Sprain/Fracture,13,8.9,5.6,56.2,78.7,61.5,11.8,Moderate
+PAT-1267,26,Male,Cervical Whiplash,56,9.2,2.1,89.7,125.5,82.4,7.0,Low
+PAT-1268,23,Female,Ankle Sprain/Fracture,47,7.2,2.8,79.9,111.8,75.6,7.9,Low
+PAT-1269,33,Female,Lumbar Strain,25,6.8,3.4,63.2,88.5,73.5,9.9,Low
+PAT-1270,46,Male,Cervical Whiplash,9,8.7,5.9,52.5,73.5,54.7,11.9,Moderate
+PAT-1271,20,Male,Ankle Sprain/Fracture,4,7.0,4.7,66.2,92.6,88.9,11.4,Moderate
+PAT-1272,37,Female,Knee Ligament Contusion,14,8.9,6.2,61.8,86.5,63.0,12.0,Moderate
+PAT-1273,53,Male,Cervical Whiplash,37,7.5,2.1,81.9,114.6,98.5,8.1,Low
+PAT-1274,36,Male,Ankle Sprain/Fracture,34,8.3,2.9,75.4,105.6,74.4,9.5,Low
+PAT-1275,43,Female,Lumbar Strain,11,6.3,5.2,47.5,66.5,38.8,13.3,Moderate
+PAT-1276,20,Female,Lumbar Strain,41,8.2,2.8,72.2,101.1,77.3,8.7,Low
+PAT-1277,36,Male,Cervical Whiplash,56,7.6,3.2,74.7,104.6,52.8,8.9,Low
+PAT-1278,37,Female,Ankle Sprain/Fracture,3,8.1,4.4,61.7,86.3,78.0,12.1,Low
+PAT-1279,49,Male,Cervical Whiplash,59,6.6,3.2,72.5,101.5,34.9,8.6,Low
+PAT-1280,24,Male,Cervical Whiplash,28,8.6,4.9,58.2,81.4,42.2,12.8,Moderate
+PAT-1281,69,Male,Ankle Sprain/Fracture,29,9.0,4.0,74.0,103.6,89.9,9.5,Low
+PAT-1282,58,Female,Ankle Sprain/Fracture,9,6.8,5.0,55.5,77.7,45.9,13.0,Moderate
+PAT-1283,50,Female,Knee Ligament Contusion,3,6.3,3.4,65.3,91.4,88.6,10.1,Low
+PAT-1284,57,Female,Ankle Sprain/Fracture,25,6.1,3.6,66.3,92.8,49.5,10.2,Low
+PAT-1285,56,Female,Lumbar Strain,34,8.2,3.9,72.3,101.2,75.0,9.4,Low
+PAT-1286,35,Female,Cervical Whiplash,12,8.1,4.8,62.9,88.1,78.6,11.1,Moderate
+PAT-1287,57,Male,Cervical Whiplash,42,7.9,3.6,69.6,97.5,65.9,8.6,Low
+PAT-1288,18,Male,Lumbar Strain,9,6.8,5.7,56.0,78.4,51.4,12.5,Moderate
+PAT-1289,28,Male,Ankle Sprain/Fracture,15,7.4,4.6,49.2,68.9,44.9,13.2,Moderate
+PAT-1290,45,Male,Lumbar Strain,40,8.1,5.3,62.8,88.0,32.3,11.3,Moderate
+PAT-1291,42,Female,Lumbar Strain,25,7.7,4.7,56.9,79.7,51.3,10.6,Moderate
+PAT-1292,67,Male,Knee Ligament Contusion,5,9.5,5.7,55.6,77.8,75.7,12.2,Moderate
+PAT-1293,40,Female,Lumbar Strain,11,6.5,2.8,64.5,90.4,95.7,9.3,Low
+PAT-1294,48,Male,Cervical Whiplash,59,8.4,1.6,89.7,125.6,91.0,5.9,Low
+PAT-1295,47,Female,Lumbar Strain,34,7.4,3.4,74.0,103.6,83.6,8.3,Low
+PAT-1296,59,Female,Cervical Whiplash,24,7.5,3.5,69.0,96.7,85.2,9.1,Low
+PAT-1297,52,Male,Cervical Whiplash,15,8.5,5.4,65.5,91.7,76.5,10.3,Moderate
+PAT-1298,24,Male,Cervical Whiplash,38,8.4,3.8,62.9,88.1,48.2,10.3,Low
+PAT-1299,33,Male,Ankle Sprain/Fracture,8,9.5,5.2,65.4,91.5,93.5,10.7,Moderate
+PAT-1300,43,Male,Knee Ligament Contusion,59,6.4,1.1,90.6,126.9,77.0,4.8,Low
+PAT-1301,65,Female,Cervical Whiplash,5,6.4,4.4,53.7,75.1,69.2,12.7,Low
+PAT-1302,69,Male,Cervical Whiplash,48,8.5,4.6,66.1,92.6,37.8,10.6,Moderate
+PAT-1303,66,Male,Ankle Sprain/Fracture,26,8.0,4.3,63.3,88.6,61.3,10.5,Low
+PAT-1304,19,Female,Cervical Whiplash,18,7.0,3.2,63.5,88.9,62.2,11.0,Low
+PAT-1305,18,Male,Lumbar Strain,6,6.3,3.7,63.3,88.6,90.5,9.8,Low
+PAT-1306,65,Male,Lumbar Strain,37,6.3,3.0,70.6,98.9,68.3,9.6,Low
+PAT-1307,29,Male,Knee Ligament Contusion,48,9.1,4.0,75.9,106.2,56.6,10.2,Low
+PAT-1308,22,Male,Cervical Whiplash,13,6.7,3.8,65.7,92.0,98.4,9.5,Low
+PAT-1309,54,Male,Ankle Sprain/Fracture,28,7.1,4.1,59.5,83.3,37.8,12.0,Low
+PAT-1310,49,Female,Lumbar Strain,5,6.8,5.1,53.3,74.6,59.6,12.4,Moderate
+PAT-1311,26,Male,Ankle Sprain/Fracture,13,7.2,6.0,46.8,65.6,32.9,12.5,Moderate
+PAT-1312,58,Male,Ankle Sprain/Fracture,17,6.2,2.6,63.3,88.6,81.8,9.6,Low
+PAT-1313,52,Male,Lumbar Strain,50,7.8,2.0,85.1,119.1,94.3,6.6,Low
+PAT-1314,36,Male,Ankle Sprain/Fracture,40,6.2,3.0,69.4,97.1,49.6,9.2,Low
+PAT-1315,65,Male,Lumbar Strain,45,8.8,2.6,87.3,122.3,90.1,7.5,Low
+PAT-1316,33,Female,Ankle Sprain/Fracture,32,6.8,3.9,61.8,86.5,50.5,10.3,Low
+PAT-1317,20,Male,Lumbar Strain,29,7.9,2.9,77.6,108.6,93.8,8.5,Low
+PAT-1318,37,Female,Cervical Whiplash,51,9.1,2.3,78.3,109.6,82.8,7.5,Low
+PAT-1319,41,Female,Knee Ligament Contusion,58,8.3,1.9,87.7,122.8,86.3,5.9,Low
+PAT-1320,71,Male,Lumbar Strain,3,7.9,6.2,41.7,58.4,31.3,14.0,Moderate
+PAT-1321,50,Male,Lumbar Strain,56,7.1,0.9,89.3,125.0,97.4,5.0,Low
+PAT-1322,41,Male,Knee Ligament Contusion,40,7.2,2.9,75.1,105.2,80.9,8.5,Low
+PAT-1323,69,Male,Lumbar Strain,34,8.3,4.1,63.1,88.3,51.3,9.5,Low
+PAT-1324,28,Female,Lumbar Strain,40,9.5,3.5,81.2,113.6,88.1,8.9,Low
+PAT-1325,66,Male,Ankle Sprain/Fracture,27,8.3,5.2,60.2,84.3,49.7,12.0,Moderate
+PAT-1326,25,Male,Knee Ligament Contusion,13,8.0,3.5,59.9,83.9,91.1,10.0,Low
+PAT-1327,53,Male,Cervical Whiplash,45,8.6,4.2,60.3,84.5,37.9,9.1,Low
+PAT-1328,55,Male,Lumbar Strain,33,7.6,3.8,71.8,100.5,79.3,8.7,Low
+PAT-1329,57,Male,Knee Ligament Contusion,6,6.2,3.8,56.7,79.3,67.8,11.5,Low
+PAT-1330,37,Male,Ankle Sprain/Fracture,24,8.0,5.2,46.7,65.4,36.8,11.7,Moderate
+PAT-1331,52,Female,Cervical Whiplash,19,9.4,6.4,54.0,75.7,46.9,12.2,Moderate
+PAT-1332,65,Female,Knee Ligament Contusion,16,6.6,5.3,47.1,66.0,30.9,13.6,Moderate
+PAT-1333,42,Male,Cervical Whiplash,40,8.4,3.7,76.2,106.7,62.8,9.7,Low
+PAT-1334,52,Male,Cervical Whiplash,28,6.7,3.7,60.6,84.9,51.1,10.2,Low
+PAT-1335,42,Male,Cervical Whiplash,33,7.9,4.2,72.4,101.3,71.9,8.6,Low
+PAT-1336,46,Female,Lumbar Strain,59,6.3,3.0,78.9,110.5,50.8,7.5,Low
+PAT-1337,35,Male,Lumbar Strain,59,7.6,3.2,72.1,101.0,51.0,8.0,Low
+PAT-1338,63,Female,Ankle Sprain/Fracture,48,8.6,2.7,85.0,118.9,82.0,7.9,Low
+PAT-1339,35,Male,Ankle Sprain/Fracture,41,7.2,3.8,63.7,89.2,33.4,10.3,Low
+PAT-1340,19,Male,Knee Ligament Contusion,13,8.3,3.9,68.9,96.4,93.2,10.4,Low
+PAT-1341,71,Male,Ankle Sprain/Fracture,43,8.8,3.0,94.2,131.9,89.7,8.7,Low
+PAT-1342,52,Male,Cervical Whiplash,45,9.2,3.5,73.1,102.3,76.7,8.8,Low
+PAT-1343,33,Female,Cervical Whiplash,25,6.8,4.1,72.0,100.7,71.5,9.8,Low
+PAT-1344,58,Female,Lumbar Strain,53,7.4,2.0,87.9,123.1,92.5,6.2,Low
+PAT-1345,53,Male,Cervical Whiplash,42,6.5,2.8,67.6,94.6,43.0,9.6,Low
+PAT-1346,50,Male,Knee Ligament Contusion,36,9.5,6.0,60.9,85.3,35.5,12.2,Moderate
+PAT-1347,21,Female,Cervical Whiplash,27,9.2,5.2,58.6,82.0,46.8,11.4,Moderate
+PAT-1348,50,Female,Cervical Whiplash,38,7.9,2.7,76.7,107.4,85.6,8.2,Low
+PAT-1349,31,Female,Knee Ligament Contusion,7,8.9,7.4,45.3,63.4,32.4,14.3,Moderate
+PAT-1350,38,Female,Ankle Sprain/Fracture,5,7.8,6.0,51.2,71.6,70.8,11.7,Moderate
+PAT-1351,65,Male,Ankle Sprain/Fracture,43,8.2,3.5,87.9,123.1,99.7,6.3,Low
+PAT-1352,37,Female,Knee Ligament Contusion,45,6.3,2.1,82.3,115.3,89.9,7.0,Low
+PAT-1353,25,Male,Lumbar Strain,58,8.6,2.6,79.6,111.5,66.5,7.6,Low
+PAT-1354,24,Female,Cervical Whiplash,57,6.4,3.1,70.7,99.0,34.5,9.1,Low
+PAT-1355,20,Female,Knee Ligament Contusion,51,8.9,2.7,90.1,126.1,88.2,6.9,Low
+PAT-1356,34,Female,Cervical Whiplash,31,8.7,4.0,68.6,96.0,71.9,10.4,Low
+PAT-1357,50,Female,Lumbar Strain,23,8.5,6.4,55.9,78.3,38.0,11.9,Moderate
+PAT-1358,65,Female,Cervical Whiplash,42,6.1,3.4,62.4,87.4,36.6,10.8,Low
+PAT-1359,29,Male,Knee Ligament Contusion,10,7.1,3.9,68.1,95.4,93.7,9.2,Low
+PAT-1360,68,Male,Cervical Whiplash,32,6.9,3.4,74.4,104.1,76.8,9.1,Low
+PAT-1361,39,Female,Ankle Sprain/Fracture,43,7.3,2.5,87.5,122.4,88.1,7.6,Low
+PAT-1362,39,Female,Lumbar Strain,53,6.3,1.8,87.9,123.1,91.5,5.6,Low
+PAT-1363,63,Male,Lumbar Strain,30,9.3,4.3,71.0,99.4,70.0,10.4,Low
+PAT-1364,47,Female,Lumbar Strain,39,7.9,3.3,72.9,102.1,66.2,9.8,Low
+PAT-1365,55,Female,Knee Ligament Contusion,31,7.1,3.3,70.2,98.3,60.1,8.9,Low
+PAT-1366,55,Male,Lumbar Strain,18,7.4,5.0,54.6,76.4,52.2,11.9,Moderate
+PAT-1367,62,Female,Ankle Sprain/Fracture,36,7.6,4.0,71.4,99.9,60.4,8.4,Low
+PAT-1368,68,Female,Knee Ligament Contusion,2,8.1,5.3,57.9,81.0,84.2,11.1,Moderate
+PAT-1369,71,Male,Ankle Sprain/Fracture,14,7.8,5.3,60.8,85.2,72.1,11.9,Moderate
+PAT-1370,25,Male,Cervical Whiplash,13,9.2,4.7,67.4,94.3,92.5,10.2,Moderate
+PAT-1371,44,Male,Cervical Whiplash,29,7.7,4.4,66.3,92.8,61.0,9.7,Low
+PAT-1372,44,Female,Cervical Whiplash,12,9.5,5.3,59.7,83.6,72.5,11.7,Moderate
+PAT-1373,51,Male,Cervical Whiplash,39,9.0,3.5,75.9,106.2,74.2,10.1,Low
+PAT-1374,38,Male,Ankle Sprain/Fracture,2,6.7,4.9,59.0,82.6,71.4,11.0,Moderate
+PAT-1375,47,Male,Knee Ligament Contusion,32,9.3,4.4,76.0,106.4,79.2,9.0,Low
+PAT-1376,50,Male,Knee Ligament Contusion,13,6.4,4.4,54.8,76.7,46.6,12.9,Low
+PAT-1377,45,Male,Lumbar Strain,46,8.9,3.5,75.0,104.9,65.9,9.7,Low
+PAT-1378,64,Male,Ankle Sprain/Fracture,27,7.3,4.2,54.1,75.7,37.3,11.6,Low
+PAT-1379,50,Female,Cervical Whiplash,49,9.1,3.6,77.9,109.1,56.9,8.5,Low
+PAT-1380,22,Female,Ankle Sprain/Fracture,41,9.0,4.3,75.7,106.0,64.1,10.5,Low
+PAT-1381,65,Male,Lumbar Strain,17,8.8,5.2,68.2,95.5,75.7,11.7,Moderate
+PAT-1382,36,Male,Lumbar Strain,40,8.8,2.9,81.2,113.7,96.5,8.0,Low
+PAT-1383,21,Male,Ankle Sprain/Fracture,31,7.1,3.4,69.5,97.3,72.0,8.9,Low
+PAT-1384,52,Female,Ankle Sprain/Fracture,34,6.3,2.6,70.2,98.2,82.1,8.2,Low
+PAT-1385,66,Female,Ankle Sprain/Fracture,24,7.4,3.8,63.1,88.3,65.4,10.3,Low
+PAT-1386,34,Female,Knee Ligament Contusion,45,6.6,2.7,81.5,114.2,74.4,7.9,Low
+PAT-1387,61,Female,Cervical Whiplash,35,8.4,5.3,58.9,82.5,35.0,12.1,Moderate
+PAT-1388,45,Female,Ankle Sprain/Fracture,48,7.2,3.5,73.5,102.8,47.8,9.6,Low
+PAT-1389,47,Female,Ankle Sprain/Fracture,6,9.4,6.6,50.7,70.9,55.3,12.7,Moderate
+PAT-1390,46,Female,Ankle Sprain/Fracture,19,8.2,4.1,61.8,86.5,63.1,12.0,Low
+PAT-1391,63,Female,Lumbar Strain,30,8.9,6.2,53.6,75.0,33.2,12.2,Moderate
+PAT-1392,70,Female,Lumbar Strain,7,6.5,4.9,47.0,65.8,39.8,13.5,Moderate
+PAT-1393,23,Male,Knee Ligament Contusion,10,9.0,6.1,42.5,59.5,49.4,13.8,Moderate
+PAT-1394,52,Male,Cervical Whiplash,41,9.2,3.0,83.5,116.9,98.0,7.1,Low
+PAT-1395,58,Male,Knee Ligament Contusion,32,7.7,4.1,59.7,83.6,53.2,10.4,Low
+PAT-1396,54,Male,Cervical Whiplash,34,8.1,4.4,72.8,101.9,63.7,9.5,Low
+PAT-1397,41,Female,Lumbar Strain,28,8.7,5.6,61.7,86.4,43.7,10.8,Moderate
+PAT-1398,46,Female,Lumbar Strain,15,6.6,4.1,63.2,88.4,72.8,10.8,Low
+PAT-1399,66,Male,Lumbar Strain,30,7.8,3.9,66.9,93.7,49.6,12.1,Low
+PAT-1400,63,Female,Knee Ligament Contusion,37,7.4,4.5,61.7,86.3,44.5,9.5,Moderate
+PAT-1401,70,Male,Ankle Sprain/Fracture,29,6.5,3.4,72.5,101.4,66.2,9.6,Low
+PAT-1402,48,Female,Ankle Sprain/Fracture,22,7.3,5.1,54.6,76.4,30.4,12.8,Moderate
+PAT-1403,52,Male,Lumbar Strain,4,6.2,5.3,41.4,57.9,30.5,13.9,Moderate
+PAT-1404,50,Female,Ankle Sprain/Fracture,20,6.1,3.3,59.0,82.6,45.3,11.4,Low
+PAT-1405,69,Female,Ankle Sprain/Fracture,32,6.5,4.3,54.6,76.4,32.6,10.6,Low
+PAT-1406,38,Male,Knee Ligament Contusion,36,9.4,5.1,59.2,82.9,37.6,11.6,Moderate
+PAT-1407,49,Female,Cervical Whiplash,50,7.9,2.8,72.7,101.8,53.7,8.5,Low
+PAT-1408,40,Male,Lumbar Strain,4,9.4,5.1,58.6,82.0,86.2,10.6,Moderate
+PAT-1409,50,Male,Lumbar Strain,27,7.5,4.3,64.2,89.9,70.0,10.5,Low
+PAT-1410,20,Male,Knee Ligament Contusion,17,7.1,4.0,64.3,90.0,65.9,11.4,Low
+PAT-1411,35,Male,Knee Ligament Contusion,12,7.8,6.1,52.2,73.0,50.5,12.5,Moderate
+PAT-1412,42,Female,Ankle Sprain/Fracture,22,7.5,3.1,73.9,103.5,95.2,9.1,Low
+PAT-1413,59,Female,Lumbar Strain,17,6.4,3.4,56.3,78.8,57.8,11.7,Low
+PAT-1414,48,Female,Cervical Whiplash,10,8.2,5.9,41.7,58.4,36.1,13.7,Moderate
+PAT-1415,71,Male,Knee Ligament Contusion,54,6.8,2.6,83.8,117.4,73.2,7.5,Low
+PAT-1416,20,Female,Cervical Whiplash,1,8.2,6.7,37.1,52.0,38.0,14.1,Moderate
+PAT-1417,57,Male,Cervical Whiplash,22,8.3,4.9,59.3,83.0,54.2,12.1,Moderate
+PAT-1418,63,Female,Lumbar Strain,26,6.5,3.6,61.3,85.8,65.5,10.1,Low
+PAT-1419,41,Female,Lumbar Strain,56,6.2,1.5,95.9,134.3,91.2,5.8,Low
+PAT-1420,67,Female,Knee Ligament Contusion,59,8.7,3.1,85.7,119.9,64.5,7.0,Low
+PAT-1421,49,Male,Lumbar Strain,18,7.6,4.7,65.8,92.1,79.2,10.4,Moderate
+PAT-1422,64,Female,Lumbar Strain,50,6.2,1.2,93.2,130.5,99.5,5.4,Low
+PAT-1423,39,Female,Lumbar Strain,14,9.5,6.4,47.8,66.9,39.2,13.1,Moderate
+PAT-1424,40,Male,Cervical Whiplash,47,6.2,2.7,73.1,102.3,49.2,8.4,Low
+PAT-1425,19,Female,Knee Ligament Contusion,29,8.4,4.7,65.0,91.0,57.6,10.2,Moderate
+PAT-1426,44,Male,Ankle Sprain/Fracture,12,9.4,5.9,56.6,79.3,59.5,13.5,Moderate
+PAT-1427,59,Female,Cervical Whiplash,36,6.8,3.0,72.4,101.4,58.8,10.2,Low
+PAT-1428,19,Male,Lumbar Strain,59,6.5,1.3,94.6,132.4,93.5,6.4,Low
+PAT-1429,43,Male,Cervical Whiplash,35,6.4,2.6,75.8,106.1,80.0,7.7,Low
+PAT-1430,34,Female,Lumbar Strain,52,7.1,2.3,76.8,107.5,72.6,7.4,Low
+PAT-1431,57,Male,Lumbar Strain,12,6.4,4.1,50.4,70.6,51.7,11.3,Low
+PAT-1432,50,Male,Cervical Whiplash,7,8.4,4.8,61.9,86.7,87.7,10.7,Moderate
+PAT-1433,26,Male,Knee Ligament Contusion,29,6.2,2.0,77.5,108.5,96.9,7.4,Low
+PAT-1434,60,Male,Lumbar Strain,11,7.8,4.6,61.0,85.4,87.5,11.1,Moderate
+PAT-1435,71,Male,Knee Ligament Contusion,33,9.5,6.5,64.9,90.9,30.1,12.0,Moderate
+PAT-1436,65,Male,Ankle Sprain/Fracture,6,8.8,4.9,62.0,86.8,74.5,12.5,Moderate
+PAT-1437,56,Female,Lumbar Strain,47,8.2,3.9,68.2,95.4,33.6,10.6,Low
+PAT-1438,46,Male,Knee Ligament Contusion,15,7.1,4.3,54.0,75.5,48.0,13.3,Low
+PAT-1439,59,Male,Knee Ligament Contusion,32,8.2,4.9,57.8,80.9,34.2,10.9,Moderate
+PAT-1440,43,Female,Ankle Sprain/Fracture,51,7.8,2.6,78.3,109.6,72.3,8.3,Low
+PAT-1441,52,Female,Knee Ligament Contusion,11,7.5,3.8,61.6,86.2,78.1,11.5,Low
+PAT-1442,67,Female,Knee Ligament Contusion,58,6.5,2.4,74.5,104.4,38.0,8.0,Low
+PAT-1443,42,Female,Ankle Sprain/Fracture,23,9.1,5.0,57.2,80.1,56.9,12.0,Moderate
+PAT-1444,41,Female,Lumbar Strain,26,7.6,4.3,65.2,91.3,61.9,10.7,Low
+PAT-1445,30,Female,Knee Ligament Contusion,34,6.7,3.5,66.1,92.5,55.8,9.7,Low
+PAT-1446,24,Female,Knee Ligament Contusion,46,7.3,3.4,61.7,86.4,38.5,9.4,Low
+PAT-1447,53,Male,Knee Ligament Contusion,34,7.4,3.8,65.1,91.2,59.3,9.5,Low
+PAT-1448,62,Male,Cervical Whiplash,29,8.9,3.7,71.3,99.8,82.6,10.5,Low
+PAT-1449,37,Female,Ankle Sprain/Fracture,4,8.6,6.9,49.2,68.9,35.0,14.3,Moderate
+PAT-1450,18,Male,Cervical Whiplash,17,8.7,7.0,52.5,73.4,35.6,13.5,Moderate
+PAT-1451,25,Male,Ankle Sprain/Fracture,35,6.0,3.7,62.8,87.9,54.8,9.2,Low
+PAT-1452,63,Male,Lumbar Strain,13,7.5,3.2,69.7,97.5,95.9,9.4,Low
+PAT-1453,33,Female,Lumbar Strain,41,7.7,3.3,72.5,101.5,76.8,8.9,Low
+PAT-1454,31,Female,Knee Ligament Contusion,39,6.1,2.7,79.6,111.4,77.5,7.3,Low
+PAT-1455,29,Male,Ankle Sprain/Fracture,15,6.9,4.1,54.7,76.6,55.3,11.4,Low
+PAT-1456,68,Female,Lumbar Strain,55,8.7,3.0,82.8,115.9,71.6,7.6,Low
+PAT-1457,40,Male,Ankle Sprain/Fracture,29,6.5,4.9,59.7,83.5,30.7,11.7,Moderate
+PAT-1458,32,Male,Lumbar Strain,29,7.9,3.3,66.1,92.5,74.5,9.5,Low
+PAT-1459,45,Male,Cervical Whiplash,11,6.8,3.2,62.3,87.2,93.9,10.0,Low
+PAT-1460,51,Male,Lumbar Strain,52,6.0,2.4,80.1,112.1,72.9,7.4,Low
+PAT-1461,19,Female,Cervical Whiplash,32,6.8,2.7,80.1,112.1,91.2,8.5,Low
+PAT-1462,49,Female,Lumbar Strain,2,9.4,6.3,52.7,73.8,80.7,11.7,Moderate
+PAT-1463,40,Female,Knee Ligament Contusion,47,8.8,4.6,59.5,83.2,38.4,10.1,Moderate
+PAT-1464,39,Male,Cervical Whiplash,14,9.4,4.9,66.5,93.1,93.2,11.0,Moderate
+PAT-1465,68,Female,Lumbar Strain,20,7.7,4.9,53.8,75.3,34.7,13.0,Moderate
+PAT-1466,42,Male,Knee Ligament Contusion,22,6.4,4.0,67.4,94.4,67.4,9.5,Low
+PAT-1467,39,Female,Cervical Whiplash,11,7.9,6.4,47.6,66.6,39.9,13.3,Moderate
+PAT-1468,39,Male,Knee Ligament Contusion,27,7.6,5.1,53.4,74.8,30.8,11.1,Moderate
+PAT-1469,66,Male,Ankle Sprain/Fracture,3,9.0,6.5,54.4,76.2,59.5,13.2,Moderate
+PAT-1470,69,Male,Ankle Sprain/Fracture,17,6.3,3.6,50.1,70.1,50.7,12.5,Low
+PAT-1471,59,Female,Cervical Whiplash,44,7.7,3.4,73.5,102.9,64.0,8.3,Low
+PAT-1472,23,Female,Lumbar Strain,56,6.5,2.2,83.8,117.3,70.4,6.5,Low
+PAT-1473,32,Female,Cervical Whiplash,28,7.1,4.7,57.3,80.2,33.1,12.1,Moderate
+PAT-1474,71,Female,Knee Ligament Contusion,29,8.6,5.9,56.7,79.4,38.6,11.0,Moderate
+PAT-1475,60,Male,Lumbar Strain,21,7.7,4.1,63.9,89.5,69.1,10.3,Low
+PAT-1476,54,Female,Ankle Sprain/Fracture,47,7.3,3.4,65.6,91.8,54.0,9.2,Low
+PAT-1477,50,Female,Lumbar Strain,16,7.4,3.6,63.0,88.2,81.0,10.0,Low
+PAT-1478,25,Male,Ankle Sprain/Fracture,37,7.6,3.2,76.0,106.4,75.7,8.6,Low
+PAT-1479,70,Male,Lumbar Strain,59,8.7,1.7,88.0,123.2,89.2,6.7,Low
+PAT-1480,61,Male,Lumbar Strain,20,9.1,4.9,66.5,93.1,78.5,10.8,Moderate
+PAT-1481,61,Female,Lumbar Strain,6,9.3,6.4,54.1,75.8,60.1,13.1,Moderate
+PAT-1482,22,Male,Knee Ligament Contusion,19,8.8,4.7,64.3,90.1,77.1,10.5,Moderate
+PAT-1483,56,Male,Knee Ligament Contusion,57,7.1,3.1,77.4,108.4,49.3,8.4,Low
+PAT-1484,21,Male,Cervical Whiplash,5,8.4,6.1,46.5,65.2,51.4,13.2,Moderate
+PAT-1485,23,Female,Cervical Whiplash,3,7.5,4.0,58.7,82.2,85.2,11.5,Low
+PAT-1486,62,Male,Ankle Sprain/Fracture,59,6.9,2.9,83.7,117.2,61.2,7.0,Low
+PAT-1487,49,Female,Knee Ligament Contusion,1,8.9,6.2,58.9,82.5,85.9,11.8,Moderate
+PAT-1488,69,Female,Ankle Sprain/Fracture,58,6.1,0.8,88.1,123.4,87.6,5.2,Low
+PAT-1489,47,Male,Cervical Whiplash,38,9.2,3.5,80.5,112.7,90.0,8.3,Low
+PAT-1490,64,Male,Ankle Sprain/Fracture,15,7.6,3.6,70.9,99.2,94.2,9.3,Low
+PAT-1491,52,Female,Cervical Whiplash,34,8.2,4.2,61.8,86.6,60.2,9.5,Low
+PAT-1492,57,Male,Knee Ligament Contusion,35,8.3,4.5,69.4,97.2,52.3,10.5,Moderate
+PAT-1493,69,Male,Lumbar Strain,49,9.1,3.1,78.5,109.9,70.8,8.5,Low
+PAT-1494,33,Female,Knee Ligament Contusion,25,8.2,4.5,63.0,88.2,56.0,11.5,Moderate
+PAT-1495,30,Female,Ankle Sprain/Fracture,24,8.1,4.0,70.0,98.0,72.1,10.1,Low
+PAT-1496,67,Male,Ankle Sprain/Fracture,12,6.2,3.2,58.2,81.5,79.4,10.6,Low
+PAT-1497,59,Female,Knee Ligament Contusion,18,7.8,3.9,63.0,88.2,78.2,10.7,Low
+PAT-1498,47,Male,Knee Ligament Contusion,15,6.5,4.2,55.5,77.7,56.2,11.7,Low
+PAT-1499,36,Male,Cervical Whiplash,44,8.6,4.1,65.0,91.0,41.7,9.8,Low
+PAT-1500,34,Male,Ankle Sprain/Fracture,16,7.8,5.2,63.4,88.8,60.1,11.6,Moderate
+PAT-1501,36,Female,Ankle Sprain/Fracture,27,8.4,5.9,55.0,77.1,40.0,12.0,Moderate
+PAT-1502,45,Male,Knee Ligament Contusion,8,6.1,3.2,62.7,87.7,92.3,10.0,Low
+PAT-1503,43,Male,Lumbar Strain,46,6.3,2.9,73.1,102.4,54.2,7.6,Low
+PAT-1504,54,Male,Ankle Sprain/Fracture,25,8.5,5.7,53.2,74.5,40.8,12.1,Moderate
+PAT-1505,43,Female,Lumbar Strain,17,6.3,4.8,48.4,67.7,31.8,13.7,Moderate
+PAT-1506,70,Female,Knee Ligament Contusion,29,6.2,3.0,71.1,99.5,75.2,8.9,Low
+PAT-1507,40,Female,Knee Ligament Contusion,53,6.0,2.2,81.9,114.7,74.6,6.5,Low
+PAT-1508,26,Female,Cervical Whiplash,8,9.3,6.9,51.6,72.2,53.8,13.3,Moderate
+PAT-1509,29,Female,Ankle Sprain/Fracture,15,8.6,5.9,47.9,67.1,35.0,13.4,Moderate
+PAT-1510,70,Male,Lumbar Strain,27,7.2,4.4,59.2,82.8,58.7,11.1,Low
+PAT-1511,18,Female,Cervical Whiplash,46,7.0,3.6,72.7,101.8,51.8,8.4,Low
+PAT-1512,18,Female,Ankle Sprain/Fracture,50,7.2,2.0,87.5,122.5,77.4,7.7,Low
+PAT-1513,64,Female,Cervical Whiplash,52,8.7,2.8,81.8,114.5,72.4,8.2,Low
+PAT-1514,51,Male,Knee Ligament Contusion,7,8.3,6.2,52.5,73.5,55.5,12.7,Moderate
+PAT-1515,49,Female,Ankle Sprain/Fracture,3,6.6,5.1,48.4,67.8,45.3,13.4,Moderate
+PAT-1516,71,Female,Cervical Whiplash,29,6.6,2.9,74.1,103.8,99.2,8.4,Low
+PAT-1517,65,Male,Cervical Whiplash,44,6.3,3.6,79.0,110.6,61.8,8.9,Low
+PAT-1518,42,Female,Lumbar Strain,53,8.3,2.1,84.7,118.6,78.2,6.8,Low
+PAT-1519,57,Male,Cervical Whiplash,24,8.7,5.2,60.8,85.2,39.8,12.6,Moderate
+PAT-1520,62,Male,Ankle Sprain/Fracture,58,6.9,2.3,80.0,112.0,64.0,7.2,Low
+PAT-1521,70,Male,Ankle Sprain/Fracture,3,6.1,5.4,47.5,66.4,31.9,13.8,Moderate
+PAT-1522,18,Male,Lumbar Strain,20,6.3,3.6,64.4,90.2,65.4,10.5,Low
+PAT-1523,33,Male,Ankle Sprain/Fracture,46,9.4,3.0,88.3,123.6,97.5,7.2,Low
+PAT-1524,56,Female,Knee Ligament Contusion,15,7.0,4.1,57.3,80.2,56.9,12.2,Low
+PAT-1525,22,Male,Ankle Sprain/Fracture,25,8.7,6.2,53.4,74.8,32.7,12.5,Moderate
+PAT-1526,39,Male,Ankle Sprain/Fracture,30,8.2,5.1,60.3,84.4,32.2,11.4,Moderate
+PAT-1527,46,Female,Cervical Whiplash,14,7.3,5.5,56.6,79.2,57.2,11.6,Moderate
+PAT-1528,20,Male,Cervical Whiplash,7,6.7,6.0,41.3,57.8,41.2,13.2,Moderate
+PAT-1529,29,Female,Ankle Sprain/Fracture,17,6.4,4.5,46.1,64.6,31.6,13.2,Low
+PAT-1530,43,Female,Lumbar Strain,44,8.2,2.5,80.2,112.3,82.9,8.2,Low
+PAT-1531,33,Female,Cervical Whiplash,20,8.7,5.5,61.9,86.7,62.1,10.9,Moderate
+PAT-1532,68,Male,Lumbar Strain,36,8.3,4.2,65.7,91.9,50.2,11.7,Low
+PAT-1533,54,Male,Ankle Sprain/Fracture,9,7.9,4.2,68.8,96.3,93.0,10.5,Low
+PAT-1534,39,Male,Ankle Sprain/Fracture,38,6.1,3.5,57.1,80.0,38.1,10.9,Low
+PAT-1535,46,Female,Knee Ligament Contusion,48,9.4,1.6,87.9,123.1,96.9,7.0,Low
+PAT-1536,31,Male,Cervical Whiplash,57,8.8,3.3,72.3,101.2,52.0,8.8,Low
+PAT-1537,45,Male,Ankle Sprain/Fracture,22,7.0,2.9,74.2,103.8,92.2,9.4,Low
+PAT-1538,22,Male,Knee Ligament Contusion,54,9.4,2.7,82.4,115.4,72.2,8.5,Low
+PAT-1539,64,Female,Cervical Whiplash,53,8.1,2.6,88.5,123.9,87.9,7.3,Low
+PAT-1540,66,Female,Ankle Sprain/Fracture,53,8.0,1.1,88.3,123.6,98.9,6.6,Low
+PAT-1541,47,Male,Ankle Sprain/Fracture,2,8.6,7.0,51.2,71.7,50.2,13.5,Moderate
+PAT-1542,63,Male,Cervical Whiplash,24,8.8,3.6,77.7,108.8,97.3,8.8,Low
+PAT-1543,69,Male,Cervical Whiplash,8,8.3,5.7,54.7,76.6,57.3,12.8,Moderate
+PAT-1544,22,Male,Cervical Whiplash,11,6.4,4.7,54.1,75.7,57.0,12.3,Moderate
+PAT-1545,29,Female,Ankle Sprain/Fracture,13,7.2,5.0,56.3,78.8,53.8,11.9,Moderate
+PAT-1546,33,Female,Ankle Sprain/Fracture,17,9.2,5.7,59.2,82.8,67.9,12.0,Moderate
+PAT-1547,43,Female,Knee Ligament Contusion,8,6.8,5.6,50.2,70.2,40.8,13.8,Moderate
+PAT-1548,43,Female,Lumbar Strain,21,7.3,3.9,68.7,96.1,68.8,10.0,Low
+PAT-1549,65,Male,Cervical Whiplash,18,7.5,4.1,65.0,91.0,67.9,10.4,Low
+PAT-1550,38,Male,Ankle Sprain/Fracture,30,7.5,2.8,71.1,99.6,83.3,8.9,Low
+PAT-1551,56,Male,Ankle Sprain/Fracture,18,8.1,3.7,69.5,97.4,88.4,10.1,Low
+PAT-1552,53,Female,Cervical Whiplash,46,9.3,5.0,70.8,99.1,60.8,9.0,Moderate
+PAT-1553,50,Male,Lumbar Strain,47,6.8,3.6,73.8,103.3,51.2,9.6,Low
+PAT-1554,47,Female,Cervical Whiplash,31,6.4,3.2,63.8,89.3,48.2,10.6,Low
+PAT-1555,54,Female,Lumbar Strain,38,6.7,3.1,59.2,82.8,43.6,10.1,Low
+PAT-1556,40,Male,Ankle Sprain/Fracture,32,9.1,5.9,54.9,76.9,34.0,11.2,Moderate
+PAT-1557,27,Male,Lumbar Strain,11,8.3,5.9,52.6,73.7,54.0,11.8,Moderate
+PAT-1558,71,Male,Knee Ligament Contusion,45,7.0,3.5,69.4,97.1,48.9,9.4,Low
+PAT-1559,22,Female,Ankle Sprain/Fracture,25,8.9,3.5,71.6,100.3,97.6,7.9,Low
+PAT-1560,53,Male,Knee Ligament Contusion,33,9.0,4.2,71.5,100.1,69.0,10.4,Low
+PAT-1561,51,Female,Cervical Whiplash,38,9.0,4.6,69.0,96.6,54.3,10.1,Moderate
+PAT-1562,69,Male,Cervical Whiplash,41,9.2,3.8,74.6,104.4,70.6,10.7,Low
+PAT-1563,48,Female,Cervical Whiplash,8,6.9,4.4,45.0,63.0,39.7,14.3,Low
+PAT-1564,27,Female,Lumbar Strain,11,8.6,5.6,59.0,82.5,61.1,12.1,Moderate
+PAT-1565,36,Male,Ankle Sprain/Fracture,22,7.6,3.7,70.9,99.2,73.8,10.2,Low
+PAT-1566,49,Female,Cervical Whiplash,51,8.9,3.3,77.0,107.9,64.2,9.0,Low
+PAT-1567,18,Female,Cervical Whiplash,24,8.5,6.2,60.1,84.1,58.1,12.0,Moderate
+PAT-1568,22,Male,Ankle Sprain/Fracture,41,8.7,2.6,86.0,120.5,99.6,6.6,Low
+PAT-1569,62,Female,Cervical Whiplash,17,8.3,3.9,67.9,95.1,91.6,9.0,Low
+PAT-1570,21,Male,Knee Ligament Contusion,12,6.6,4.4,60.0,84.0,73.6,10.5,Low
+PAT-1571,33,Female,Ankle Sprain/Fracture,57,7.9,2.6,85.8,120.1,69.9,7.6,Low
+PAT-1572,41,Male,Ankle Sprain/Fracture,46,9.4,3.6,73.1,102.3,73.4,8.8,Low
+PAT-1573,33,Male,Ankle Sprain/Fracture,32,9.3,5.7,65.6,91.9,44.1,12.0,Moderate
+PAT-1574,19,Female,Knee Ligament Contusion,15,6.2,4.8,57.1,79.9,57.7,10.7,Moderate
+PAT-1575,66,Female,Ankle Sprain/Fracture,16,6.6,4.5,48.1,67.3,32.8,11.5,Low
+PAT-1576,45,Female,Knee Ligament Contusion,54,6.5,2.4,79.6,111.4,63.3,7.9,Low
+PAT-1577,49,Female,Ankle Sprain/Fracture,22,8.5,4.4,63.9,89.5,68.0,10.4,Low
+PAT-1578,44,Female,Lumbar Strain,28,8.9,5.6,54.9,76.9,45.9,10.6,Moderate
+PAT-1579,37,Male,Cervical Whiplash,20,6.7,2.6,77.0,107.8,97.5,8.9,Low
+PAT-1580,41,Female,Lumbar Strain,33,7.8,2.7,78.4,109.8,93.7,8.6,Low
+PAT-1581,29,Male,Cervical Whiplash,10,8.9,5.1,62.9,88.1,80.6,11.3,Moderate
+PAT-1582,67,Male,Knee Ligament Contusion,40,8.6,4.1,76.4,107.0,67.3,9.0,Low
+PAT-1583,52,Female,Lumbar Strain,32,7.9,3.4,73.8,103.3,90.9,8.4,Low
+PAT-1584,50,Male,Ankle Sprain/Fracture,50,8.1,3.4,71.2,99.7,39.1,9.5,Low
+PAT-1585,50,Male,Cervical Whiplash,33,7.8,3.2,74.8,104.7,85.3,7.9,Low
+PAT-1586,68,Male,Cervical Whiplash,2,7.0,5.5,46.2,64.7,38.7,13.4,Moderate
+PAT-1587,60,Male,Lumbar Strain,33,8.0,2.7,69.3,97.0,85.6,8.9,Low
+PAT-1588,54,Female,Knee Ligament Contusion,33,8.4,4.6,63.6,89.0,49.3,10.9,Moderate
+PAT-1589,29,Male,Lumbar Strain,41,9.1,2.8,80.1,112.1,91.4,8.0,Low
+PAT-1590,20,Female,Knee Ligament Contusion,13,8.2,5.1,69.6,97.4,96.1,9.5,Moderate
+PAT-1591,18,Female,Knee Ligament Contusion,30,8.7,5.5,60.8,85.1,40.4,11.5,Moderate
+PAT-1592,50,Male,Cervical Whiplash,33,6.6,2.7,66.0,92.4,62.4,8.4,Low
+PAT-1593,57,Female,Lumbar Strain,13,7.6,3.5,67.0,93.8,98.7,9.8,Low
+PAT-1594,27,Female,Lumbar Strain,52,6.0,2.6,78.6,110.0,63.8,8.2,Low
+PAT-1595,60,Female,Knee Ligament Contusion,26,6.9,3.8,70.8,99.1,90.4,8.0,Low
+PAT-1596,61,Male,Lumbar Strain,22,8.5,4.0,67.6,94.6,71.2,10.3,Low
+PAT-1597,46,Female,Ankle Sprain/Fracture,39,9.5,3.8,68.3,95.6,56.3,10.3,Low
+PAT-1598,30,Female,Ankle Sprain/Fracture,2,6.3,5.7,38.6,54.1,50.0,13.6,Moderate
+PAT-1599,29,Female,Lumbar Strain,38,7.4,4.2,63.8,89.4,44.2,10.1,Low

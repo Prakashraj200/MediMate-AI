@@ -328,19 +328,58 @@
             margin-bottom: 26px;
         }
 
+        .avatar-container {
+            position: relative;
+            flex-shrink: 0;
+        }
+
         .avatar-box {
-            width: 86px;
-            height: 86px;
-            background: linear-gradient(135deg, #38bdf8 0%, #0284c7 100%);
-            color: #050a14;
-            border-radius: 20px;
+            width: 90px;
+            height: 90px;
+            background: linear-gradient(135deg, #0284c7 0%, #38bdf8 100%);
+            color: #ffffff;
+            border-radius: 22px;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 32px;
             font-weight: 800;
             box-shadow: 0 0 25px rgba(56, 189, 248, 0.35);
+            border: 2px solid rgba(56, 189, 248, 0.4);
             flex-shrink: 0;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .avatar-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: none;
+        }
+
+        .photo-upload-badge {
+            position: absolute;
+            bottom: -3px;
+            right: -3px;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: #38bdf8;
+            color: #061121;
+            border: 2px solid #071224;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+            transition: all 0.2s ease;
+        }
+
+        .photo-upload-badge:hover {
+            background: #7dd3fc;
+            transform: scale(1.08);
         }
 
         .form-grid {
@@ -484,16 +523,40 @@
         <main class="content">
             <div class="profile-card">
                 <div class="profile-banner">
-                    <div class="avatar-box" id="avatarInitial">SA</div>
-                    <div>
-                        <h2 style="font-size:22px; color:#ffffff; font-weight:800; letter-spacing: -0.3px;" id="profileDisplayName">System Administrator</h2>
-                        <p style="font-size:13.5px; color:#94a3b8; margin-top:4px;">Chief Rehabilitation Administrator & Clinical Operations Lead</p>
-                        <div style="margin-top:10px; display:flex; gap:10px; flex-wrap:wrap;">
+                    <div class="avatar-container">
+                        <div class="avatar-box" id="avatarBox">
+                            <span id="avatarInitial">SA</span>
+                            <img id="avatarImage" src="" alt="Admin Profile Photo">
+                        </div>
+                        <button type="button" class="photo-upload-badge" onclick="document.getElementById('adminPhotoInput').click()" title="Upload / Change Profile Photo">
+                            <i class="fa-solid fa-camera"></i>
+                        </button>
+                        <input type="file" id="adminPhotoInput" accept="image/png, image/jpeg, image/jpg, image/webp" style="display: none;" onchange="handleAdminPhotoUpload(this)">
+                    </div>
+                    <div style="flex: 1;">
+                        <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 12px;">
+                            <div>
+                                <h2 style="font-size:22px; color:#ffffff; font-weight:800; letter-spacing: -0.3px;" id="profileDisplayName">System Administrator</h2>
+                                <p style="font-size:13.5px; color:#94a3b8; margin-top:4px;">Chief Rehabilitation Administrator & Clinical Operations Lead</p>
+                            </div>
+                            <div style="display: flex; gap: 8px;">
+                                <button type="button" class="btn" onclick="document.getElementById('adminPhotoInput').click()" style="background: rgba(56, 189, 248, 0.12); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.3); font-size: 12.5px; padding: 8px 14px;">
+                                    <i class="fa-solid fa-upload"></i> Upload Photo
+                                </button>
+                                <button type="button" id="removeAdminPhotoBtn" class="btn" onclick="removeAdminPhoto()" style="display: none; background: rgba(239, 68, 68, 0.12); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.3); font-size: 12.5px; padding: 8px 14px;">
+                                    <i class="fa-solid fa-trash"></i> Remove
+                                </button>
+                            </div>
+                        </div>
+                        <div style="margin-top:10px; display:flex; gap:10px; flex-wrap:wrap; align-items: center;">
                             <span class="badge-pill badge-green">
                                 <i class="fa-solid fa-shield-halved"></i> Full System Access (Role: Admin)
                             </span>
                             <span class="badge-pill badge-blue">
                                 <i class="fa-solid fa-id-badge"></i> Staff ID: ADM-2026-001
+                            </span>
+                            <span style="font-size: 11.5px; color: #94a3b8; display: flex; align-items: center; gap: 4px;">
+                                <i class="fa-solid fa-circle-info"></i> JPG, PNG, WebP (Max 3MB)
                             </span>
                         </div>
                     </div>
@@ -613,6 +676,88 @@
         return { name: "Rehab Clinic Administrator", role: "admin", email: "admin@medimate.ai" };
     }
 
+    let currentAdminPhoto = null;
+
+    function handleAdminPhotoUpload(input) {
+        if (!input.files || !input.files[0]) return;
+        const file = input.files[0];
+
+        if (!file.type.match(/^image\/(png|jpeg|jpg|webp)$/i)) {
+            alert("Please select a valid image file (PNG, JPG, JPEG, WEBP).");
+            return;
+        }
+
+        if (file.size > 3 * 1024 * 1024) {
+            alert("Image size must be less than 3MB.");
+            return;
+        }
+
+        const reader = new FileReader();
+        reader.onload = function (e) {
+            currentAdminPhoto = e.target.result;
+            displayAdminPhoto(currentAdminPhoto);
+            saveAdminPhotoToStorage(currentAdminPhoto);
+            alert("Admin profile photo updated successfully!");
+        };
+        reader.readAsDataURL(file);
+    }
+
+    function displayAdminPhoto(photoUrl) {
+        const initialEl = document.getElementById("avatarInitial");
+        const imgEl = document.getElementById("avatarImage");
+        const removeBtn = document.getElementById("removeAdminPhotoBtn");
+
+        if (photoUrl) {
+            if (imgEl) {
+                imgEl.src = photoUrl;
+                imgEl.style.display = "block";
+            }
+            if (initialEl) initialEl.style.display = "none";
+            if (removeBtn) removeBtn.style.display = "inline-flex";
+        } else {
+            if (imgEl) {
+                imgEl.src = "";
+                imgEl.style.display = "none";
+            }
+            if (initialEl) initialEl.style.display = "block";
+            if (removeBtn) removeBtn.style.display = "none";
+        }
+    }
+
+    function removeAdminPhoto() {
+        if (confirm("Are you sure you want to remove your admin profile photo?")) {
+            currentAdminPhoto = null;
+            displayAdminPhoto(null);
+            saveAdminPhotoToStorage(null);
+            alert("Admin profile photo removed.");
+        }
+    }
+
+    function saveAdminPhotoToStorage(photoUrl) {
+        try {
+            const prof = JSON.parse(localStorage.getItem("medimateAdminProfile") || "{}");
+            if (photoUrl) prof.photo = photoUrl;
+            else delete prof.photo;
+            localStorage.setItem("medimateAdminProfile", JSON.stringify(prof));
+        } catch(e) {}
+
+        try {
+            const admin = JSON.parse(localStorage.getItem("adminUser") || sessionStorage.getItem("adminUser") || "{}");
+            if (photoUrl) admin.photo = photoUrl;
+            else delete admin.photo;
+            localStorage.setItem("adminUser", JSON.stringify(admin));
+            sessionStorage.setItem("adminUser", JSON.stringify(admin));
+        } catch(e) {}
+
+        try {
+            const cur = JSON.parse(localStorage.getItem("currentUser") || sessionStorage.getItem("currentUser") || "{}");
+            if (photoUrl) cur.photo = photoUrl;
+            else delete cur.photo;
+            localStorage.setItem("currentUser", JSON.stringify(cur));
+            sessionStorage.setItem("currentUser", JSON.stringify(cur));
+        } catch(e) {}
+    }
+
     function loadAdminProfile() {
         try {
             const admin = resolveAdminProfile();
@@ -631,6 +776,13 @@
             
             const initials = name.split(" ").map(w => w[0]).filter(Boolean).slice(0, 2).join("").toUpperCase() || "SA";
             document.getElementById("avatarInitial").textContent = initials;
+
+            if (saved?.photo || admin?.photo) {
+                currentAdminPhoto = saved?.photo || admin?.photo;
+                displayAdminPhoto(currentAdminPhoto);
+            } else {
+                displayAdminPhoto(null);
+            }
         } catch(e) {}
     }
 
@@ -646,6 +798,9 @@
         }
 
         const profileData = { name, email, phone, office, role: "admin", updatedAt: new Date().toISOString() };
+        if (currentAdminPhoto) {
+            profileData.photo = currentAdminPhoto;
+        }
         localStorage.setItem("medimateAdminProfile", JSON.stringify(profileData));
         localStorage.setItem("adminUser", JSON.stringify(profileData));
         sessionStorage.setItem("adminUser", JSON.stringify(profileData));
@@ -655,6 +810,7 @@
             if (cur && cur.role === "admin") {
                 cur.name = name;
                 cur.email = email;
+                if (currentAdminPhoto) cur.photo = currentAdminPhoto;
                 localStorage.setItem("currentUser", JSON.stringify(cur));
                 sessionStorage.setItem("currentUser", JSON.stringify(cur));
             }

@@ -666,7 +666,15 @@
 
         if (adminName) adminName.textContent = name;
         if (welcomeAdminName) welcomeAdminName.textContent = name;
-        if (profileIcon) profileIcon.textContent = name.charAt(0).toUpperCase();
+        if (profileIcon) {
+            const savedAdmin = JSON.parse(localStorage.getItem("medimateAdminProfile") || "null");
+            const photo = activeAdmin?.photo || savedAdmin?.photo;
+            if (photo) {
+                profileIcon.innerHTML = `<img src="${photo}" alt="Admin Photo" style="width:100%; height:100%; border-radius:10px; object-fit:cover;">`;
+            } else {
+                profileIcon.textContent = name.charAt(0).toUpperCase();
+            }
+        }
 
         await loadDashboardData();
     });

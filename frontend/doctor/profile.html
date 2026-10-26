@@ -164,18 +164,43 @@
     <div class="content">
 
       <div class="surface-card">
-        <!-- Profile Banner -->
+        <!-- Profile Banner with Photo Upload -->
         <div class="profile-banner-box">
-          <div class="avatar-large" id="avatarText">AK</div>
-          <div>
-            <h2 style="font-size: 22px; color: #ffffff; font-weight: 800;" id="docHeaderName">Dr. Anand Kumar, PT</h2>
-            <p style="font-size: 13.5px; color: #38bdf8; margin-top: 3px;" id="docHeaderSpecialty">Trauma Recovery & Orthopedic Physiotherapy</p>
+          <div class="avatar-container" style="position: relative; flex-shrink: 0;">
+            <div class="avatar-large" id="avatarBox" style="position: relative; overflow: hidden; width: 96px; height: 96px; border-radius: 24px; background: linear-gradient(135deg, #0284c7 0%, #38bdf8 100%); display: flex; align-items: center; justify-content: center; border: 2px solid rgba(56, 189, 248, 0.4); box-shadow: 0 8px 24px rgba(56, 189, 248, 0.35);">
+              <span id="avatarText" style="font-size: 36px; font-weight: 800; color: #ffffff;">AK</span>
+              <img id="avatarImage" src="" alt="Profile Photo" style="display: none; width: 100%; height: 100%; object-fit: cover;">
+            </div>
+            <button type="button" class="photo-upload-badge" onclick="document.getElementById('profilePhotoInput').click()" title="Upload / Change Profile Photo" style="position: absolute; bottom: -4px; right: -4px; width: 34px; height: 34px; border-radius: 50%; background: #38bdf8; color: #061121; border: 2px solid #071224; display: flex; align-items: center; justify-content: center; font-size: 14px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,0,0,0.5); transition: all 0.2s;">
+              <i class="fa-solid fa-camera"></i>
+            </button>
+            <input type="file" id="profilePhotoInput" accept="image/png, image/jpeg, image/jpg, image/webp" style="display: none;" onchange="handlePhotoUpload(this)">
+          </div>
+
+          <div style="flex: 1;">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 12px;">
+              <div>
+                <h2 style="font-size: 22px; color: #ffffff; font-weight: 800;" id="docHeaderName">Dr. Anand Kumar, PT</h2>
+                <p style="font-size: 13.5px; color: #38bdf8; margin-top: 3px;" id="docHeaderSpecialty">Trauma Recovery & Orthopedic Physiotherapy</p>
+              </div>
+              <div style="display: flex; gap: 8px;">
+                <button type="button" class="btn btn-outline btn-sm" onclick="document.getElementById('profilePhotoInput').click()" style="font-size: 12.5px;">
+                  <i class="fa-solid fa-upload"></i> Upload Photo
+                </button>
+                <button type="button" id="removePhotoBtn" class="btn btn-outline btn-sm" onclick="removeProfilePhoto()" style="display: none; color: #f87171; border-color: rgba(239, 68, 68, 0.3); font-size: 12.5px;">
+                  <i class="fa-solid fa-trash"></i> Remove
+                </button>
+              </div>
+            </div>
             <div style="margin-top: 10px; display: flex; gap: 8px; flex-wrap: wrap;">
               <span class="status-badge optimal">
                 <i class="fa-solid fa-certificate"></i> License: IAP-PHYSIO-ACTIVE
               </span>
               <span class="status-badge confirmed">
                 <i class="fa-solid fa-shield-halved"></i> Board Certified Specialist
+              </span>
+              <span style="font-size: 11.5px; color: #94a3b8; display: flex; align-items: center; gap: 4px;">
+                <i class="fa-solid fa-circle-info"></i> JPG, PNG, WebP (Max 3MB)
               </span>
             </div>
           </div>
@@ -244,6 +269,82 @@
   </main>
 
   <script>
+    let currentPhotoData = null;
+
+    function handlePhotoUpload(input) {
+      if (input.files && input.files[0]) {
+        const file = input.files[0];
+        if (!file.type.startsWith("image/")) {
+          alert("Please select a valid image file (JPG, PNG, WebP).");
+          return;
+        }
+        if (file.size > 3 * 1024 * 1024) {
+          alert("Image file size should be less than 3 MB.");
+          return;
+        }
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          currentPhotoData = e.target.result;
+          displayPhoto(currentPhotoData);
+          savePhotoToStorage(currentPhotoData);
+          alert("Profile photo updated successfully!");
+        };
+        reader.readAsDataURL(file);
+      }
+    }
+
+    function displayPhoto(photoDataUrl) {
+      const imgEl = document.getElementById("avatarImage");
+      const textEl = document.getElementById("avatarText");
+      const removeBtn = document.getElementById("removePhotoBtn");
+      if (photoDataUrl) {
+        imgEl.src = photoDataUrl;
+        imgEl.style.display = "block";
+        textEl.style.display = "none";
+        if (removeBtn) removeBtn.style.display = "inline-flex";
+      } else {
+        imgEl.src = "";
+        imgEl.style.display = "none";
+        textEl.style.display = "block";
+        if (removeBtn) removeBtn.style.display = "none";
+      }
+    }
+
+    function removeProfilePhoto() {
+      if (confirm("Remove profile photo and restore initials avatar?")) {
+        currentPhotoData = null;
+        displayPhoto(null);
+        savePhotoToStorage(null);
+        const input = document.getElementById("profilePhotoInput");
+        if (input) input.value = "";
+      }
+    }
+
+    function savePhotoToStorage(photoDataUrl) {
+      try {
+        let doctor = {};
+        const rawUser = localStorage.getItem("currentUser");
+        if (rawUser) doctor = JSON.parse(rawUser);
+        doctor.photo = photoDataUrl;
+        localStorage.setItem("currentUser", JSON.stringify(doctor));
+
+        const email = doctor.email;
+        const users = JSON.parse(localStorage.getItem("medimateUsers") || "[]");
+        const idx = users.findIndex(u => (email && u.email && u.email.toLowerCase() === email.toLowerCase()) || u.role === "doctor");
+        if (idx !== -1) {
+          users[idx].photo = photoDataUrl;
+          localStorage.setItem("medimateUsers", JSON.stringify(users));
+        }
+
+        const docs = JSON.parse(localStorage.getItem("medimateDoctors") || "[]");
+        const dIdx = docs.findIndex(d => (email && d.email && d.email.toLowerCase() === email.toLowerCase()) || d.id === doctor.id);
+        if (dIdx !== -1) {
+          docs[dIdx].photo = photoDataUrl;
+          localStorage.setItem("medimateDoctors", JSON.stringify(docs));
+        }
+      } catch(e) {}
+    }
+
     function loadProfile() {
       let doctor = null;
       try {
@@ -286,6 +387,13 @@
 
         const initials = name.replace(/^dr\.?\s*/i, "").substring(0, 2).toUpperCase() || "AK";
         document.getElementById("avatarText").textContent = initials;
+
+        if (doctor.photo) {
+          currentPhotoData = doctor.photo;
+          displayPhoto(doctor.photo);
+        } else {
+          displayPhoto(null);
+        }
       }
     }
 
@@ -317,6 +425,9 @@
       doctor.email = email || doctor.email;
       doctor.phone = phone;
       doctor.role = "doctor";
+      if (currentPhotoData) {
+        doctor.photo = currentPhotoData;
+      }
 
       localStorage.setItem("currentUser", JSON.stringify(doctor));
 

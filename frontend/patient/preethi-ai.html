@@ -38,180 +38,37 @@
       display: flex;
       height: 100vh;
       width: 100vw;
-    }
-
-    /* =========================================================
-       LEFT SIDEBAR (ChatGPT History & Portal Nav)
-       ========================================================= */
-    .chatgpt-sidebar {
-      width: 270px;
-      background: var(--gpt-sidebar);
-      border-right: 1px solid var(--gpt-border);
-      display: flex;
-      flex-direction: column;
-      flex-shrink: 0;
-      transition: all 0.3s ease;
-      z-index: 100;
-    }
-
-    .sidebar-brand-box {
-      padding: 18px 16px 14px;
-      border-bottom: 1px solid var(--gpt-border);
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .sidebar-brand-logo {
-      width: 38px;
-      height: 38px;
-      border-radius: 10px;
-      background: linear-gradient(135deg, #0284c7 0%, #38bdf8 100%);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: 800;
-      color: #061121;
-      font-size: 19px;
-      box-shadow: 0 0 15px var(--gpt-cyan-glow);
-    }
-
-    .sidebar-brand-text h3 {
-      font-size: 15px;
-      font-weight: 700;
-      color: #ffffff;
-      margin: 0;
-      letter-spacing: -0.3px;
-    }
-
-    .sidebar-brand-text span {
-      font-size: 11px;
-      color: var(--gpt-cyan);
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-
-    .new-chat-btn-wrap {
-      padding: 14px 14px 10px;
-    }
-
-    .new-chat-btn {
-      width: 100%;
-      background: rgba(56, 189, 248, 0.12);
-      border: 1px solid var(--gpt-border);
-      color: #ffffff;
-      padding: 11px 16px;
-      border-radius: 10px;
-      font-size: 13.5px;
-      font-weight: 600;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      cursor: pointer;
-      transition: all 0.2s ease;
-    }
-
-    .new-chat-btn:hover {
-      background: rgba(56, 189, 248, 0.22);
-      border-color: var(--gpt-cyan);
-      box-shadow: 0 0 16px var(--gpt-cyan-glow);
-    }
-
-    .sidebar-history-list {
-      flex: 1;
-      overflow-y: auto;
-      padding: 8px 10px;
-    }
-
-    .history-section-label {
-      font-size: 11px;
-      font-weight: 700;
-      color: #64748b;
-      text-transform: uppercase;
-      letter-spacing: 0.8px;
-      padding: 10px 10px 6px;
-    }
-
-    .history-item {
-      padding: 9px 12px;
-      border-radius: 8px;
-      font-size: 13px;
-      color: #cbd5e1;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      cursor: pointer;
-      transition: 0.15s;
-      margin-bottom: 2px;
-      white-space: nowrap;
       overflow: hidden;
-      text-overflow: ellipsis;
     }
 
-    .history-item:hover, .history-item.active {
-      background: rgba(255, 255, 255, 0.08);
-      color: #ffffff;
+    /* Standard Patient Portal Sidebar overrides for Preethi AI */
+    .sidebar {
+      width: 260px !important;
+      position: fixed !important;
+      left: 0 !important;
+      top: 0 !important;
+      bottom: 0 !important;
+      background: #071224 !important;
+      border-right: 1px solid rgba(255, 255, 255, 0.08) !important;
+      padding: 24px 16px !important;
+      display: flex !important;
+      flex-direction: column !important;
+      z-index: 1000 !important;
+      overflow-y: auto !important;
+      box-sizing: border-box !important;
     }
 
-    .history-item span {
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
-
-    .history-del-btn {
-      opacity: 0;
-      border: none;
-      background: transparent;
-      color: #94a3b8;
-      cursor: pointer;
-      font-size: 12px;
-      padding: 2px 6px;
-      border-radius: 4px;
-    }
-
-    .history-item:hover .history-del-btn {
-      opacity: 1;
-    }
-
-    .history-del-btn:hover {
-      color: #ef4444;
-    }
-
-    .sidebar-portal-nav {
-      padding: 10px 10px;
-      border-top: 1px solid var(--gpt-border);
-      background: rgba(6, 17, 33, 0.4);
-    }
-
-    .portal-link {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      padding: 8px 12px;
-      color: #94a3b8;
-      text-decoration: none;
-      font-size: 12.5px;
-      border-radius: 8px;
-      transition: 0.2s;
-    }
-
-    .portal-link:hover {
-      color: #ffffff;
-      background: rgba(56, 189, 248, 0.1);
-    }
-
-    /* =========================================================
-       MAIN CHAT WORKSPACE (ChatGPT Center)
-       ========================================================= */
+    /* MAIN CHAT WORKSPACE (ChatGPT Center with 260px sidebar offset) */
     .chatgpt-main {
+      margin-left: 260px;
+      width: calc(100vw - 260px);
       flex: 1;
       display: flex;
       flex-direction: column;
       height: 100vh;
       position: relative;
       background: radial-gradient(circle at 50% 15%, rgba(56, 189, 248, 0.05), transparent 60%);
+      overflow: hidden;
     }
 
     .chatgpt-topbar {
@@ -724,65 +581,75 @@
 <div class="chatgpt-layout">
 
   <!-- =========================================================
-       SIDEBAR: ChatGPT Conversations & Quick Nav
+       SIDEBAR: Unified Patient Portal Sidebar
        ========================================================= -->
-  <aside class="chatgpt-sidebar" id="sidebar">
-    <div class="sidebar-brand-box">
-      <div class="sidebar-brand-logo">M</div>
-      <div class="sidebar-brand-text">
-        <h3>MediMate AI</h3>
-        <span>Rehabilitation Assistant</span>
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-brand">
+      <div class="brand-logo">M</div>
+      <div class="brand-text">
+        <h2>MediMate <span>AI</span></h2>
+        <p>Physio & Rehab Portal</p>
       </div>
     </div>
 
-    <!-- New Chat Button -->
-    <div class="new-chat-btn-wrap">
-      <button class="new-chat-btn" id="newChatBtn">
-        <span><i class="fa-solid fa-plus" style="margin-right: 8px;"></i> New Conversation</span>
-        <i class="fa-regular fa-pen-to-square"></i>
-      </button>
+    <div class="sidebar-menu">
+      <ul>
+        <li>
+          <a href="dashboard.html">
+            <span class="nav-icon"><i class="fa-solid fa-chart-pie"></i></span>
+            <span>Dashboard</span>
+          </a>
+        </li>
+        <li>
+          <a href="rehab.html">
+            <span class="nav-icon"><i class="fa-solid fa-person-walking"></i></span>
+            <span>Pain & Rehab Tracker</span>
+          </a>
+        </li>
+        <li class="active">
+          <a href="preethi-ai.html">
+            <span class="nav-icon"><i class="fa-solid fa-robot"></i></span>
+            <span>Preethi AI Assistant</span>
+          </a>
+        </li>
+        <li>
+          <a href="/tele-rehab.html">
+            <span class="nav-icon"><i class="fa-solid fa-video"></i></span>
+            <span>Tele-Rehab Consultation</span>
+          </a>
+        </li>
+        <li>
+          <a href="appointments.html">
+            <span class="nav-icon"><i class="fa-solid fa-calendar-check"></i></span>
+            <span>Rehab Appointments</span>
+          </a>
+        </li>
+        <li>
+          <a href="doctors.html">
+            <span class="nav-icon"><i class="fa-solid fa-user-doctor"></i></span>
+            <span>Physiotherapists</span>
+          </a>
+        </li>
+        <li>
+          <a href="health-records.html">
+            <span class="nav-icon"><i class="fa-solid fa-file-medical"></i></span>
+            <span>Recovery Records</span>
+          </a>
+        </li>
+        <li>
+          <a href="profile.html">
+            <span class="nav-icon"><i class="fa-solid fa-user"></i></span>
+            <span>My Profile</span>
+          </a>
+        </li>
+      </ul>
     </div>
 
-    <!-- Recent Chat History -->
-    <div class="sidebar-history-list" id="chatHistoryList">
-      <div class="history-section-label">Recent Inquiries</div>
-      <!-- Injected dynamically from localStorage -->
-    </div>
-
-    <!-- Bottom Portal Navigation -->
-    <div class="sidebar-portal-nav" style="display: flex; flex-direction: column; gap: 4px; padding: 10px 12px; border-top: 1px solid rgba(255,255,255,0.08); margin-top: auto;">
-      <a href="dashboard.html" class="portal-link">
-        <i class="fa-solid fa-chart-pie"></i>
-        <span>Dashboard</span>
-      </a>
-      <a href="rehab.html" class="portal-link">
-        <i class="fa-solid fa-person-walking"></i>
-        <span>Pain & Rehab Tracker</span>
-      </a>
-      <a href="/tele-rehab.html" class="portal-link">
-        <i class="fa-solid fa-video"></i>
-        <span>Tele-Rehab Consultation</span>
-      </a>
-      <a href="appointments.html" class="portal-link">
-        <i class="fa-solid fa-calendar-check"></i>
-        <span>Rehab Appointments</span>
-      </a>
-      <a href="doctors.html" class="portal-link">
-        <i class="fa-solid fa-user-doctor"></i>
-        <span>Physiotherapists</span>
-      </a>
-      <a href="health-records.html" class="portal-link">
-        <i class="fa-solid fa-file-medical"></i>
-        <span>Recovery Records</span>
-      </a>
-      <a href="profile.html" class="portal-link">
-        <i class="fa-solid fa-user"></i>
-        <span id="sidebarUserName">My Profile</span>
-      </a>
-      <a href="/login.html" onclick="sessionStorage.clear(); localStorage.removeItem('currentUser');" class="portal-link" style="color: #f87171; margin-top: 4px; font-weight: 700;">
+    <div class="logout">
+      <button id="logoutBtn" onclick="sessionStorage.clear(); localStorage.removeItem('currentUser'); window.location.href='/login.html';">
         <i class="fa-solid fa-arrow-right-from-bracket"></i>
         <span>Logout</span>
-      </a>
+      </button>
     </div>
   </aside>
 
@@ -791,29 +658,47 @@
        ========================================================= -->
   <main class="chatgpt-main">
 
-    <!-- Topbar -->
-    <header class="chatgpt-topbar">
-      <div class="model-selector-pill" title="Preethi AI - Intelligent Clinical Rehabilitation System">
-        <img src="/static/images/preethi_ai_robot.png" alt="Preethi AI" class="robot-thumb">
-        <div class="model-title">
-          <span>Preethi AI</span>
-          <span class="model-badge">Clinical v2.5</span>
+    <!-- Unified Topbar -->
+    <header class="chatgpt-topbar" style="height: 70px; background: rgba(10, 18, 36, 0.92); backdrop-filter: blur(16px); display: flex; align-items: center; justify-content: space-between; padding: 0 28px; border-bottom: 1px solid rgba(56, 189, 248, 0.18); z-index: 100; flex-shrink: 0;">
+      <div class="topbar-left" style="display: flex; align-items: center; gap: 14px;">
+        <div class="topbar-title">
+          <h1 style="font-size: 19px; font-weight: 800; color: #ffffff; margin: 0; display: flex; align-items: center; gap: 10px;">
+            <span>Preethi AI Assistant</span>
+            <span style="font-size: 11px; background: rgba(56, 189, 248, 0.2); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.35); padding: 2px 8px; border-radius: 12px; font-weight: 700;">Clinical v2.5 Online</span>
+          </h1>
+          <p style="font-size: 12px; color: #94a3b8; margin: 2px 0 0 0;">AI Clinical Rehabilitation & Real-Time Pain Management</p>
         </div>
       </div>
 
-      <div class="topbar-actions">
-        <button class="topbar-btn" id="voiceToggleBtn" title="Toggle Voice Read-Aloud">
-          <i class="fa-solid fa-volume-high"></i>
+      <div class="topbar-right" style="display: flex; align-items: center; gap: 12px;">
+        <button class="topbar-btn" id="voiceToggleBtn" title="Toggle Voice Read-Aloud" style="background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); color: #cbd5e1; padding: 7px 14px; border-radius: 20px; font-size: 12.5px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 7px;">
+          <i class="fa-solid fa-volume-high" style="color: #38bdf8;"></i>
           <span id="voiceStatusText">Voice: ON</span>
         </button>
-        <button class="topbar-btn" id="clearChatBtn" title="Clear this chat">
+
+        <button class="topbar-btn" id="newChatBtn" title="Start New Conversation" style="background: rgba(56, 189, 248, 0.15); border: 1px solid rgba(56, 189, 248, 0.35); color: #38bdf8; padding: 7px 14px; border-radius: 20px; font-size: 12.5px; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 7px;">
+          <i class="fa-solid fa-plus"></i>
+          <span>New Chat</span>
+        </button>
+
+        <button class="topbar-btn" id="clearChatBtn" title="Clear this chat" style="background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); color: #94a3b8; padding: 7px 14px; border-radius: 20px; font-size: 12.5px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 7px;">
           <i class="fa-regular fa-trash-can"></i>
           <span>Clear</span>
         </button>
-        <a href="/tele-rehab.html" class="topbar-btn" style="border-color: var(--gpt-cyan); color: var(--gpt-cyan);">
+
+        <a href="/tele-rehab.html" style="background: rgba(56, 189, 248, 0.12); border: 1px solid #38bdf8; color: #38bdf8; padding: 7px 14px; border-radius: 20px; font-size: 12.5px; font-weight: 700; text-decoration: none; display: flex; align-items: center; gap: 7px;">
           <i class="fa-solid fa-video"></i>
           <span>Tele-Rehab</span>
         </a>
+
+        <!-- Patient Profile Badge -->
+        <div class="user-profile" style="display: flex; align-items: center; gap: 10px; padding: 5px 14px; background: rgba(255, 255, 255, 0.05); border-radius: 30px; border: 1px solid rgba(255, 255, 255, 0.08);">
+          <div class="avatar" style="width: 34px; height: 34px; border-radius: 50%; background: linear-gradient(135deg, #0284c7, #38bdf8); color: #061121; font-weight: 800; display: flex; align-items: center; justify-content: center; font-size: 13px;">PR</div>
+          <div class="user-info" style="line-height: 1.2;">
+            <h4 style="font-size: 13px; font-weight: 700; color: #ffffff; margin: 0;" id="topbarUserName">Prakashraj R</h4>
+            <span style="font-size: 11px; color: #38bdf8; font-weight: 600;">Rehab Patient</span>
+          </div>
+        </div>
       </div>
     </header>
 
@@ -821,8 +706,8 @@
     <div class="chat-scroll-area" id="chatScrollArea">
       <div class="chat-stream-container" id="chatContainer">
 
-        <!-- HERO WELCOME (Shown when chat is fresh) -->
-        <div class="hero-welcome-box" id="heroWelcomeBox">
+        <!-- HERO WELCOME (Hidden when conversation is active) -->
+        <div class="hero-welcome-box" id="heroWelcomeBox" style="display: none;">
           <div class="robot-hero-avatar-wrap">
             <img src="/static/images/preethi_ai_robot.png" alt="Preethi AI Avatar" class="robot-hero-img">
             <div class="robot-pulse-ring"></div>
@@ -832,7 +717,7 @@
             I am <strong>Preethi AI</strong>, your clinical rehabilitation companion. Ask about acute accident pain, ice vs heat therapy, prescribed mobility exercises, or range-of-motion guidance.
           </p>
 
-          <!-- 4 ChatGPT Suggestion Cards -->
+          <!-- 4 Suggestion Cards -->
           <div class="prompt-suggestions-grid">
             <div class="prompt-card" data-prompt="Should I apply ice or heat for acute neck swelling after a vehicle collision?">
               <div class="prompt-card-icon">🧊</div>
@@ -861,7 +746,59 @@
         </div>
 
         <!-- Chat messages dynamically injected here -->
-        <div id="messagesList"></div>
+        <div id="messagesList">
+          <!-- Turn 1: Patient -->
+          <div class="message-row user">
+            <div class="message-body">
+              <div class="message-bubble">I have acute cervical neck stiffness (VAS Score: 7/10) with mild swelling around C5-C6 after a rear-end collision 4 days ago. Should I apply ice or heat, and what gentle exercises are safe right now?</div>
+            </div>
+            <div class="message-avatar">
+              <div class="user-avatar-circle">PR</div>
+            </div>
+          </div>
+
+          <!-- Turn 1: Preethi AI -->
+          <div class="message-row bot">
+            <div class="message-avatar">
+              <img src="/static/images/preethi_ai_robot.png" alt="Preethi AI">
+            </div>
+            <div class="message-body">
+              <div class="message-header">
+                <strong>Preethi AI</strong> • Clinical Rehab Assistant
+              </div>
+              <div class="message-bubble">
+                <p>Hello <strong>Prakashraj</strong>. Based on your Day 4 post-collision stage and VAS pain rating of <strong>7/10</strong>, you are currently in the <strong>acute inflammatory phase</strong> of cervical sprain/whiplash recovery.</p>
+
+                <p><strong>1. Ice vs Heat Recommendation:</strong></p>
+                <ul>
+                  <li><strong>Apply Ice (Cryotherapy):</strong> Apply a cold compress wrapped in a damp towel for <strong>15–20 minutes every 3 to 4 hours</strong>. Cold causes vasoconstriction, effectively suppressing localized swelling and inflammatory mediators around C5–C6.</li>
+                  <li><strong>Avoid Heat Pads:</strong> Heat increases microvascular permeability and vasogenic edema during the first 5–7 days following acute impact. Save thermotherapy for subacute muscular stiffness.</li>
+                </ul>
+
+                <p><strong>2. Immediate Safe Gentle Protocols:</strong></p>
+                <ul>
+                  <li><strong>Gentle Isometric Chin Tucks:</strong> In an upright seated posture, gently slide your chin straight backward without nodding downward. Hold for 3 seconds. Repeat 5 times within pain-free tolerance.</li>
+                  <li><strong>Scapular Retraction:</strong> Draw both shoulder blades gently backward and down for 5 seconds to reduce levator scapulae and trapezius spasm.</li>
+                  <li><strong>Ergonomic Rest:</strong> Support the cervical lordotic curve with a rolled towel or orthopedic contour pillow.</li>
+                </ul>
+
+                <div class="callout-alert">
+                  <strong>⚠️ Emergency Red-Flag Warning:</strong> If you experience progressive numbness radiating down your arm into your fingers, sudden hand weakness, dizziness, or dysphagia, discontinue exercises and seek emergency medical evaluation immediately.
+                </div>
+
+                <p>I have logged your cervical report in your clinical profile. You can also log today's pain score in the <strong>Pain & Rehab Tracker</strong> to update your recovery prognosis curve.</p>
+              </div>
+              <div class="bot-actions-bar">
+                <button class="bot-action-btn copy-btn" onclick="copyBotMessage(this)">
+                  <i class="fa-regular fa-copy"></i> Copy
+                </button>
+                <button class="bot-action-btn speak-btn" onclick="speakSingleMessage(this)">
+                  <i class="fa-solid fa-volume-high"></i> Listen
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
 
       </div>
     </div>
@@ -1312,6 +1249,7 @@
   }
 
   function renderSessionList() {
+    if (!chatHistoryList) return;
     let sessions = [];
     try {
       sessions = JSON.parse(localStorage.getItem("preethi_sessions") || "[]");
