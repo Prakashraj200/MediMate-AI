@@ -8,19 +8,17 @@ from backend.utils.helpers import format_iso_timestamp
 
 def get_patient_vitals(patient_id):
     """Retrieve historical vital readings for a patient."""
-    docs = (
-        db.collection("vitals")
-        .where("patient_id", "==", patient_id)
-        .order_by("timestamp", direction="DESCENDING")
-        .limit(20)
-        .stream()
-    )
-    vitals_list = []
-    for doc in docs:
-        data = doc.to_dict()
-        data["id"] = doc.id
-        vitals_list.append(data)
-    return vitals_list
+    try:
+        docs = db.collection("vitals").where("patient_id", "==", patient_id).stream()
+        vitals_list = []
+        for doc in docs:
+            data = doc.to_dict()
+            data["id"] = doc.id
+            vitals_list.append(data)
+        vitals_list.sort(key=lambda x: str(x.get("timestamp", "")), reverse=True)
+        return vitals_list[:20]
+    except Exception:
+        return []
 
 
 def record_vital_reading(data):

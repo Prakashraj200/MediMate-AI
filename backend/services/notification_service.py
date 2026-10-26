@@ -8,19 +8,17 @@ from backend.utils.helpers import format_iso_timestamp
 
 def get_user_notifications(user_id):
     """Retrieve notifications for user."""
-    docs = (
-        db.collection("notifications")
-        .where("user_id", "==", user_id)
-        .order_by("created_at", direction="DESCENDING")
-        .limit(30)
-        .stream()
-    )
-    notifications = []
-    for doc in docs:
-        data = doc.to_dict()
-        data["id"] = doc.id
-        notifications.append(data)
-    return notifications
+    try:
+        docs = db.collection("notifications").where("user_id", "==", user_id).stream()
+        notifications = []
+        for doc in docs:
+            data = doc.to_dict()
+            data["id"] = doc.id
+            notifications.append(data)
+        notifications.sort(key=lambda x: str(x.get("created_at", "")), reverse=True)
+        return notifications[:30]
+    except Exception:
+        return []
 
 
 def create_notification(data):
