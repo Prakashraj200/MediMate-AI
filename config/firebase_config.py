@@ -1,4 +1,5 @@
 import os
+import glob
 import json
 import firebase_admin
 from firebase_admin import credentials, firestore
@@ -21,13 +22,24 @@ def initialize_firebase():
             except Exception as e:
                 print("Failed to initialize Firebase from FIREBASE_SERVICE_ACCOUNT_JSON env var:", e)
 
-        # 2. Render Secret File mounted at /etc/secrets/
+        # 2. Render Secret File mounted at exact path
         if os.path.exists(RENDER_SECRET_PATH):
             cred = credentials.Certificate(RENDER_SECRET_PATH)
             firebase_admin.initialize_app(cred)
             return firestore.client()
 
-        # 3. Local JSON credential file in repository
+        # 3. Check any JSON file inside /etc/secrets/ (handles any custom filename on Render)
+        if os.path.isdir("/etc/secrets"):
+            secret_files = glob.glob("/etc/secrets/*.json") + glob.glob("/etc/secrets/*service*")
+            for sf in secret_files:
+                try:
+                    cred = credentials.Certificate(sf)
+                    firebase_admin.initialize_app(cred)
+                    return firestore.client()
+                except Exception:
+                    pass
+
+        # 4. Local JSON credential file in repository
         if os.path.exists(LOCAL_SERVICE_ACCOUNT):
             cred = credentials.Certificate(LOCAL_SERVICE_ACCOUNT)
             firebase_admin.initialize_app(cred)
