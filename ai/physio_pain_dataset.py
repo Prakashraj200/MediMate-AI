@@ -971,30 +971,59 @@ PAIN_QNA_DATABASE = [
 ]
 
 
+import re
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.metrics.pairwise import cosine_similarity
+
+# Initialize Sublinear TF-IDF Engine over 105 Clinical Q&As
+_corpus = []
+for _item in PAIN_QNA_DATABASE:
+    _text = (
+        _item["question"] + " " +
+        " ".join(_item["keywords"]) + " " +
+        _item["category"].replace("_", " ")
+    )
+    _corpus.append(_text)
+
+_tfidf_vectorizer = TfidfVectorizer(
+    stop_words="english",
+    sublinear_tf=True,
+    ngram_range=(1, 2)
+)
+_tfidf_matrix = _tfidf_vectorizer.fit_transform(_corpus)
+
+
 def query_pain_knowledge_base(query_text):
     """
-    NLP Semantic & Keyword Search over 105 Physiotherapy Q&As.
+    Sublinear TF-IDF + Cosine Similarity NLP Search over 105 Physiotherapy Q&As.
     Returns best matching clinical recommendation and red flag status.
     """
-    clean_query = query_text.lower()
-    best_match = None
-    highest_score = 0
+    clean_query = (query_text or "").strip().lower()
+    if not clean_query:
+        return {"found": False, "message": "Empty query."}
 
-    for item in PAIN_QNA_DATABASE:
-        score = 0
-        for kw in item["keywords"]:
-            if kw.lower() in clean_query:
-                score += 3
-        # Match words in question
-        for word in item["question"].lower().split():
-            if len(word) > 3 and word in clean_query:
-                score += 1
+    # 1. TF-IDF Cosine Similarity Search
+    q_clean = re.sub(r"[^a-zA-Z0-9\s]", " ", clean_query).strip()
+    q_vec = _tfidf_vectorizer.transform([q_clean])
+    sims = cosine_similarity(q_vec, _tfidf_matrix)[0]
+    best_idx = int(sims.argmax())
+    best_tfidf_score = float(sims[best_idx])
+    best_match = PAIN_QNA_DATABASE[best_idx]
 
-        if score > highest_score:
-            highest_score = score
-            best_match = item
+    # 2. Exact keyword / phrase matching bonus
+    keyword_boost = 0
+    words_in_query = set(q_clean.split())
+    for kw in best_match["keywords"]:
+        kw_clean = kw.lower()
+        if " " in kw_clean and kw_clean in clean_query:
+            keyword_boost += 0.35
+        elif kw_clean in words_in_query:
+            keyword_boost += 0.20
 
-    if best_match and highest_score >= 2:
+    combined_confidence = best_tfidf_score + keyword_boost
+
+    # Acceptance threshold (avoids false-positive Red Flags or random triggers)
+    if combined_confidence >= 0.18:
         return {
             "found": True,
             "match_id": best_match["id"],
@@ -1002,7 +1031,8 @@ def query_pain_knowledge_base(query_text):
             "question": best_match["question"],
             "answer": best_match["answer"],
             "severity": best_match["severity"],
-            "red_flag": best_match["red_flag"]
+            "red_flag": best_match["red_flag"],
+            "confidence": round(combined_confidence, 3)
         }
 
     return {

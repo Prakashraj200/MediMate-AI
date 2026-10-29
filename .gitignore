@@ -9,3 +9,7 @@ serviceAccountKey.json
 *.pem
 *.key
 
+# Presentation & Heavy Assets
+*.zip
+*.pptx
+MediMate_AI_PPT_Assets/
